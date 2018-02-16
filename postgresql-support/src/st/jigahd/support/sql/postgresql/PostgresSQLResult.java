@@ -30,10 +30,9 @@ public class PostgresSQLResult {
     }
 
     public Object valueOf( int indexColumn, String columnName, int typeColumn ) throws SQLException {
-       /* return PostgresSQLParameterManager
+        return PostgresSQLParameterManager
                 .getGetters()
                     .get( typeColumn )
-                        .get( this.resultSet, columnName, typeColumn );*/
-       return null;
+                        .get( this.resultSet, columnName, typeColumn );
     }
 }

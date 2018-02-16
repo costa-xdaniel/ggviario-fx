@@ -14,10 +14,9 @@ public class PostgresSQL {
     public static final String PROSTRGES_URL_MASK = "jdbc:postgresql://$host:$port/$database";
 
     private Configuration configuration;
-    private ResourceType type;
     private PostgresSQLParameterManager parameterManager;
     private String url;
-    private Connection connection;
+    private Connection conn;
     private Map< ResourceType, PostgresSQLExecutor > executors;
     private String query;
     private String processedQuery;
@@ -35,9 +34,9 @@ public class PostgresSQL {
     private void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         this.url = PROSTRGES_URL_MASK
-            .replace( "host", this.configuration.getHost() )
-            .replace( "port", String.valueOf( this.configuration.getPort() ) )
-            .replace( "database", this.configuration.getDatabase() )
+            .replace( "$host", this.configuration.getHost() )
+            .replace( "$port", String.valueOf( this.configuration.getPort() ) )
+            .replace( "$database", this.configuration.getDatabase() )
         ;
     }
 
@@ -47,13 +46,10 @@ public class PostgresSQL {
         return this.parameterManager;
     }
 
-    protected PostgresSQLCursor processQuery(ResourceType resourceType ) throws SQLException {
-//        this.type = resourceType;
-//        PostgresSQLExecutor exec = this.executors.get(resourceType);
-//        exec.run();
-//        ResultSet rs = exec.getResult();
-//        return new PostgresSQLCursor( rs );
-        return null;
+    protected PostgresSQLResult processQuery(ResourceType resourceType ) throws SQLException {
+        PostgresSQLExecutor exec = this.executors.get(resourceType);
+        exec.run();
+        return exec.getResult();
     }
 
     public String getQuery() {
@@ -73,7 +69,7 @@ public class PostgresSQL {
     }
 
     public Connection getCurrentConnection() {
-        return this.connection;
+        return this.conn;
     }
 
     public String getProcessedQuery() {
@@ -85,30 +81,7 @@ public class PostgresSQL {
     }
 
     public static void closeStatement(CallableStatement statement) {
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw  new RuntimeException( e );
-        }
-    }
 
-    public void commit(){
-        try {
-            this.connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw  new RuntimeException( e );
-        }
-    }
-
-    public void rooalback(){
-        try {
-            this.connection.rollback();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw  new RuntimeException( e );
-        }
     }
 
     public enum ResourceType {
@@ -122,13 +95,20 @@ public class PostgresSQL {
             if ( !org.postgresql.Driver.isRegistered() ){
                 org.postgresql.Driver.register();
             }
-            this.connection = DriverManager.getConnection( this.url, this.configuration.getUser(), this.configuration.getPassword() );
-            this.connection.setAutoCommit( this.configuration.isAutoCommit() );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw  new RuntimeException( e );
-        }
-        return connection;
+            this.conn = DriverManager.getConnection( this.url, this.configuration.getUser(), this.configuration.getPassword() );
+        } catch (SQLException e) { e.printStackTrace(); }
+        return conn;
+    }
+
+
+    public static void main(String[] args) {
+        String url = PostgresSQL.PROSTRGES_URL_MASK
+                .replace("$host", "127.0.0.1" )
+                .replace( "$port", String.valueOf( 123 ) )
+                .replace( "$database", "saoferias")
+                ;
+
+        System.out.println( url );
     }
 
 }

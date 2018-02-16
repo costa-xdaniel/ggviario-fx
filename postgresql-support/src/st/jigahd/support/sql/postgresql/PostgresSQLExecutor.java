@@ -9,11 +9,11 @@ public abstract class PostgresSQLExecutor {
 
 
 
-    protected PostgresSQL postgresSQL;
-    protected CallableStatement statement;
+    PostgresSQL postgresSQL;
+    CallableStatement statement;
 
 
-    public PostgresSQLExecutor(PostgresSQL postgresSQL) {
+    PostgresSQLExecutor(PostgresSQL postgresSQL) {
         this.postgresSQL = postgresSQL;
 
     }
@@ -22,7 +22,7 @@ public abstract class PostgresSQLExecutor {
 
 
 
-    public void execute() throws SQLException {
+    void execute() throws SQLException {
         Connection con = this.postgresSQL.getCurrentConnection();
         String query = this.postgresSQL.getProcessedQuery();
         if( this.statement != null && this.postgresSQL.autoCloseStatement() ) PostgresSQL.closeStatement( statement );
@@ -33,7 +33,7 @@ public abstract class PostgresSQLExecutor {
 
     private void setParameters() throws SQLException {
         int count = 1;
-        Map<Integer, PostgresSQLParameterManager.Setter> setters = this.postgresSQL.getParameterManager().getSetters();
+        Map<Integer, PostgresSQLParameterManager.Setter> setters = PostgresSQLParameterManager.getSetters();
         for (Pair< Integer, Object > p: this.postgresSQL.getParameterManager().params() ){
             int key = p.getKey();
             if ( p.getValue() == null ) key = Types.NULL;
@@ -41,5 +41,5 @@ public abstract class PostgresSQLExecutor {
         }
     }
 
-    public abstract  PostgresSQLResult getResult() throws SQLException ;
+    public abstract PostgresSQLResult getResult() throws SQLException;
 }

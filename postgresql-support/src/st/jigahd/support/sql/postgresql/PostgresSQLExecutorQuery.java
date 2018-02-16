@@ -18,5 +18,4 @@ public class PostgresSQLExecutorQuery extends PostgresSQLExecutor {
     public PostgresSQLResult getResult() throws SQLException {
         return new PostgresSQLResultSet( this.statement.getResultSet() );
     }
-
 }

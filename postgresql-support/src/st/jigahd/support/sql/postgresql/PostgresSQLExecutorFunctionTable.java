@@ -27,6 +27,7 @@ public class PostgresSQLExecutorFunctionTable extends PostgresSQLExecutorFunctio
         return builder.toString();
     }
 
+
     @Override
     public PostgresSQLResult getResult() throws SQLException {
         return new PostgresSQLResultSet( this.statement.getResultSet() );

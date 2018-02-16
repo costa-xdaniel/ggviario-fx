@@ -5,52 +5,146 @@ import javafx.util.Pair;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class PostgresSQLParameterManager {
-
-    private String[] mapReturns;
-
-    public Map<Integer, Setter> getSetters() {
-        return Collections.unmodifiableMap( setters );
-    }
-
-    public boolean hasMapReturns() {
-        return this.mapReturns != null && this.mapReturns.length > 0;
-    }
 
     public interface Setter {
         void set ( CallableStatement statement, int index, Integer type, Object value ) throws SQLException;
     }
 
-    private Map<Integer, Setter> setters;
-    private final PostgresSQL postgresSQL;
-    private List<Pair< Integer, Object > > parrameters;
-
-    public PostgresSQLParameterManager(PostgresSQL postgresSQL ) {
-        this.parrameters = new LinkedList<>();
-        this.postgresSQL = postgresSQL;
-        this.setters = new LinkedHashMap<>();
-        this.registerTypes();
+    public interface Getter {
+        Object get (ResultSet resultSet, String columnName, Integer type ) throws SQLException;
     }
 
-    public PostgresSQLCursor function(){
+    private static Map<Integer, Setter> setters;
+    private static Map<Integer, Getter> getters;
+
+    static {
+        Map<Integer, Setter > setters = new LinkedHashMap<>();
+        
+        setters.put(Types.NULL, (statement, index, type, value) -> statement.setNull( index,  type ));
+        setters.put(Types.OTHER, (statement, index, type, value) -> statement.setObject( index,  value));
+        setters.put(Types.BOOLEAN, (statement, index, type, value) -> statement.setBoolean( index, (Boolean) value));
+        setters.put(Types.BIT, (statement, index, type, value) -> statement.setByte( index, (Byte) value));
+        setters.put(Types.TINYINT, (statement, index, type, value) -> statement.setShort( index, (Short) value));
+        setters.put(Types.SMALLINT, (statement, index, type, value) -> statement.setShort( index, (Short) value));
+        setters.put(Types.INTEGER, (statement, index, type, value) -> statement.setInt( index, (Integer) value));
+        setters.put(Types.BIGINT, (statement, index, type, value) -> statement.setLong( index, (Long) value));
+        setters.put(Types.REAL, (statement, index, type, value) -> statement.setFloat( index, (Float) value));
+        setters.put(Types.FLOAT, (statement, index, type, value) -> statement.setFloat( index, (Float) value));
+        setters.put(Types.DOUBLE, (statement, index, type, value) -> statement.setDouble( index, (Double) value));
+        setters.put(Types.DECIMAL, (statement, index, type, value) -> statement.setBigDecimal( index, (BigDecimal) value));
+        setters.put(Types.NUMERIC, (statement, index, type, value) -> statement.setBigDecimal( index, (BigDecimal) value));
+        setters.put(Types.CHAR, (statement, index, type, value) -> statement.setString( index, (String) value));
+        setters.put(Types.VARCHAR, (statement, index, type, value) -> statement.setString( index, (String) value));
+        setters.put(Types.LONGNVARCHAR, (statement, index, type, value) -> statement.setNString( index, (String) value));
+        setters.put(Types.BLOB, (statement, index, type, value) -> statement.setBlob( index, (InputStream) value));
+        setters.put(Types.NCHAR, (statement, index, type, value) -> statement.setCharacterStream( index, (Reader) value));
+        setters.put(Types.CLOB, (statement, index, type, value) -> statement.setClob( index, (Reader) value));
+        setters.put(Types.NCLOB, (statement, index, type, value) -> statement.setNClob( index, (Reader) value));
+
+        setters.put(Types.TIME, (statement, index, type, value) -> {
+            Calendar calendar = (Calendar) value;
+            statement.setTime( index, getTimeOf( calendar ), calendar );
+        });
+
+        setters.put(Types.DATE, (statement, index, type, value) -> {
+            Calendar calendar = (Calendar) value;
+            statement.setDate( index, getDateOf( calendar ), calendar );
+        });
+
+        setters.put(Types.TIMESTAMP, (statement, index, type, value) -> {
+            Calendar calendar = (Calendar) value;
+            statement.setTimestamp( index, getTimeStampOf( calendar ), calendar );
+        });
+        
+        PostgresSQLParameterManager.setters = Collections.unmodifiableMap( setters );
+    }
+
+    static {
+        Map<Integer, Getter > getter = new LinkedHashMap<>();
+
+        getter.put(Types.NULL, (resultSet, index, type) -> null);
+        getter.put(Types.OTHER, (resultSet, index, type) -> resultSet.getObject( index ));
+
+        getter.put(Types.BOOLEAN, (resultSet, columnName, type ) -> resultSet.getBoolean( columnName ));
+        getter.put(Types.BIT, (resultSet, columnName, type) -> resultSet.getByte( columnName ));
+        getter.put(Types.TINYINT, (resultSet, columnName, type) -> resultSet.getShort( columnName ));
+        getter.put(Types.SMALLINT, (resultSet, columnName, type) -> resultSet.getShort( columnName ));
+        getter.put(Types.INTEGER, (resultSet, columnName, type) -> resultSet.getInt( columnName ));
+        getter.put(Types.BIGINT, (resultSet, columnName, type) -> resultSet.getByte( columnName ));
+        getter.put(Types.REAL, (resultSet, columnName, type) -> resultSet.getFloat( columnName ));
+        getter.put(Types.FLOAT, (resultSet, columnName, type) -> resultSet.getFloat( columnName ));
+        getter.put(Types.DOUBLE, (resultSet, columnName, type) -> resultSet.getDouble( columnName ));
+        getter.put(Types.DECIMAL, (resultSet, columnName, type) -> resultSet.getBigDecimal( columnName ));
+        getter.put(Types.NUMERIC, (resultSet, columnName, type) -> resultSet.getBigDecimal( columnName ));
+        getter.put(Types.CHAR, (resultSet, columnName, type) -> resultSet.getString( columnName ).charAt(0));
+        getter.put(Types.VARCHAR, (resultSet, columnName, type) -> resultSet.getString( columnName ));
+        getter.put(Types.LONGNVARCHAR, (resultSet, columnName, type) -> resultSet.getNString( columnName ));
+        getter.put(Types.BLOB, (resultSet, columnName, type) -> resultSet.getBlob( columnName ).getBinaryStream());
+        getter.put(Types.NCHAR, (resultSet, columnName, type) -> resultSet.getNCharacterStream( columnName ));;
+        getter.put(Types.CLOB, (resultSet, columnName, type) -> resultSet.getClob( columnName ));
+        getter.put(Types.NCLOB, (resultSet, columnName, type) -> resultSet.getNClob( columnName ).getCharacterStream());
+        getter.put(Types.TIME, (resultSet, columnName, type) -> resultSet.getTime( columnName ));
+        getter.put(Types.DATE, (resultSet, columnName, type) -> resultSet.getDate( columnName ));
+        getter.put(Types.TIMESTAMP, (resultSet, columnName, type) -> resultSet.getTimestamp( columnName ));
+        PostgresSQLParameterManager.getters = Collections.unmodifiableMap( getter );
+    }
+
+
+
+    private String[] mapReturns;
+    private final PostgresSQL postgresSQL;
+    private List<Pair< Integer, Object > > parameters;
+
+
+    public PostgresSQLParameterManager(PostgresSQL postgresSQL ) {
+        this.parameters = new LinkedList<>();
+        this.postgresSQL = postgresSQL;
+    }
+
+
+    public static Map<Integer, Setter> getSetters() {
+        return setters;
+    }
+
+    public static Map<Integer, Getter> getGetters() {
+        return getters;
+    }
+
+
+    public boolean hasMapReturns() {
+        return this.mapReturns != null && this.mapReturns.length > 0;
+    }
+
+
+    public PostgresSQLResultSigle callFunction(){
         try {
-            return this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION   );
+            this.mapReturns = null;
+            return (PostgresSQLResultSigle) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION );
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException( e );
         }
     }
 
-    public PostgresSQLCursor processTable(String ... mapReturs ){
+    public PostgresSQLResultSet callFunctionTable(String ... mapReturs ){
         try {
             this.mapReturns = mapReturs;
-            return this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
+            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException( e );
+        }
+    }
+
+    public PostgresSQLResultSet execute(){
+        try {
+            this.mapReturns = null;
+            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.QUERY );
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException( e );
@@ -62,294 +156,257 @@ public class PostgresSQLParameterManager {
     }
 
     protected void clear() {
-        this.parrameters.clear();
+        this.parameters.clear();
     }
 
     public int countParameters() {
-        return this.parrameters.size();
+        return this.parameters.size();
     }
 
     public Iterable<? extends Pair<Integer, Object>> params() {
-        return Collections.unmodifiableCollection( this.parrameters );
+        return Collections.unmodifiableCollection( this.parameters);
     }
 
-    public void args( Object ... args ){
+    public void with(Object ... args ){
         if ( args == null || args.length == 0 ) return;
-        for( int i = 0; i< args.length; i++ ){
-            Object obj = args[ i ];
-            if( obj instanceof  Boolean ) this.bool((Boolean) obj);
-            else if ( obj instanceof Byte ) this.bit((Byte) obj);
-            else if ( obj instanceof Integer ) this.integer((Integer) obj);
-            else if ( obj instanceof Short ) this.smallint((Short) obj);
-            else if ( obj instanceof Long ) this.bigint((Long) obj);
-            else if ( obj instanceof Float ) this.pfloat((Float) obj);
-            else if ( obj instanceof Double ) this.doublePrecison((Double) obj);
-            else if ( obj instanceof Number ) this.numeric( (BigDecimal) obj);
-            else if ( obj instanceof Character ) this.pchar((Character) obj);
-            else if ( obj instanceof String ) this.varchar((String) obj);
-            else if ( obj instanceof CharSequence ) this.varchar( String.valueOf( obj ));
-            else if ( obj instanceof Date ) this.timestamp((Date) obj);
-
-
-            else if( obj instanceof  Boolean[] ) this.array( (Boolean[]) obj );
-            else if ( obj instanceof Byte [] ) this.array((Byte[]) obj);
-            else if ( obj instanceof Integer[] ) this.array((Integer[]) obj);
-            else if ( obj instanceof Short []) this.array((Short []) obj);
-            else if ( obj instanceof Long[] ) this.array((Long []) obj);
-            else if ( obj instanceof Float[]) this.array((Float []) obj);
-            else if ( obj instanceof Double[] ) this.array((Double []) obj);
-            else if ( obj instanceof Number[] ) this.array( (Number []) obj);
-            else if ( obj instanceof Character[] ) this.array((Character []) obj);
-            else if ( obj instanceof String[] ) this.array((String []) obj);
-            else if ( obj instanceof CharSequence[] ) this.array( String.valueOf( obj ));
-            else if ( obj instanceof Date[] ) this.array((Date []) obj);
-            else if ( obj instanceof Object[] ) this.array((Object []) obj);
-            else this.other( obj );
+        for (Object obj : args) {
+            with(obj);
         }
     }
 
-    public PostgresSQLParameterManager bool(Boolean value ){
-        parrameters.add( new Pair<>( Types.BOOLEAN, value ) );
+    public PostgresSQLParameterManager with(Object obj) {
+        if (obj instanceof Boolean) this.withBoolean((Boolean) obj);
+        else if (obj instanceof Byte) this.withBit((Byte) obj);
+        else if (obj instanceof Integer) this.withInteger((Integer) obj);
+        else if (obj instanceof Short) this.withSmallint((Short) obj);
+        else if (obj instanceof Long) this.withBigint((Long) obj);
+        else if (obj instanceof Float) this.withFloat((Float) obj);
+        else if (obj instanceof Double) this.withDouble((Double) obj);
+        else if (obj instanceof Number) this.withNumeric((BigDecimal) obj);
+        else if (obj instanceof Character) this.withChar((Character) obj);
+        else if (obj instanceof String) this.withVarchar((String) obj);
+        else if (obj instanceof CharSequence) this.withVarchar(String.valueOf(obj));
+        else if (obj instanceof Date) this.withTimestamp((Date) obj);
+
+
+        else if (obj instanceof Boolean[]) this.withArray((Boolean[]) obj);
+        else if (obj instanceof Byte[]) this.withArray((Byte[]) obj);
+        else if (obj instanceof Integer[]) this.withArray((Integer[]) obj);
+        else if (obj instanceof Short[]) this.withArray((Short[]) obj);
+        else if (obj instanceof Long[]) this.withArray((Long[]) obj);
+        else if (obj instanceof Float[]) this.withArray((Float[]) obj);
+        else if (obj instanceof Double[]) this.withArray((Double[]) obj);
+        else if (obj instanceof Number[]) this.withArray((Number[]) obj);
+        else if (obj instanceof Character[]) this.withArray((Character[]) obj);
+        else if (obj instanceof String[]) this.withArray((String[]) obj);
+        else if (obj instanceof CharSequence[]) this.withArray(String.valueOf(obj));
+        else if (obj instanceof Date[]) this.withArray((Date[]) obj);
+        else if (obj instanceof Object[]) this.withArray((Object[]) obj);
+        else this.withOther(obj);
         return this;
     }
 
-    public PostgresSQLParameterManager bit(Byte value ){
-        parrameters.add( new Pair<>( Types.BIT, value ) );
+    public PostgresSQLParameterManager withBoolean(Boolean value ){
+        parameters.add( new Pair<>( Types.BOOLEAN, value ) );
         return this;
     }
 
-
-    public PostgresSQLParameterManager smallint(Short value ){
-        parrameters.add( new Pair<>( Types.SMALLINT, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager integer(Integer integer ){
-        parrameters.add( new Pair<>(Types.INTEGER, integer ) );
-        return this;
-    }
-
-
-    public PostgresSQLParameterManager bigint(Long value ){
-        parrameters.add( new Pair<>( Types.BIGINT, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager real(Float value ){
-        parrameters.add( new Pair<>( Types.REAL, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager pfloat(Float value ){
-        parrameters.add( new Pair<>( Types.FLOAT, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager doublePrecison(Double value ){
-        parrameters.add( new Pair<>( Types.DOUBLE, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager decimal( BigDecimal value ){
-        parrameters.add( new Pair<>( Types.DECIMAL, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager numeric( BigDecimal value  ){
-        parrameters.add( new Pair<>( Types.NUMERIC, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager pchar(Character value ){
-        parrameters.add( new Pair<>( Types.CHAR, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager varchar(String value ){
-        parrameters.add( new Pair<>( Types.VARCHAR, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager text(String value ){
-        parrameters.add( new Pair<>( Types.LONGVARCHAR, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager time(Date value ){
-        parrameters.add( new Pair<>( Types.TIME, calendarOf( value ) ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager time(Calendar value ){
-        parrameters.add( new Pair<>( Types.TIME, value ) );
+    public PostgresSQLParameterManager withBit(Byte value ){
+        parameters.add( new Pair<>( Types.BIT, value ) );
         return this;
     }
 
 
-    public PostgresSQLParameterManager date(Calendar value ){
-        parrameters.add( new Pair<>( Types.DATE, value ) );
+    public PostgresSQLParameterManager withSmallint(Short value ){
+        parameters.add( new Pair<>( Types.SMALLINT, value ) );
         return this;
     }
 
-    public PostgresSQLParameterManager date(Date value ){
-        parrameters.add( new Pair<>( Types.DATE, calendarOf( value ) ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager timestamp(Calendar value ){
-        parrameters.add( new Pair<>( Types.TIMESTAMP, value ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager timestamp(Date value ){
-        parrameters.add( new Pair<>( Types.TIMESTAMP, calendarOf( value ) ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager blob( InputStream doublePrecision ){
-        parrameters.add( new Pair<>( Types.BLOB, doublePrecision ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager nchar( Reader doublePrecision ){
-        parrameters.add( new Pair<>( Types.NCHAR, doublePrecision ) );
-        return this;
-    }
-
-    public PostgresSQLParameterManager clob( Reader doublePrecision ){
-        parrameters.add( new Pair<>( Types.CLOB, doublePrecision ) );
+    public PostgresSQLParameterManager withInteger(Integer integer ){
+        parameters.add( new Pair<>(Types.INTEGER, integer ) );
         return this;
     }
 
 
-    public PostgresSQLParameterManager nclob( Reader doublePrecision ){
-        parrameters.add( new Pair<>( Types.NCLOB, doublePrecision ) );
+    public PostgresSQLParameterManager withBigint(Long value ){
+        parameters.add( new Pair<>( Types.BIGINT, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withReal(Float value ){
+        parameters.add( new Pair<>( Types.REAL, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withFloat(Float value ){
+        parameters.add( new Pair<>( Types.FLOAT, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withDouble(Double value ){
+        parameters.add( new Pair<>( Types.DOUBLE, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withDecimal(BigDecimal value ){
+        parameters.add( new Pair<>( Types.DECIMAL, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withNumeric(BigDecimal value  ){
+        parameters.add( new Pair<>( Types.NUMERIC, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withChar(Character value ){
+        parameters.add( new Pair<>( Types.CHAR, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withVarchar(String value ){
+        parameters.add( new Pair<>( Types.VARCHAR, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withText(String value ){
+        parameters.add( new Pair<>( Types.LONGVARCHAR, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withTime(Date value ){
+        parameters.add( new Pair<>( Types.TIME, calendarOf( value ) ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withTime(Calendar value ){
+        parameters.add( new Pair<>( Types.TIME, value ) );
+        return this;
+    }
+
+
+    public PostgresSQLParameterManager withDate(Calendar value ){
+        parameters.add( new Pair<>( Types.DATE, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withDate(Date value ){
+        parameters.add( new Pair<>( Types.DATE, calendarOf( value ) ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withTimestamp(Calendar value ){
+        parameters.add( new Pair<>( Types.TIMESTAMP, value ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withTimestamp(Date value ){
+        parameters.add( new Pair<>( Types.TIMESTAMP, calendarOf( value ) ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withBlob(InputStream doublePrecision ){
+        parameters.add( new Pair<>( Types.BLOB, doublePrecision ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withNChar(Reader doublePrecision ){
+        parameters.add( new Pair<>( Types.NCHAR, doublePrecision ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withClob(Reader doublePrecision ){
+        parameters.add( new Pair<>( Types.CLOB, doublePrecision ) );
+        return this;
+    }
+
+
+    public PostgresSQLParameterManager withNClob(Reader doublePrecision ){
+        parameters.add( new Pair<>( Types.NCLOB, doublePrecision ) );
         return this;
     }
 
 
 
 
-    public PostgresSQLParameterManager other(Object doublePrecision ){
-        parrameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+    public PostgresSQLParameterManager withOther(Object doublePrecision ){
+        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Boolean ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Boolean ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Byte ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Byte ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Short ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Short ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Integer ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Integer ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Float ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Float ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Double ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Double ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Number ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Number ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Character ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Character ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (CharSequence ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(CharSequence ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (String ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(String ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Date ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Date ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Calendar ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Calendar ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-    public PostgresSQLParameterManager array (Object ... args ){
-        parrameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLParameterManager withArray(Object ... args ){
+        parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
     }
 
-
-    protected void registerTypes(){
-
-        this.setters.put(Types.NULL, (statement, index, type, value) -> { statement.setNull( index,  type ); });
-        this.setters.put(Types.OTHER, (statement, index, type, value) -> {  statement.setObject( index,  value); });
-
-        this.setters.put(Types.BOOLEAN, (statement, index, type, value) -> { statement.setBoolean( index, (Boolean) value); });
-        this.setters.put(Types.BIT, (statement, index, type, value) -> { statement.setByte( index, (Byte) value); });
-        this.setters.put(Types.TINYINT, (statement, index, type, value) -> { statement.setShort( index, (Short) value); });
-        this.setters.put(Types.SMALLINT, (statement, index, type, value) -> { statement.setShort( index, (Short) value); });
-        this.setters.put(Types.INTEGER, (statement, index, type, value) -> { statement.setInt( index, (Integer) value); });
-        this.setters.put(Types.BIGINT, (statement, index, type, value) -> { statement.setLong( index, (Long) value); });
-        this.setters.put(Types.REAL, (statement, index, type, value) -> { statement.setFloat( index, (Float) value); });
-        this.setters.put(Types.FLOAT, (statement, index, type, value) -> { statement.setFloat( index, (Float) value); });
-        this.setters.put(Types.DOUBLE, (statement, index, type, value) -> {  statement.setDouble( index, (Double) value); });
-        this.setters.put(Types.DECIMAL, (statement, index, type, value) -> { statement.setBigDecimal( index, (BigDecimal) value); });
-        this.setters.put(Types.NUMERIC, (statement, index, type, value) -> { statement.setBigDecimal( index, (BigDecimal) value); });
-        this.setters.put(Types.CHAR, (statement, index, type, value) -> { statement.setString( index, (String) value); });
-        this.setters.put(Types.VARCHAR, (statement, index, type, value) -> { statement.setString( index, (String) value); });
-        this.setters.put(Types.LONGNVARCHAR, (statement, index, type, value) -> {  statement.setNString( index, (String) value); });
-        this.setters.put(Types.BLOB, (statement, index, type, value) -> {  statement.setBlob( index, (InputStream) value); });
-        this.setters.put(Types.NCHAR, (statement, index, type, value) -> {  statement.setCharacterStream( index, (Reader) value); });
-        this.setters.put(Types.CLOB, (statement, index, type, value) -> {  statement.setClob( index, (Reader) value); });
-        this.setters.put(Types.NCLOB, (statement, index, type, value) -> {  statement.setNClob( index, (Reader) value); });
-
-        this.setters.put(Types.TIME, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setTime( index, getTimeOf( calendar ), calendar );
-        });
-
-        this.setters.put(Types.DATE, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setDate( index, getDateOf( calendar ), calendar );
-        });
-
-        this.setters.put(Types.TIMESTAMP, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setTimestamp( index, getTimeStampOf( calendar ), calendar );
-        });
-    }
-
-    private java.sql.Time getTimeOf( Calendar value ) {
+    private static java.sql.Time getTimeOf(Calendar value) {
         return null;
     }
 
-    private java.sql.Date getDateOf( Calendar value ) {
+    private static java.sql.Date getDateOf(Calendar value) {
         return null;
     }
 
-    private Timestamp getTimeStampOf( Calendar value ) {
+    private static Timestamp getTimeStampOf(Calendar value) {
         return null;
     }
 

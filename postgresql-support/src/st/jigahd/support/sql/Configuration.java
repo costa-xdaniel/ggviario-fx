@@ -7,7 +7,6 @@ public class Configuration {
     private String user;
     private String database;
     private String password;
-    private boolean autoCommit;
 
     public Configuration(String host, int port, String user, String database, String password) {
         this.host = host;
@@ -35,14 +34,5 @@ public class Configuration {
 
     public String getPassword() {
         return password;
-    }
-
-    public Configuration setAutoCommit(boolean autoCommit) {
-        this.autoCommit = autoCommit;
-        return this;
-    }
-
-    public boolean isAutoCommit() {
-        return autoCommit;
     }
 }
