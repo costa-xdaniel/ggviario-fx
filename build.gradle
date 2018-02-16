@@ -1,0 +1,14 @@
+repositories {
+    jcenter()
+    maven {
+        url 'http://nexus.gluonhq.com/nexus/content/repositories/releases/'
+    }
+}
+
+dependencies {
+    compile 'com.gluonhq:charm:2.0.0'
+
+    androidRuntime 'com.gluonhq:charm-android:2.0.0'
+    iosRuntime 'com.gluonhq:charm-ios:2.0.0'
+    desktopRuntime 'com.gluonhq:charm-desktop:2.0.0'
+}
