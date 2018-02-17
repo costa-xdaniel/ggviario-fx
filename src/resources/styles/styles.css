@@ -70,3 +70,15 @@
     -fx-border-radius: 50px;
     -fx-border-width: 4px;
 }
+
+
+.card-primary-color {
+    -fx-background-color: #009688;
+    -fx-effect: dropshadow(gaussian, #009688, 5, 0, 0,1);
+    -fx-padding: 16 16 16 16;
+}
+
+.card-primary-color Label {
+    -fx-text-fill: #FFFFFF;
+    -fx-alignment: center;
+}
