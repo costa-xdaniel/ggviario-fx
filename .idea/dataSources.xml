@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="saoferias@localhost" uuid="4cb95134-334f-4384-8a56-7c6716e5d5c2">
+    <data-source source="LOCAL" name="ggviario@localhost" uuid="58dadca3-cdc7-4926-b92c-d9574175c904">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/saoferias</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/ggviario</jdbc-url>
     </data-source>
   </component>
 </project>

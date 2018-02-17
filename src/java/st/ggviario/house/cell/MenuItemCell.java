@@ -17,6 +17,7 @@ public class MenuItemCell extends ListCell<Menu> {
 
     public MenuItemCell(HomeController homeController) {
         this.homeController = homeController;
+
     }
 
 

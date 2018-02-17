@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="saoferias@localhost" uuid="4cb95134-334f-4384-8a56-7c6716e5d5c2">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-      <introspection-schemas>saoferias:extractor,filter,information_schema,lib,logsession,pg_catalog,pg_temp_3,pg_temp_4,pg_temp_6,pg_toast,pg_toast_temp_3,pg_toast_temp_4,pg_toast_temp_6,public,report,rule,saoferias</introspection-schemas>
+    <data-source name="ggviario@localhost" uuid="58dadca3-cdc7-4926-b92c-d9574175c904">
+      <database-info product="PostgreSQL" version="10.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.1">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>ggviario</user-name>
+      <introspection-schemas>ggviario:ggviario</introspection-schemas>
     </data-source>
   </component>
 </project>

@@ -59,3 +59,14 @@
     -fx-pref-height: 150;
     -fx-pref-width: 300;
 }
+
+.floating-action-button {
+    -fx-background-color: #FF5722 ;
+    -fx-pref-height: 50px;
+    -fx-pref-widtht: 50px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 50px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 50px;
+    -fx-border-width: 4px;
+}
