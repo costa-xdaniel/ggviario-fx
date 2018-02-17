@@ -1,0 +1,41 @@
+/*Tool bar and its components*/
+.jfx-toolbar{
+    -fx-background-color: #5077ff;
+    -fx-min-height:40;
+}
+.toolbar-label{
+    -fx-background-color: transparent;
+    -fx-font-size: 20px;
+    -fx-padding: 5 0 5 0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.jfx-hamburger{
+    -fx-spacing: 4;
+    -fx-cursor: hand;
+    -fx-padding: 25px;
+}
+
+.jfx-hamburger StackPane{
+    -fx-pref-width: 35px;
+    -fx-pref-height: 4px;
+    -fx-background-color : #ffffff;
+    -fx-background-radius :3px;
+}
+
+
+.card-title {
+    -fx-font-size: 20px;
+    -fx-padding: 5 0 5 0;
+}
+
+
+
+.card-title .text {
+    -fx-fill: -fx-text-title-color;
+}
+
+.anchor-header {
+    -fx-background-image:url(../images/background_navegation_drawable.jpg);
+}
