@@ -8,9 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.Home">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.HomeController">
    <children>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" prefHeight="400.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0" />
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
          </top>
@@ -32,13 +31,14 @@
                </center>
                <styleClass>
                   <String fx:value="jfx-toolbar" />
-                  <String fx:value="material-background-primary"/>
+                  <String fx:value="material-background-primary" />
                </styleClass>
             </JFXToolbar>
          </top>
          <center>
-            <AnchorPane fx:id="contentMenu" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="contentArea" prefHeight="416.0" prefWidth="771.0" style="-fx-background-color: #234;" />
          </center>
       </BorderPane>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" prefHeight="400.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0" />
    </children>
 </AnchorPane>

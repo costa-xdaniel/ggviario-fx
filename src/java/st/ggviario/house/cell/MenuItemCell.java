@@ -4,45 +4,50 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import st.ggviario.house.controller.MenuLeftHeader;
-import st.ggviario.house.model.MenuItem;
+import st.ggviario.house.controller.DrawerHeaderController;
+import st.ggviario.house.controller.HomeController;
+import st.ggviario.house.model.DrawerItem;
+import st.ggviario.house.model.Menu;
 
 import java.io.IOException;
 
-public class MenuItemCell extends ListCell<MenuItem> {
+public class MenuItemCell extends ListCell<Menu> {
 
-    private MenuLeftHeader controller;
-    private Node root;
+    private final HomeController homeController;
 
-    public MenuItemCell() {
-
-        try {
-            FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/menuleft_header.fxml") );
-            this.root = loader.load();
-            this.controller = loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public MenuItemCell(HomeController homeController) {
+        this.homeController = homeController;
     }
 
 
     @Override
-    protected void updateItem(MenuItem item, boolean empty ) {
-        super.updateItem( item, empty );
-        setText(null);
-        MenuItem lastItem;
+    protected void updateItem(Menu item, boolean empty ) {
+        try {
+            super.updateItem(item, empty);
+            setText(null);
 
-        lastItem = item;
+            if( item != null ){
+                FXMLLoader loader = new FXMLLoader(item.getFXMLUrl());
+                Node root = loader.load();
+                DrawerItem controller = loader.getController();
 
-        this.controller.setHeader( lastItem );
-        setGraphic( this.root );
-        double padding = -1;
-        setPadding( new Insets( padding, padding, padding, padding ));
+                controller.setHomeController(  this.homeController );
+                controller.setMenu( item );
+                setGraphic(root);
+            }
 
-        if (empty) {
-            setGraphic(null);
-        } else { }
+
+
+            double padding = -1;
+            setPadding(new Insets(padding, padding, padding, padding));
+
+            if (empty) {
+                setGraphic(null);
+            } else {
+            }
+        }catch ( Exception ex ){
+            ex.printStackTrace();
+        }
     }
 
 }

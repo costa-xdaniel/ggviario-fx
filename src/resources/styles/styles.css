@@ -55,5 +55,7 @@
 
 .anchor-header {
     -fx-background-image:url(../images/backgroud.png);
-    -fx-background-size: cover
+    -fx-background-size: cover;
+    -fx-pref-height: 150;
+    -fx-pref-width: 300;
 }

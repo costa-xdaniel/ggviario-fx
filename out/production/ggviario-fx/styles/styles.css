@@ -5,6 +5,9 @@
 .material-background-light{ -fx-background-color: #B2DFDB; }
 .material-background-accent{ -fx-background-color: #FF5722; }
 
+.material-focus-accent { }
+.material-unfocus-primary { }
+
 .material-text{ -fx-text-fill: #212121; }
 .material-text-secondary{ -fx-text-fill: #757575; }
 .material-text-primary{ -fx-text-fill: #FFFFFF; }
@@ -52,5 +55,7 @@
 
 .anchor-header {
     -fx-background-image:url(../images/backgroud.png);
-    -fx-background-size: cover
+    -fx-background-size: cover;
+    -fx-pref-height: 150;
+    -fx-pref-width: 300;
 }
