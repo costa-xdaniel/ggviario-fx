@@ -72,10 +72,22 @@
 }
 
 
-.card-primary-color {
+.row-normal{
+    -fx-pref-height: 40px;
+    -fx-grid-lines-visible: true;
+    -fx-text-alignment: center;
+}
+
+.row-normal TableCell{
+    -fx-background-color: #846;
+}
+
+.card-primary-color{
     -fx-background-color: #009688;
     -fx-effect: dropshadow(gaussian, #009688, 5, 0, 0,1);
     -fx-padding: 16 16 16 16;
+    -fx-end-margin: 0;
+    -fx-start-margin: 0;
 }
 
 .card-primary-color Label {

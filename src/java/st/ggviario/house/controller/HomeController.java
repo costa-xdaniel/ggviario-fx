@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 
 import javafx.animation.Transition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +25,9 @@ import java.util.ResourceBundle;
 
 
 public class HomeController implements Initializable {
+
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private AnchorPane contentArea;
@@ -64,24 +69,24 @@ public class HomeController implements Initializable {
     private void processHamburger(HamburgerBackArrowBasicTransition basicTransition) {
         basicTransition.setRate( basicTransition.getRate() * -1 );
         basicTransition.play();
+        basicTransition.setOnFinished(actionEvent -> {
+            if(!this.show) {
+                this.root.getChildren().remove( this.drawer );
+            }
+        });
 
 
         if( drawer.isShown() ){
             drawer.close();
             this.show = false;
+
         } else {
             drawer.open();
+            if( !this.root.getChildren().contains( this.drawer ))
+                this.root.getChildren().add( this.drawer );
+
             this.show = true;
         }
-    }
-
-
-    public void setLastContentPage(Node lastContentPage) {
-        this.lastContentPage = lastContentPage;
-    }
-
-    public Node getLastContentPage() {
-        return this.lastContentPage;
     }
 
     public void setDocumentRoot( Node documentRoot ) {

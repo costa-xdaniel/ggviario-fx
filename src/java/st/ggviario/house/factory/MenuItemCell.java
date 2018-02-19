@@ -1,15 +1,12 @@
-package st.ggviario.house.cell;
+package st.ggviario.house.factory;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import st.ggviario.house.controller.DrawerHeaderController;
 import st.ggviario.house.controller.HomeController;
 import st.ggviario.house.model.DrawerItem;
 import st.ggviario.house.model.Menu;
-
-import java.io.IOException;
 
 public class MenuItemCell extends ListCell<Menu> {
 

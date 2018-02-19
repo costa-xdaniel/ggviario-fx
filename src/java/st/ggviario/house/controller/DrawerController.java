@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import st.ggviario.house.cell.MenuItemCell;
+import st.ggviario.house.factory.MenuItemCell;
 import st.ggviario.house.model.DrawerHeader;
 import st.ggviario.house.model.Menu;
 import st.ggviario.house.model.MenuItem;
