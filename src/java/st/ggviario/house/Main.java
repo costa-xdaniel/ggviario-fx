@@ -5,8 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.net.URL;
+import st.ggviario.house.singleton.AuthSingleton;
 
 public class Main extends Application {
 
@@ -16,9 +15,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
+
+        //From preview layout
+        AuthSingleton.login( null, null );
+
         FXMLLoader loader = new FXMLLoader();
-
-
         loader.setLocation( getClass().getResource( "/fxml/home.fxml" ) );
         Parent parent  = loader.load();
         Scene scene = new Scene( parent );

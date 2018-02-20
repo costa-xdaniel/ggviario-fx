@@ -19,7 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import st.ggviario.house.dao.PostgresSQLSigliton;
+import st.ggviario.house.singleton.PostgresSOLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.ContentPage;
 import st.ggviario.house.model.Produto;
@@ -37,7 +37,7 @@ public class ProdutoController implements Initializable, ContentPage{
     private LinkedList<Categoria> listaCategoria;
 
     public ProdutoController(){
-        this.postgresSQL = new PostgresSQLSigliton().getPostgresSQL();
+        this.postgresSQL = new PostgresSOLSingleton().getPostgresSQL();
     }
 
 

@@ -1,19 +1,16 @@
 package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.converters.base.NodeConverter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import st.ggviario.house.dao.PostgresSQLSigliton;
+import st.ggviario.house.singleton.PostgresSOLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +32,7 @@ public class ProdutoControllerNew implements Initializable{
 
         this.listaCategoria.clear();
 
-        PostgresSQL postgresSQL = PostgresSQLSigliton.loadPostgresSQL();
+        PostgresSQL postgresSQL = PostgresSOLSingleton.loadPostgresSQL();
         Categoria.CategoriaBuilder builder = new Categoria.CategoriaBuilder();
         postgresSQL.query( "ggviario.funct_load_categoria" )
                 .withOther( null )
