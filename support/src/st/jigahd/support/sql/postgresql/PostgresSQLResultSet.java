@@ -2,6 +2,7 @@ package st.jigahd.support.sql.postgresql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,11 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
     private boolean recordCursorPint;
     private int currentPoint = 0;
     private PostgresSQLRow currentRow;
+
+
+    public interface OnResultQuery {
+        void accept(PostgresSQLRow row );
+    }
 
     public PostgresSQLResultSet(ResultSet resultSet) throws SQLException {
         super(resultSet);
@@ -31,14 +37,18 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
 
     public PostgresSQLRow nextRow()  {
         try {
-            this.resultSet.next();
+            if( this.resultSet == null ) return null;
+            if( ! this.resultSet.next() ) return null;
+
             if( recordCursorPint && currentPoint <= fethsRow.size() && currentPoint > 0 ){
                 this.currentRow = this.fethsRow.get( currentPoint++ -1);
                 return currentRow;
             }
             currentRow = new PostgresSQLRow( this.headerMap );
-            for( int i =0; i<this.numberColumns; i++  ){
-                currentRow.set( i, valueOf( i, headerMapReverse.get( i ), headerTypes.get( i ) ) );
+            for( int i =1; i<=this.numberColumns; i++  ){
+                String columnName = headerMapReverse.get( i );
+                int typeColumn = this.headerTypes.get( i );
+                currentRow.set( i-1, valueOf( i, columnName , typeColumn ) );
             }
 
             if( this.recordCursorPint ){
@@ -77,5 +87,21 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
 
     public PostgresSQLRow currentRow(){
         return this.currentRow;
+    }
+
+    public void setOnResultQuery( OnResultQuery onResultQuery ) {
+
+        PostgresSQLRow row;
+        while( (row = this.nextRow() )!= null ){
+            if( onResultQuery != null ) onResultQuery.accept( row );
+        }
+        Statement stm = null;
+        try {
+            stm = this.resultSet.getStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        PostgresSQL.closeResultSet( this.resultSet );
+        PostgresSQL.closeStatement( stm );
     }
 }

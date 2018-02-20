@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import st.ggviario.house.model.ContentPage;
+import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 
 import java.io.IOException;
@@ -64,7 +65,9 @@ public class HomeController implements Initializable {
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, ( e ) -> {
             processHamburger(basicTransition);
         });
+
     }
+
 
     private void processHamburger(HamburgerBackArrowBasicTransition basicTransition) {
         basicTransition.setRate( basicTransition.getRate() * -1 );
@@ -100,4 +103,5 @@ public class HomeController implements Initializable {
         this.documentRoot = documentRoot;
         this.processHamburger( this.basicTransition );
     }
+
 }

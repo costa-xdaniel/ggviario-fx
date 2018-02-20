@@ -1,12 +1,20 @@
 package st.ggviario.house.model;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+
+import java.util.UUID;
+
 public class Categoria {
 
-    private String categoriaId;
+    @Expose
+    private UUID categoriaId;
+
+    @Expose
     private String categoriaNome;
 
 
-    public String getCategoriaId() {
+    public UUID getCategoriaId() {
         return categoriaId;
     }
 
@@ -14,8 +22,13 @@ public class Categoria {
         return categoriaNome;
     }
 
+    @Override
+    public String toString() {
+        return this.categoriaNome;
+    }
+
     public static class CategoriaBuilder{
-        private String id;
+        private UUID id;
         private String nome;
 
         public Categoria build() {
@@ -26,7 +39,7 @@ public class Categoria {
         }
 
 
-        public CategoriaBuilder setId(String id) {
+        public CategoriaBuilder id(UUID id) {
             this.id = id;
             return this;
         }

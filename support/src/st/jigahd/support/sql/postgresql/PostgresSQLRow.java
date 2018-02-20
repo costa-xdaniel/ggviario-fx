@@ -1,14 +1,13 @@
 package st.jigahd.support.sql.postgresql;
 
+import com.google.gson.Gson;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PostgresSQLRow implements Serializable {
 
@@ -25,11 +24,18 @@ public class PostgresSQLRow implements Serializable {
     }
 
     private int indexOf( String name ){
-        return headerMap.get( name );
+        Integer i = headerMap.get( name );
+        return i == null? -1 : i;
     }
 
     public String toJson(){
-        return null;
+        Gson gson = new Gson();
+        Map<String, Object > map = new LinkedHashMap<>();
+        for( Map.Entry< String, Integer > item: this.headerMap.entrySet()){
+            map.put( item.getKey(), this.values[ item.getValue() ] );
+        }
+
+        return gson.toJson( map );
     }
 
     public Map< String, Object > toMap() {
@@ -40,8 +46,15 @@ public class PostgresSQLRow implements Serializable {
         return Collections.unmodifiableMap( map );
     }
 
+
+    @Override
+    public String toString() {
+        return this.toJson();
+    }
+
     public Object valueOf(String columnName ) {
-        return values[ this.indexOf( columnName ) ];
+        int index = this.indexOf( columnName );
+        return index < 0 || index > values.length? null : values[ index ];
     }
 
     public Boolean asBoolean( String columnName ){
@@ -82,6 +95,10 @@ public class PostgresSQLRow implements Serializable {
 
     public String asString( String columnName ){
         return (String) valueOf( columnName );
+    }
+
+    public UUID asUUID( String columnName ){
+        return (UUID) valueOf( columnName );
     }
 
     public InputStream asInputSteran( String columnName ){

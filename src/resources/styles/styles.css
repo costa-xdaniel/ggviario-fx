@@ -94,3 +94,14 @@
     -fx-text-fill: #FFFFFF;
     -fx-alignment: center;
 }
+
+
+.text-field {
+    -fx-pref-height: 40;
+    -fx-faint-focus-color:  #009688;
+    -fx-focus-color: #FF5722 /* here rgba (corrected) */
+}
+
+.combo-box {
+    -fx-pref-height: 40;
+}

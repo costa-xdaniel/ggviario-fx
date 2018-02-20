@@ -12,11 +12,11 @@ import java.util.Date;
 public class PostgresSQLParameterManager {
 
     public interface Setter {
-        void set ( CallableStatement statement, int index, Integer type, Object value ) throws SQLException;
+        void set(CallableStatement statement, int index, Integer type, Object value) throws SQLException;
     }
 
     public interface Getter {
-        Object get (ResultSet resultSet, String columnName, Integer type ) throws SQLException;
+        Object get(ResultSet resultSet, String columnName, Integer type) throws SQLException;
     }
 
     private static Map<Integer, Setter> setters;
@@ -333,6 +333,16 @@ public class PostgresSQLParameterManager {
         return this;
     }
 
+    public PostgresSQLParameterManager withJsonb( String doublePrecision ){
+        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withJson( String doublePrecision ){
+        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+        return this;
+    }
+
     public PostgresSQLParameterManager withArray(Boolean ... args ){
         parameters.add( new Pair<>(Types.ARRAY, args ) );
         return this;
@@ -398,7 +408,7 @@ public class PostgresSQLParameterManager {
         return this;
     }
 
-    private static java.sql.Time getTimeOf(Calendar value) {
+    private static Time getTimeOf(Calendar value) {
         return null;
     }
 

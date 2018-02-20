@@ -69,6 +69,7 @@ public class PostgresSQL {
     }
 
     public Connection getCurrentConnection() {
+        if( this.conn == null ) this.createConnection();
         return this.conn;
     }
 
@@ -80,8 +81,20 @@ public class PostgresSQL {
         return true;
     }
 
-    public static void closeStatement(CallableStatement statement) {
+    public static void closeStatement( Statement statement) {
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void closeResultSet(ResultSet resultSet) {
+        try {
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public enum ResourceType {
@@ -100,15 +113,5 @@ public class PostgresSQL {
         return conn;
     }
 
-
-    public static void main(String[] args) {
-        String url = PostgresSQL.PROSTRGES_URL_MASK
-                .replace("$host", "127.0.0.1" )
-                .replace( "$port", String.valueOf( 123 ) )
-                .replace( "$database", "saoferias")
-                ;
-
-        System.out.println( url );
-    }
 
 }
