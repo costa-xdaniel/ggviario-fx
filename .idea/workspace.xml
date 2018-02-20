@@ -2,33 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ColaboradorController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ContasController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/Dashboard.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DespesaController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/MovimentacoesController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/singleton/AuthSingleton.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/singleton/PostgresSOLSingleton.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/colaborador.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/contas.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/dasborad.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/despesas.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/producao.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/vendas.fxml" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/sigliton/PostgresSQLSigliton.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Apache License.txt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Black.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-BlackItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Bold.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-BoldItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Italic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Light.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-LightItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Medium.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-MediumItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Regular.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Thin.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-ThinItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Bold.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-BoldItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Italic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Light.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-LightItalic.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Regular.ttf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/drawer.fxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/drawer_header.fxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/home.fxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/menu_item.fxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/produto.fxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/images/backgroud.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/styles/styles.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/colors_teal_deep_orange.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.svg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.svg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.txt" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,100 +57,7 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ProdutoController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="115" column="26" lean-forward="true" selection-start-line="104" selection-start-column="12" selection-end-line="115" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="despesas.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/resources/fxml/despesas.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="215" lean-forward="true" selection-start-line="9" selection-start-column="215" selection-end-line="9" selection-end-column="215" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostgresSOLSingleton.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/PostgresSOLSingleton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DividaController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="59">
-              <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProducaoController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="25" lean-forward="true" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#315#316#0" expanded="true" />
-                <element signature="e#345#346#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="movimentacoes.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="221" lean-forward="true" selection-start-line="9" selection-start-column="221" selection-end-line="9" selection-end-column="221" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -171,11 +84,16 @@
     <option name="externalProjectsViewState">
       <projects_view />
     </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../javafx-exmples/JFoenix-master" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../javafx-exmples/JavaFXMaterialDesign-master" value="PREVIEW" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/resources/fxml/produto.fxml" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/cell/TableCell.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/factory/TableCellFactory.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/model/Produto.java" />
@@ -226,6 +144,7 @@
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
         <option value="$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -256,7 +175,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -265,68 +183,20 @@
               <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
               <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="house" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="house" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="fxml" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="styles" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/gson-2.2.2.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="extract.method.default.visibility" value="private" />
-    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="PostgreSQL" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -358,41 +228,12 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager">
     <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
+      <module />
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="st.ggviario.house.Main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="ggviario-fx" />
-      <envs />
-    </configuration>
-    <configuration name="ModalConfirmExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="st.ggviario.house.ModalConfirmExample" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="ggviario-fx" />
-      <envs />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -407,19 +248,6 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -440,6 +268,13 @@
       </option>
       <envs />
       <patterns />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -468,16 +303,12 @@
       <properties />
       <listeners />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-      <item index="1" class="java.lang.String" itemvalue="Application.ModalConfirmExample" />
-    </list>
-    <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-        <item index="1" class="java.lang.String" itemvalue="Application.ModalConfirmExample" />
-      </list>
-    </recent_temporary>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -498,6 +329,7 @@
       <workItem from="1518950730678" duration="30603000" />
       <workItem from="1519071869967" duration="16954000" />
       <workItem from="1519113472762" duration="6278000" />
+      <workItem from="1519133344525" duration="48000" />
     </task>
     <task id="LOCAL-00001" summary="project structure">
       <created>1518826823093</created>
@@ -545,35 +377,35 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81721000" />
+    <option name="totallyTimeSpent" value="81769000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="2" width="1282" height="997" extended-state="6" />
+    <frame x="0" y="0" width="1366" height="734" extended-state="6" />
     <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46224257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46224257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61212814" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28317153" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28700906" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928804" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61212814" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -619,13 +451,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/beans/binding/FloatExpression.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="127" lean-forward="true" selection-start-line="6" selection-start-column="127" selection-end-line="6" selection-end-column="127" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/beans/value/ObservableFloatValue.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -647,35 +472,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/home.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Produto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="54" column="38" lean-forward="false" selection-start-line="54" selection-start-column="38" selection-end-line="54" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="39" column="14" lean-forward="false" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/home.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Produto.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto.fxml" />
     <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/scene/control/TextField.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -683,14 +482,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MaterialColors.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MaterialColors.java" />
     <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLExecutor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -699,35 +491,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/ModalConfirmExample.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/factory/MenuItemCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/HomeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MenuItemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/factory/MenuItemCell.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/HomeController.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MenuItemController.java" />
     <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQL.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="83" column="32" lean-forward="false" selection-start-line="83" selection-start-column="32" selection-end-line="83" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -735,7 +505,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="629">
           <caret line="46" column="52" lean-forward="false" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -743,7 +512,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -751,208 +519,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="e#562#563#0" expanded="false" />
-            <element signature="e#606#607#0" expanded="false" />
-            <element signature="e#1410#1411#0" expanded="false" />
-            <element signature="e#1446#1447#0" expanded="false" />
-            <element signature="e#2655#2656#0" expanded="false" />
-            <element signature="e#2701#2702#0" expanded="false" />
-            <element signature="e#2752#2753#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto_new.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="23" column="42" lean-forward="false" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="55" column="52" lean-forward="false" selection-start-line="55" selection-start-column="52" selection-end-line="55" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#826#827#0" expanded="false" />
-            <element signature="e#862#863#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="604">
-          <caret line="46" column="20" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#288#289#0" expanded="false" />
-            <element signature="e#322#323#0" expanded="false" />
-            <element signature="e#362#363#0" expanded="false" />
-            <element signature="e#398#399#0" expanded="false" />
-            <element signature="e#444#445#0" expanded="false" />
-            <element signature="e#485#486#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/vendas.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="69" lean-forward="false" selection-start-line="25" selection-start-column="69" selection-end-line="25" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/producao.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="22" column="109" lean-forward="false" selection-start-line="22" selection-start-column="109" selection-end-line="22" selection-end-column="109" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ColaboradorController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/colaborador.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="219" lean-forward="true" selection-start-line="9" selection-start-column="219" selection-end-line="9" selection-end-column="219" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/Dashboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/dasborad.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="63" lean-forward="true" selection-start-line="10" selection-start-column="63" selection-end-line="10" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DespesaController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ContasController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/contas.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="214" lean-forward="true" selection-start-line="9" selection-start-column="214" selection-end-line="9" selection-end-column="214" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MovimentacoesController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="221" lean-forward="true" selection-start-line="9" selection-start-column="221" selection-end-line="9" selection-end-column="221" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto_new.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/vendas.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/producao.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ColaboradorController.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/colaborador.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/Dashboard.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/dasborad.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DespesaController.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ContasController.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/contas.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MovimentacoesController.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml" />
     <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/rt.jar!/java/sql/Types.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="141">
           <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/Oid.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="24" column="38" lean-forward="true" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/ParameterList.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="17" lean-forward="false" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="35" column="61" lean-forward="true" selection-start-line="35" selection-start-column="61" selection-end-line="35" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/Oid.class" />
+    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/ParameterList.class" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
     <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLParameterManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
           <caret line="28" column="28" lean-forward="false" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -964,127 +562,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/despesas.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/despesas.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/AuthSingleton.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/PostgresSOLSingleton.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css" />
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java" />
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="215" lean-forward="true" selection-start-line="9" selection-start-column="215" selection-end-line="9" selection-end-column="215" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="36" lean-forward="false" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-          <folding>
-            <element signature="e#265#266#0" expanded="true" />
-            <element signature="e#307#308#0" expanded="true" />
-            <element signature="e#345#346#0" expanded="true" />
-            <element signature="e#390#391#0" expanded="true" />
-            <element signature="e#431#432#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/AuthSingleton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#215#216#0" expanded="true" />
-            <element signature="e#256#257#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-            <element signature="e#343#344#0" expanded="true" />
-            <element signature="e#637#638#0" expanded="true" />
-            <element signature="e#678#679#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#315#316#0" expanded="true" />
-            <element signature="e#345#346#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/PostgresSOLSingleton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="115" column="26" lean-forward="true" selection-start-line="104" selection-start-column="12" selection-end-line="115" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
-          <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="200" lean-forward="false" selection-start-line="9" selection-start-column="200" selection-end-line="9" selection-end-column="200" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="25" lean-forward="true" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida_new.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2346">
-          <caret line="138" column="44" lean-forward="true" selection-start-line="138" selection-start-column="44" selection-end-line="138" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="272">
+          <caret line="17" column="5" lean-forward="false" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -1092,67 +585,9 @@
   </component>
   <component name="masterDetails">
     <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
+      <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>ggviario-fx</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>
