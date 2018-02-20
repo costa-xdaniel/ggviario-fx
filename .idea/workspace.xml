@@ -7,45 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/ggviario_fx_jar.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w/routine/funct_reg_compra_divida.fLUFfg.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w/routine/funct_reg_compra_divida.fLUFfg.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_after_update_amortizacao.i7eBqQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_after_update_amortizacao.i7eBqQ.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_intert_update_produto_stock.B70ygQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_intert_update_produto_stock.B70ygQ.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_itemcompra_after_update_amortizacao.GN7wWg.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_itemcompra_after_update_amortizacao.GN7wWg.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_conta.EK6hyw.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_conta.EK6hyw.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_itemcompra.LncMMw.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_itemcompra.LncMMw.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/movimento_insert.XTCw6w.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/movimento_insert.XTCw6w.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClientNewController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/cliente.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/cliente_new.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/colaborador.irJ6bQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/colaborador.irJ6bQ.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/information_schema.FNRwLQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/information_schema.FNRwLQ.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/lib.haIBAA.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/lib.haIBAA.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_catalog.0S1ZNQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_catalog.0S1ZNQ.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast.33HYYw.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast.33HYYw.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/public.abK9xQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/public.abK9xQ.meta" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/database/ggviario-18-02-20-2014-export.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ggviario-18-02-20-2014-export.sql" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
-      <change beforePath="$PROJECT_DIR$/src/resources/styles/styles.css" afterPath="$PROJECT_DIR$/src/resources/styles/styles.css" />
+      <change beforePath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -616,7 +581,7 @@
       <workItem from="1519071869967" duration="16954000" />
       <workItem from="1519113472762" duration="6278000" />
       <workItem from="1519133344525" duration="11374000" />
-      <workItem from="1519147098377" duration="3418000" />
+      <workItem from="1519147098377" duration="3523000" />
     </task>
     <task id="LOCAL-00001" summary="project structure">
       <created>1518826823093</created>
@@ -667,11 +632,18 @@
       <option name="project" value="LOCAL" />
       <updated>1519133399419</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Ola mundo">
+      <created>1519157645352</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1519157645352</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96513000" />
+    <option name="totallyTimeSpent" value="96618000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="734" extended-state="6" />
@@ -684,7 +656,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4827018" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51729816" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2900302" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
