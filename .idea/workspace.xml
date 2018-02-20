@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ggviario-fx:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/ggviario_fx_jar.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w/routine/funct_reg_compra_divida.fLUFfg.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w/routine/funct_reg_compra_divida.fLUFfg.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_after_update_amortizacao.i7eBqQ.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_after_update_amortizacao.i7eBqQ.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_intert_update_produto_stock.B70ygQ.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_compra_intert_update_produto_stock.B70ygQ.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_itemcompra_after_update_amortizacao.GN7wWg.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_itemcompra_after_update_amortizacao.GN7wWg.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_conta.EK6hyw.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_conta.EK6hyw.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_itemcompra.LncMMw.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/functg_movimento_after_insert_update_itemcompra.LncMMw.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/movimento_insert.XTCw6w.meta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_staging_/database/ggviario.KjOM4w/schema/rule._JY1AA/routine/movimento_insert.XTCw6w.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClientNewController.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/cliente.fxml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/cliente_new.fxml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/colaborador.irJ6bQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/colaborador.irJ6bQ.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/information_schema.FNRwLQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/information_schema.FNRwLQ.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/lib.haIBAA.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/lib.haIBAA.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_catalog.0S1ZNQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_catalog.0S1ZNQ.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast.33HYYw.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast.33HYYw.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/public.abK9xQ.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/public.abK9xQ.meta" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" afterPath="$PROJECT_DIR$/.idea/dataSources/58dadca3-cdc7-4926-b92c-d9574175c904/storage_v2/_src_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Apache License.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Black.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-BlackItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Bold.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-BoldItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Italic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Light.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-LightItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Medium.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-MediumItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Regular.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-Thin.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/Roboto-ThinItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Bold.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-BoldItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Italic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Light.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-LightItalic.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fonts/RobotoCondensed-Regular.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/drawer.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/drawer_header.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/home.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/menu_item.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/produto.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/images/backgroud.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/styles/styles.css" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/colors_teal_deep_orange.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.9.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.svg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.svg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.txt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
+      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
+      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
+      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
+      <change beforePath="$PROJECT_DIR$/src/resources/styles/styles.css" afterPath="$PROJECT_DIR$/src/resources/styles/styles.css" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,11 +64,163 @@
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ggviario: database" type="6d9b600a:PostgresImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ggviario: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="ggviario: schema" type="a16502c0:PostgresImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ggviario: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="ggviario: schema" type="a16502c0:PostgresImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="ggviario@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ggviario: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="ggviario: schema" type="a16502c0:PostgresImplModel$Schema" />
+        <item name="routines" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="cliente.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/resources/fxml/cliente.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="32" column="47" lean-forward="false" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DrawerController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="433">
+              <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DividaController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="353">
+              <caret line="42" column="27" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="42" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/58dadca3-cdc7-4926-b92c-d9574175c904/console.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="funct_reg_cliente@(uuid,smallint,smallint,smallint,varchar,varchar,varchar,varchar,varchar,varchar,varchar).sql" pinned="false" current-in-tab="false">
+        <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_cliente@(uuid,smallint,smallint,smallint,varchar,varchar,varchar,varchar,varchar,varchar,varchar).sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="96">
+              <caret line="39" column="15" lean-forward="true" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="48">
+              <caret line="3" column="52" lean-forward="false" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClienteController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="37" column="59" lean-forward="true" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DividaNewController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientNewController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClientNewController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="16" column="68" lean-forward="false" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cliente_new.fxml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/resources/fxml/cliente_new.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="800">
+              <caret line="71" column="33" lean-forward="true" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder">
+            <state />
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -75,7 +238,16 @@
       <find>controller</find>
       <find>= 2014;</find>
       <find>21</find>
+      <find>_itemcompra</find>
+      <find>itemcompra</find>
+      <find>Anchor</find>
+      <find>AnchorPane</find>
+      <find>fx:id</find>
     </findStrings>
+    <replaceStrings>
+      <replace>_compra</replace>
+      <replace>compra</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,27 +266,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/cell/TableCell.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/factory/TableCellFactory.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/model/Produto.java" />
-        <option value="$PROJECT_DIR$/src/resources/fxml/home.fxml" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/ModalConfirmExample.java" />
-        <option value="$PROJECT_DIR$/src/resources/styles/styles.css" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/Color.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/MaterialColors.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/dao/PostgresSQLFactory.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/HomeController.java" />
-        <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLExecutor.java" />
-        <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResult.java" />
-        <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResultSet.java" />
-        <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQL.java" />
-        <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLRow.java" />
-        <option value="$PROJECT_DIR$/src/resources/fxml/produto_new.fxml" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/dao/PostgresSQLSigliton.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" />
         <option value="$PROJECT_DIR$/src/resources/fxml/vendas.fxml" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java" />
         <option value="$PROJECT_DIR$/src/resources/fxml/producao.fxml" />
@@ -129,22 +280,43 @@
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ContasController.java" />
         <option value="$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/MovimentacoesController.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/sigliton/PostgresSQLSigliton.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/sigliton/PostgresSOLSingleton.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/58dadca3-cdc7-4926-b92c-d9574175c904/console.sql" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/ingleton/ColaboradorSingleton.java" />
         <option value="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLParameterManager.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/ingleton/PostgresSOLSingleton.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/singleton/ColaboradorSingleton.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/singleton/AuthSingleton.java" />
-        <option value="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
-        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/java/Tets.java" />
+        <option value="$PROJECT_DIR$/out/production/ggviario-fx/values/colors_teal_deep_orange.xml" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_itemcompra_after_update_amortizacao@().sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_intert_update_produto_stock@().sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_amortizacao@().sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_movimento_after_insert_update_itemcompra@().sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra@(uuid,uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/constant_init@().sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/compra_insert@(uuid,uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra_divida@(uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra_compra@(uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_movimento_amortizacao_itemcompra@(uuid,uuid,uuid,numeric,date,varchar).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/movimento_insert@(uuid,uuid,smallint,varchar,date,numeric,varchar,uuid,uuid,uuid,boolean,integer).sql" />
+        <option value="/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_movimento_after_insert_update_conta@().sql" />
         <option value="$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
         <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java" />
-        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
+        <option value="$PROJECT_DIR$/src/resources/fxml/cliente.fxml" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/CLienteController.java" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteNewController.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/58dadca3-cdc7-4926-b92c-d9574175c904/console.sql" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" />
+        <option value="$PROJECT_DIR$/src/resources/styles/styles.css" />
+        <option value="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClientNewController.java" />
+        <option value="$PROJECT_DIR$/src/resources/fxml/cliente_new.fxml" />
       </list>
     </option>
   </component>
@@ -157,7 +329,7 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="2" />
     <option name="y" value="2" />
-    <option name="width" value="566" />
+    <option name="width" value="679" />
     <option name="height" value="730" />
   </component>
   <component name="ProjectView">
@@ -175,7 +347,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -183,12 +357,97 @@
               <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
               <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="ggviario_fx_jar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="house" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="house" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="fxml" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ggviario-fx" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ggviario-fx" type="462c0819:PsiDirectoryNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="sql" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -196,11 +455,20 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="st.ggviario.house.cell" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/resources/fxml" />
@@ -208,12 +476,6 @@
       <recent name="$PROJECT_DIR$/src/resources/values" />
       <recent name="$PROJECT_DIR$/resources" />
       <recent name="$PROJECT_DIR$/src/st/ggviario/house" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="st.ggviario.house.cell" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -234,6 +496,25 @@
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="st.ggviario.house.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="st.ggviario.house.Main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="ggviario-fx" />
+      <envs />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -309,6 +590,11 @@
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -329,7 +615,8 @@
       <workItem from="1518950730678" duration="30603000" />
       <workItem from="1519071869967" duration="16954000" />
       <workItem from="1519113472762" duration="6278000" />
-      <workItem from="1519133344525" duration="48000" />
+      <workItem from="1519133344525" duration="11374000" />
+      <workItem from="1519147098377" duration="3418000" />
     </task>
     <task id="LOCAL-00001" summary="project structure">
       <created>1518826823093</created>
@@ -373,45 +660,52 @@
       <option name="project" value="LOCAL" />
       <updated>1519092057587</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Ola mundo">
+      <created>1519133399419</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1519133399419</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81769000" />
+    <option name="totallyTimeSpent" value="96513000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="734" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784185" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46224257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4827018" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51729816" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28700906" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928804" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2900302" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2326284" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.61212814" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784185" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -419,18 +713,19 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46224257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.461285" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28500825" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23300971" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28700906" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930514" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27416918" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -451,143 +746,458 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/beans/value/ObservableFloatValue.class">
+    <entry file="file://$PROJECT_DIR$/out/production/ggviario-fx/values/colors_teal_deep_orange.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="74" lean-forward="true" selection-start-line="6" selection-start-column="74" selection-end-line="6" selection-end-column="74" />
+        <state relative-caret-position="176">
+          <caret line="11" column="2" lean-forward="false" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/beans/value/ObservableValue.class">
+    <entry file="file://$PROJECT_DIR$/src/java/Tets.java" />
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="17" lean-forward="false" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+        <state relative-caret-position="128">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/beans/value/ObservableNumberValue.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="74" lean-forward="true" selection-start-line="6" selection-start-column="74" selection-end-line="6" selection-end-column="74" />
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.compra">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/home.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Produto.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto.fxml" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar!/javafx/scene/control/TextField.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.itemcompra">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MaterialColors.java" />
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLExecutor.java">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/58dadca3-cdc7-4926-b92c-d9574175c904/console_1.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="29" column="34" lean-forward="false" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/ModalConfirmExample.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/factory/MenuItemCell.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/HomeController.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MenuItemController.java" />
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQL.java">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra@(uuid,uuid,date,jsonb).sql" />
+    <entry file="das://src:table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.compra">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="83" column="32" lean-forward="false" selection-start-line="83" selection-start-column="32" selection-end-line="83" selection-end-column="32" />
+        <state relative-caret-position="327">
+          <caret line="33" column="2" lean-forward="false" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResultSet.java">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_itemcompra_after_update_amortizacao@().sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="46" column="52" lean-forward="false" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
+        <state relative-caret-position="0">
+          <caret line="0" column="8" lean-forward="true" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResult.java">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_feito@().sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLRow.java">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_itemcompra_after_update_feito@().sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        <state relative-caret-position="352">
+          <caret line="22" column="29" lean-forward="true" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto_new.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoControllerNew.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/vendas.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/producao.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ColaboradorController.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/colaborador.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/Dashboard.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/dasborad.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DespesaController.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ContasController.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/contas.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/MovimentacoesController.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/movimentacoes.fxml" />
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/rt.jar!/java/sql/Types.class">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_feito@().sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/Oid.class" />
-    <entry file="jar://$PROJECT_DIR$/libs/postgresql-42.2.1.jar!/org/postgresql/core/ParameterList.class" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
-    <entry file="file://$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLParameterManager.java">
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_feito@().sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="28" column="28" lean-forward="false" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_feito@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" column="22" lean-forward="true" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_intert_update_produto_stock@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_feito@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" column="22" lean-forward="true" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_compra_after_update_amortizacao@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_movimento_after_insert_update_itemcompra@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/get_tipocompra@(smallint).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/compra_insert@(uuid,uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql" />
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra_divida@(uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="27" lean-forward="false" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra@(uuid,uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date,date).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-240">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_compra_compra@(uuid,uuid,uuid,uuid,numeric,numeric,numeric,numeric,numeric,date).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="28" column="16" lean-forward="false" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_movimento_after_insert_update_conta@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://trigger:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.movimento.tg_movimento_after_insert_update_movimento_devolucao">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://trigger:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.movimento.tg_movimento_after_insert_update_conta">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" column="15" lean-forward="false" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/movimento_insert@(uuid,uuid,smallint,varchar,date,numeric,varchar,uuid,uuid,uuid,boolean,integer).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" column="19" lean-forward="false" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_movimento_amortizacao_itemcompra@(uuid,uuid,uuid,numeric,date,varchar).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/functg_movimento_after_insert_update_movimento_devolucao@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/rule/routine/constant_init@().sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.movimento">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.distrito">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.categoria">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/produto.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-openjdk/javafx-src.zip!/com/sun/javafx/tk/quantum/GlassViewEventHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="437" column="69" lean-forward="false" selection-start-line="437" selection-start-column="69" selection-end-line="437" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida_new.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="27" column="36" lean-forward="true" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="29" column="99" lean-forward="true" selection-start-line="29" selection-start-column="99" selection-end-line="29" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/jfoenix-8.0.1.jar!/com/jfoenix/skins/JFXDatePickerSkin.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="92" column="99" lean-forward="true" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.unidade">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.tipocompra">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/ggviario.ggviario.sexo">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbSrc:///b192961a/58dadca3-cdc7-4926-b92c-d9574175c904/database/ggviario/schema/ggviario/routine/funct_reg_cliente@(uuid,smallint,smallint,smallint,varchar,varchar,varchar,varchar,varchar,varchar,varchar).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="39" column="15" lean-forward="true" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/cliente.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="32" column="47" lean-forward="false" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="42" column="27" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="42" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="37" column="59" lean-forward="true" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClientNewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="16" column="68" lean-forward="false" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="3" column="52" lean-forward="false" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/58dadca3-cdc7-4926-b92c-d9574175c904/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="32" lean-forward="false" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="32" />
+          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/despesas.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/AuthSingleton.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/Main.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/singleton/PostgresSOLSingleton.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaController.java" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/resources/styles/styles.css" />
-    <entry file="file://$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProducaoController.java" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/src/resources/fxml/cliente_new.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="17" column="5" lean-forward="false" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        <state relative-caret-position="800">
+          <caret line="71" column="33" lean-forward="true" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
       </provider>
     </entry>
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>ggviario-fx:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>ggviario-fx</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

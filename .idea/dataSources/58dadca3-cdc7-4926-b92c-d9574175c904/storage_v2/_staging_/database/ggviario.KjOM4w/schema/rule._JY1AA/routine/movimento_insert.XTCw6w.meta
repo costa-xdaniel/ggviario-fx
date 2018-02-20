@@ -1,0 +1,2 @@
+#n:movimento_insert
+#i:(uuid,uuid,smallint,varchar,date,numeric,varchar,uuid,uuid,uuid,boolean,integer)
