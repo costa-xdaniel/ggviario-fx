@@ -2,8 +2,6 @@ package st.ggviario.house.model;
 
 import st.jigahd.support.sql.postgresql.PostgresSQLRow;
 
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -214,14 +212,12 @@ public class Cliente {
         }
 
         public ClienteBuilder load(PostgresSQLRow row) {
-            Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
 
             this.id = ( row.asUUID("cliente_id" ) );
             this.nome = ( row.asString( "cliente_nome" ) );
             this.apelido = ( row.asString( "cliente_apelido" ) );
             this.telefone = (row.asString( "cliente_telefone" ) );
             this.telemovel = (row.asString( "cliente_telemovel" ) );
-            this.distrito = ( distritoBuilder.load( row ).build() );
             this.morada  =( row.asString( "cliente_morada" ) );
             this.sexo = ( Sexo.from( row.asShort( "cliente_sexo" ) ) );
             this.mail = ( row.asString( "cliente_mail" ) );

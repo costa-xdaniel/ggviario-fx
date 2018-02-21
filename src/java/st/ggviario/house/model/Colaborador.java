@@ -1,5 +1,8 @@
 package st.ggviario.house.model;
 
+import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+
+import java.util.Map;
 import java.util.UUID;
 
 public class Colaborador {
@@ -46,6 +49,17 @@ public class Colaborador {
 
         public ColaboradorBuilder apelido(String apelido) {
             this.apelido = apelido;
+            return this;
+        }
+
+        public ColaboradorBuilder load(PostgresSQLRow row ){
+            return load( row.toMap() );
+        }
+
+        public ColaboradorBuilder load(Map<String, Object > map ){
+            this.id = (UUID) map.get( "colaborador_id" );
+            this.nome = (String) map.get( "colaborador_nome" );
+            this.apelido = (String) map.get( "colaborador_apelido" );
             return this;
         }
     }

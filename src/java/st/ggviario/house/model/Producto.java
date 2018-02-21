@@ -1,5 +1,7 @@
 package st.ggviario.house.model;
 
+import java.util.Map;
+
 public class Producto {
 
     private String produtoId;
@@ -88,7 +90,7 @@ public class Producto {
             return produto;
         }
 
-        public ProdutoBuilder setId(String id) {
+        public ProdutoBuilder id(String id) {
             this.id = id;
             return this;
         }
@@ -108,18 +110,18 @@ public class Producto {
             return this;
         }
 
-        public ProdutoBuilder setValor(Double valor) {
+        public ProdutoBuilder valor(Double valor) {
             this.valor = valor;
             return this;
         }
 
-        public ProdutoBuilder setStock(Double stock) {
+        public ProdutoBuilder stock(Double stock) {
             this.stock = stock;
             return this;
         }
 
 
-        public ProdutoBuilder setProducao(Double producao) {
+        public ProdutoBuilder producao(Double producao) {
             this.producao = producao;
             return this;
         }
@@ -129,8 +131,16 @@ public class Producto {
             return this;
         }
 
-        public ProdutoBuilder setCompra(Double compra) {
+        public ProdutoBuilder compra(Double compra) {
             this.compra = compra;
+            return this;
+        }
+
+        public ProdutoBuilder load( Map<String, Object > map ) {
+            this.id = (String) map.get( "produto_id" );
+            this.nome = (String) map.get( "produto_nome" );
+            this.codigo = (String) map.get( "produto_nome" );
+            this.stock = (Double) map.get( "produto_stock" );
             return this;
         }
     }
