@@ -1,5 +1,10 @@
 package st.ggviario.house.model;
 
+import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class Cliente {
@@ -11,10 +16,18 @@ public class Cliente {
     private String clienteDocumentoNumero;
     private String clienteNome;
     private String clienteApelido;
-    private String clienteeTelefone;
+    private String clienteTelefone;
     private String clienteMail;
     private String clienteMorada;
     private String clienteLocalTrabalho;
+
+    private Double clienteMonatenteCompra;
+    private Double clienteMontanteDivida;
+    private Double clienteMontanteTotal;
+    private Double clienteMontantePago;
+    private Double clienteMontantePendente;
+    private String clienteTelemovel;
+    private Date clienteDataNascimento;
 
 
     public UUID getClienteId() {
@@ -45,8 +58,8 @@ public class Cliente {
         return clienteApelido;
     }
 
-    public String getClienteeTelefone() {
-        return clienteeTelefone;
+    public String getClienteTelefone() {
+        return clienteTelefone;
     }
 
     public String getClienteMail() {
@@ -61,6 +74,33 @@ public class Cliente {
         return clienteLocalTrabalho;
     }
 
+    public Double getClienteMonatenteCompra() {
+        return clienteMonatenteCompra;
+    }
+
+    public Double getClienteMontanteDivida() {
+        return clienteMontanteDivida;
+    }
+
+    public Double getClienteMontanteTotal() {
+        return clienteMontanteTotal;
+    }
+
+    public Double getClienteMontantePago() {
+        return clienteMontantePago;
+    }
+
+    public Double getClienteMontantePendente() {
+        return clienteMontantePendente;
+    }
+
+    public String getClienteTelemovel() {
+        return clienteTelemovel;
+    }
+
+    public Date getClienteDataNascimento() {
+        return clienteDataNascimento;
+    }
 
     public static class ClienteBuilder{
         private UUID id;
@@ -71,9 +111,18 @@ public class Cliente {
         private TipoDocumento tipoDocumento;
         private String documentoNumero;
         private String telefone;
+        private String telemovel;
         private String mail;
         private String morada;
         private String localTrabalho;
+
+
+        private Double montanteCompra;
+        private Double montanteDivida;
+        private Double montanteTotal;
+        private Double montantePago;
+        private Double montantePendente;
+        private Date dataNascimento;
 
         public Cliente build(){
             Cliente cliente = new Cliente();
@@ -84,10 +133,19 @@ public class Cliente {
             cliente.distrito = distrito;
             cliente.tipoDocumento = tipoDocumento;
             cliente.clienteDocumentoNumero = documentoNumero;
-            cliente.clienteeTelefone = telefone;
+            cliente.clienteTelefone = telefone;
+            cliente.clienteTelemovel = telemovel;
             cliente.clienteMail = mail;
             cliente.clienteMorada = morada;
             cliente.clienteLocalTrabalho = localTrabalho;
+            cliente.clienteDataNascimento = dataNascimento;
+
+            cliente.clienteMonatenteCompra = montanteCompra == null? 0.0 : montanteCompra;
+            cliente.clienteMontanteDivida = montanteDivida == null? 0.0 : montanteDivida;
+            cliente.clienteMontanteTotal = montanteTotal == null? 0.0 : montanteTotal;
+            cliente.clienteMontantePago = montantePago == null? 0.0 : montantePago;
+            cliente.clienteMontantePendente = montantePendente == null? 0.0 : montantePendente;
+
             return cliente;
         }
 
@@ -126,12 +184,17 @@ public class Cliente {
             return this;
         }
 
-        public ClienteBuilder setTelefone(String telefone) {
+        public ClienteBuilder telefone(String telefone) {
             this.telefone = telefone;
             return this;
         }
 
-        public ClienteBuilder setMail(String mail) {
+        private ClienteBuilder telemovel(String columnName) {
+            this.telemovel = telefone;
+            return this;
+        }
+
+        public ClienteBuilder mail(String mail) {
             this.mail = mail;
             return this;
         }
@@ -141,13 +204,40 @@ public class Cliente {
             return this;
         }
 
-        public ClienteBuilder setLocalTrabalho(String localTrabalho) {
+        public ClienteBuilder localTrabalho(String localTrabalho) {
             this.localTrabalho = localTrabalho;
             return this;
         }
 
-        public void setId(Cliente cliente, UUID cliente_id) {
+        public void id(Cliente cliente, UUID cliente_id) {
             cliente.clienteId = cliente_id;
+        }
+
+        public ClienteBuilder load(PostgresSQLRow row) {
+            Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
+
+            this.id = ( row.asUUID("cliente_id" ) );
+            this.nome = ( row.asString( "cliente_nome" ) );
+            this.apelido = ( row.asString( "cliente_apelido" ) );
+            this.telefone = (row.asString( "cliente_telefone" ) );
+            this.telemovel = (row.asString( "cliente_telemovel" ) );
+            this.distrito = ( distritoBuilder.load( row ).build() );
+            this.morada  =( row.asString( "cliente_morada" ) );
+            this.sexo = ( Sexo.from( row.asShort( "cliente_sexo" ) ) );
+            this.mail = ( row.asString( "cliente_mail" ) );
+            this.localTrabalho = ( row.asString( "cliente_localtrabalho" ) );
+
+            this.montanteCompra = row.asDouble( "cliente_monatntecompra" );
+            this.montanteDivida = row.asDouble( "cliente_montantedivida" );
+            this.montanteTotal = row.asDouble( "cliente_montantetotal" );
+            this.montantePago = row.asDouble( "cliente_montantepago" );
+            this.montantePendente = row.asDouble( "cliente_montantependente" );
+            return this;
+        }
+
+        public ClienteBuilder dataNascimento( Date dataNascimento) {
+            this.dataNascimento = dataNascimento;
+            return this;
         }
     }
 

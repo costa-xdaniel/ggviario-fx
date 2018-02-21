@@ -4,10 +4,10 @@ import st.jigahd.support.sql.postgresql.PostgresSQLRow;
 
 public class TipoDocumento {
 
-    private short tipoDocumentoId;
+    private Short tipoDocumentoId;
     private String tipoDocumentoDesc;
 
-    public short getTipoDocumentoId() {
+    public Short getTipoDocumentoId() {
         return tipoDocumentoId;
     }
 
@@ -21,7 +21,7 @@ public class TipoDocumento {
     }
 
     public static class TipoDocumentoBuilder{
-        private short id;
+        private Short id;
         private String desc;
 
         public TipoDocumento build(){
@@ -31,7 +31,7 @@ public class TipoDocumento {
             return tipoDocumento;
         }
 
-        public TipoDocumentoBuilder id( short id) {
+        public TipoDocumentoBuilder id( Short id) {
             this.id = id;
             return this;
         }

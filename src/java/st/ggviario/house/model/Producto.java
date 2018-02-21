@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-public class Product {
+public class Producto {
 
     private String produtoId;
     private String produtoCodigo;
@@ -74,8 +74,8 @@ public class Product {
             this.categoria = categoria;
         }
 
-        public Product build() {
-            Product produto = new Product();
+        public Producto build() {
+            Producto produto = new Producto();
             produto.produtoId = this.id;
             produto.produtoCodigo = codigo;
             produto.produtoNome = this.nome;

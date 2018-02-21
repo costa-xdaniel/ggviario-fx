@@ -6,6 +6,13 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
 import java.util.*;
 import java.util.Date;
 
@@ -47,18 +54,15 @@ public class PostgresSQLParameterManager {
         setters.put(Types.NCLOB, (statement, index, type, value) -> statement.setNClob( index, (Reader) value));
 
         setters.put(Types.TIME, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setTime( index, getTimeOf( calendar ), calendar );
+            statement.setTime( index, (Time) value);
         });
 
         setters.put(Types.DATE, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setDate( index, getDateOf( calendar ), calendar );
+            statement.setDate( index, (java.sql.Date) value);
         });
 
         setters.put(Types.TIMESTAMP, (statement, index, type, value) -> {
-            Calendar calendar = (Calendar) value;
-            statement.setTimestamp( index, getTimeStampOf( calendar ), calendar );
+            statement.setTimestamp( index, (Timestamp) value);
         });
         
         PostgresSQLParameterManager.setters = Collections.unmodifiableMap( setters );
@@ -274,33 +278,47 @@ public class PostgresSQLParameterManager {
     }
 
     public PostgresSQLParameterManager withTime(Date value ){
-        parameters.add( new Pair<>( Types.TIME, calendarOf( value ) ) );
+        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
         return this;
     }
 
     public PostgresSQLParameterManager withTime(Calendar value ){
-        parameters.add( new Pair<>( Types.TIME, value ) );
+        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
+        return this;
+    }
+    public PostgresSQLParameterManager withTime( LocalTime value ){
+        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
         return this;
     }
 
 
     public PostgresSQLParameterManager withDate(Calendar value ){
-        parameters.add( new Pair<>( Types.DATE, value ) );
+        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
         return this;
     }
 
     public PostgresSQLParameterManager withDate(Date value ){
-        parameters.add( new Pair<>( Types.DATE, calendarOf( value ) ) );
+        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withDate( LocalDate value ){
+        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
         return this;
     }
 
     public PostgresSQLParameterManager withTimestamp(Calendar value ){
-        parameters.add( new Pair<>( Types.TIMESTAMP, value ) );
+        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value ) ) );
         return this;
     }
 
     public PostgresSQLParameterManager withTimestamp(Date value ){
-        parameters.add( new Pair<>( Types.TIMESTAMP, calendarOf( value ) ) );
+        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value )  ) );
+        return this;
+    }
+
+    public PostgresSQLParameterManager withTimestamp(LocalDateTime value ){
+        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value )  ) );
         return this;
     }
 
@@ -420,10 +438,55 @@ public class PostgresSQLParameterManager {
         return null;
     }
 
-    private Calendar calendarOf(Date date ){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime( date );
-        return calendar;
+
+
+    private java.sql.Date sqlDateOf(Date date ){
+        if( date == null ) return null;
+        if( date instanceof java.sql.Date ) return (java.sql.Date) date;
+        return new java.sql.Date( date.getTime() );
+    }
+
+    private java.sql.Date sqlDateOf(Calendar date) {
+        if( date == null ) return null;
+        return new java.sql.Date( date.getTimeInMillis() );
+    }
+
+    private java.sql.Date sqlDateOf(LocalDate date ){
+        if( date == null ) return null;
+        return java.sql.Date.valueOf( date );
+    }
+
+    private java.sql.Time sqlTimeOf(Date time ){
+        if( time == null ) return null;
+        if( time instanceof Time ) return (Time) time;
+        return  new java.sql.Time(time.getTime());
+    }
+
+    private java.sql.Time sqlTimeOf(Calendar time) {
+        if( time == null ) return null;
+        return new java.sql.Time( time.getTimeInMillis() );
+    }
+
+    private java.sql.Time sqlTimeOf(LocalTime time ){
+        if( time == null ) return null;
+        return  java.sql.Time.valueOf( time );
+    }
+
+
+    private java.sql.Timestamp sqlTimestampOf(Date timestamp ){
+        if( timestamp == null ) return null;
+        if( timestamp instanceof java.sql.Timestamp ) return (Timestamp) timestamp;
+        return new java.sql.Timestamp( timestamp.getTime() );
+    }
+
+    private java.sql.Timestamp sqlTimestampOf(Calendar timestamp) {
+        if( timestamp == null ) return null;
+        return new java.sql.Timestamp( timestamp.getTimeInMillis() );
+    }
+
+    private java.sql.Timestamp sqlTimestampOf(LocalDateTime timestamp ){
+        if( timestamp == null ) return null;
+        return java.sql.Timestamp.valueOf( timestamp );
     }
 
 }

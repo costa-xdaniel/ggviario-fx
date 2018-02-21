@@ -95,13 +95,6 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
         while( (row = this.nextRow() )!= null ){
             if( onResultQuery != null ) onResultQuery.accept( row );
         }
-        Statement stm = null;
-        try {
-            stm = this.resultSet.getStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         PostgresSQL.closeResultSet( this.resultSet );
-        PostgresSQL.closeStatement( stm );
     }
 }

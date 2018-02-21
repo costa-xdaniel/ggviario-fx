@@ -4,10 +4,10 @@ import st.jigahd.support.sql.postgresql.PostgresSQLRow;
 
 public class Distrito {
 
-    private short distritoId;
+    private Short distritoId;
     private String distritoNome;
 
-    public short getDistritoId() {
+    public Short getDistritoId() {
         return distritoId;
     }
 
@@ -21,7 +21,7 @@ public class Distrito {
     }
 
     public static class DistritoBuilder{
-        private short id;
+        private Short id;
         private String nome;
 
         public Distrito build() {
@@ -31,7 +31,7 @@ public class Distrito {
             return distrito;
         }
 
-        public DistritoBuilder id( short id) {
+        public DistritoBuilder id( Short id) {
             this.id = id;
             return this;
         }

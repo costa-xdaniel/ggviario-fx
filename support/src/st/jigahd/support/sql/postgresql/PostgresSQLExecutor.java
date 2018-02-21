@@ -27,7 +27,6 @@ public abstract class PostgresSQLExecutor {
         String query = this.postgresSQL.getProcessedQuery();
         if( this.statement != null && this.postgresSQL.autoCloseStatement() ) PostgresSQL.closeStatement( statement );
         this.statement = con.prepareCall( query );
-        System.out.println( query );
         this.setParameters();
         this.statement.execute();
     }

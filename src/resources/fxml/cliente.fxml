@@ -16,13 +16,12 @@
              <children>
                 <TableView fx:id="tableViewCliente" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <columns>
-                      <TableColumn fx:id="columnClienteNome" prefWidth="75.0" text="Nome" />
-                      <TableColumn fx:id="columnClienteApelido" prefWidth="75.0" text="Apelido" />
+                      <TableColumn fx:id="columnClienteNome" prefWidth="75.0" text="Cliente" />
                       <TableColumn fx:id="columnClienteContacto" prefWidth="75.0" text="Contacto" />
-                      <TableColumn fx:id="columnClienteResidenci" prefWidth="75.0" text="Residencia" />
+                      <TableColumn fx:id="columnClienteMorada" prefWidth="75.0" text="Residencia" />
                       <TableColumn fx:id="columnClienteMontanteCompra" prefWidth="75.0" text="Compras" />
                       <TableColumn fx:id="columnClienteMontanteDivida" prefWidth="75.0" text="Dividas" />
-                      <TableColumn fx:id="columnCLienteMontanteTotal" prefWidth="75.0" text="Total" />
+                      <TableColumn fx:id="columnClienteMontanteTotal" prefWidth="75.0" text="Total" />
                       <TableColumn fx:id="columnClienteMontantePago" prefWidth="75.0" text="Pago" />
                       <TableColumn fx:id="columnClienteMontantePorPagar" prefWidth="75.0" text="Por pagar" />
                   </columns>

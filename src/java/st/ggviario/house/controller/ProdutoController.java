@@ -10,9 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -22,14 +19,13 @@ import javafx.scene.text.Text;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.ContentPage;
-import st.ggviario.house.model.Product;
+import st.ggviario.house.model.Producto;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
-import java.text.NumberFormat;
 import java.util.*;
 
-public class ProdutoController implements Initializable, ContentPage{
+public class ProdutoController extends TableController<Producto> implements Initializable, ContentPage{
 
     private HomeController homeController;
 
@@ -42,7 +38,7 @@ public class ProdutoController implements Initializable, ContentPage{
 
 
     @FXML
-    private TableView<Product> tableViewProduto;
+    private TableView<Producto> tableViewProduto;
 
     @FXML
     private StackPane stackPane;
@@ -51,39 +47,35 @@ public class ProdutoController implements Initializable, ContentPage{
     private JFXButton buttonNewProduto;
 
     @FXML
-    private TableColumn<Product, String> columnProdutoNome;
+    private TableColumn<Producto, String> columnProdutoNome;
 
     @FXML
-    private TableColumn<Product, String> columnProdutoCodigo;
+    private TableColumn<Producto, String> columnProdutoCodigo;
 
     @FXML
-    private TableColumn<Product, String> columnProdutoCategoria;
+    private TableColumn<Producto, String> columnProdutoCategoria;
 
     @FXML
-    private TableColumn<Product, Number> columnProdutoStock;
+    private TableColumn<Producto, Number> columnProdutoStock;
 
     @FXML
-    private TableColumn<Product, Number> columnProdutoCusto;
+    private TableColumn<Producto, Number> columnProdutoCusto;
 
     @FXML
-    private TableColumn<Product, Number> columnProdutoProducao;
+    private TableColumn<Producto, Number> columnProdutoProducao;
 
     @FXML
-    private TableColumn<Product, Number> columnProdutoVenda;
+    private TableColumn<Producto, Number> columnProdutoVenda;
 
     @FXML
-    private TableColumn<Product, Number> columnProdutoCompra;
+    private TableColumn<Producto, Number> columnProdutoCompra;
 
 
 
-    private List<Product> produtoList = new LinkedList<>();
-    private NumberFormat moneyNumberFormat = NumberFormat.getNumberInstance();
+    private List<Producto> produtoList = new LinkedList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.moneyNumberFormat.setMaximumFractionDigits( 2 );
-        this.moneyNumberFormat.setMinimumFractionDigits( 2 );
-        this.moneyNumberFormat.setCurrency( Currency.getInstance(Locale.FRANCE ) );
         factoryColumns();
         this.loadProdutos();
 
@@ -132,9 +124,9 @@ public class ProdutoController implements Initializable, ContentPage{
         this.columnProdutoNome.setMinWidth( 200 );
         this.columnProdutoCategoria.setMinWidth( 70 );
 
-        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Product>(){
+        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Producto>(){
             @Override
-            protected void updateItem(Product item, boolean empty) {
+            protected void updateItem(Producto item, boolean empty) {
                 super.updateItem(item, empty);
                 if( item == null || empty ){
                     setItem( item );
@@ -161,50 +153,14 @@ public class ProdutoController implements Initializable, ContentPage{
         this.columnProdutoProducao.setCellFactory( cell -> getNumberCell() );
         this.columnProdutoStock.setCellFactory( cell -> getNumberCell() );
         this.columnProdutoVenda.setCellFactory( cell -> getNumberCell() );
-        this.columnProdutoCompra.setCellFactory( cell -> getNumberCell() );
+        this.columnProdutoCompra.setCellFactory( cell -> this.getNumberCell() );
 
-    }
-
-    private TableCell<Product, String> getTextCell() {
-        return new TableCell<Product, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText( item );
-                    setPadding( new Insets(16, 16, 16, 16));
-                    setAlignment( Pos.CENTER_LEFT );
-                }
-            }
-        };
-    }
-
-    private TableCell<Product, Number> getNumberCell() {
-        return new TableCell<Product, Number>() {
-            @Override
-            protected void updateItem(Number item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText( ProdutoController.this.moneyNumberFormat.format( item )  );
-                    setPadding( new Insets(16, 16, 16, 16));
-                    setAlignment( Pos.CENTER_RIGHT );
-                }
-            }
-        };
     }
 
 
     public void loadProdutos() {
 
-        Product.ProdutoBuilder builder = new Product.ProdutoBuilder();
+        Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();
         Categoria.CategoriaBuilder cat  = new Categoria.CategoriaBuilder();
 
         builder.categoria( cat.nome( "Aviario" ).build() );
@@ -223,7 +179,7 @@ public class ProdutoController implements Initializable, ContentPage{
             this.produtoList.add( builder.codigo("21").nome( "Cosinha" ).build() );
 
 
-        ObservableList<Product> observableListProduto = FXCollections.observableList(this.produtoList);
+        ObservableList<Producto> observableListProduto = FXCollections.observableList(this.produtoList);
         this.tableViewProduto.setItems(observableListProduto);
     }
 }

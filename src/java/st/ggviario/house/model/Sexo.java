@@ -38,4 +38,10 @@ public class Sexo {
     public String toString() {
         return this.sexDesc;
     }
+
+    public static Sexo from(Short sexoId) {
+        return sexoId == null? UNDIFINED
+                : sexoId == MALE.sexId ? MALE
+                : FEMALE;
+    }
 }

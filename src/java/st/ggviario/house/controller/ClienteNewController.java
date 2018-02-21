@@ -11,9 +11,11 @@ import javafx.scene.control.DatePicker;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
 public class ClienteNewController implements Initializable {
@@ -48,7 +50,7 @@ public class ClienteNewController implements Initializable {
     private JFXComboBox<Sexo> comboClientSexo;
 
     @FXML
-    private DatePicker dataPickerClientDateBirth;
+    private DatePicker dataPickerClienteDataNascimento;
 
     @FXML
     private JFXComboBox<Distrito> comboxClienteDistrito;
@@ -98,6 +100,9 @@ public class ClienteNewController implements Initializable {
         this.listDistrito.clear();
         this.listTipoDocumento.clear();
 
+        this.listDistrito.add( distritoBuilder.id(null).nome("Não definido").build() );
+        this.listTipoDocumento.add( tipoDocumentoBuilder.id(null).desc("Não definido").build() );
+
         PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
         postgresSQL.query("ggviario.funct_load_distrito")
                 .withOther( null )
@@ -134,13 +139,15 @@ public class ClienteNewController implements Initializable {
                     .withSmallint( cliente.getSexo() == null? null : cliente.getSexo().getSexId() )
                     .withSmallint( cliente.getDistrito() == null? null : cliente.getDistrito().getDistritoId() )
                     .withSmallint( cliente.getTipoDocumento() == null? null : cliente.getTipoDocumento().getTipoDocumentoId() )
-                    .withVarchar( cliente.getClienteDocumentoNumero() )
-                    .withVarchar( cliente.getClienteNome() )
-                    .withVarchar( cliente.getClienteApelido() )
-                    .withVarchar( cliente.getClienteeTelefone() )
-                    .withVarchar( cliente.getClienteeTelefone() )
-                    .withVarchar( cliente.getClienteMail() )
-                    .withVarchar( cliente.getClienteMorada() )
+                    .withVarchar( SQLText.normalize( cliente.getClienteDocumentoNumero() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteNome() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteApelido()  ))
+                    .withDate( cliente.getClienteDataNascimento() )
+                    .withVarchar( SQLText.normalize( cliente.getClienteTelefone() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteTelefone() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteMail() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteMorada() ) )
+                    .withVarchar( SQLText.normalize( cliente.getClienteLocalTrabalho() ) )
                     .callFunctionTable()
                     .onResultQuery( row -> {
                         boolean result  = row.asBoolean("result" );
@@ -148,7 +155,7 @@ public class ClienteNewController implements Initializable {
                             Map< String, Object > root = new Gson().fromJson( String.valueOf( row.valueOf("message") ), Map.class );
                             Map<String, Object> map = (Map<String, Object>) root.get("cliente");
                             Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-                            clienteBuilder.setId( cliente, UUID.fromString( ( String ) map.get( "cliente_id" ) ) );
+                            clienteBuilder.id( cliente, UUID.fromString( ( String ) map.get( "cliente_id" ) ) );
                             if( this.onResultSucess != null ){
                                 this.onResultSucess.accept( cliente, root );
                             }
@@ -163,6 +170,11 @@ public class ClienteNewController implements Initializable {
     }
 
     private Cliente clientMounter() {
+
+        Date dataNascimento = null;
+        if( this.dataPickerClienteDataNascimento.getValue() != null  )
+            dataNascimento = java.sql.Date.valueOf( this.dataPickerClienteDataNascimento.getValue() );
+
         Cliente.ClienteBuilder builder = new Cliente.ClienteBuilder()
                 .nome( this.textFieldClienteNome.getText() )
                 .apelido( this.textFieldClienteApalido.getText() )
@@ -171,12 +183,16 @@ public class ClienteNewController implements Initializable {
                 .sexo( this.comboClientSexo.getValue() )
                 .distrito( this.comboxClienteDistrito.getValue() )
                 .morada( this.textFieldClienteMorada.getText() )
+                .dataNascimento( dataNascimento )
                 ;
+
         return builder.build();
     }
 
     private boolean validadeForm() {
-        return true;
+        String nome = this.textFieldClienteNome.getText();
+        nome = SQLText.normalize( nome );
+        return nome != null;
     }
 
     public ClienteNewController setOnResultFailed(OnResultFailed onResultFailed) {

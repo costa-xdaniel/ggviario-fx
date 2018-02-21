@@ -22,7 +22,6 @@ public class PostgresSQLResult {
         for( int i = 1; i<= resultSet.getMetaData().getColumnCount(); i ++ ) {
             headerMap.put(resultSet.getMetaData().getColumnName(i), i-1);
             headerMapReverse.put( i, resultSet.getMetaData().getColumnName(i));
-            System.out.println( "type: ->>"+ resultSet.getMetaData().getColumnType( i )  );
             headerTypes.put( i, resultSet.getMetaData().getColumnType( i ) );
         }
         this.headerMap = Collections.unmodifiableMap( this.headerMap );

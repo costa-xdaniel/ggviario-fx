@@ -102,10 +102,11 @@ public class PostgresSQL {
 
     public static void closeResultSet(ResultSet resultSet) {
         try {
+            Statement stm = null;
+            stm = resultSet.getStatement();
+            PostgresSQL.closeStatement( stm );
             resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException ignored) { }
     }
 
     public void closeCurrentConnection() {
