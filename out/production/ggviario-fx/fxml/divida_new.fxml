@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="1046.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.DividaNewController">
+   <children>
+      <HBox prefHeight="557.0" prefWidth="1047.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefWidth="510.0">
+               <children>
+                  <GridPane prefHeight="557.0" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="268.0" minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="496.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXTextField fx:id="searchCliente" focusColor="#ff5722" labelFloat="true" promptText="Proucurar" text="Ana" unFocusColor="#009688" />
+                        <TableView fx:id="tableClientes" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <GridPane.margin>
+                              <Insets top="16.0" />
+                           </GridPane.margin>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                  </GridPane>
+                  <JFXButton fx:id="fabNewCliente" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+               </children>
+            </AnchorPane>
+            <Separator orientation="VERTICAL" prefHeight="200.0">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Separator>
+            <AnchorPane prefHeight="557.0" prefWidth="510.0">
+               <children>
+                  <JFXButton fx:id="btDividaCadastrar" buttonType="RAISED" layoutX="105.0" layoutY="328.0" minHeight="40.0" style="-fx-background-color: #009688;" text="Cadastrar" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <padding>
+                        <Insets left="16.0" right="16.0" />
+                     </padding>
+                  </JFXButton>
+                  <GridPane layoutX="-10.0" layoutY="113.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXComboBox fx:id="comboxProduto" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="333.0" promptText="Produto" unFocusColor="#009688" GridPane.columnSpan="2" />
+                        <JFXComboBox fx:id="comboxUnidades" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="275.0" promptText="Unidade" unFocusColor="#009688" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets right="8.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXTextField fx:id="textFieldQunatidade" focusColor="#ff5722" labelFloat="true" promptText="Quantidade" text="10" unFocusColor="#009688" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets right="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField editable="false" focusColor="#ff5722" labelFloat="true" promptText="Custo Sem Desconto" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="textFieldPrecoUnitirio" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Preço unitario" text="838" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField focusColor="#ff5722" labelFloat="true" promptText="Desconto" text="0.0" unFocusColor="#009688" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets right="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="textFieldMontantePagar" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante a pagar" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <DatePicker GridPane.rowIndex="4" />
+                        <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </padding>
+            </AnchorPane>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <VBox prefHeight="557.0" prefWidth="510.0">
+               <children>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXTextField fx:id="textFieldClienteNome" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Nome" text="Joana" unFocusColor="#009688" GridPane.columnSpan="2" />
+                        <JFXTextField fx:id="textFieldClienteMorada" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Morada" text="sds" unFocusColor="#009688" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets right="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="textFieldClienteCOntacto" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Contacto" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="textFieldMontante" alignment="CENTER_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante" text="893 939,00" unFocusColor="#009688" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets right="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="textFieldMontanteEmDivida" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Em Divida" text="88 993,00" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="8.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="16.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
