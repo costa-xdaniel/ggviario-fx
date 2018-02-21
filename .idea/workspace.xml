@@ -6,47 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="Registro de cliente">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/colaborador.irJ6bQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/ggviario.KjOM4w.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/information_schema.FNRwLQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/lib.haIBAA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_catalog.0S1ZNQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_temp_1.zkWuFg.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast.33HYYw.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/pg_toast_temp_1.5ixBaA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/public.abK9xQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/4c4a8026-e28b-4db6-8187-7921d145ea2b/storage_v2/_src_/database/ggviario.KjOM4w/schema/rule._JY1AA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/colaborador.irJ6bQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/information_schema.FNRwLQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/lib.haIBAA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/pg_catalog.0S1ZNQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/pg_temp_1.zkWuFg.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/pg_toast.33HYYw.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/pg_toast_temp_1.5ixBaA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/public.abK9xQ.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd/storage_v2/_src_/database/contabilidade.McgPoQ/schema/rule._JY1AA.meta" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/database/ggviario-18-02-21-1828-export.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/database/test.json" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Equivalencia.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Unidade.java" />
+    <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DividaNewController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Categoria.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Cliente.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Cliente.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Colaborador.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Distrito.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Distrito.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Producto.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Producto.java" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/divida_new.fxml" />
       <change beforePath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/support/src/META-INF/MANIFEST.MF" />
-      <change beforePath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResultSet.java" afterPath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLResultSet.java" />
-      <change beforePath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLRow.java" afterPath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/postgresql/PostgresSQLRow.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -722,11 +685,18 @@
       <option name="project" value="LOCAL" />
       <updated>1519224191663</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Registro de cliente">
+      <created>1519237766861</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1519237766861</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132044000" />
+    <option name="totallyTimeSpent" value="132061000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="734" extended-state="6" />
