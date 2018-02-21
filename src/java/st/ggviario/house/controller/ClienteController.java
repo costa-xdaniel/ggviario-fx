@@ -113,7 +113,7 @@ public class ClienteController extends TableController< Cliente > implements Ini
         this.columnClienteNome.setMinWidth( 150 );
 
         this.columnClienteMorada.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getClienteMorada() ) );
-        this.columnClienteMorada.setCellFactory( cell -> this.getTextCell() );
+        this.columnClienteMorada.setCellFactory( cell -> this.getTextCell());
 
         this.columnClienteContacto.setCellValueFactory( data-> new SimpleStringProperty( data.getValue().getClienteMorada() ) );
         this.columnClienteContacto.setCellFactory( cell -> this.getTextCell() );

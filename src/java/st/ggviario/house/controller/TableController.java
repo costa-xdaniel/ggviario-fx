@@ -3,6 +3,7 @@ package st.ggviario.house.controller;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import st.ggviario.house.model.Producto;
 
 import java.text.NumberFormat;
@@ -25,11 +26,18 @@ public class TableController<Type> {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
+                /**
+                 * Get column index
+                 TableColumn<Type, String> column = getTableColumn();
+                 int colIndex = getTableView().getColumns().indexOf(column);
+
+                 */
 
                 if (item == null || empty) {
                     setText(null);
                     setStyle("");
                 } else {
+                    System.out.println( item+" | "+getIndex() );
                     setText( item );
                     setPadding( new Insets(16, 16, 16, 16));
                     setAlignment( Pos.CENTER_LEFT );
