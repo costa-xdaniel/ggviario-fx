@@ -89,7 +89,7 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
         return this.currentRow;
     }
 
-    public void setOnResultQuery( OnResultQuery onResultQuery ) {
+    public void onResultQuery(OnResultQuery onResultQuery ) {
 
         PostgresSQLRow row;
         while( (row = this.nextRow() )!= null ){

@@ -23,7 +23,7 @@ public class ClienteController implements Initializable {
     private JFXDialogLayout dialogContent;
     private JFXDialog dialog;
     private Node newClientModalContent;
-    private ClientNewController newClienteModalContentController;
+    private ClienteNewController newClienteModalContentController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,6 +36,10 @@ public class ClienteController implements Initializable {
         this.loadModal();
         dialogContent.setHeading( new Text("Novo cliente") );
         dialogContent.setBody( this.newClientModalContent);
+        this.newClienteModalContentController.newClient();
+        this.newClienteModalContentController.setOnResultSucess( ( cliente, data )->{
+           this.dialog.close();
+        });
         this.dialog.show();
     }
 

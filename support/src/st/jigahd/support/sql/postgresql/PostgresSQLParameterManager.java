@@ -71,7 +71,7 @@ public class PostgresSQLParameterManager {
         getter.put(Types.OTHER, (resultSet, index, type) -> resultSet.getObject( index ));
 
         getter.put(Types.BOOLEAN, (resultSet, columnName, type ) -> resultSet.getBoolean( columnName ));
-        getter.put(Types.BIT, (resultSet, columnName, type) -> resultSet.getByte( columnName ));
+        getter.put(Types.BIT, (resultSet, columnName, type) -> resultSet.getBoolean( columnName ));
         getter.put(Types.TINYINT, (resultSet, columnName, type) -> resultSet.getShort( columnName ));
         getter.put(Types.SMALLINT, (resultSet, columnName, type) -> resultSet.getShort( columnName ));
         getter.put(Types.INTEGER, (resultSet, columnName, type) -> resultSet.getInt( columnName ));

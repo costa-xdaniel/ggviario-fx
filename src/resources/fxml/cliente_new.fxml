@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="386.0" prefWidth="511.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.ClientNewController">
+<AnchorPane prefHeight="386.0" prefWidth="511.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.ClienteNewController">
    <children>
       <GridPane layoutX="72.0" layoutY="138.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -26,17 +26,17 @@
             <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
         </rowConstraints>
             <children>
-            <JFXTextField fx:id="textFieldClientName" focusColor="#ff5722" labelFloat="true" promptText="Nome" unFocusColor="#009688">
+            <JFXTextField fx:id="textFieldClienteNome" focusColor="#ff5722" labelFloat="true" promptText="Nome" unFocusColor="#009688">
                <GridPane.margin>
                   <Insets right="8.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="textFieldClientSurname" focusColor="#ff5722" labelFloat="true" promptText="Apelido" unFocusColor="#009688" GridPane.columnIndex="1">
+            <JFXTextField fx:id="textFieldClienteApalido" focusColor="#ff5722" labelFloat="true" promptText="Apelido" unFocusColor="#009688" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="8.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="comboClientSex" focusColor="#ff5722" labelFloat="true" prefWidth="238.0" promptText="Sexo" unFocusColor="#009688" GridPane.rowIndex="2">
+            <JFXComboBox fx:id="comboClientSexo" focusColor="#ff5722" labelFloat="true" prefWidth="238.0" promptText="Sexo" unFocusColor="#009688" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="8.0" />
                </GridPane.margin>
@@ -46,12 +46,12 @@
                   <Insets left="8.0" />
                </GridPane.margin>
             </DatePicker>
-            <JFXComboBox fx:id="combxClientDistrict" focusColor="#ff5722" labelFloat="true" prefWidth="248.0" promptText="Distrito" unFocusColor="#009688" GridPane.rowIndex="3">
+            <JFXComboBox fx:id="comboxClienteDistrito" focusColor="#ff5722" labelFloat="true" prefWidth="248.0" promptText="Distrito" unFocusColor="#009688" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="8.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXTextField fx:id="textFieldClientResidence" focusColor="#ff5722" labelFloat="true" promptText="Residencia" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <JFXTextField fx:id="textFieldClienteMorada" focusColor="#ff5722" labelFloat="true" promptText="Residencia" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="8.0" />
                </GridPane.margin>
@@ -66,12 +66,12 @@
                   <Insets left="8.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="comboxClientTipoDocument" focusColor="#ff5722" labelFloat="true" prefWidth="243.0" promptText="Tipo documento" unFocusColor="#009688" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="comboxClientTipoDocumento" focusColor="#ff5722" labelFloat="true" prefWidth="243.0" promptText="Tipo documento" unFocusColor="#009688" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="8.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXTextField fx:id="textFieldClientNumberDocument" focusColor="#ff5722" labelFloat="true" promptText="Numero documento" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXTextField fx:id="textFieldClientDocumentoNumero" focusColor="#ff5722" labelFloat="true" promptText="Numero documento" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="8.0" />
                </GridPane.margin>

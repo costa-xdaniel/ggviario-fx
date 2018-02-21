@@ -1,0 +1,2 @@
+#n:funct_reg_cliente
+#i:(uuid,smallint,smallint,smallint,varchar,varchar,varchar,varchar,varchar,varchar,varchar)

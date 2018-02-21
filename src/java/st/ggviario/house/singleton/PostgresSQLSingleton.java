@@ -3,7 +3,7 @@ package st.ggviario.house.singleton;
 import st.jigahd.support.sql.Configuration;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
-public class PostgresSOLSingleton {
+public class PostgresSQLSingleton {
 
     private static Configuration configuration =new Configuration( "localhost", 5432, "ggviario", "ggviario", "1234" );
 

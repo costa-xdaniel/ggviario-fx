@@ -70,7 +70,18 @@ public class PostgresSQL {
 
     public Connection getCurrentConnection() {
         if( this.conn == null ) this.createConnection();
+        if( isClosed()) this.createConnection();
         return this.conn;
+    }
+
+    private boolean isClosed() {
+
+        try {
+            return this.conn.isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public String getProcessedQuery() {
@@ -94,6 +105,18 @@ public class PostgresSQL {
             resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void closeCurrentConnection() {
+        PostgresSQL.closeConnection( this.conn );
+    }
+
+    private static void closeConnection(Connection conn) {
+        try{
+            conn.close();
+        }catch ( Exception ex ){
+
         }
     }
 

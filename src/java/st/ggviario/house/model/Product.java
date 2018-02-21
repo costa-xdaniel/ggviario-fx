@@ -1,8 +1,6 @@
 package st.ggviario.house.model;
 
-import javafx.beans.property.StringProperty;
-
-public class Produto {
+public class Product {
 
     private String produtoId;
     private String produtoCodigo;
@@ -76,8 +74,8 @@ public class Produto {
             this.categoria = categoria;
         }
 
-        public Produto build() {
-            Produto produto = new Produto();
+        public Product build() {
+            Product produto = new Product();
             produto.produtoId = this.id;
             produto.produtoCodigo = codigo;
             produto.produtoNome = this.nome;

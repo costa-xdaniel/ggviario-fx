@@ -19,10 +19,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import st.ggviario.house.singleton.PostgresSOLSingleton;
+import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.ContentPage;
-import st.ggviario.house.model.Produto;
+import st.ggviario.house.model.Product;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
@@ -37,12 +37,12 @@ public class ProdutoController implements Initializable, ContentPage{
     private LinkedList<Categoria> listaCategoria;
 
     public ProdutoController(){
-        this.postgresSQL = new PostgresSOLSingleton().getPostgresSQL();
+        this.postgresSQL = new PostgresSQLSingleton().getPostgresSQL();
     }
 
 
     @FXML
-    private TableView<Produto> tableViewProduto;
+    private TableView<Product> tableViewProduto;
 
     @FXML
     private StackPane stackPane;
@@ -51,32 +51,32 @@ public class ProdutoController implements Initializable, ContentPage{
     private JFXButton buttonNewProduto;
 
     @FXML
-    private TableColumn<Produto, String> columnProdutoNome;
+    private TableColumn<Product, String> columnProdutoNome;
 
     @FXML
-    private TableColumn<Produto, String> columnProdutoCodigo;
+    private TableColumn<Product, String> columnProdutoCodigo;
 
     @FXML
-    private TableColumn<Produto, String> columnProdutoCategoria;
+    private TableColumn<Product, String> columnProdutoCategoria;
 
     @FXML
-    private TableColumn<Produto, Number> columnProdutoStock;
+    private TableColumn<Product, Number> columnProdutoStock;
 
     @FXML
-    private TableColumn<Produto, Number> columnProdutoCusto;
+    private TableColumn<Product, Number> columnProdutoCusto;
 
     @FXML
-    private TableColumn<Produto, Number> columnProdutoProducao;
+    private TableColumn<Product, Number> columnProdutoProducao;
 
     @FXML
-    private TableColumn<Produto, Number> columnProdutoVenda;
+    private TableColumn<Product, Number> columnProdutoVenda;
 
     @FXML
-    private TableColumn<Produto, Number> columnProdutoCompra;
+    private TableColumn<Product, Number> columnProdutoCompra;
 
 
 
-    private List<Produto> produtoList = new LinkedList<>();
+    private List<Product> produtoList = new LinkedList<>();
     private NumberFormat moneyNumberFormat = NumberFormat.getNumberInstance();
 
     @Override
@@ -132,9 +132,9 @@ public class ProdutoController implements Initializable, ContentPage{
         this.columnProdutoNome.setMinWidth( 200 );
         this.columnProdutoCategoria.setMinWidth( 70 );
 
-        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Produto>(){
+        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Product>(){
             @Override
-            protected void updateItem(Produto item, boolean empty) {
+            protected void updateItem(Product item, boolean empty) {
                 super.updateItem(item, empty);
                 if( item == null || empty ){
                     setItem( item );
@@ -165,8 +165,8 @@ public class ProdutoController implements Initializable, ContentPage{
 
     }
 
-    private TableCell<Produto, String> getTextCell() {
-        return new TableCell<Produto, String>() {
+    private TableCell<Product, String> getTextCell() {
+        return new TableCell<Product, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -183,8 +183,8 @@ public class ProdutoController implements Initializable, ContentPage{
         };
     }
 
-    private TableCell<Produto, Number> getNumberCell() {
-        return new TableCell<Produto, Number>() {
+    private TableCell<Product, Number> getNumberCell() {
+        return new TableCell<Product, Number>() {
             @Override
             protected void updateItem(Number item, boolean empty) {
                 super.updateItem(item, empty);
@@ -204,7 +204,7 @@ public class ProdutoController implements Initializable, ContentPage{
 
     public void loadProdutos() {
 
-        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
+        Product.ProdutoBuilder builder = new Product.ProdutoBuilder();
         Categoria.CategoriaBuilder cat  = new Categoria.CategoriaBuilder();
 
         builder.categoria( cat.nome( "Aviario" ).build() );
@@ -223,7 +223,7 @@ public class ProdutoController implements Initializable, ContentPage{
             this.produtoList.add( builder.codigo("21").nome( "Cosinha" ).build() );
 
 
-        ObservableList<Produto> observableListProduto = FXCollections.observableList(this.produtoList);
+        ObservableList<Product> observableListProduto = FXCollections.observableList(this.produtoList);
         this.tableViewProduto.setItems(observableListProduto);
     }
 }

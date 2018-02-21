@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import st.ggviario.house.singleton.PostgresSOLSingleton;
+import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
@@ -32,12 +32,12 @@ public class ProdutoControllerNew implements Initializable{
 
         this.listaCategoria.clear();
 
-        PostgresSQL postgresSQL = PostgresSOLSingleton.loadPostgresSQL();
+        PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
         Categoria.CategoriaBuilder builder = new Categoria.CategoriaBuilder();
         postgresSQL.query( "ggviario.funct_load_categoria" )
                 .withOther( null )
                 .callFunctionTable()
-                .setOnResultQuery(row -> listaCategoria.add(
+                .onResultQuery(row -> listaCategoria.add(
                         builder
                                 .nome( row.asString("categoria_nome") )
                                 .id( row.asUUID( "categoria_id" ) )
