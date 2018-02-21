@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import st.ggviario.house.model.Cliente;
+import st.ggviario.house.model.Distrito;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.lib.SQLText;
@@ -81,11 +82,18 @@ public class ClienteController extends TableController< Cliente > implements Ini
     private void reloadData() {
         PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
         Cliente.ClienteBuilder builder = new Cliente.ClienteBuilder();
+        Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
         this.listCliente.clear();
         postgresSQL.query( "ggviario.funct_load_cliente" )
                 .withOther( null )
                 .callFunctionTable()
-                .onResultQuery( row -> this.listCliente.add( builder.load( row ).build() ) );
+                .onResultQuery(
+                        row -> this.listCliente.add(
+                                builder.load( row )
+                                        .distrito( distritoBuilder.load( row ).build() )
+                                        .build()
+                        )
+                );
         this.tableViewCliente.setItems(FXCollections.observableList( this.listCliente ) );
     }
 

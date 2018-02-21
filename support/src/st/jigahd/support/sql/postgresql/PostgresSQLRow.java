@@ -12,6 +12,7 @@ import java.util.*;
 public class PostgresSQLRow implements Serializable {
 
     Map< String, Integer > headerMap;
+    Map< String, Object > map;
     private Object[ ] values;
 
     protected PostgresSQLRow(Map<String, Integer> headerMap){
@@ -39,11 +40,14 @@ public class PostgresSQLRow implements Serializable {
     }
 
     public Map< String, Object > toMap() {
-        Map<String, Object > map = new HashMap<>();
-        for( Map.Entry< String, Integer > column: this.headerMap.entrySet() ){
-            map.put( column.getKey(), this.values[ column.getValue() ] );
+        if( this.map == null ){
+            Map<String, Object > prepareMap = new HashMap<>();
+            for( Map.Entry< String, Integer > column: this.headerMap.entrySet() ){
+                prepareMap.put( column.getKey(), this.values[ column.getValue() ] );
+            }
+            this.map = Collections.unmodifiableMap( prepareMap );
         }
-        return Collections.unmodifiableMap( map );
+        return this.map;
     }
 
 

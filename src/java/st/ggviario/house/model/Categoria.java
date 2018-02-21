@@ -1,8 +1,9 @@
 package st.ggviario.house.model;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import st.jigahd.support.sql.postgresql.PostgresSQLRow;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class Categoria {
@@ -46,6 +47,16 @@ public class Categoria {
 
         public CategoriaBuilder nome(String nome) {
             this.nome = nome;
+            return this;
+        }
+
+        public CategoriaBuilder load(PostgresSQLRow row ){
+            return this.load( row.toMap() );
+        }
+
+        public CategoriaBuilder load(Map< String, Object > map ){
+            this.id = (UUID) map.get( "categoria_id" );
+            this.nome = (String) map.get( "categoria_nome" );
             return this;
         }
     }

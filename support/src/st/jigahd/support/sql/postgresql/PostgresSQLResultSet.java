@@ -2,7 +2,6 @@ package st.jigahd.support.sql.postgresql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,7 +73,7 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
      * @param position base 0
      * @return
      */
-    public PostgresSQLRow getCurrentRow( int position ) {
+    public PostgresSQLRow getCurrentRow(int position ) {
         if( !isRecordCursorPint() ) return  null;
         this.currentRow = fethsRow.get( position );
         this.currentPoint = position +1;

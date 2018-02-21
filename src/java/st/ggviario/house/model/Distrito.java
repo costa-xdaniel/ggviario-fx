@@ -2,6 +2,8 @@ package st.ggviario.house.model;
 
 import st.jigahd.support.sql.postgresql.PostgresSQLRow;
 
+import java.util.Map;
+
 public class Distrito {
 
     private Short distritoId;
@@ -21,6 +23,7 @@ public class Distrito {
     }
 
     public static class DistritoBuilder{
+
         private Short id;
         private String nome;
 
@@ -41,9 +44,13 @@ public class Distrito {
             return this;
         }
 
-        public DistritoBuilder load(PostgresSQLRow row) {
-            this.id = row.asShort( "distrito_id" );
-            this.nome = row.asString( "distrito_nome" );
+        public DistritoBuilder load( PostgresSQLRow row ){
+            return this.load( row .toMap() );
+        }
+
+        public DistritoBuilder load( Map<String, Object> map) {
+            this.id = (Short) map.get( "distrito_id" );
+            this.nome = (String) map.get( "distrito_nome" );
             return this;
         }
     }
