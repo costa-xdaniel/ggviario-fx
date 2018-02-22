@@ -6,41 +6,12 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="Ola error">
-      <change beforePath="" afterPath="$PROJECT_DIR$/database/ggviario-18-02-22-2054-export.sql" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaDividaController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaVendaController.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/venda_divida.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/fxml/venda_venda.fxml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/styles/snackbar-sucess.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/resources/styles/snackbar-unsucess.css" />
+    <list default="true" id="aaad03f6-80a0-4607-b874-4aa57fae7753" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/cbe04270-f191-4ffe-8c5b-704977a59ecd.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/divida.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/fxml/vendas.fxml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/styles/styles.css" afterPath="$PROJECT_DIR$/out/production/ggviario-fx/styles/styles.css" />
       <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.svg" afterPath="$PROJECT_DIR$/out/production/ggviario-fx/values/palette.svg" />
       <change beforePath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.svg" afterPath="$PROJECT_DIR$/out/production/ggviario-fx/values/primary-color.svg" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteNewController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ClienteNewController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/DrawerController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/ProdutoController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/TableController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/TableController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaDividaCnotroller.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaNewController.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/controller/VendaNewController.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Producto.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Producto.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/TipoVenda.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/TipoVenda.java" />
-      <change beforePath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Venda.java" afterPath="$PROJECT_DIR$/src/java/st/ggviario/house/model/Venda.java" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/divida.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/venda_new.fxml" afterPath="$PROJECT_DIR$/src/resources/fxml/venda_new.fxml" />
-      <change beforePath="$PROJECT_DIR$/src/resources/fxml/vendas.fxml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/resources/styles/styles.css" afterPath="$PROJECT_DIR$/src/resources/styles/styles.css" />
-      <change beforePath="$PROJECT_DIR$/src/resources/values/palette.svg" afterPath="$PROJECT_DIR$/src/resources/values/palette.svg" />
-      <change beforePath="$PROJECT_DIR$/src/resources/values/primary-color.svg" afterPath="$PROJECT_DIR$/src/resources/values/primary-color.svg" />
-      <change beforePath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/SQLRow.java" afterPath="$PROJECT_DIR$/support/src/st/jigahd/support/sql/SQLRow.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -123,13 +94,13 @@
       </file>
       <file leaf-file-name="venda_divida.fxml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/resources/fxml/venda_divida.fxml">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="28" column="112" lean-forward="false" selection-start-line="28" selection-start-column="112" selection-end-line="28" selection-end-column="112" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="365">
+              <caret line="39" column="18" lean-forward="true" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
               <folding />
             </state>
           </provider>
-          <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
+          <provider editor-type-id="JavaFX-Scene-Builder">
             <state />
           </provider>
         </entry>
@@ -634,7 +605,7 @@
       <workItem from="1519147098377" duration="3523000" />
       <workItem from="1519199375938" duration="14466000" />
       <workItem from="1519247066102" duration="23227000" />
-      <workItem from="1519311690888" duration="21202000" />
+      <workItem from="1519311690888" duration="21240000" />
     </task>
     <task id="LOCAL-00001" summary="project structure">
       <created>1518826823093</created>
@@ -741,11 +712,18 @@
       <option name="project" value="LOCAL" />
       <updated>1519247727407</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Ola error">
+      <created>1519332917114</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1519332917114</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="176490000" />
+    <option name="totallyTimeSpent" value="176528000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1311,13 +1289,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/resources/fxml/venda_divida.fxml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="28" column="112" lean-forward="false" selection-start-line="28" selection-start-column="112" selection-end-line="28" selection-end-column="112" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="39" column="18" lean-forward="true" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
           <folding />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
+      <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
       </provider>
     </entry>
