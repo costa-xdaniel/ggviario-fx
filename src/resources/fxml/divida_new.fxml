@@ -29,7 +29,7 @@
                       <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="496.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="searchCliente" focusColor="#ff5722" labelFloat="true" promptText="Proucurar" text="Ana" unFocusColor="#009688" />
+                        <JFXTextField fx:id="textFieldClienteSearch" focusColor="#ff5722" labelFloat="true" promptText="Proucurar" text="Ana" unFocusColor="#009688" />
                         <JFXListView fx:id="listViewCliente" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets top="16.0" />
@@ -50,7 +50,7 @@
             </Separator>
             <AnchorPane prefHeight="557.0" prefWidth="510.0">
                <children>
-                  <JFXButton fx:id="btDividaCadastrar" buttonType="RAISED" layoutX="105.0" layoutY="328.0" minHeight="40.0" style="-fx-background-color: #009688;" text="Cadastrar" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <JFXButton fx:id="buttonCompraCadastrarDivida" buttonType="RAISED" layoutX="105.0" layoutY="328.0" minHeight="40.0" style="-fx-background-color: #009688;" text="Cadastrar" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <padding>
                         <Insets left="16.0" right="16.0" />
                      </padding>
@@ -69,32 +69,32 @@
                     </rowConstraints>
                      <children>
                         <JFXComboBox fx:id="comboxProduto" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="333.0" promptText="Produto" unFocusColor="#009688" GridPane.columnSpan="2" />
-                        <JFXComboBox fx:id="comboxUnidades" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="275.0" promptText="Unidade" unFocusColor="#009688" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="comboxPrecoUnidades" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="275.0" promptText="Unidade" unFocusColor="#009688" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXTextField fx:id="textFieldQunatidade" focusColor="#ff5722" labelFloat="true" promptText="Quantidade" text="10" unFocusColor="#009688" GridPane.rowIndex="2">
+                        <JFXTextField fx:id="textFieldCompraQuantidade" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" promptText="Quantidade" unFocusColor="#009688" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldCustoSemDesconto" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Custo Sem Desconto" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXTextField fx:id="textFieldCompraMontanteBruto" alignment="CENTER_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Custo Sem Desconto" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldPrecoUnitirio" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Preço unitario" text="838" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="textFieldCompraMontanteUnitirio" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Preço unitario" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldDesconto" focusColor="#ff5722" labelFloat="true" promptText="Desconto" text="0.0" unFocusColor="#009688" GridPane.rowIndex="3">
+                        <JFXTextField fx:id="textFieldCompraDesconto" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" promptText="Desconto" text="0.0" unFocusColor="#009688" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldMontantePagar" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante a pagar" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <JFXTextField fx:id="textFieldCompraMontantePagar" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante a pagar" text="0.0" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets left="8.0" />
                            </GridPane.margin>
@@ -122,23 +122,23 @@
                         <RowConstraints minHeight="10.0" prefHeight="66.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="textFieldClienteNome" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Nome" text="Joana" unFocusColor="#009688" GridPane.columnSpan="2" />
-                        <JFXTextField fx:id="textFieldClienteMorada" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Morada" text="sds" unFocusColor="#009688" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="textFieldClienteNome" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Nome" unFocusColor="#009688" GridPane.columnSpan="2" />
+                        <JFXTextField fx:id="textFieldClienteMorada" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Local" unFocusColor="#009688" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldClienteCOntacto" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Contacto" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="textFieldClienteContacto" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Contacto" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldMontante" alignment="CENTER_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante" text="893 939,00" unFocusColor="#009688" GridPane.rowIndex="2">
+                        <JFXTextField fx:id="textFieldClienteMontanteTotal" alignment="CENTER_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Montante" unFocusColor="#009688" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="textFieldMontantePendente" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Em Divida" text="88 993,00" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXTextField fx:id="textFieldClienteMontantePendente" alignment="BOTTOM_RIGHT" editable="false" focusColor="#ff5722" labelFloat="true" promptText="Em Divida" unFocusColor="#009688" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="8.0" />
                            </GridPane.margin>

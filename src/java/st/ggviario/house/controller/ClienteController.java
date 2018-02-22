@@ -148,7 +148,7 @@ public class ClienteController extends TableController< Cliente > implements Ini
         dialogContent.setHeading( new Text("Novo cliente") );
         dialogContent.setBody( this.newClientModalContent);
         this.newClienteModalContentController.newClient();
-        this.newClienteModalContentController.setOnResultSucess( ( cliente, data )->{
+        this.newClienteModalContentController.setOnNewClienteResult( (result, cliente, data )->{
             this.reloadData();
             this.dialog.close();
         });

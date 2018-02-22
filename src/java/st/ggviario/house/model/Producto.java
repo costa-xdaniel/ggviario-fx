@@ -1,10 +1,13 @@
 package st.ggviario.house.model;
 
+import st.jigahd.support.sql.SQLRow;
+
 import java.util.Map;
+import java.util.UUID;
 
 public class Producto {
 
-    private String produtoId;
+    private UUID produtoId;
     private String produtoCodigo;
     private String produtoNome;
     private Categoria produtoCategoria;
@@ -16,7 +19,7 @@ public class Producto {
     private Double produtoCusto = 0d;
 
 
-    public String getProdutoId() {
+    public UUID getProdutoId() {
         return produtoId;
     }
 
@@ -56,9 +59,13 @@ public class Producto {
         return produtoCodigo;
     }
 
+    @Override
+    public String toString() {
+        return this.produtoNome;
+    }
 
     public static class  ProdutoBuilder{
-        private String id;
+        private UUID id;
         private String codigo;
         private String nome;
         private Categoria categoria;
@@ -90,7 +97,7 @@ public class Producto {
             return produto;
         }
 
-        public ProdutoBuilder id(String id) {
+        public ProdutoBuilder id(UUID id) {
             this.id = id;
             return this;
         }
@@ -136,11 +143,15 @@ public class Producto {
             return this;
         }
 
+        public ProdutoBuilder load( SQLRow row) {
+            return this.load( row.toMap() );
+        }
+
         public ProdutoBuilder load( Map<String, Object > map ) {
-            this.id = (String) map.get( "produto_id" );
-            this.nome = (String) map.get( "produto_nome" );
-            this.codigo = (String) map.get( "produto_nome" );
-            this.stock = (Double) map.get( "produto_stock" );
+            this.id = SQLRow.uuidOf( map.get( "produto_id" ) );
+            this.nome = SQLRow.stringOf( map.get( "produto_nome" ) );
+            this.codigo = SQLRow.stringOf( map.get( "produto_nome" ) );
+            this.stock = SQLRow.doubleOf( map.get( "produto_stock" ) );
             return this;
         }
     }

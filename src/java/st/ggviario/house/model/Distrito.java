@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class Distrito {
             return this;
         }
 
-        public DistritoBuilder load( PostgresSQLRow row ){
+        public DistritoBuilder load( SQLRow row ){
             return this.load( row .toMap() );
         }
 

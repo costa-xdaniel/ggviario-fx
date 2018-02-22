@@ -1,8 +1,11 @@
 package st.ggviario.house.model;
 
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.lib.SQLResource;
+import st.jigahd.support.sql.lib.SQLText;
+import st.jigahd.support.sql.SQLRow;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 public class Cliente {
@@ -98,6 +101,24 @@ public class Cliente {
 
     public Date getClienteDataNascimento() {
         return clienteDataNascimento;
+    }
+
+    public String getClienteCompletName() {
+        String nomeCompleto = this.clienteNome + " " + SQLResource.coalesce( this.clienteApelido, "" );
+        return SQLText.normalize( nomeCompleto );
+    }
+
+    public String getClienteContanto( String defaultContanto) {
+        return SQLResource.coalesce( this.clienteTelemovel, this.clienteTelemovel, this.clienteMail, defaultContanto );
+    }
+
+    public String getClienteLocal( String defaultLocal ) {
+        return SQLResource.coalesce( this.clienteMorada, this.clienteLocalTrabalho, defaultLocal );
+    }
+
+    @Override
+    public String toString() {
+        return this.getClienteCompletName();
     }
 
     public static class ClienteBuilder{
@@ -211,23 +232,41 @@ public class Cliente {
             cliente.clienteId = cliente_id;
         }
 
-        public ClienteBuilder load(PostgresSQLRow row) {
+        public ClienteBuilder load(SQLRow row) {
 
-            this.id = ( row.asUUID("cliente_id" ) );
-            this.nome = ( row.asString( "cliente_nome" ) );
-            this.apelido = ( row.asString( "cliente_apelido" ) );
-            this.telefone = (row.asString( "cliente_telefone" ) );
-            this.telemovel = (row.asString( "cliente_telemovel" ) );
-            this.morada  =( row.asString( "cliente_morada" ) );
-            this.sexo = ( Sexo.from( row.asShort( "cliente_sexo" ) ) );
-            this.mail = ( row.asString( "cliente_mail" ) );
-            this.localTrabalho = ( row.asString( "cliente_localtrabalho" ) );
-
+            this.id = row.asUUID("cliente_id" );
+            this.nome = row.asString( "cliente_nome" );
+            this.apelido = row.asString( "cliente_apelido" );
+            this.telefone = row.asString( "cliente_telefone" );
+            this.telemovel = row.asString( "cliente_telemovel" );
+            this.morada = row.asString( "cliente_morada" );
+            this.sexo = Sexo.from( row.asShort( "cliente_sexo" ) );
+            this.mail = row.asString( "cliente_mail" );
+            this.localTrabalho = row.asString( "cliente_localtrabalho" );
             this.montanteCompra = row.asDouble( "cliente_monatntecompra" );
             this.montanteDivida = row.asDouble( "cliente_montantedivida" );
             this.montanteTotal = row.asDouble( "cliente_montantetotal" );
             this.montantePago = row.asDouble( "cliente_montantepago" );
             this.montantePendente = row.asDouble( "cliente_montantependente" );
+            return this;
+        }
+
+        public ClienteBuilder load(Map<String, Object> map) {
+
+            this.id = (UUID) map.get("cliente_id" );
+            this.nome = (String) map.get( "cliente_nome" );
+            this.apelido = (String) map.get( "cliente_apelido" );
+            this.telefone = (String) map.get( "cliente_telefone" );
+            this.telemovel = (String) map.get( "cliente_telemovel" );
+            this.morada  = (String) map.get( "cliente_morada" );
+            this.sexo = ( Sexo.from((Short) map.get( "cliente_sexo" )) );
+            this.mail = (String) map.get( "cliente_mail" );
+            this.localTrabalho = (String) map.get( "cliente_localtrabalho" );
+            this.montanteCompra = (Double) map.get( "cliente_monatntecompra" );
+            this.montanteDivida = (Double) map.get( "cliente_montantedivida" );
+            this.montanteTotal = (Double) map.get( "cliente_montantetotal" );
+            this.montantePago = (Double) map.get( "cliente_montantepago" );
+            this.montantePendente = (Double) map.get( "cliente_montantependente" );
             return this;
         }
 

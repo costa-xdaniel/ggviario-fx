@@ -1,5 +1,7 @@
 package st.jigahd.support.sql.postgresql;
 
+import st.jigahd.support.sql.SQLRow;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -16,7 +18,7 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
 
 
     public interface OnResultQuery {
-        void accept(PostgresSQLRow row );
+        void accept(SQLRow row );
     }
 
     public PostgresSQLResultSet(ResultSet resultSet) throws SQLException {
@@ -37,6 +39,7 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
     public PostgresSQLRow nextRow()  {
         try {
             if( this.resultSet == null ) return null;
+            if( this.resultSet.isClosed() ) return null;
             if( ! this.resultSet.next() ) return null;
 
             if( recordCursorPint && currentPoint <= fethsRow.size() && currentPoint > 0 ){
@@ -62,7 +65,7 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
         return null;
     }
 
-    public PostgresSQLRow previewRow() {
+    public SQLRow previewRow() {
         if( ! isRecordCursorPint() ) return null;
         if( this.fethsRow.size() < 1 ) return  null;
         this.currentRow = this.fethsRow.get( --currentPoint -1 );
@@ -73,24 +76,24 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
      * @param position base 0
      * @return
      */
-    public PostgresSQLRow getCurrentRow(int position ) {
+    public SQLRow getCurrentRow(int position ) {
         if( !isRecordCursorPint() ) return  null;
         this.currentRow = fethsRow.get( position );
         this.currentPoint = position +1;
         return currentRow;
     }
 
-    public List<PostgresSQLRow> getFethsRow() {
+    public List<SQLRow> getFethsRow() {
         return Collections.unmodifiableList( this.fethsRow );
     }
 
-    public PostgresSQLRow currentRow(){
+    public SQLRow currentRow(){
         return this.currentRow;
     }
 
     public void onResultQuery(OnResultQuery onResultQuery ) {
 
-        PostgresSQLRow row;
+        SQLRow row;
         while( (row = this.nextRow() )!= null ){
             if( onResultQuery != null ) onResultQuery.accept( row );
         }

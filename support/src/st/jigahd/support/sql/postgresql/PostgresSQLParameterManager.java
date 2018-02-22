@@ -351,6 +351,11 @@ public class PostgresSQLParameterManager {
         return this;
     }
 
+    public PostgresSQLParameterManager withJson(Object doublePrecision ){
+        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+        return this;
+    }
+
     public PostgresSQLParameterManager withJsonb( String doublePrecision ){
         parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
         return this;

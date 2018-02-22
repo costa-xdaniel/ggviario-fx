@@ -15,7 +15,6 @@ import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.*;
 
 public class ClienteNewController implements Initializable {
@@ -28,16 +27,12 @@ public class ClienteNewController implements Initializable {
 
     }
 
-    public interface OnResultSucess{
-        void accept( Cliente cliente, Map<String, Object> data );
+    public interface OnNewClienteResult {
+        void onNewClienteResult( boolean result,  Cliente cliente, Map<String, Object> data );
     }
 
-    public interface OnResultFailed{
-        void accept(Cliente cliente, Map< String, Object > data );
-    }
 
-    private OnResultFailed onResultFailed;
-    private OnResultSucess onResultSucess;
+    private OnNewClienteResult onNewClientSuccess;
 
 
     @FXML
@@ -156,14 +151,14 @@ public class ClienteNewController implements Initializable {
                             Map<String, Object> map = (Map<String, Object>) root.get("cliente");
                             Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
                             clienteBuilder.id( cliente, UUID.fromString( ( String ) map.get( "cliente_id" ) ) );
-                            if( this.onResultSucess != null ){
-                                this.onResultSucess.accept( cliente, root );
+                            if( this.onNewClientSuccess != null ){
+                                this.onNewClientSuccess.onNewClienteResult( true, cliente, root );
                             }
                         } else {
                             String msg = String.valueOf( row.valueOf("message") );
                             System.out.println( msg );
                             Map< String, Object > root = new Gson().fromJson( msg, Map.class );
-                            if( this.onResultFailed != null ) this.onResultFailed.accept( cliente, root );
+                            if( this.onNewClientSuccess != null ) this.onNewClientSuccess.onNewClienteResult( false, cliente, root );
                         }
                     });
         }
@@ -195,13 +190,8 @@ public class ClienteNewController implements Initializable {
         return nome != null;
     }
 
-    public ClienteNewController setOnResultFailed(OnResultFailed onResultFailed) {
-        this.onResultFailed = onResultFailed;
-        return this;
-    }
-
-    public ClienteNewController setOnResultSucess(OnResultSucess onResultSucess) {
-        this.onResultSucess = onResultSucess;
+    public ClienteNewController setOnNewClienteResult(OnNewClienteResult onNewClientSuccess) {
+        this.onNewClientSuccess = onNewClientSuccess;
         return this;
     }
 }

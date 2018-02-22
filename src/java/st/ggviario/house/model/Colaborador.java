@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
 import java.util.UUID;
@@ -52,7 +52,7 @@ public class Colaborador {
             return this;
         }
 
-        public ColaboradorBuilder load(PostgresSQLRow row ){
+        public ColaboradorBuilder load(SQLRow row ){
             return load( row.toMap() );
         }
 

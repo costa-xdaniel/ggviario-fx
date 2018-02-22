@@ -68,9 +68,8 @@ public class PostgresSQL {
         this.processedQuery = processedQuery;
     }
 
-    public Connection getCurrentConnection() {
-        if( this.conn == null ) this.createConnection();
-        if( isClosed()) this.createConnection();
+    protected Connection getCurrentConnection() {
+        this.createConnection();
         return this.conn;
     }
 

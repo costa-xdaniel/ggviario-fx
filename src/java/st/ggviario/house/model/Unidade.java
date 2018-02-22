@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +33,12 @@ public class Unidade {
         return unidadeEstadoDesc;
     }
 
+
+    @Override
+    public String toString() {
+        return this.unidadeNome;
+    }
+
     public static class UnidadeBuilder{
 
         private UUID id;
@@ -44,6 +50,7 @@ public class Unidade {
         public Unidade build() {
             Unidade unidade = new Unidade();
             unidade.unidadeId = this.id;
+            unidade.unidadeNome = this.nome;
             unidade.unidadeCodigo = this.codigo;
             unidade.unidadeEstado = this.estado;
             unidade.unidadeEstadoDesc = this.estadoDesc;
@@ -75,19 +82,20 @@ public class Unidade {
             return this;
         }
 
-        public UnidadeBuilder load( PostgresSQLRow row ){
+        public UnidadeBuilder load( SQLRow row ){
             this.load( row.toMap() );
             return this;
         }
 
         public UnidadeBuilder load( Map<String, Object > map ){
-            this.id = (UUID) map.get( "unidade_id" );
-            this.nome = (String) map.get( "unidade_nome" );
-            this.codigo = (String) map.get( "unidade_codigo" );
-            this.estado = (Short) map.get( "unidade_estado" );
-            this.estadoDesc = (String) map.get( "unidade_estadodesc" );
+            this.id = SQLRow.uuidOf( map.get( "unidade_id" ) );
+            this.nome = SQLRow.stringOf( map.get( "unidade_nome" ) );
+            this.codigo = SQLRow.stringOf( map.get( "unidade_codigo" )  );
+            this.estado = SQLRow.shortOf(  map.get( "unidade_estado" ) );
             return this;
         }
+
+
 
 
     }

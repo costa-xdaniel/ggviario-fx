@@ -1,7 +1,7 @@
 package st.ggviario.house.model;
 
 import com.google.gson.annotations.Expose;
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
 import java.util.UUID;
@@ -50,7 +50,7 @@ public class Categoria {
             return this;
         }
 
-        public CategoriaBuilder load(PostgresSQLRow row ){
+        public CategoriaBuilder load(SQLRow row ){
             return this.load( row.toMap() );
         }
 

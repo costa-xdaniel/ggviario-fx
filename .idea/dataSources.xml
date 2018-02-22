@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="contabilidade@localhost" uuid="cbe04270-f191-4ffe-8c5b-704977a59ecd">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/contabilidade</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="ggviario@localhost" uuid="4c4a8026-e28b-4db6-8187-7921d145ea2b">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>

@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-import st.jigahd.support.sql.postgresql.PostgresSQLRow;
+import st.jigahd.support.sql.SQLRow;
 
 public class TipoDocumento {
 
@@ -41,7 +41,7 @@ public class TipoDocumento {
             return this;
         }
 
-        public TipoDocumentoBuilder load(PostgresSQLRow row) {
+        public TipoDocumentoBuilder load(SQLRow row) {
             this.id = row.asShort( "tdocumento_id" );
             this.desc = row.asString( "tdocumento_desc" );
             return this;
