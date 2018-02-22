@@ -14,7 +14,7 @@ public class PostgresSQL {
     public static final String PROSTRGES_URL_MASK = "jdbc:postgresql://$host:$port/$database";
 
     private Configuration configuration;
-    private PostgresSQLParameterManager parameterManager;
+    private PostgresSQLQueryBuilder parameterManager;
     private String url;
     private Connection conn;
     private Map< ResourceType, PostgresSQLExecutor > executors;
@@ -24,7 +24,7 @@ public class PostgresSQL {
 
     public PostgresSQL( Configuration configuration ) {
         setConfiguration(configuration);
-        this.parameterManager = new PostgresSQLParameterManager( this );
+        this.parameterManager = new PostgresSQLQueryBuilder( this );
         this.executors = new LinkedHashMap<>();
         this.executors.put( ResourceType.FUNCTION, new PostgresSQLExecutorFunction( this ) );
         this.executors.put( ResourceType.FUNCTION_TABLE, new PostgresSQLExecutorFunctionTable( this ) );
@@ -40,7 +40,7 @@ public class PostgresSQL {
         ;
     }
 
-    public PostgresSQLParameterManager query(String query ){
+    public PostgresSQLQueryBuilder query(String query ){
         this.parameterManager.clear();
         this.query = query;
         return this.parameterManager;
@@ -60,7 +60,7 @@ public class PostgresSQL {
         return this.parameterManager.countParameters();
     }
 
-    protected PostgresSQLParameterManager getParameterManager() {
+    protected PostgresSQLQueryBuilder getParameterManager() {
         return this.parameterManager;
     }
 

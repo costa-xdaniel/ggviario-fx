@@ -19,7 +19,7 @@
                       <TableColumn fx:id="columnClienteNome" prefWidth="75.0" text="Cliente" />
                       <TableColumn fx:id="columnClienteContacto" prefWidth="75.0" text="Contacto" />
                       <TableColumn fx:id="columnClienteMorada" prefWidth="75.0" text="Residencia" />
-                      <TableColumn fx:id="columnClienteMontanteCompra" prefWidth="75.0" text="Compras" />
+                      <TableColumn fx:id="columnClienteMontanteVenda" prefWidth="75.0" text="Vendas" />
                       <TableColumn fx:id="columnClienteMontanteDivida" prefWidth="75.0" text="Dividas" />
                       <TableColumn fx:id="columnClienteMontanteTotal" prefWidth="75.0" text="Total" />
                       <TableColumn fx:id="columnClienteMontantePago" prefWidth="75.0" text="Pago" />

@@ -86,7 +86,7 @@ public class SQLRow implements Serializable {
     }
 
     public Double asDouble( String columnName ){
-        return (Double) valueOf( columnName );
+        return SQLRow.doubleOf( valueOf( columnName ) );
     }
 
     public BigDecimal asNumber( String columnName ){

@@ -49,7 +49,7 @@ public class ClienteController extends TableController< Cliente > implements Ini
     private TableColumn<Cliente, String> columnClienteMorada;
 
     @FXML
-    private TableColumn<Cliente, Number> columnClienteMontanteCompra;
+    private TableColumn<Cliente, Number> columnClienteMontanteVenda;
 
     @FXML
     private TableColumn<Cliente, Number> columnClienteMontanteDivida;
@@ -126,8 +126,8 @@ public class ClienteController extends TableController< Cliente > implements Ini
         this.columnClienteContacto.setCellValueFactory( data-> new SimpleStringProperty( data.getValue().getClienteMorada() ) );
         this.columnClienteContacto.setCellFactory( cell -> this.getTextCell() );
 
-        this.columnClienteMontanteCompra.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMonatenteCompra() ) );
-        this.columnClienteMontanteCompra.setCellFactory( cell -> getNumberCell() );
+        this.columnClienteMontanteVenda.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getClienteMonatenteCompra() ) );
+        this.columnClienteMontanteVenda.setCellFactory(cell -> getNumberCell() );
 
         this.columnClienteMontanteDivida.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMontanteDivida() ) );
         this.columnClienteMontanteDivida.setCellFactory( cell -> this.getNumberCell() );

@@ -31,7 +31,7 @@ public class PostgresSQLResult {
     }
 
     public Object valueOf( int indexColumn, String columnName, int typeColumn ) throws SQLException {
-        return PostgresSQLParameterManager
+        return PostgresSQLQueryBuilder
                 .getGetters()
                     .get( typeColumn )
                         .get( this.resultSet, columnName, typeColumn );

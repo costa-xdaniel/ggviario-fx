@@ -3,8 +3,6 @@ package st.ggviario.house.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.events.JFXDialogEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,13 +10,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import st.ggviario.house.model.Cliente;
-import st.ggviario.house.model.Compra;
+import st.ggviario.house.model.TipoVenda;
 
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class DividaController implements Initializable, DividaNewController.OnNewClienteRequest, DividaNewController.OnNewCompraResult, ClienteNewController.OnNewClienteResult {
+public class VendaDividaCnotroller implements Initializable, VendaNewController.OnNewClienteRequest, VendaNewController.OnNewVendaResult, ClienteNewController.OnNewClienteResult {
 
 
     @FXML
@@ -27,9 +25,9 @@ public class DividaController implements Initializable, DividaNewController.OnNe
     @FXML
     private JFXButton buttonNewDivida;
     private Pane dividaNewPanel;
-    private DividaNewController dividaNewController;
+    private VendaNewController vendaNewController;
 
-    private JFXDialog dialogCampraDividaNew;
+    private JFXDialog dialogVendaNew;
     private JFXDialogLayout dialogLayoutCompraNew;
 
     private JFXDialog dialogClienteNew;
@@ -43,7 +41,7 @@ public class DividaController implements Initializable, DividaNewController.OnNe
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.buttonNewDivida.setOnAction(actionEvent -> this.newDivida());
         this.dialogLayoutCompraNew = new JFXDialogLayout();
-        this.dialogCampraDividaNew = new JFXDialog( this.stackPane, this.dialogLayoutCompraNew, JFXDialog.DialogTransition.CENTER );
+        this.dialogVendaNew = new JFXDialog( this.stackPane, this.dialogLayoutCompraNew, JFXDialog.DialogTransition.CENTER );
 //
         this.dialogLayoutClienteNew = new JFXDialogLayout();
         this.dialogClienteNew = new JFXDialog( this.stackPane, this.dialogLayoutClienteNew, JFXDialog.DialogTransition.CENTER );
@@ -51,20 +49,21 @@ public class DividaController implements Initializable, DividaNewController.OnNe
     }
 
     private void newDivida() {
-        this.loadNewDividaContent();
+        this.loadNewVendaContent();
         dialogLayoutCompraNew.setHeading( new Text("Nova divida") );
         dialogLayoutCompraNew.setBody( this.dividaNewPanel);
-        this.dialogCampraDividaNew.show();
+        this.dialogVendaNew.show();
     }
 
-    private void loadNewDividaContent() {
+    private void loadNewVendaContent() {
         try{
             if( this.dividaNewPanel == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/divida_new.fxml" ) );
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_new.fxml") );
                 this.dividaNewPanel = loader.load();
-                this.dividaNewController = loader.getController();
-                this.dividaNewController.setOnNewClienteRequest( this );
-                this.dividaNewController.setOnNewCompraResult( this );
+                this.vendaNewController = loader.getController();
+                this.vendaNewController.setOnNewClienteRequest( this );
+                this.vendaNewController.setOnNewVendaResult( this );
+                this.vendaNewController.setTipoVenda( TipoVenda.DIVIDA );
             }
         } catch ( Exception ex ){
             ex.printStackTrace();
@@ -87,36 +86,37 @@ public class DividaController implements Initializable, DividaNewController.OnNe
 
     @Override
     public void onRegisterNewClienteRequest() {
-        this.dialogCampraDividaNew.setOnDialogClosed(jfxDialogEvent -> this.newCliente());
-        this.dialogCampraDividaNew.close();
+        this.dialogVendaNew.setOnDialogClosed(jfxDialogEvent -> this.newCliente());
+        this.dialogVendaNew.close();
     }
 
     private void newCliente() {
         this.loadNewCliente();
-        this.dialogCampraDividaNew.setOnDialogClosed( null );
+        this.dialogVendaNew.setOnDialogClosed( null );
 
         this.dialogLayoutClienteNew.setHeading( new Text("Novo cliente") );
         this.dialogLayoutClienteNew.setBody( this.clienteNewPanel );
         this.dialogClienteNew.show();
-    }
-
-    @Override
-    public void onNewCompraResult(boolean result, Compra compra, Map<String, Object> map) {
-
-    }
-
-    @Override
-    public void onNewClienteResult(boolean result, Cliente cliente, Map<String, Object> data) {
-        this.dividaNewController.onClienteRequestResult( result, cliente, data );
-        this.dialogClienteNew.setOnDialogClosed( event -> {
-            this.dialogClienteNew.setOnDialogClosed( null );
-        });
 
         dialogClienteNew.setOnDialogClosed(jfxDialogEvent -> {
             this.dialogClienteNew.setOnDialogClosed( null );
-            this.dialogCampraDividaNew.show();
+            this.dialogVendaNew.show();
         });
+    }
+
+
+    @Override
+    public void onNewClienteResult(boolean result, Cliente cliente, Map<String, Object> data) {
+        this.vendaNewController.onClienteRequestResult( result, cliente, data );
         dialogClienteNew.close();
 
+    }
+
+    @Override
+    public void onNewVendaResult(VendaNewController.NewVendaResult newVendaResult) {
+        if( newVendaResult.isSucess() ){
+            this.dialogVendaNew.close();
+            this.dialogVendaNew.setOnDialogClosed( null );
+        }
     }
 }

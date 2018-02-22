@@ -16,6 +16,12 @@ SET row_security = off;
 
 SET search_path = ggviario, pg_catalog;
 
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_unidade;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_tipovenda;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_produto;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_colaborador_atualizacao;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_colaborador;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_cliente;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS fk_unidade_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS fk_unidade_to_colaborador;
 ALTER TABLE IF EXISTS ONLY ggviario.setor DROP CONSTRAINT IF EXISTS fk_setor_to_setor;
@@ -41,10 +47,6 @@ ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS fk_movim
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_distrito;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_colaborador;
-ALTER TABLE IF EXISTS ONLY ggviario.equivalencia DROP CONSTRAINT IF EXISTS fk_equivalencia_to_unidade;
-ALTER TABLE IF EXISTS ONLY ggviario.equivalencia DROP CONSTRAINT IF EXISTS fk_equivalencia_to_produto;
-ALTER TABLE IF EXISTS ONLY ggviario.equivalencia DROP CONSTRAINT IF EXISTS fk_equivalencia_to_colaborador_atualizacao;
-ALTER TABLE IF EXISTS ONLY ggviario.equivalencia DROP CONSTRAINT IF EXISTS fk_equivalencia_to_colaborador;
 ALTER TABLE IF EXISTS ONLY ggviario.despesa DROP CONSTRAINT IF EXISTS fk_despesa_to_unidade;
 ALTER TABLE IF EXISTS ONLY ggviario.despesa DROP CONSTRAINT IF EXISTS fk_despesa_to_produto;
 ALTER TABLE IF EXISTS ONLY ggviario.despesa DROP CONSTRAINT IF EXISTS fk_despesa_to_fornecedor;
@@ -54,12 +56,6 @@ ALTER TABLE IF EXISTS ONLY ggviario.conta DROP CONSTRAINT IF EXISTS fk_conta_to_
 ALTER TABLE IF EXISTS ONLY ggviario.conta DROP CONSTRAINT IF EXISTS fk_conta_to_contao;
 ALTER TABLE IF EXISTS ONLY ggviario.conta DROP CONSTRAINT IF EXISTS fk_conta_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.conta DROP CONSTRAINT IF EXISTS fk_conta_to_colaborador;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_unidade;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_tipocompra;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_produto;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_colaborador_atualizacao;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_colaborador;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS fk_compra_to_cliente;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS fk_cliente_to_tipodocumento;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS fk_cliente_to_sexo;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS fk_cliente_to_distrito;
@@ -88,13 +84,13 @@ ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_acces
 ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_accesso_to_colaborador;
 SET search_path = ggviario, pg_catalog;
 
+DROP TRIGGER IF EXISTS tg_venda_intert_update_produto_stock ON ggviario.venda;
 DROP TRIGGER IF EXISTS tg_setor_after_update_update_cascade ON ggviario.setor;
 DROP TRIGGER IF EXISTS tg_setor_after_insert_protect_parent ON ggviario.setor;
 DROP TRIGGER IF EXISTS tg_producao_after_insert_movement_sector_and_product ON ggviario.producao;
 DROP TRIGGER IF EXISTS tg_movimento_after_insert_update_movimento_devolucao ON ggviario.movimento;
 DROP TRIGGER IF EXISTS tg_movimento_after_insert_update_itemcompra ON ggviario.movimento;
 DROP TRIGGER IF EXISTS tg_movimento_after_insert_update_conta ON ggviario.movimento;
-DROP TRIGGER IF EXISTS tg_despesa_after_insert_update_stock ON ggviario.compra;
 DROP TRIGGER IF EXISTS tg_despesa_after_insert_update_stock ON ggviario.despesa;
 SET search_path = colaborador, pg_catalog;
 
@@ -121,10 +117,11 @@ DROP INDEX IF EXISTS colaborador.idx_acesso_estado;
 DROP INDEX IF EXISTS colaborador.idx_acesso_colaborador_propetario;
 SET search_path = ggviario, pg_catalog;
 
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS uq_venda_fatura;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS uq_unidade_nome;
 ALTER TABLE IF EXISTS ONLY ggviario.tipomovimento DROP CONSTRAINT IF EXISTS uq_tmovimento_desc;
 ALTER TABLE IF EXISTS ONLY ggviario.tipoconta DROP CONSTRAINT IF EXISTS uq_tconta_desc;
-ALTER TABLE IF EXISTS ONLY ggviario.tipocompra DROP CONSTRAINT IF EXISTS uq_tcompra_desc;
+ALTER TABLE IF EXISTS ONLY ggviario.tipovenda DROP CONSTRAINT IF EXISTS uq_tcompra_desc;
 ALTER TABLE IF EXISTS ONLY ggviario.sexo DROP CONSTRAINT IF EXISTS uq_sexo_id;
 ALTER TABLE IF EXISTS ONLY ggviario.setor DROP CONSTRAINT IF EXISTS uq_setor_nome;
 ALTER TABLE IF EXISTS ONLY ggviario.produto DROP CONSTRAINT IF EXISTS uq_produto_nome;
@@ -132,17 +129,17 @@ ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS uq_forn
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS uq_fornecedor_nif;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS uq_fornecedor_mail;
 ALTER TABLE IF EXISTS ONLY ggviario.distrito DROP CONSTRAINT IF EXISTS uq_distrito_nome;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS uq_compra_fatura;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS uq_codigo_nome;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS uq_cliente_mails;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS uq_cliente_documento;
 ALTER TABLE IF EXISTS ONLY ggviario.categoria DROP CONSTRAINT IF EXISTS uq_categoria_nome;
 ALTER TABLE IF EXISTS ONLY ggviario.tipodocumento DROP CONSTRAINT IF EXISTS qu_tdocumento_desc;
+ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS pk_venda_id;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS pk_unidade_id;
+ALTER TABLE IF EXISTS ONLY ggviario.tipovenda DROP CONSTRAINT IF EXISTS pk_tvenda_id;
 ALTER TABLE IF EXISTS ONLY ggviario.tipomovimento DROP CONSTRAINT IF EXISTS pk_tmovimento_id;
 ALTER TABLE IF EXISTS ONLY ggviario.tipodocumento DROP CONSTRAINT IF EXISTS pk_tdocumento_id;
 ALTER TABLE IF EXISTS ONLY ggviario.tipoconta DROP CONSTRAINT IF EXISTS pk_tconta_id;
-ALTER TABLE IF EXISTS ONLY ggviario.tipocompra DROP CONSTRAINT IF EXISTS pk_tcompra_id;
 ALTER TABLE IF EXISTS ONLY ggviario.sexo DROP CONSTRAINT IF EXISTS pk_sexo_id;
 ALTER TABLE IF EXISTS ONLY ggviario.setor DROP CONSTRAINT IF EXISTS pk_setor_id;
 ALTER TABLE IF EXISTS ONLY ggviario.produto DROP CONSTRAINT IF EXISTS pk_produto_id;
@@ -150,11 +147,9 @@ ALTER TABLE IF EXISTS ONLY ggviario.producao DROP CONSTRAINT IF EXISTS pk_produc
 ALTER TABLE IF EXISTS ONLY ggviario.preco DROP CONSTRAINT IF EXISTS pk_preco_id;
 ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS pk_movimento_id;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS pk_fornecedor_id;
-ALTER TABLE IF EXISTS ONLY ggviario.equivalencia DROP CONSTRAINT IF EXISTS pk_equivalencia_id;
 ALTER TABLE IF EXISTS ONLY ggviario.distrito DROP CONSTRAINT IF EXISTS pk_distrito_id;
 ALTER TABLE IF EXISTS ONLY ggviario.despesa DROP CONSTRAINT IF EXISTS pk_despesa_id;
 ALTER TABLE IF EXISTS ONLY ggviario.conta DROP CONSTRAINT IF EXISTS pk_conta_id;
-ALTER TABLE IF EXISTS ONLY ggviario.compra DROP CONSTRAINT IF EXISTS pk_compra_id;
 ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS pk_cliente_id;
 ALTER TABLE IF EXISTS ONLY ggviario.categoria DROP CONSTRAINT IF EXISTS pk_categoria_id;
 ALTER TABLE IF EXISTS ggviario.movimento DROP CONSTRAINT IF EXISTS ck_movimato_source_is_valid;
@@ -185,7 +180,6 @@ DROP SEQUENCE IF EXISTS ggviario.seq_faturanumero;
 DROP TABLE IF EXISTS ggviario.producao;
 DROP TABLE IF EXISTS ggviario.fornecedor;
 DROP TABLE IF EXISTS ggviario.distrito;
-DROP TABLE IF EXISTS ggviario.cliente;
 SET search_path = colaborador, pg_catalog;
 
 DROP TABLE IF EXISTS colaborador.sexo;
@@ -222,10 +216,14 @@ DROP AGGREGATE IF EXISTS lib.agg_extreme(anyelement, boolean);
 DROP AGGREGATE IF EXISTS lib.agg_collect(collect_next anyelement, collect_accepetnull boolean);
 SET search_path = rule, pg_catalog;
 
+DROP FUNCTION IF EXISTS rule.venda_insert(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tvenda_id smallint, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date);
+DROP FUNCTION IF EXISTS rule.venda_fatura_generatenext(_tipocompra ggviario.tipovenda);
+DROP FUNCTION IF EXISTS rule.vena_estado_desc(_compra ggviario.venda, _const constant);
 DROP FUNCTION IF EXISTS rule.setor_estado_desc(_setor ggviario.setor, _const constant);
 DROP FUNCTION IF EXISTS rule.produto_estado_desc(_produto ggviario.produto, _const constant);
 DROP FUNCTION IF EXISTS rule.movimento_insert(arg_colaborador_id uuid, arg_conta_id uuid, arg_tmovimento_id smallint, arg_movimento_documento character varying, arg_movimento_data date, arg_movimento_montante numeric, arg_movimento_libele character varying, arg_itemcompra_id uuid, arg_despesa_id uuid, arg_movimento_id uuid, arg_movimento_devolucao boolean, arg_movimento_transferencianumero integer);
 DROP FUNCTION IF EXISTS rule.movimento_check_source(_movimento ggviario.movimento);
+DROP FUNCTION IF EXISTS rule.functg_venda_intert_update_produto_stock();
 DROP FUNCTION IF EXISTS rule.functg_setor_after_update_update_cascade();
 DROP FUNCTION IF EXISTS rule.functg_setor_after_insert_protect_parent();
 DROP FUNCTION IF EXISTS rule.functg_producao_after_insert_movement_sector_and_product();
@@ -233,11 +231,11 @@ DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_movimento_devo
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_itemcompra();
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_conta();
 DROP FUNCTION IF EXISTS rule.functg_despesa_after_insert_update_stock();
-DROP FUNCTION IF EXISTS rule.functg_compra_intert_update_produto_stock();
 DROP FUNCTION IF EXISTS rule.despesa_estado_desc(_despesa ggviario.despesa, _const constant);
-DROP FUNCTION IF EXISTS rule.compra_insert(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tcompra_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date, arg_compra_datafinalizar date);
-DROP FUNCTION IF EXISTS rule.compra_fatura_generatenext(_tipocompra ggviario.tipocompra);
-DROP FUNCTION IF EXISTS rule.compra_estado_desc(_compra ggviario.compra, _const constant);
+DROP FUNCTION IF EXISTS rule.cliente_estado_desc(_cliente ggviario.cliente, _const constant);
+SET search_path = ggviario, pg_catalog;
+
+DROP TABLE IF EXISTS ggviario.cliente;
 SET search_path = lib, pg_catalog;
 
 DROP FUNCTION IF EXISTS lib.split_name(name character varying);
@@ -306,10 +304,11 @@ DROP FUNCTION IF EXISTS lib.agg_collect_collector(collect_list anyarray, collect
 DROP FUNCTION IF EXISTS lib.age(timestamp without time zone);
 SET search_path = ggviario, pg_catalog;
 
+DROP FUNCTION IF EXISTS ggviario.get_venda(arg_compra_id uuid);
 DROP FUNCTION IF EXISTS ggviario.get_unidade(arg_unidade_id uuid);
 DROP TABLE IF EXISTS ggviario.unidade;
-DROP FUNCTION IF EXISTS ggviario.get_tipocompra(arg_tcompra_id smallint);
-DROP TABLE IF EXISTS ggviario.tipocompra;
+DROP FUNCTION IF EXISTS ggviario.get_tipovenda(arg_tvenda_id smallint);
+DROP TABLE IF EXISTS ggviario.tipovenda;
 DROP FUNCTION IF EXISTS ggviario.get_setor(arg_setor_id uuid);
 DROP TABLE IF EXISTS ggviario.setor;
 DROP FUNCTION IF EXISTS ggviario.get_produto(arg_produto_id uuid);
@@ -318,13 +317,10 @@ DROP FUNCTION IF EXISTS ggviario.get_preco(arg_preco_id uuid);
 DROP TABLE IF EXISTS ggviario.preco;
 DROP FUNCTION IF EXISTS ggviario.get_movimento(arg_movimento_id uuid);
 DROP TABLE IF EXISTS ggviario.movimento;
-DROP FUNCTION IF EXISTS ggviario.get_equivalencia(arg_equivalecia_id uuid);
-DROP TABLE IF EXISTS ggviario.equivalencia;
 DROP FUNCTION IF EXISTS ggviario.get_despesa(arg_despesa_id uuid);
 DROP TABLE IF EXISTS ggviario.despesa;
 DROP FUNCTION IF EXISTS ggviario.get_conta(arg_conta_id uuid);
 DROP TABLE IF EXISTS ggviario.conta;
-DROP FUNCTION IF EXISTS ggviario.get_compra(arg_compra_id uuid);
 DROP FUNCTION IF EXISTS ggviario.get_categoria(arg_categoria_id uuid);
 DROP TABLE IF EXISTS ggviario.categoria;
 SET search_path = lib, pg_catalog;
@@ -332,27 +328,32 @@ SET search_path = lib, pg_catalog;
 DROP FUNCTION IF EXISTS lib.is_normalized(text);
 SET search_path = ggviario, pg_catalog;
 
+DROP FUNCTION IF EXISTS ggviario.funct_reg_venda_venda(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_venda_divida(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_unidade(arg_colaborador_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, options jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_precos jsonb);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_movimento_amortizacao_itemcompra(arg_colaborador_id uuid, arg_itemcompra_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_movimento_amortizacao_itemvenda(arg_colaborador_id uuid, arg_itemcompra_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_movimento_amortizacao_compra(arg_colaborador_id uuid, arg_compra_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_fornecedor(arg_colaborador_id uuid, arg_fornecedor_nome character varying, arg_fornecedor_nif character varying, arg_fornecedor_telefone character varying, arg_fornecedor_telemovel character varying, arg_fornecedor_mail character varying, arg_fornecedor_local character varying, arg_distrito_id smallint);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_equivalencia(arg_colaborador_id uuid, arg_produto_id uuid, arg_equivalencias jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_despesa(arg_colaborador_id uuid, arg_fornecedor_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_despesa_quantidade numeric, arg_despesa_custounitario numeric, arg_despesa_custototal numeric, arg_despesa_data date, arg_despesa_numerofatura date);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_compra_divida(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date, arg_compra_datafinalizar date);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_compra_compra(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_datanascimento date, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying, arg_cliente_localtrabalho character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_categoria(arg_colaborador_id uuid, arg_categoria_super uuid, arg_categoria_nome character varying);
+DROP FUNCTION IF EXISTS ggviario.funct_load_tipodocumento(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_produto_venda(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_produto(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_distrito(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_cliente_vendadivida(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_cliente(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_categoria(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_change_setor_estado_mode(arg_colaborador_id uuid, arg_setor_id uuid, arg_estado_modo boolean);
 DROP FUNCTION IF EXISTS ggviario.funct_change_setor(arg_colaborador_id uuid, arg_setor_id uuid, arg_setor_data jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_change_produto_setoptions(arg_colaborador_id uuid, arg_produto_id uuid, options jsonb);
-DROP FUNCTION IF EXISTS ggviario.compra_estado_desc(_compra compra, _const rule.constant);
-DROP TABLE IF EXISTS ggviario.compra;
+DROP FUNCTION IF EXISTS ggviario.compra_estado_desc(_compra venda, _const rule.constant);
+DROP TABLE IF EXISTS ggviario.venda;
 SET search_path = rule, pg_catalog;
 
 DROP FUNCTION IF EXISTS rule.constant_init();
@@ -506,8 +507,6 @@ SET search_path = rule, pg_catalog;
 --
 
 CREATE TYPE constant AS (
-	equivalencia_estado_ativo smallint,
-	equivalencia_estado_fechado smallint,
 	preco_estado_ativo smallint,
 	preco_estado_fechado smallint,
 	setor_estado_ativo smallint,
@@ -515,11 +514,10 @@ CREATE TYPE constant AS (
 	setor_estado_protegido smallint,
 	produto_estado_ativo smallint,
 	produto_estado_fechado smallint,
-	compra_estado_pendente smallint,
-	compra_estado_feito smallint,
-	compra_estado_empagamento smallint,
-	compra_estado_pago smallint,
-	compra_estado_anulado smallint,
+	venda_estado_pendente smallint,
+	venda_estado_empagamento smallint,
+	venda_estado_pago smallint,
+	venda_estado_anulado smallint,
 	despesa_estado_pendente smallint,
 	despesa_estado_empagamento smallint,
 	despesa_estado_pago smallint,
@@ -530,8 +528,10 @@ CREATE TYPE constant AS (
 	movimento_estado_emdevolucao smallint,
 	movimento_estado_devolvido smallint,
 	movimento_estado_anulado smallint,
-	tipocompra_compra smallint,
-	tipocompra_divida smallint
+	tipovenda_divida smallint,
+	tipovenda_venda smallint,
+	cliente_estado_ativo smallint,
+	cliente_estado_fechado smallint
 );
 
 
@@ -1779,10 +1779,6 @@ declare
   _const rule.constant;
 begin
 
-  --//Estado de equivalencia
-  _const.equivalencia_estado_ativo := 1;
-  _const.equivalencia_estado_fechado := 0;
-
   --// Estdao de preco
   _const.preco_estado_ativo := 1;
   _const.preco_estado_fechado := 0;
@@ -1796,12 +1792,11 @@ begin
   _const.produto_estado_ativo := 1;
   _const.produto_estado_fechado := 0;
 
-  --//Estados de compra
-  _const.compra_estado_pendente := 3;
-  _const.compra_estado_feito := 2;
-  _const.compra_estado_empagamento := 1;
-  _const.compra_estado_pago := 0;
-  _const.compra_estado_anulado := -1;
+  --//Estados de venda
+  _const.venda_estado_pendente := 2;
+  _const.venda_estado_empagamento := 1;
+  _const.venda_estado_pago := 0;
+  _const.venda_estado_anulado := -1;
 
   --//Esatado de despesa
   _const.despesa_estado_pendente := 2;
@@ -1818,9 +1813,13 @@ begin
   _const.movimento_estado_devolvido := 0;
   _const.movimento_estado_anulado := -1;
 
-  --//Tipo de compra
-  _const.tipocompra_compra := 1;
-  _const.tipocompra_divida := 2;
+  --//Tipo de venda
+  _const.tipovenda_venda := 1;
+  _const.tipovenda_divida := 2;
+
+  --//Esatdo dos cliente
+  _const.cliente_estado_ativo := 1;
+  _const.cliente_estado_fechado := 1;
 
   return _const;
 end;
@@ -1830,40 +1829,40 @@ $$;
 SET search_path = ggviario, pg_catalog;
 
 --
--- Name: compra; Type: TABLE; Schema: ggviario; Owner: -
+-- Name: venda; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE compra (
-    compra_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    compra_produto_id uuid NOT NULL,
-    compra_unidade_id uuid NOT NULL,
-    compra_cliente_id uuid NOT NULL,
-    compra_tcompra_id smallint NOT NULL,
-    compra_colaborador_id uuid NOT NULL,
-    compra_colaborador_atualizacao uuid NOT NULL,
-    compra_faturanumero character varying(8) NOT NULL,
-    compra_quantidade numeric NOT NULL,
-    compra_quantidadeproduto numeric NOT NULL,
-    compra_custounitario numeric NOT NULL,
-    compra_custobruto numeric NOT NULL,
-    compra_custodesconto numeric NOT NULL,
-    compra_custopagar numeric NOT NULL,
-    compra_custoamortizado numeric DEFAULT 0 NOT NULL,
-    compra_data date,
-    compra_datafinalizar date NOT NULL,
-    compra_datafim timestamp without time zone,
-    compra_dataultimamovimentacao date,
-    compra_estado smallint DEFAULT 3 NOT NULL,
-    compra_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    compra_dataatualizacao timestamp without time zone
+CREATE TABLE venda (
+    venda_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    venda_produto_id uuid NOT NULL,
+    venda_unidade_id uuid NOT NULL,
+    venda_cliente_id uuid NOT NULL,
+    venda_tvenda_id smallint NOT NULL,
+    venda_colaborador_id uuid NOT NULL,
+    venda_colaborador_atualizacao uuid,
+    venda_faturanumero character varying(8) NOT NULL,
+    venda_quantidade numeric NOT NULL,
+    venda_quantidadeproduto numeric NOT NULL,
+    venda_montanteunitario numeric NOT NULL,
+    venda_montantebruto numeric NOT NULL,
+    venda_montantedesconto numeric NOT NULL,
+    venda_montantepagar numeric NOT NULL,
+    venda_montanteamortizado numeric DEFAULT 0 NOT NULL,
+    venda_data date,
+    venda_datafinalizar date NOT NULL,
+    venda_datafim timestamp without time zone,
+    venda_dataultimamovimentacao date,
+    venda_estado smallint DEFAULT 3 NOT NULL,
+    venda_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    venda_dataatualizacao timestamp without time zone
 );
 
 
 --
--- Name: compra_estado_desc(compra, rule.constant); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: compra_estado_desc(venda, rule.constant); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION compra_estado_desc(_compra compra, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
+CREATE FUNCTION compra_estado_desc(_compra venda, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1892,7 +1891,8 @@ declare
   arg_produto_servicocliente boolean default coalesce( options->?'produto_servicocliente', true );
   arg_produto_servicofornecedor boolean default coalesce( options->?'produto_servicofornecedor', true );
   arg_produto_servicoproducao boolean default coalesce( options->?'produto_servicoproducao', true );
-  arg_produto_stockdinamico boolean default coalesce( options->?'produto_stockdinamico', true );
+  arg_produto_servicostockdinamico boolean default coalesce( options->?'produto_servicostockdinamico', true );
+  arg_produto_servicostockdinamiconegativo boolean default coalesce( options->?'produto_servicostockdinamiconegativo', false );
 begin
 
   _produto := ggviario.get_produto( arg_produto_id );
@@ -1902,7 +1902,8 @@ begin
     produto_servicocliente = arg_produto_servicocliente,
     produto_servicofornecedor = arg_produto_servicofornecedor,
     produto_servicoproducao = arg_produto_servicoproducao,
-    produto_stockdinamico = arg_produto_stockdinamico
+    produto_servicostockdinamico = arg_produto_servicostockdinamico,
+    produto_servicostockdinamiconegativo = arg_produto_servicostockdinamiconegativo
   where produto_id = arg_produto_id
   returning * into _produto
   ;
@@ -2021,6 +2022,129 @@ $$;
 
 
 --
+-- Name: funct_load_cliente(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_cliente(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, distrito_id smallint, distrito_nome character varying, tdocumento_id smallint, tdocumento_desc character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  return query select
+      cli.cliente_id,
+      cli.cliente_nome,
+      cli.cliente_apelido,
+      cli.cliente_datanascimento,
+      cli.cliente_documentonumero,
+      cli.cliente_mail,
+      cli.cliente_morada,
+      cli.cliente_telefone,
+      cli.cliente_telemovel,
+      cli.cliente_localtrabalho,
+      cli.cliente_estado,
+      rule.cliente_estado_desc( cli, _const ),
+      se.sexo_id,
+      se.sexo_desc,
+      dist.distrito_id,
+      dist.distrito_nome,
+      tdoc.tdocumento_id,
+      tdoc.tdocumento_desc,
+      sum( cp.venda_montantepagar ) filter ( where cp.venda_tvenda_id = _const.tipovenda_venda ) as cliente_montentecompras,
+      sum( cp.venda_montantepagar ) filter ( where cp.venda_tvenda_id = _const.tipovenda_divida ) as cliente_montentedividas,
+      sum( cp.venda_montantepagar ) as cliente_montantetatal,
+      sum( cp.venda_montanteamortizado ) as cliente_montanteamortizado,
+      sum( cp.venda_montantepagar - cp.venda_montanteamortizado ) as cliente_montantependente
+    from cliente cli
+      left join ggviario.sexo se on cli.cliente_sexo_id = se.sexo_id
+      left join ggviario.distrito dist on cli.cliente_distrito_id = dist.distrito_id
+      left join ggviario.tipodocumento tdoc on cli.cliente_tdocumento_id = tdoc.tdocumento_id
+      left join ggviario.venda cp on cli.cliente_id = cp.venda_cliente_id
+    group by cli.cliente_id,
+      se.sexo_id,
+      dist.distrito_id,
+      tdoc.tdocumento_id
+    order by
+      case
+        when cli.cliente_id = lib.to_uuid ( 1 ) then 1
+        else 2
+      end asc,
+      cli.cliente_nome asc,
+      cli.cliente_apelido asc
+  ;
+end;
+$$;
+
+
+--
+-- Name: funct_load_cliente_vendadivida(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_cliente_vendadivida(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, distrito_id smallint, distrito_nome character varying, tdocumento_id smallint, tdocumento_desc character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+  arg_cliente_anonimo_id uuid default lib.to_uuid( 1 );
+begin
+  _const := rule.constant_init();
+  return query select
+                 cli.cliente_id,
+                 cli.cliente_nome,
+                 cli.cliente_apelido,
+                 cli.cliente_datanascimento,
+                 cli.cliente_documentonumero,
+                 cli.cliente_mail,
+                 cli.cliente_morada,
+                 cli.cliente_telefone,
+                 cli.cliente_telemovel,
+                 cli.cliente_localtrabalho,
+                 cli.cliente_estado,
+                 rule.cliente_estado_desc( cli, _const ),
+                 se.sexo_id,
+                 se.sexo_desc,
+                 dist.distrito_id,
+                 dist.distrito_nome,
+                 tdoc.tdocumento_id,
+                 tdoc.tdocumento_desc,
+                 sum( vd.venda_montantepagar ) filter ( where vd.venda_tvenda_id = _const.tipovenda_venda ) as cliente_montentecompras,
+                 sum( vd.venda_montantepagar ) filter ( where vd.venda_tvenda_id = _const.tipovenda_divida ) as cliente_montentedividas,
+                 sum( vd.venda_montantepagar ) as cliente_montantetatal,
+                 sum( vd.venda_montanteamortizado ) as cliente_montanteamortizado,
+                 sum( vd.venda_montantepagar - vd.venda_montanteamortizado ) as cliente_montantependente
+               from cliente cli
+                 left join ggviario.sexo se on cli.cliente_sexo_id = se.sexo_id
+                 left join ggviario.distrito dist on cli.cliente_distrito_id = dist.distrito_id
+                 left join ggviario.tipodocumento tdoc on cli.cliente_tdocumento_id = tdoc.tdocumento_id
+                 left join ggviario.venda vd on cli.cliente_id = vd.venda_cliente_id
+               where cli.cliente_id != arg_cliente_anonimo_id
+               group by cli.cliente_id,
+                 se.sexo_id,
+                 dist.distrito_id,
+                 tdoc.tdocumento_id
+               order by
+                 case
+                 when cli.cliente_id = lib.to_uuid ( 1 ) then 1
+                 else 2
+                 end asc,
+                 cli.cliente_nome asc,
+                 cli.cliente_apelido asc
+  ;
+end;
+$$;
+
+
+--
+-- Name: funct_load_distrito(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_distrito(filter jsonb) RETURNS TABLE(distrito_id smallint, distrito_nome character varying)
+    LANGUAGE sql
+    AS $$ select distrito_id, distrito_nome from ggviario.distrito;$$;
+
+
+--
 -- Name: funct_load_produto(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
@@ -2055,6 +2179,50 @@ group by pro.produto_id,
 order by pro.produto_nome,
   cat.categoria_nome
 
+$$;
+
+
+--
+-- Name: funct_load_produto_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_produto_venda(filter jsonb) RETURNS TABLE(produto_id uuid, produto_nome character varying, produto_codigo character varying, produto_stock numeric, produto_precos jsonb, categoria_id uuid, categoria_nome character varying)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+
+  return query
+    select
+        pro.produto_id,
+        pro.produto_nome,
+        pro.produto_codigo,
+        pro.produto_stock,
+        lib.agg_jsonb_collect(  to_jsonb( prec )|| to_jsonb( u ) ),
+        cat.categoria_id,
+        cat.categoria_nome
+      from ggviario.produto pro
+        inner join ggviario.categoria cat on pro.produto_categoria_id = cat.categoria_id
+        inner join preco prec on pro.produto_id = prec.preco_produto_id
+          and prec.preco_estado = _const.preco_estado_ativo
+        inner join unidade u on prec.preco_unidade_id = u.unidade_id
+      group by pro.produto_id,
+        cat.categoria_id
+    ;
+end;
+$$;
+
+
+--
+-- Name: funct_load_tipodocumento(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_tipodocumento(filter jsonb) RETURNS TABLE(tdocumento_id smallint, tdocumento_desc character varying)
+    LANGUAGE sql
+    AS $$
+  select tdoc.tdocumento_id, tdoc.tdocumento_desc from ggviario.tipodocumento tdoc;
 $$;
 
 
@@ -2098,15 +2266,24 @@ $$;
 
 
 --
--- Name: funct_reg_cliente(uuid, smallint, smallint, smallint, character varying, character varying, character varying, character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_reg_cliente(uuid, smallint, smallint, smallint, character varying, character varying, character varying, date, character varying, character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying) RETURNS lib.result
+CREATE FUNCTION funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_datanascimento date, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying, arg_cliente_localtrabalho character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
   _cliente ggviario.cliente;
 begin
+
+  arg_cliente_mail = lib.normalize( arg_cliente_mail );
+  arg_cliente_nome = lib.normalize( arg_cliente_nome );
+  arg_cliente_morada = lib.normalize( arg_cliente_morada );
+  arg_cliente_apelido = lib.normalize( arg_cliente_apelido );
+  arg_cliente_telemovel = lib.normalize( arg_cliente_telefone );
+  arg_cliente_telemovel = lib.normalize( arg_cliente_telemovel );
+  arg_cliente_documentonumero = lib.normalize( arg_cliente_documentonumero );
+  arg_cliente_localtrabalho = lib.normalize( arg_cliente_localtrabalho );
 
   if (
     select count( * )
@@ -2147,7 +2324,9 @@ begin
     cliente_telemovel,
     cliente_telefone,
     cliente_mail,
-    cliente_morada
+    cliente_morada,
+    cliente_localtrabalho,
+    cliente_datanascimento
   ) values (
     arg_colaborador_id,
     arg_sexo_id,
@@ -2159,7 +2338,9 @@ begin
     arg_cliente_telemovel,
     arg_cliente_telefone,
     arg_cliente_mail,
-    arg_cliente_morada
+    arg_cliente_morada,
+    arg_cliente_localtrabalho,
+    arg_cliente_datanascimento
   ) returning * into _cliente ;
 
   return lib.result_true(
@@ -2168,96 +2349,7 @@ begin
     )
   );
 end;
-  
-$$;
 
-
---
--- Name: funct_reg_compra_compra(uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date); Type: FUNCTION; Schema: ggviario; Owner: -
---
-
-CREATE FUNCTION funct_reg_compra_compra(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date) RETURNS lib.result
-    LANGUAGE plpgsql
-    AS $$
-declare
-  _res lib.result;
-  _tipocompra ggviario.tipocompra;
-  _compra ggviario.compra;
-  _const rule.constant;
-begin
-  _const := rule.constant_init();
-  _tipocompra := ggviario.get_tipocompra( _const.tipocompra_compra );
-  _res := rule.compra_insert(
-      arg_produto_id,
-      arg_unidade_id,
-      arg_cliente_id,
-      _tipocompra.tcompra_id,
-      arg_colaborador_id,
-      arg_compra_quantidade,
-      arg_compra_custounitario,
-      arg_compra_custobruto,
-      arg_compra_custodesconto,
-      arg_compra_custopagar,
-      arg_compra_data,
-      arg_compra_data
-  );
-
-  if not _res.result then
-    return _res;
-  end if;
-
-  _compra := ggviario.get_compra(
-      ( _res.message->'compra'->>'compra_id' )::uuid
-  );
-
-
-  _res := funct_reg_movimento_amortizacao_itemcompra(
-    arg_colaborador_id,
-    _compra.compra_id,
-    null,
-    arg_compra_custopagar,
-    arg_compra_data,
-    _compra.compra_faturanumero
-  );
-  
-  return _res;
-
-end
-$$;
-
-
---
--- Name: funct_reg_compra_divida(uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: ggviario; Owner: -
---
-
-CREATE FUNCTION funct_reg_compra_divida(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date, arg_compra_datafinalizar date) RETURNS lib.result
-    LANGUAGE plpgsql
-    AS $$
-declare
-  _res lib.result;
-  _tipocompra ggviario.tipocompra;
-  _const rule.constant;
-begin
-  _const := rule.constant_init();
-  _tipocompra := ggviario.get_tipocompra( _const.tipocompra_divida );
-  
-  _res := rule.compra_insert(
-    arg_produto_id,
-    arg_unidade_id,
-    arg_cliente_id,
-    _tipocompra.tcompra_id,
-    arg_colaborador_id,
-    arg_compra_quantidade,
-    arg_compra_custounitario,
-    arg_compra_custobruto,
-    arg_compra_custodesconto,
-    arg_compra_custopagar,
-    arg_compra_data,
-    arg_compra_datafinalizar
-  );
-  
-  return _res;
-end
 $$;
 
 
@@ -2540,10 +2632,10 @@ $$;
 
 
 --
--- Name: funct_reg_movimento_amortizacao_itemcompra(uuid, uuid, uuid, numeric, date, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_reg_movimento_amortizacao_itemvenda(uuid, uuid, uuid, numeric, date, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_movimento_amortizacao_itemcompra(arg_colaborador_id uuid, arg_itemcompra_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
+CREATE FUNCTION funct_reg_movimento_amortizacao_itemvenda(arg_colaborador_id uuid, arg_itemcompra_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2558,7 +2650,7 @@ begin
   _const := rule.constant_init();
 
   select * into _itemcompra
-    from ggviario.itemcompra ic
+    from ggviario.venda ic
       inner join tipocompra tc on ic.itemcompra_tcompra_id = tc.tcompra_id
       inner join compra cp on ic.itemcompra_compra_id = cp.compra_id
     where ic.itemcompra_id = arg_itemcompra_id
@@ -2598,7 +2690,7 @@ begin
   return lib.result_true(
     jsonb_build_object(
       'movimento', _movimento,
-       'itemcompra', _itemcompra
+       'venda', _itemcompra
     )
   );
 
@@ -2615,19 +2707,25 @@ CREATE FUNCTION funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, ar
     AS $_$
 declare
   KEY_UNIDADE_ID character varying default 'unidade_id';
-  KEY_PRECO_VALOR character varying default 'preco_valor';
+  KEY_PRECO_VALORUNIDADE character varying default 'preco_custounidade';
+  KEY_PRECO_QUANTIDADEPRODUTO character varying default 'preco_quantidadeproduto';
+  KEY_PRECO_BASE character varying default 'preco_base';
 
   /**
     [
       {
         "unidade_id"::UUID,
-        "equivalencia_quantidade":QUANTIDADE
+        "preco_custounidade":PRECO
+        "preco_quantidadeproduto":QUANTIDADE
       }
     ]
   */
   arg_next jsonb;
   arg_next_unidade_id uuid;
-  arg_next_preco_valor numeric;
+  arg_next_preco_valorunidade numeric;
+  arg_next_preco_quantidadeproduto numeric;
+  arg_next_preco_base boolean;
+
   list_precos uuid [] default '{}'::uuid[];
   _preco ggviario.preco;
   _const rule.constant;
@@ -2638,27 +2736,36 @@ begin
   for iterator in 0 .. jsonb_array_length( arg_precos ) -1 loop
     arg_next := arg_precos -> iterator;
     arg_next_unidade_id := arg_next ->> KEY_UNIDADE_ID;
-    arg_next_preco_valor := arg_next -># KEY_PRECO_VALOR;
+    arg_next_preco_valorunidade := arg_next -># KEY_PRECO_VALORUNIDADE;
+    arg_next_preco_quantidadeproduto := arg_next -># KEY_PRECO_QUANTIDADEPRODUTO;
+    arg_next_preco_base := arg_next ->? KEY_PRECO_BASE;
+
     select * into _preco
-    from ggviario.preco
-    where preco_unidade_id = arg_next_unidade_id
-          and preco_produto_id = arg_produto_id
-          and preco_estado = _const.preco_estado_ativo
-  ;
+      from ggviario.preco
+      where preco_unidade_id = arg_next_unidade_id
+            and preco_produto_id = arg_produto_id
+            and preco_estado = _const.preco_estado_ativo
+    ;
 
     if _preco.preco_id is null
-       or _preco.preco_valor !=== arg_next_preco_valor
+       or _preco.preco_custounidade !=== arg_next_preco_valorunidade
+       or _preco.preco_quantidadeproduto !=== arg_next_preco_quantidadeproduto
+       or _preco.preco_base !=== arg_next_preco_base
     then
       insert into ggviario.preco(
         preco_colaborador_id,
         preco_produto_id,
         preco_unidade_id,
-        preco_valor
+        preco_custounidade,
+        preco_quantidadeproduto,
+        preco_base
       ) values (
         arg_colaborador_id,
         arg_produto_id,
         arg_next_unidade_id,
-        arg_next_preco_valor
+        arg_next_preco_valorunidade,
+        arg_next_preco_quantidadeproduto,
+        arg_next_preco_base
       ) returning * into _preco;
       jPrecos := jPrecos || ( to_jsonb( _preco ) || $${"preco_registro":true}$$::jsonb );
     else
@@ -2669,13 +2776,13 @@ begin
   end loop;
 
   update ggviario.preco
-  set preco_estado = _const.preco_estado_fechado,
-    preco_colaborador_atualizacao = arg_colaborador_id,
-    preco_dataatualizacao = current_timestamp
-  where preco_produto_id = arg_produto_id
-        and preco_estado = _const.preco_estado_ativo
-        and not preco_id = any( list_precos )
-  ;
+    set preco_estado = _const.preco_estado_fechado,
+      preco_colaborador_atualizacao = arg_colaborador_id,
+      preco_dataatualizacao = current_timestamp
+    where preco_produto_id = arg_produto_id
+          and preco_estado = _const.preco_estado_ativo
+          and not preco_id = any( list_precos )
+    ;
 
   return lib.result_true(
       jsonb_build_object(
@@ -2864,6 +2971,96 @@ end;
 $$;
 
 
+--
+-- Name: funct_reg_venda_divida(uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_reg_venda_divida(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _res lib.result;
+  _tipovenda ggviario.tipovenda;
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  _tipovenda := ggviario.get_tipovenda( _const.tipovenda_divida );
+
+  if arg_venda_montanteunitario is null then raise exception 'Para aqui estado nullo'; end if;
+  _res := rule.venda_insert(
+      arg_colaborador_id,
+      arg_produto_id,
+      arg_unidade_id,
+      arg_cliente_id,
+      _tipovenda.tvenda_id,
+      arg_venda_quantidade,
+      arg_venda_montanteunitario,
+      arg_venda_montantebruto,
+      arg_venda_montantedesconto,
+      arg_venda_montantepagar,
+      arg_venda_data,
+      arg_venda_datafinalizar
+  );
+
+  return _res;
+end
+$$;
+
+
+--
+-- Name: funct_reg_venda_venda(uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_reg_venda_venda(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _res lib.result;
+  _tipovenda ggviario.tipovenda;
+  _venda ggviario.venda;
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  _tipovenda := ggviario.get_tipovenda( _const.tipovenda_venda );
+  _res := rule.venda_insert(
+      arg_colaborador_id,
+      arg_produto_id,
+      arg_unidade_id,
+      arg_cliente_id,
+      _tipovenda.tvenda_id,
+      arg_venda_quantidade,
+      arg_venda_montanteunitario,
+      arg_venda_montantebruto,
+      arg_venda_montantedesconto,
+      arg_venda_montantepagar,
+      arg_venda_data,
+      arg_venda_data
+  );
+
+  if not _res.result then
+    return _res;
+  end if;
+
+  _venda := ggviario.get_venda(
+      ( _res.message->'venda'->>'venda_id' )::uuid
+  );
+
+
+  _res := funct_reg_movimento_amortizacao_itemvenda(
+      arg_colaborador_id,
+      _venda.venda_id,
+      null,
+      arg_venda_montantepagar,
+      arg_venda_data,
+      _venda.venda_faturanumero
+  );
+
+  return _res;
+
+end
+$$;
+
+
 SET search_path = lib, pg_catalog;
 
 --
@@ -2906,15 +3103,6 @@ CREATE TABLE categoria (
 CREATE FUNCTION get_categoria(arg_categoria_id uuid) RETURNS categoria
     LANGUAGE sql
     AS $$ select * from ggviario.categoria where categoria_id = arg_categoria_id; $$;
-
-
---
--- Name: get_compra(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
---
-
-CREATE FUNCTION get_compra(arg_compra_id uuid) RETURNS compra
-    LANGUAGE sql
-    AS $$ select * from ggviario.compra where compra_id = arg_compra_id; $$;
 
 
 --
@@ -3013,36 +3201,6 @@ CREATE FUNCTION get_despesa(arg_despesa_id uuid) RETURNS despesa
 
 
 --
--- Name: equivalencia; Type: TABLE; Schema: ggviario; Owner: -
---
-
-CREATE TABLE equivalencia (
-    equivalencia_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    equivalencia_produto_id uuid NOT NULL,
-    equivalencia_unidade_id uuid NOT NULL,
-    equivalencia_colaborador_id uuid NOT NULL,
-    equivalencia_colaborador_atualizacao uuid,
-    equivalencia_quantidade numeric,
-    equivalencia_estado smallint DEFAULT 1 NOT NULL,
-    equivalencia_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    equivalencia_dataatualizacao timestamp without time zone
-);
-
-
---
--- Name: get_equivalencia(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
---
-
-CREATE FUNCTION get_equivalencia(arg_equivalecia_id uuid) RETURNS equivalencia
-    LANGUAGE sql
-    AS $$
-select *
-from ggviario.equivalencia equi
-where equi.equivalencia_id = arg_equivalecia_id
-$$;
-
-
---
 -- Name: movimento; Type: TABLE; Schema: ggviario; Owner: -
 --
 
@@ -3092,10 +3250,12 @@ CREATE TABLE preco (
     preco_unidade_id uuid NOT NULL,
     preco_colaborador_id uuid NOT NULL,
     preco_colaborador_atualizacao uuid,
-    preco_valor numeric,
+    preco_custounidade numeric,
     preco_estado smallint DEFAULT 1 NOT NULL,
     preco_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    preco_dataatualizacao timestamp without time zone
+    preco_dataatualizacao timestamp without time zone,
+    preco_quantidadeproduto numeric,
+    preco_base boolean DEFAULT false NOT NULL
 );
 
 
@@ -3132,6 +3292,7 @@ CREATE TABLE produto (
     produto_estado smallint DEFAULT 1,
     produto_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     produto_dataatualizacao timestamp without time zone,
+    produto_codigo character varying(8),
     CONSTRAINT ck_produto_nome_is_normalizede CHECK (lib.is_normalized((produto_nome)::text))
 );
 
@@ -3201,24 +3362,24 @@ CREATE FUNCTION get_setor(arg_setor_id uuid) RETURNS setor
 
 
 --
--- Name: tipocompra; Type: TABLE; Schema: ggviario; Owner: -
+-- Name: tipovenda; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE tipocompra (
-    tcompra_id smallint NOT NULL,
-    tcompra_desc character varying(32) NOT NULL,
-    CONSTRAINT fk_tcompra_desc_is_normalized CHECK (lib.is_normalized((tcompra_desc)::text))
+CREATE TABLE tipovenda (
+    tvenda_id smallint NOT NULL,
+    tvenda_desc character varying(32) NOT NULL,
+    CONSTRAINT fk_tcompra_desc_is_normalized CHECK (lib.is_normalized((tvenda_desc)::text))
 );
 
 
 --
--- Name: get_tipocompra(smallint); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: get_tipovenda(smallint); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_tipocompra(arg_tcompra_id smallint) RETURNS tipocompra
+CREATE FUNCTION get_tipovenda(arg_tvenda_id smallint) RETURNS tipovenda
     LANGUAGE sql
     AS $$
-  select * from ggviario.tipocompra tco where tco.tcompra_id = arg_tcompra_id;
+select * from ggviario.tipovenda tco where tco.tvenda_id = arg_tvenda_id;
 $$;
 
 
@@ -3251,6 +3412,15 @@ select *
 from ggviario.unidade
 where unidade_id = arg_unidade_id;
 $$;
+
+
+--
+-- Name: get_venda(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION get_venda(arg_compra_id uuid) RETURNS venda
+    LANGUAGE sql
+    AS $$ select * from ggviario.compra where compra_id = arg_compra_id; $$;
 
 
 SET search_path = lib, pg_catalog;
@@ -4445,127 +4615,70 @@ END;
 $$;
 
 
+SET search_path = ggviario, pg_catalog;
+
+--
+-- Name: cliente; Type: TABLE; Schema: ggviario; Owner: -
+--
+
+CREATE TABLE cliente (
+    cliente_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    cliente_sexo_id smallint,
+    cliente_distrito_id smallint,
+    cliente_tdocumento_id smallint,
+    cliente_colaborador_id uuid,
+    cliente_colaborador_atualizacao uuid,
+    cliente_documentonumero character varying(32),
+    cliente_nome character varying(48) NOT NULL,
+    cliente_apelido character varying(48),
+    cliente_datanascimento date,
+    cliente_telefone character varying(15),
+    cliente_telemovel character varying(15),
+    cliente_mail character varying(32) DEFAULT NULL::character varying,
+    cliente_morada character varying(48),
+    cliente_localtrabalho character varying(64),
+    cliente_estado smallint DEFAULT 1 NOT NULL,
+    cliente_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    cliente_dataatualizacao timestamp without time zone,
+    CONSTRAINT ck_cliente_apelido_is_normalized CHECK (lib.is_normalized((cliente_apelido)::text)),
+    CONSTRAINT ck_cliente_documentonumero_is_normalized CHECK (lib.is_normalized((cliente_documentonumero)::text)),
+    CONSTRAINT ck_cliente_morada_is_normalized CHECK (lib.is_normalized((cliente_morada)::text)),
+    CONSTRAINT ck_cliente_nome_is_normalized CHECK (lib.is_normalized((cliente_nome)::text)),
+    CONSTRAINT ck_cliente_telefone_is_normalized CHECK (lib.is_normalized((cliente_telefone)::text)),
+    CONSTRAINT ck_cliente_telemovel_is_mail CHECK ((lib.is_normalized((cliente_mail)::text) AND (lower((cliente_mail)::text) = (cliente_mail)::text))),
+    CONSTRAINT ck_cliente_telemovel_is_normalized CHECK (lib.is_normalized((cliente_telemovel)::text))
+);
+
+
+--
+-- Name: COLUMN cliente.cliente_datanascimento; Type: COMMENT; Schema: ggviario; Owner: -
+--
+
+COMMENT ON COLUMN cliente.cliente_datanascimento IS 'A data em que o cliente nasceu';
+
+
+--
+-- Name: COLUMN cliente.cliente_localtrabalho; Type: COMMENT; Schema: ggviario; Owner: -
+--
+
+COMMENT ON COLUMN cliente.cliente_localtrabalho IS 'O local em que o cliente trabalha';
+
+
 SET search_path = rule, pg_catalog;
 
 --
--- Name: compra_estado_desc(ggviario.compra, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: cliente_estado_desc(ggviario.cliente, constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION compra_estado_desc(_compra ggviario.compra, _const constant DEFAULT constant_init()) RETURNS character varying
+CREATE FUNCTION cliente_estado_desc(_cliente ggviario.cliente, _const constant DEFAULT constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
-declare
 begin
   if _const is null then _const := rule.constant_init(); end if;
-  return case
-         when _compra.compra_estado = _const.compra_estado_pendente then 'Pendente'
-         when _compra.compra_estado = _const.compra_estado_feito then 'Feito'
-         when _compra.compra_estado = _const.compra_estado_empagamento then 'Em pagamento'
-         when _compra.compra_estado = _const.compra_estado_pago then 'Pago'
-         when _compra.compra_estado = _const.compra_estado_anulado then 'Anulado'
+  return case 
+      when _cliente.cliente_estado = _const.cliente_estado_ativo then 'Ativo'
+      when _cliente.cliente_estado = _const.cliente_estado_fechado then 'Fechado'
   end;
-end;
-$$;
-
-
---
--- Name: compra_fatura_generatenext(ggviario.tipocompra); Type: FUNCTION; Schema: rule; Owner: -
---
-
-CREATE FUNCTION compra_fatura_generatenext(_tipocompra ggviario.tipocompra) RETURNS character varying
-    LANGUAGE plpgsql
-    AS $$
-declare
-begin
-  return nextval( 'ggviario.seq_faturanumero' )::character varying;
-end;
-$$;
-
-
---
--- Name: compra_insert(uuid, uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: rule; Owner: -
---
-
-CREATE FUNCTION compra_insert(arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tcompra_id uuid, arg_colaborador_id uuid, arg_compra_quantidade numeric, arg_compra_custounitario numeric, arg_compra_custobruto numeric, arg_compra_custodesconto numeric, arg_compra_custopagar numeric, arg_compra_data date, arg_compra_datafinalizar date) RETURNS lib.result
-    LANGUAGE plpgsql
-    AS $$
-declare
-  arg_faturanumero character varying;
-  arg_compra_quantidadeproduto numeric;
-  _compra ggviario.compra;
-  _equivalencia ggviario.equivalencia;
-  _const rule.constant;
-  _preco ggviario.preco;
-  _tipocompra ggviario.tipocompra;
-begin
-  _const := rule.constant_init();
-  _tipocompra := ggviario.get_tipocompra( arg_tcompra_id );
-  select * into _equivalencia
-    from ggviario.equivalencia eq
-    where eq.equivalencia_produto_id = arg_produto_id
-      and eq.equivalencia_unidade_id = arg_unidade_id
-      and eq.equivalencia_estado = _const.equivalencia_estado_ativo
-    order by coalesce( eq.equivalencia_dataatualizacao, eq.equivalencia_dataregisto ) desc
-  ;
-
-  select * into _preco
-    from ggviario.preco pre
-    where pre.preco_produto_id = arg_produto_id
-      and pre.preco_unidade_id = arg_unidade_id
-      and pre.preco_estado = _const.preco_estado_ativo
-    order by coalesce( pre.preco_dataatualizacao, pre.preco_dataregisto ) desc
-  ;
-
-  if _equivalencia is null then
-    return lib.result_false( 'Não foi encontrado nenhuma equivalencia do produto para a unidade!'  );
-  end if;
-
-  if _preco is null then
-    return lib.result_false( 'Não foi encontrado nenhum preço ativo para a unidade do produto!');
-  end if;
-
-  arg_faturanumero := rule.compra_fatura_generatenext( _tipocompra );
-  arg_compra_quantidadeproduto := arg_compra_quantidade * _equivalencia.equivalencia_quantidade;
-
-  insert into ggviario.compra(
-    compra_produto_id,
-    compra_unidade_id,
-    compra_cliente_id,
-    compra_tcompra_id,
-    compra_colaborador_id,
-    compra_faturanumero,
-    compra_quantidade,
-    compra_quantidadeproduto,
-    compra_custounitario,
-    compra_custobruto,
-    compra_custodesconto,
-    compra_custopagar,
-    compra_data,
-    compra_datafinalizar,
-    compra_estado
-  ) values (
-    arg_produto_id,
-    arg_unidade_id,
-    arg_cliente_id,
-    arg_tcompra_id,
-    arg_colaborador_id,
-    arg_faturanumero,
-    arg_compra_quantidade,
-    arg_compra_quantidadeproduto,
-    arg_compra_custounitario,
-    arg_compra_custobruto,
-    arg_compra_custodesconto,
-    arg_compra_custopagar,
-    arg_compra_data,
-    arg_compra_datafinalizar,
-    _const.compra_estado_feito
-  ) returning * into _compra;
-
-  return lib.result_true(
-    jsonb_build_object(
-      'compra', _compra
-    )
-  );
 end;
 $$;
 
@@ -4585,36 +4698,6 @@ CREATE FUNCTION despesa_estado_desc(_despesa ggviario.despesa, _const constant) 
         when _despesa.despesa_estado = _const.despesa_estado_anulado then 'Anulado'
       end;
   end;  
-$$;
-
-
---
--- Name: functg_compra_intert_update_produto_stock(); Type: FUNCTION; Schema: rule; Owner: -
---
-
-CREATE FUNCTION functg_compra_intert_update_produto_stock() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-declare
-    _new ggviario.compra;
-    _old ggviario.compra;
-    _const rule.constant;
-    _produto ggviario.produto;
-  begin
-    _const := rule.constant_init();
-    _new := new;
-    _old := old;
-
-    -- marcar os itens da compra como feito!
-    update ggviario.produto
-      set produto_stock = produto_stock - _old.compra_quantidadeproduto ,
-          produto_colaborador_atualizacao = _new.compra_colaborador_id ,
-          produto_dataatualizacao = current_timestamp
-      where produto_id = _old.compra_produto_id
-    ;
-
-    return null;
-  end;
 $$;
 
 
@@ -4891,6 +4974,32 @@ $$;
 
 
 --
+-- Name: functg_venda_intert_update_produto_stock(); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION functg_venda_intert_update_produto_stock() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+declare
+    _new ggviario.venda;
+    _const rule.constant;
+    _produto ggviario.produto;
+  begin
+    _const := rule.constant_init();
+    _new := new;
+    -- marcar os itens da venda como feito!
+    update ggviario.produto
+      set produto_stock = produto_stock - _new.venda_quantidadeproduto ,
+          produto_colaborador_atualizacao = _new.venda_colaborador_id ,
+          produto_dataatualizacao = current_timestamp
+      where produto_id = _new.venda_produto_id
+    ;
+    return null;
+  end;
+$$;
+
+
+--
 -- Name: movimento_check_source(ggviario.movimento); Type: FUNCTION; Schema: rule; Owner: -
 --
 
@@ -4967,6 +5076,125 @@ CREATE FUNCTION setor_estado_desc(_setor ggviario.setor, _const constant) RETURN
         when _setor.setor_estado = _const.setor_estado_protegido then 'Protegido'
       end;
   $$;
+
+
+--
+-- Name: vena_estado_desc(ggviario.venda, constant); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION vena_estado_desc(_compra ggviario.venda, _const constant DEFAULT constant_init()) RETURNS character varying
+    LANGUAGE plpgsql
+    AS $$
+declare
+begin
+  if _const is null then _const := rule.constant_init(); end if;
+  return case
+         when _compra.compra_estado = _const.compra_estado_pendente then 'Pendente'
+         when _compra.compra_estado = _const.compra_estado_feito then 'Feito'
+         when _compra.compra_estado = _const.compra_estado_empagamento then 'Em pagamento'
+         when _compra.compra_estado = _const.compra_estado_pago then 'Pago'
+         when _compra.compra_estado = _const.compra_estado_anulado then 'Anulado'
+  end;
+end;
+$$;
+
+
+--
+-- Name: venda_fatura_generatenext(ggviario.tipovenda); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION venda_fatura_generatenext(_tipocompra ggviario.tipovenda) RETURNS character varying
+    LANGUAGE plpgsql
+    AS $$
+declare
+begin
+  return nextval( 'ggviario.seq_faturanumero' )::character varying;
+end;
+$$;
+
+
+--
+-- Name: venda_insert(uuid, uuid, uuid, uuid, smallint, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION venda_insert(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tvenda_id smallint, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  arg_faturanumero character varying;
+  arg_venda_quantidadeproduto numeric;
+  _venda ggviario.venda;
+  _const rule.constant;
+  _preco ggviario.preco;
+  _tipovenda ggviario.tipovenda;
+begin
+  _const := rule.constant_init();
+  _tipovenda := ggviario.get_tipovenda( arg_tvenda_id );
+
+  if arg_venda_montanteunitario is null then raise notice 'Para Aqui arg_venda_montanteunitario esta null';  end if;
+
+
+
+  select * into _preco
+  from ggviario.preco pre
+  where pre.preco_produto_id = arg_produto_id
+        and pre.preco_unidade_id = arg_unidade_id
+        and pre.preco_estado = _const.preco_estado_ativo
+  order by coalesce( pre.preco_dataatualizacao, pre.preco_dataregisto ) desc
+  ;
+
+  if _preco.preco_quantidadeproduto is null then
+    return lib.result_false( 'Não foi encontrado nenhuma equivalencia do produto para a unidade!'  );
+  end if;
+
+  if _preco is null then
+    return lib.result_false( 'Não foi encontrado nenhum preço ativo para a unidade do produto!');
+  end if;
+
+  arg_faturanumero := rule.venda_fatura_generatenext( _tipovenda );
+  arg_venda_quantidadeproduto := arg_venda_quantidade * _preco.preco_quantidadeproduto;
+
+  insert into ggviario.venda(
+    venda_produto_id,
+    venda_unidade_id,
+    venda_cliente_id,
+    venda_tvenda_id,
+    venda_colaborador_id,
+    venda_faturanumero,
+    venda_quantidade,
+    venda_quantidadeproduto,
+    venda_montanteunitario,
+    venda_montantebruto,
+    venda_montantedesconto,
+    venda_montantepagar,
+    venda_data,
+    venda_datafinalizar,
+    venda_estado
+  ) values (
+    arg_produto_id,
+    arg_unidade_id,
+    arg_cliente_id,
+    arg_tvenda_id,
+    arg_colaborador_id,
+    arg_faturanumero,
+    arg_venda_quantidade,
+    arg_venda_quantidadeproduto,
+    arg_venda_montanteunitario,
+    arg_venda_montantebruto,
+    arg_venda_montantedesconto,
+    arg_venda_montantepagar,
+    arg_venda_data,
+    arg_venda_datafinalizar,
+    _const.venda_estado_pendente
+  ) returning * into _venda;
+
+  return lib.result_true(
+      jsonb_build_object(
+          'venda', _venda
+      )
+  );
+end;
+$$;
 
 
 SET search_path = lib, pg_catalog;
@@ -5410,37 +5638,6 @@ CREATE TABLE sexo (
 SET search_path = ggviario, pg_catalog;
 
 --
--- Name: cliente; Type: TABLE; Schema: ggviario; Owner: -
---
-
-CREATE TABLE cliente (
-    cliente_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    cliente_sexo_id smallint,
-    cliente_distrito_id smallint,
-    cliente_tdocumento_id smallint,
-    cliente_colaborador_id uuid,
-    cliente_colaborador_atualizacao uuid,
-    cliente_documentonumero character varying(32),
-    cliente_nome character varying(48) NOT NULL,
-    cliente_apelido character varying(48),
-    cliente_telefone character varying(15),
-    cliente_telemovel character varying(15),
-    cliente_mail character varying(32) DEFAULT NULL::character varying,
-    cliente_morada character varying(48),
-    cliente_estado smallint DEFAULT 1 NOT NULL,
-    cliente_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    cliente_dataatualizacao timestamp without time zone,
-    CONSTRAINT ck_cliente_apelido_is_normalized CHECK (lib.is_normalized((cliente_apelido)::text)),
-    CONSTRAINT ck_cliente_documentonumero_is_normalized CHECK (lib.is_normalized((cliente_documentonumero)::text)),
-    CONSTRAINT ck_cliente_morada_is_normalized CHECK (lib.is_normalized((cliente_morada)::text)),
-    CONSTRAINT ck_cliente_nome_is_normalized CHECK (lib.is_normalized((cliente_nome)::text)),
-    CONSTRAINT ck_cliente_telefone_is_normalized CHECK (lib.is_normalized((cliente_telefone)::text)),
-    CONSTRAINT ck_cliente_telemovel_is_mail CHECK ((lib.is_normalized((cliente_mail)::text) AND (lower((cliente_mail)::text) = (cliente_mail)::text))),
-    CONSTRAINT ck_cliente_telemovel_is_normalized CHECK (lib.is_normalized((cliente_telemovel)::text))
-);
-
-
---
 -- Name: distrito; Type: TABLE; Schema: ggviario; Owner: -
 --
 
@@ -5625,16 +5822,22 @@ COPY categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_at
 -- Data for Name: cliente; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY cliente (cliente_id, cliente_sexo_id, cliente_distrito_id, cliente_tdocumento_id, cliente_colaborador_id, cliente_colaborador_atualizacao, cliente_documentonumero, cliente_nome, cliente_apelido, cliente_telefone, cliente_telemovel, cliente_mail, cliente_morada, cliente_estado, cliente_dataregisto, cliente_dataatualizacao) FROM stdin;
-00000000-0000-0000-0000-000000000001	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Anonimo	\N	\N	\N	\N	\N	1	2018-02-11 14:08:24.702639	\N
-\.
-
-
---
--- Data for Name: compra; Type: TABLE DATA; Schema: ggviario; Owner: -
---
-
-COPY compra (compra_id, compra_produto_id, compra_unidade_id, compra_cliente_id, compra_tcompra_id, compra_colaborador_id, compra_colaborador_atualizacao, compra_faturanumero, compra_quantidade, compra_quantidadeproduto, compra_custounitario, compra_custobruto, compra_custodesconto, compra_custopagar, compra_custoamortizado, compra_data, compra_datafinalizar, compra_datafim, compra_dataultimamovimentacao, compra_estado, compra_dataregisto, compra_dataatualizacao) FROM stdin;
+COPY cliente (cliente_id, cliente_sexo_id, cliente_distrito_id, cliente_tdocumento_id, cliente_colaborador_id, cliente_colaborador_atualizacao, cliente_documentonumero, cliente_nome, cliente_apelido, cliente_datanascimento, cliente_telefone, cliente_telemovel, cliente_mail, cliente_morada, cliente_localtrabalho, cliente_estado, cliente_dataregisto, cliente_dataatualizacao) FROM stdin;
+00000000-0000-0000-0000-000000000001	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Anonimo	\N	\N	\N	\N	\N	\N	\N	1	2018-02-11 14:08:24.702639	\N
+839ea817-c822-4c86-8e40-712ecb7f4b3c	2	3	2	00000000-0000-0000-0000-000000000001	\N	27838L	Ana Maria	Maria Cristovão	\N	\N	\N	\N	Almerin	\N	1	2018-02-21 10:15:27.582571	\N
+32927a25-e62f-4c8c-b53e-72f61579cdda	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Asd	sew	\N	\N	\N	\N	\N	\N	1	2018-02-21 10:30:56.443303	\N
+b277fd04-c573-45f3-9ee8-9710e176864a	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Lucas	Simedo	\N	\N	\N	\N	\N	\N	1	2018-02-21 10:32:44.707108	\N
+a8de6d12-7c91-4f96-b4d1-8149c2789acf	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Lucia Amado	Assução Crista	\N	\N	\N	\N	\N	\N	1	2018-02-21 10:57:05.446577	\N
+475560ba-209a-4e12-a844-19885f34e518	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Antonio	Filipe coria do amparo	2018-01-01	\N	\N	\N	\N	\N	1	2018-02-21 11:34:53.23103	\N
+91abee08-9c8f-4244-96cc-93daa94fc5f8	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Ana Maria	sdks	2018-03-10	\N	\N	\N	\N	\N	1	2018-02-21 11:46:35.502301	\N
+ff1662e2-37f1-4ddb-8371-d631a51c68c1	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Ola Bem	Olamd	2019-01-29	\N	\N	\N	\N	\N	1	2018-02-21 11:50:16.195488	\N
+b36fbf35-7542-40a6-83e5-7552adb61047	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Amadeus	\N	\N	\N	\N	\N	\N	\N	1	2018-02-21 12:03:53.542021	\N
+d4ad9dd1-c207-42b7-bed7-3208dee588d7	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Daniel	Costa	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:25:55.992803	\N
+f79f9061-d7e2-4636-a7b4-e7162df9661e	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Ferreiro	Amadeus	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:30:18.44971	\N
+a1fa9467-a36d-48c1-a971-72f8e70a3780	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Hugo	Chavier	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:37:05.047836	\N
+f8edc932-da9d-4e4f-aeee-b73672a3a692	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Rósario	Martas dia assunção	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:40:27.996055	\N
+fe18c4a5-cc83-4148-aa5e-f22d765b7ced	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Carla	Vilas Nova	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:47:35.950903	\N
+37e83245-e51c-4dc9-a2a3-5209201eb9f1	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	\N	Amilton Mendes	Agostinho	\N	\N	\N	\N	\N	\N	1	2018-02-22 03:50:47.802731	\N
 \.
 
 
@@ -5673,15 +5876,6 @@ COPY distrito (distrito_id, distrito_nome) FROM stdin;
 
 
 --
--- Data for Name: equivalencia; Type: TABLE DATA; Schema: ggviario; Owner: -
---
-
-COPY equivalencia (equivalencia_id, equivalencia_produto_id, equivalencia_unidade_id, equivalencia_colaborador_id, equivalencia_colaborador_atualizacao, equivalencia_quantidade, equivalencia_estado, equivalencia_dataregisto, equivalencia_dataatualizacao) FROM stdin;
-4f874b3d-050d-4eb5-801f-d0cf22b6fc4d	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	1	1	2018-02-11 13:39:28.175768	\N
-\.
-
-
---
 -- Data for Name: fornecedor; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
@@ -5705,7 +5899,12 @@ e2f0571d-cad4-4223-9a4f-fc17f6cb6e90	00000000-0000-0000-0000-000000000001	1	0000
 -- Data for Name: preco; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, preco_colaborador_atualizacao, preco_valor, preco_estado, preco_dataregisto, preco_dataatualizacao) FROM stdin;
+COPY preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, preco_colaborador_atualizacao, preco_custounidade, preco_estado, preco_dataregisto, preco_dataatualizacao, preco_quantidadeproduto, preco_base) FROM stdin;
+e8936437-2088-4d01-82bb-1fd6ed30c6ba	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	\N	150	1	2018-02-21 15:53:47.338879	\N	30	f
+09d331e2-d859-4373-988d-8343e1c320cd	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	33d630b0-bb83-46f2-85d7-ab87a9699e36	00000000-0000-0000-0000-000000000001	\N	13	1	2018-02-21 23:46:48.732194	\N	1	t
+48d8fa85-2d2a-4576-83a8-bb5b167e4eac	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	658031bf-435b-4aec-8b20-4fe56456ab5e	00000000-0000-0000-0000-000000000001	\N	0.013	1	2018-02-21 23:46:48.732194	\N	0.001	f
+c67b747f-d309-4340-b209-23aac1f3fac8	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	541f68a7-cdb2-4cde-803e-63efc71760c6	00000000-0000-0000-0000-000000000001	\N	100	1	2018-02-21 23:46:48.732194	\N	30	f
+10b5953d-a8d5-481a-8587-f07f1ed67300	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	5	1	2018-02-21 15:53:47.338879	\N	1	t
 \.
 
 
@@ -5724,8 +5923,9 @@ dc39ac15-4d9c-4166-9156-02ef30c81538	00000000-0000-0000-0000-000000000001	2d6bf7
 -- Data for Name: produto; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_colaborador_atualizacao, produto_nome, produto_stock, produto_stockminimo, produto_servicocliente, produto_servicofornecedor, produto_servicoproducao, produto_servicostockdinamico, produto_servicostockdinamiconegativo, produto_estado, produto_dataregisto, produto_dataatualizacao) FROM stdin;
-00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	Ovos	52	0	t	t	t	t	f	1	2018-02-09 18:48:34.984037	2018-02-09 18:48:34.984037
+COPY produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_colaborador_atualizacao, produto_nome, produto_stock, produto_stockminimo, produto_servicocliente, produto_servicofornecedor, produto_servicoproducao, produto_servicostockdinamico, produto_servicostockdinamiconegativo, produto_estado, produto_dataregisto, produto_dataatualizacao, produto_codigo) FROM stdin;
+0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	Aroz	0	0	f	f	f	f	f	1	2018-02-21 23:32:18.08354	2018-02-21 23:32:18.08354	\N
+00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	Ovos	50.0	0	t	t	t	t	f	1	2018-02-09 18:48:34.984037	2018-02-22 13:41:58.512546	\N
 \.
 
 
@@ -5749,16 +5949,6 @@ ad80e6fd-d55f-469c-9008-828dc4586b73	00965dcc-125c-4cc9-a6d0-cccf0a4c8ecb	000000
 COPY sexo (sexo_id, sexo_desc) FROM stdin;
 1	Masculino
 2	Feminino
-\.
-
-
---
--- Data for Name: tipocompra; Type: TABLE DATA; Schema: ggviario; Owner: -
---
-
-COPY tipocompra (tcompra_id, tcompra_desc) FROM stdin;
-1	Compra
-2	Divida
 \.
 
 
@@ -5796,11 +5986,35 @@ COPY tipomovimento (tmovimento_id, tmovimento_desc) FROM stdin;
 
 
 --
+-- Data for Name: tipovenda; Type: TABLE DATA; Schema: ggviario; Owner: -
+--
+
+COPY tipovenda (tvenda_id, tvenda_desc) FROM stdin;
+1	Compra
+2	Divida
+\.
+
+
+--
 -- Data for Name: unidade; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
 COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizacao, unidade_nome, unidade_codigo, unidade_estado, unidade_dataregisto, unidade_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	Unidade	Unit	1	2018-02-09 19:19:02.755139	\N
+2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	\N	Cartão	CT	1	2018-02-21 15:52:25.166851	\N
+33d630b0-bb83-46f2-85d7-ab87a9699e36	00000000-0000-0000-0000-000000000001	\N	Kilogramas	Kg	1	2018-02-21 23:33:16.438593	\N
+658031bf-435b-4aec-8b20-4fe56456ab5e	00000000-0000-0000-0000-000000000001	\N	Gramas	g	1	2018-02-21 23:33:27.484936	\N
+541f68a7-cdb2-4cde-803e-63efc71760c6	00000000-0000-0000-0000-000000000001	\N	Saco	SC	1	2018-02-21 23:33:49.062312	\N
+\.
+
+
+--
+-- Data for Name: venda; Type: TABLE DATA; Schema: ggviario; Owner: -
+--
+
+COPY venda (venda_id, venda_produto_id, venda_unidade_id, venda_cliente_id, venda_tvenda_id, venda_colaborador_id, venda_colaborador_atualizacao, venda_faturanumero, venda_quantidade, venda_quantidadeproduto, venda_montanteunitario, venda_montantebruto, venda_montantedesconto, venda_montantepagar, venda_montanteamortizado, venda_data, venda_datafinalizar, venda_datafim, venda_dataultimamovimentacao, venda_estado, venda_dataregisto, venda_dataatualizacao) FROM stdin;
+9f3a055c-82df-4110-9ece-106896bad107	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	91abee08-9c8f-4244-96cc-93daa94fc5f8	2	00000000-0000-0000-0000-000000000001	\N	22	1.0	1.0	5.0	5.0	0.0	5.0	0	2018-02-22	2018-03-24	\N	\N	2	2018-02-22 13:39:34.861161	\N
+7ecd794f-7195-40ad-b271-d330622ce6ca	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	839ea817-c822-4c86-8e40-712ecb7f4b3c	2	00000000-0000-0000-0000-000000000001	\N	23	1.0	1.0	5.0	5.0	0.0	5.0	0	2018-02-22	2018-03-24	\N	\N	2	2018-02-22 13:41:58.512546	\N
 \.
 
 
@@ -5808,7 +6022,7 @@ COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizaca
 -- Name: seq_faturanumero; Type: SEQUENCE SET; Schema: ggviario; Owner: -
 --
 
-SELECT pg_catalog.setval('seq_faturanumero', 15, true);
+SELECT pg_catalog.setval('seq_faturanumero', 23, true);
 
 
 SET search_path = colaborador, pg_catalog;
@@ -5928,14 +6142,6 @@ ALTER TABLE ONLY cliente
 
 
 --
--- Name: compra pk_compra_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT pk_compra_id PRIMARY KEY (compra_id);
-
-
---
 -- Name: conta pk_conta_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
@@ -5957,14 +6163,6 @@ ALTER TABLE ONLY despesa
 
 ALTER TABLE ONLY distrito
     ADD CONSTRAINT pk_distrito_id PRIMARY KEY (distrito_id);
-
-
---
--- Name: equivalencia pk_equivalencia_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY equivalencia
-    ADD CONSTRAINT pk_equivalencia_id PRIMARY KEY (equivalencia_id);
 
 
 --
@@ -6024,14 +6222,6 @@ ALTER TABLE ONLY sexo
 
 
 --
--- Name: tipocompra pk_tcompra_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY tipocompra
-    ADD CONSTRAINT pk_tcompra_id PRIMARY KEY (tcompra_id);
-
-
---
 -- Name: tipoconta pk_tconta_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
@@ -6056,11 +6246,27 @@ ALTER TABLE ONLY tipomovimento
 
 
 --
+-- Name: tipovenda pk_tvenda_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY tipovenda
+    ADD CONSTRAINT pk_tvenda_id PRIMARY KEY (tvenda_id);
+
+
+--
 -- Name: unidade pk_unidade_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
 ALTER TABLE ONLY unidade
     ADD CONSTRAINT pk_unidade_id PRIMARY KEY (unidade_id);
+
+
+--
+-- Name: venda pk_venda_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT pk_venda_id PRIMARY KEY (venda_id);
 
 
 --
@@ -6101,14 +6307,6 @@ ALTER TABLE ONLY cliente
 
 ALTER TABLE ONLY unidade
     ADD CONSTRAINT uq_codigo_nome UNIQUE (unidade_codigo);
-
-
---
--- Name: compra uq_compra_fatura; Type: CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT uq_compra_fatura UNIQUE (compra_faturanumero);
 
 
 --
@@ -6168,11 +6366,11 @@ ALTER TABLE ONLY sexo
 
 
 --
--- Name: tipocompra uq_tcompra_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
+-- Name: tipovenda uq_tcompra_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipocompra
-    ADD CONSTRAINT uq_tcompra_desc UNIQUE (tcompra_desc);
+ALTER TABLE ONLY tipovenda
+    ADD CONSTRAINT uq_tcompra_desc UNIQUE (tvenda_desc);
 
 
 --
@@ -6197,6 +6395,14 @@ ALTER TABLE ONLY tipomovimento
 
 ALTER TABLE ONLY unidade
     ADD CONSTRAINT uq_unidade_nome UNIQUE (unidade_nome);
+
+
+--
+-- Name: venda uq_venda_fatura; Type: CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT uq_venda_fatura UNIQUE (venda_faturanumero);
 
 
 SET search_path = colaborador, pg_catalog;
@@ -6358,13 +6564,6 @@ CREATE TRIGGER tg_despesa_after_insert_update_stock AFTER INSERT ON despesa FOR 
 
 
 --
--- Name: compra tg_despesa_after_insert_update_stock; Type: TRIGGER; Schema: ggviario; Owner: -
---
-
-CREATE TRIGGER tg_despesa_after_insert_update_stock AFTER INSERT ON compra FOR EACH ROW EXECUTE PROCEDURE rule.functg_despesa_after_insert_update_stock();
-
-
---
 -- Name: movimento tg_movimento_after_insert_update_conta; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
@@ -6404,6 +6603,13 @@ CREATE TRIGGER tg_setor_after_insert_protect_parent AFTER INSERT ON setor FOR EA
 --
 
 CREATE TRIGGER tg_setor_after_update_update_cascade AFTER UPDATE ON setor FOR EACH ROW EXECUTE PROCEDURE rule.functg_setor_after_update_update_cascade();
+
+
+--
+-- Name: venda tg_venda_intert_update_produto_stock; Type: TRIGGER; Schema: ggviario; Owner: -
+--
+
+CREATE TRIGGER tg_venda_intert_update_produto_stock AFTER INSERT ON venda FOR EACH ROW EXECUTE PROCEDURE rule.functg_venda_intert_update_produto_stock();
 
 
 SET search_path = colaborador, pg_catalog;
@@ -6603,54 +6809,6 @@ ALTER TABLE ONLY cliente
 
 
 --
--- Name: compra fk_compra_to_cliente; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_cliente FOREIGN KEY (compra_cliente_id) REFERENCES cliente(cliente_id);
-
-
---
--- Name: compra fk_compra_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_colaborador FOREIGN KEY (compra_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
-
-
---
--- Name: compra fk_compra_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_colaborador_atualizacao FOREIGN KEY (compra_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
-
-
---
--- Name: compra fk_compra_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_produto FOREIGN KEY (compra_produto_id) REFERENCES produto(produto_id);
-
-
---
--- Name: compra fk_compra_to_tipocompra; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_tipocompra FOREIGN KEY (compra_tcompra_id) REFERENCES tipocompra(tcompra_id);
-
-
---
--- Name: compra fk_compra_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY compra
-    ADD CONSTRAINT fk_compra_to_unidade FOREIGN KEY (compra_unidade_id) REFERENCES unidade(unidade_id);
-
-
---
 -- Name: conta fk_conta_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
@@ -6720,38 +6878,6 @@ ALTER TABLE ONLY despesa
 
 ALTER TABLE ONLY despesa
     ADD CONSTRAINT fk_despesa_to_unidade FOREIGN KEY (despesa_unidade_id) REFERENCES unidade(unidade_id);
-
-
---
--- Name: equivalencia fk_equivalencia_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY equivalencia
-    ADD CONSTRAINT fk_equivalencia_to_colaborador FOREIGN KEY (equivalencia_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
-
-
---
--- Name: equivalencia fk_equivalencia_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY equivalencia
-    ADD CONSTRAINT fk_equivalencia_to_colaborador_atualizacao FOREIGN KEY (equivalencia_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
-
-
---
--- Name: equivalencia fk_equivalencia_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY equivalencia
-    ADD CONSTRAINT fk_equivalencia_to_produto FOREIGN KEY (equivalencia_produto_id) REFERENCES produto(produto_id);
-
-
---
--- Name: equivalencia fk_equivalencia_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
---
-
-ALTER TABLE ONLY equivalencia
-    ADD CONSTRAINT fk_equivalencia_to_unidade FOREIGN KEY (equivalencia_unidade_id) REFERENCES unidade(unidade_id);
 
 
 --
@@ -6952,6 +7078,54 @@ ALTER TABLE ONLY unidade
 
 ALTER TABLE ONLY unidade
     ADD CONSTRAINT fk_unidade_to_colaborador_atualizacao FOREIGN KEY (unidade_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
+
+
+--
+-- Name: venda fk_venda_to_cliente; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_cliente FOREIGN KEY (venda_cliente_id) REFERENCES cliente(cliente_id);
+
+
+--
+-- Name: venda fk_venda_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_colaborador FOREIGN KEY (venda_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
+
+
+--
+-- Name: venda fk_venda_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_colaborador_atualizacao FOREIGN KEY (venda_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
+
+
+--
+-- Name: venda fk_venda_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_produto FOREIGN KEY (venda_produto_id) REFERENCES produto(produto_id);
+
+
+--
+-- Name: venda fk_venda_to_tipovenda; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_tipovenda FOREIGN KEY (venda_tvenda_id) REFERENCES tipovenda(tvenda_id);
+
+
+--
+-- Name: venda fk_venda_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY venda
+    ADD CONSTRAINT fk_venda_to_unidade FOREIGN KEY (venda_unidade_id) REFERENCES unidade(unidade_id);
 
 
 --

@@ -33,7 +33,7 @@ public abstract class PostgresSQLExecutor {
 
     private void setParameters() throws SQLException {
         int count = 1;
-        Map<Integer, PostgresSQLParameterManager.Setter> setters = PostgresSQLParameterManager.getSetters();
+        Map<Integer, PostgresSQLQueryBuilder.Setter> setters = PostgresSQLQueryBuilder.getSetters();
         for (Pair< Integer, Object > p: this.postgresSQL.getParameterManager().params() ){
             int key = p.getKey();
             if ( p.getValue() == null ) key = Types.NULL;

@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-public enum  Tipocompra {
-    COMPRA,
+public enum TipoVenda {
+    VENDA,
     DIVIDA
 }

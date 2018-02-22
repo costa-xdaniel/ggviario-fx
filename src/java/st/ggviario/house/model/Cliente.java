@@ -108,7 +108,7 @@ public class Cliente {
         return SQLText.normalize( nomeCompleto );
     }
 
-    public String getClienteContanto( String defaultContanto) {
+    public String getClienteContanto( String defaultContanto ) {
         return SQLResource.coalesce( this.clienteTelemovel, this.clienteTelemovel, this.clienteMail, defaultContanto );
     }
 
