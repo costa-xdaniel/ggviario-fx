@@ -25,19 +25,34 @@ import java.util.List;
 
 public class VendaNewController implements Initializable {
 
+    private Producto productoVasio;
+    private Preco precoVasio;
 
-    interface OnNewVendaResult {
-        void onNewVendaResult( NewVendaResult newVendaResult );
-    }
+    private String functionLoadClienteNew;
+    private boolean ok;
+    private boolean loaded;
+
+    private List<RegisterVendaResult> listVendaResult = new LinkedList<>();
+
+    private List< Producto > productoList = new LinkedList<>();
+    private List< Cliente > clienteList = new LinkedList<>();
+    private Map< UUID, List<Preco> > mapListEquivalencia = new LinkedHashMap<>();
+
+    private Map< TipoVenda, VendaRegister > actionRegister = new LinkedHashMap<>();
+
+    private UUID clienteNewId;
+    private Cliente clienteNew;
+    private List<Cliente> clienteListFiltred = new LinkedList<>();
+
+    private NumberFormat moneyFormater = NumberFormat.getInstance( Locale.FRANCE );
+    private Cliente clienteAnonimo;
 
 
-    interface OnNewClienteRequest{
-        void onRegisterNewClienteRequest();
-    }
+    private OnNewVendaResult onNewVendaResult;
+    private OnNewClienteRequest onNewClienteRequest;
+    private TipoVenda tipoVenda;
+    private OnVendaFeito onVendaFeito;
 
-    private interface VendaRegister {
-        NewVendaResult register( Venda venda );
-    }
 
 
     @FXML
@@ -97,37 +112,58 @@ public class VendaNewController implements Initializable {
     @FXML
     private Label labelVendaMontanteFinalPagar;
 
-
-    private List< Producto > productoList = new LinkedList<>();
-    private List< Cliente > clienteList = new LinkedList<>();
-    private Map< UUID, List<Preco> > mapListEquivalencia = new LinkedHashMap<>();
-
-    private Map< TipoVenda, VendaRegister > actionRegister = new LinkedHashMap<>();
-
-    private UUID clienteNewId;
-    private Cliente clienteNew;
-    private List<Cliente> clienteListFiltred = new LinkedList<>();
-
-    private NumberFormat moneyFormater = NumberFormat.getInstance( Locale.FRANCE );
-    private Cliente clienteAnonimo;
-
-
-    private OnNewVendaResult onNewVendaResult;
-    private OnNewClienteRequest onNewClienteRequest;
-    private TipoVenda tipoVenda;
+    @FXML
+    private JFXButton buttonVendaFeito;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moneyFormater.setMinimumFractionDigits(2);
         moneyFormater.setMaximumFractionDigits(2);
+
+        createVoidItems();
         this.newForm();
+        componentStruture();
+        setEventes();
+        postgresSaveAction();
 
-        String pattern = "dd-MM-yyyy";
+        if ( this.ok ){
+            this.loadClienteDatasource();
+            this.loadProdutoDatasource();
+            this.pushToView();
+            this.loaded = true;
+        }
+    }
 
+
+
+    private void createVoidItems() {
+        Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();
+        builder.nome("Selecione");
+        this.productoVasio = builder.build();
+
+        Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
+        precoBuilder.unidade( new Unidade.UnidadeBuilder().nome( "Selecione" ).build() );
+        this.precoVasio = precoBuilder.build();
+    }
+
+    private void newForm() {
+        this.listViewCliente.getSelectionModel().select( null );
+        this.comboxProduto.getSelectionModel().select( null );
+        this.comboxPrecoUnidades.getSelectionModel().select( null );
+        this.textFieldVendaQuantidade.setText( null );
+        this.textFieldVendaMontanteUnitirio.setText( null );
+        this.textFieldVendaMontanteBruto.setText( null );
+        this.textFieldVendaMontantePagar.setText( null );
+        this.textFieldClienteSearch.setText( null );
+        this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
+        this.datePickerVendaData.setValue(LocalDate.now());
+        this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
+    }
+
+    private void componentStruture() {
         datePickerVendaData.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
@@ -136,7 +172,6 @@ public class VendaNewController implements Initializable {
                     return "";
                 }
             }
-
             @Override
             public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
@@ -149,120 +184,97 @@ public class VendaNewController implements Initializable {
 
         datePickerVendaDataFinalizar.setConverter(this.datePickerVendaData.getConverter());
 
-        this.comboxProduto.getSelectionModel().selectedItemProperty().addListener((observable, oldItem, newItem) -> {
-            this.comboxPrecoUnidades.setItems(FXCollections.observableList(this.mapListEquivalencia.get(newItem.getProdutoId())));
-            this.resetForProduto();
-        });
+        this.comboxPrecoUnidades.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPreco, newPreco ) -> this.onSeletedUnidade( newPreco ) );
+    }
 
-        this.listViewCliente.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCliente, newCliente) -> {
-            if (newCliente == null) {
-                this.textFieldClienteNome.setText("");
-                this.textFieldClienteContacto.setText("");
-                this.textFieldClienteMorada.setText("");
-                this.textFieldClienteMontantePendente.setText("");
-                this.textFieldClienteMontanteTotal.setText("");
-            } else {
-                this.textFieldClienteNome.setText(newCliente.getClienteCompletName());
-                this.textFieldClienteContacto.setText(newCliente.getClienteContanto("(Sem contacto)"));
-                this.textFieldClienteMorada.setText(newCliente.getClienteLocal("(Sem local)"));
-                this.textFieldClienteMontantePendente.setText(this.moneyFormater.format(newCliente.getClienteMontantePendente()));
-                this.textFieldClienteMontanteTotal.setText(this.moneyFormater.format(newCliente.getClienteMontanteTotal()));
-            }
-        });
-
-        this.loadClienteDatasource();
-        this.loadProdutoDatasource();
-        this.pushToView();
+    private void setEventes() {
 
         this.textFieldVendaQuantidade.setOnKeyReleased(keyEvent -> this.calculateNow());
         this.textFieldVendaDesconto.setOnKeyReleased(keyEvent -> this.calculateNow());
         this.textFieldClienteSearch.setOnKeyReleased(key -> this.searchCliente(key));
         this.fabNewCliente.setOnAction(actionEvent -> this.newClienteRequest());
-        this.buttonVendaCadastrarDivida.setOnAction(event -> this.registerCliente());
+        this.buttonVendaCadastrarDivida.setOnAction(event -> this.registerCliente() );
+        this.buttonVendaFeito.setOnAction( event -> this.vendaFeito() );
+        this.comboxProduto.getSelectionModel().selectedItemProperty().addListener((observable, oldItem, newItem) -> {
+            this.onProdutoChange( oldItem, newItem );
+        });
+
         this.datePickerVendaData.valueProperty().addListener((observableValue, oldDate, newDate) -> {
             if (newDate != null) this.datePickerVendaDataFinalizar.setValue(newDate.plusDays(30));
             else this.datePickerVendaDataFinalizar.setValue(null);
 
         });
 
-        this.setTipoVendaActions();
+        this.listViewCliente.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCliente, newCliente) -> clienteSelect(newCliente));
     }
 
-    private void setTipoVendaActions() {
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-        Colaborador colaborador = AuthSingleton.getAuth();
-        this.actionRegister.put( TipoVenda.VENDA, (venda )-> this.execute( venda,
-            sql.query("funct_reg_venda_venda")
-                .withUUID( colaborador.getColaboradorId() )
-                .withUUID( venda.getProducto().getProdutoId() )
-                .withUUID( venda.getUnidade().getUnidadeId() )
-                .withUUID( venda.getCliente().getClienteId() )
-                .withNumeric( venda.getVandaQuantidade() )
-                .withNumeric( venda.getVendaMontenteUnidario() )
-                .withNumeric( venda.getVendaMontanteBruto() )
-                .withNumeric( venda.getVendaMontanteDesconto() )
-                .withNumeric( venda.getVendaMontantePagar() )
-                .withDate( venda.getVendaData() )
-        ));
-        this.actionRegister.put(TipoVenda.DIVIDA, venda ->{
-            PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
-            query.withUUID( colaborador.getColaboradorId() );
-            Producto p = venda.getProducto();
-            query.withUUID( p.getProdutoId() );
-            query.withUUID( venda.getUnidade().getUnidadeId() );
-            query.withUUID( venda.getCliente().getClienteId() );
-            query.withNumeric( venda.getVandaQuantidade() );
-            query.withNumeric( venda.getVendaMontenteUnidario() );
-            query.withNumeric( venda.getVendaMontanteBruto() );
-            query.withNumeric( venda.getVendaMontanteDesconto() );
-            query.withNumeric( venda.getVendaMontantePagar() );
-            query.withDate( venda.getVendaData() );
-            query.withDate( venda.getVendaDataFinalizar() );
-            return this.execute( venda, query );
-        });
+
+
+    private void clienteSelect(Cliente newCliente) {
+        if (newCliente == null) {
+            this.textFieldClienteNome.setText("");
+            this.textFieldClienteContacto.setText("");
+            this.textFieldClienteMorada.setText("");
+            this.textFieldClienteMontantePendente.setText("");
+            this.textFieldClienteMontanteTotal.setText("");
+        } else {
+            this.textFieldClienteNome.setText(newCliente.getClienteCompletName());
+            this.textFieldClienteContacto.setText(newCliente.getClienteContanto("(Sem contacto)"));
+            this.textFieldClienteMorada.setText(newCliente.getClienteLocal("(Sem local)"));
+            this.textFieldClienteMontantePendente.setText(this.moneyFormater.format(newCliente.getClienteMontantePendente()));
+            this.textFieldClienteMontanteTotal.setText(this.moneyFormater.format(newCliente.getClienteMontanteTotal()));
+        }
     }
 
-    private NewVendaResult execute( final Venda venda,  PostgresSQLQueryBuilder funct_reg_venda ) {
+
+    public void setFunctionLoadClienteNew(String functionLoadClienteNew) {
+        this.functionLoadClienteNew = functionLoadClienteNew;
+    }
+
+    public void ok() {
+        this.ok = true;
+        if( !this.loaded ){
+            this.loadClienteDatasource();
+            this.loadProdutoDatasource();
+            this.pushToView();
+            this.loaded = true;
+        }
+    }
+
+    private RegisterVendaResult execute(final Venda venda, PostgresSQLQueryBuilder funct_reg_venda ) {
         Venda.VendaBuilder vendaBuilder =  new Venda.VendaBuilder();
         Movimento.MovimentoBuilder movimentoBuilder = new Movimento.MovimentoBuilder();
 
         Pair <Boolean, Map<String, Object> > mapPair = null;
         Gson gson = new Gson();
-        NewVendaResult newVendaResult = new NewVendaResult();
+        RegisterVendaResult registerVendaResult = new RegisterVendaResult();
 
         funct_reg_venda.callFunctionTable().onResultQuery( row ->{
             String documentRegister = String.valueOf( row.valueOf("message") );
 
-            newVendaResult.resultData = gson.fromJson( documentRegister, Map.class );
+            registerVendaResult.resultData = gson.fromJson( documentRegister, Map.class );
             //movimento
             if( row.asBoolean("result") ){
-                Venda registedVenda = vendaBuilder.load( (Map<String, Object>) newVendaResult.resultData.get("venda" ) ).build();
-                newVendaResult.resultData =  new LinkedHashMap<>();
-                newVendaResult.venda =  registedVenda;
-                if( newVendaResult.resultData.get( "movimento" ) != null )
-                    newVendaResult.movimento =  movimentoBuilder.load( ( Map<String, Object > ) newVendaResult.resultData.get( "movimento" ) ).build();
-                newVendaResult.sucess = true;
+                Venda registedVenda = vendaBuilder.load( (Map<String, Object>) registerVendaResult.resultData.get("venda" ) ).build();
+                registerVendaResult.resultData =  new LinkedHashMap<>();
+                registerVendaResult.venda =  registedVenda;
+                if( registerVendaResult.resultData.get( "movimento" ) != null )
+                    registerVendaResult.movimento =  movimentoBuilder.load( ( Map<String, Object > ) registerVendaResult.resultData.get( "movimento" ) ).build();
+                registerVendaResult.sucess = true;
             } else {
-                newVendaResult.sucess = false;
-                newVendaResult.movimento = null;
-                newVendaResult.venda = venda;
+                registerVendaResult.sucess = false;
+                registerVendaResult.movimento = null;
+                registerVendaResult.venda = venda;
+                registerVendaResult.message = String.valueOf( registerVendaResult.resultData.get("text") );
             }
         });
 
-        return newVendaResult;
+        return registerVendaResult;
     }
 
-    private void newForm() {
-        this.textFieldVendaMontanteUnitirio.setText( "" );
-        this.textFieldVendaMontanteBruto.setText( "" );
-        this.textFieldVendaMontantePagar.setText( "" );
-        this.textFieldClienteSearch.setText( "" );
-        this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
-        this.datePickerVendaData.setValue(LocalDate.now());
-        this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
-    }
 
-    private void searchCliente(KeyEvent key) {
+
+    private void searchCliente( KeyEvent key) {
         String text = SQLText.normalize( this.textFieldClienteSearch.getText() );
         this.clienteListFiltred.clear();
         if( text == null ){
@@ -277,14 +289,30 @@ public class VendaNewController implements Initializable {
     }
 
     private void registerCliente() {
-        if( this.validateForm( ) ){
+        RegisterVendaResult result = this.validateForm();
+        if( result.sucess ){
             Venda venda = this.mountVenda();
-            NewVendaResult result = this.actionRegister.get(this.tipoVenda).register(venda);
-            if( this.onNewVendaResult != null ){
-                this.onNewVendaResult.onNewVendaResult( result );
+            result = this.actionRegister.get(this.tipoVenda).register(venda);
+
+            if( result.sucess ){
+                this.listVendaResult.add( result );
+                this.newForm();
             }
         }
+
+        if( this.onNewVendaResult != null ){
+            this.onNewVendaResult.onNewVendaResult( result );
+        }
     }
+
+    private void vendaFeito() {
+        if( this.onVendaFeito != null ){
+            this.onVendaFeito.onVendaFeinto( this.listVendaResult );
+        }
+        this.listVendaResult = new LinkedList<>();
+        this.newForm();
+    }
+
 
     private Venda mountVenda() {
         Preco precoSelected = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
@@ -313,11 +341,26 @@ public class VendaNewController implements Initializable {
         return vendaBuilder.build();
     }
 
-    private boolean validateForm() {
+    private RegisterVendaResult validateForm() {
+        RegisterVendaResult registerVendaResult = new RegisterVendaResult();
         VendaNewController.CalcResult cal = this.calculateNow();
-        if( cal.vendaMontantePagar == null ) return false;
-        if( this.listViewCliente.getSelectionModel().getSelectedItem() == null ) return  false;
-        return true;
+        Producto produto = this.comboxProduto.getSelectionModel().getSelectedItem();
+        Preco preco = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
+
+
+        registerVendaResult.sucess = false;
+        if( this.listViewCliente.getSelectionModel().getSelectedItem() == null ){
+            registerVendaResult.message = "Nenum cliente seleicionado!";
+        } else if( produto  == null || produto.equals( this.productoVasio ) ){
+            registerVendaResult.message = "Nenhum produto selecionado!";
+        } else if( preco == null || preco.equals( this.precoVasio ) ){
+            registerVendaResult.message = "Nenhuma unidade selecionada!";
+        } else if ( this.getVendaQuantidade() == null ) {
+            registerVendaResult.message = "Quantidade de venda não informada!";
+        } else {
+            registerVendaResult.sucess = true;
+        }
+        return registerVendaResult;
     }
 
     private void newClienteRequest() {
@@ -331,6 +374,11 @@ public class VendaNewController implements Initializable {
         return this;
     }
 
+    public VendaNewController setOnVendaFeito( OnVendaFeito onVendaFeito ) {
+        this.onVendaFeito = onVendaFeito;
+        return this;
+    }
+
     public VendaNewController setOnNewClienteRequest(OnNewClienteRequest onNewClienteRequest) {
         this.onNewClienteRequest = onNewClienteRequest;
         return this;
@@ -338,12 +386,15 @@ public class VendaNewController implements Initializable {
 
     private void pushToView() {
 
-        this.comboxProduto.setItems(FXCollections.observableList( this.productoList ) );
-        this.comboxPrecoUnidades.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPreco, newPreco ) -> this.onSeletedUnidade( newPreco ) );
+        this.comboxProduto.setItems( FXCollections.observableList( this.productoList ) );
         this.searchCliente( null );
     }
 
-    private void resetForProduto() {
+    private void onProdutoChange( Producto oldItem, Producto newItem ) {
+        if( newItem != null && !newItem.equals( this.productoVasio ) )
+            this.comboxPrecoUnidades.setItems( FXCollections.observableList( this.mapListEquivalencia.get( newItem.getProdutoId()) ) );
+        else this.comboxPrecoUnidades.setItems( FXCollections.observableList( Arrays.asList( this.precoVasio ) ) );
+
         this.textFieldVendaMontanteUnitirio.setText( "" );
         this.textFieldVendaMontanteBruto.setText( "" );
         this.textFieldVendaMontantePagar.setText( "" );
@@ -351,7 +402,7 @@ public class VendaNewController implements Initializable {
     }
 
     private void onSeletedUnidade(Preco newPreco) {
-        if( newPreco == null ){
+        if( newPreco == null || newPreco.equals( this.precoVasio ) ){
             this.textFieldVendaMontanteUnitirio.setText("");
         } else {
             this.textFieldVendaMontanteUnitirio.setText( this.moneyFormater.format( newPreco.getPrecoCustoUnidade() ) );
@@ -363,11 +414,18 @@ public class VendaNewController implements Initializable {
         CalcResult calcResult = new CalcResult();
 
         calcResult.preco = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
-        calcResult.unidade = calcResult.preco.getUnidade();
+        if( calcResult.preco == null || calcResult.preco.equals( this.precoVasio ) ) calcResult.preco = null;
+        else {
+            calcResult.unidade = calcResult.preco.getUnidade();
+            calcResult.vendaMontanteUnitario = calcResult.preco.getPrecoCustoUnidade();
+        }
+
         calcResult.producto = this.comboxProduto.getSelectionModel().getSelectedItem();
+        if( calcResult.producto == null || calcResult.producto.equals( this.productoVasio ) ) calcResult.producto = null;
+
         calcResult.vendaQuantidade = this.getVendaQuantidade();
         calcResult.vendaMontanteDesconto = this.getVendaDesconto();
-        calcResult.vendaMontanteUnitario = calcResult.preco.getPrecoCustoUnidade();
+
 
         if( calcResult.preco != null && calcResult.vendaQuantidade != null ){
             calcResult.vendaMontanteBruto = calcResult.vendaMontanteUnitario * calcResult.vendaQuantidade;
@@ -399,7 +457,7 @@ public class VendaNewController implements Initializable {
         this.clienteListFiltred.clear();
 
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        sql.query( "funct_load_cliente_vendadivida" ).withJsonb( null ).callFunctionTable() .onResultQuery( row ->{
+        sql.query( this.functionLoadClienteNew ).withJsonb( null ).callFunctionTable() .onResultQuery( row ->{
             Cliente cliente;
             this.clienteList.add( cliente =  clienteBuilder.load( row ).build() );
             if( cliente.getClienteId().equals( new UUID(0, 1 ) ) )
@@ -415,6 +473,8 @@ public class VendaNewController implements Initializable {
         this.productoList.clear();
         this.mapListEquivalencia.clear();
 
+        this.productoList.add( this.productoVasio );
+
         Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
@@ -427,7 +487,7 @@ public class VendaNewController implements Initializable {
             Producto produto;
             productoList.add( produto = produtoBuilder.build() );
             List<Preco> equivalenciaList = new LinkedList<>();
-
+            equivalenciaList.add( this.precoVasio );
             String documentEquivalencia = String.valueOf( row.valueOf("produto_precos"));
 
             List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
@@ -490,6 +550,59 @@ public class VendaNewController implements Initializable {
         }
     }
 
+    private void postgresSaveAction() {
+        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        Colaborador colaborador = AuthSingleton.getAuth();
+        this.actionRegister.put( TipoVenda.VENDA, (venda )-> this.execute( venda,
+                sql.query("funct_reg_venda_venda")
+                        .withUUID( colaborador.getColaboradorId() )
+                        .withUUID( venda.getProducto().getProdutoId() )
+                        .withUUID( venda.getUnidade().getUnidadeId() )
+                        .withUUID( venda.getCliente().getClienteId() )
+                        .withNumeric( venda.getVandaQuantidade() )
+                        .withNumeric( venda.getVendaMontenteUnidario() )
+                        .withNumeric( venda.getVendaMontanteBruto() )
+                        .withNumeric( venda.getVendaMontanteDesconto() )
+                        .withNumeric( venda.getVendaMontantePagar() )
+                        .withDate( venda.getVendaData() )
+        ));
+        this.actionRegister.put(TipoVenda.DIVIDA, venda ->{
+            PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
+            query.withUUID( colaborador.getColaboradorId() );
+            Producto p = venda.getProducto();
+            query.withUUID( p.getProdutoId() );
+            query.withUUID( venda.getUnidade().getUnidadeId() );
+            query.withUUID( venda.getCliente().getClienteId() );
+            query.withNumeric( venda.getVandaQuantidade() );
+            query.withNumeric( venda.getVendaMontenteUnidario() );
+            query.withNumeric( venda.getVendaMontanteBruto() );
+            query.withNumeric( venda.getVendaMontanteDesconto() );
+            query.withNumeric( venda.getVendaMontantePagar() );
+            query.withDate( venda.getVendaData() );
+            query.withDate( venda.getVendaDataFinalizar() );
+            return this.execute( venda, query );
+        });
+    }
+
+    interface OnNewVendaResult {
+        void onNewVendaResult( RegisterVendaResult registerVendaResult);
+    }
+
+    interface OnVendaFeito {
+        void onVendaFeinto(  List<RegisterVendaResult> results );
+    }
+
+
+    interface OnNewClienteRequest{
+        void onRegisterNewClienteRequest();
+    }
+
+    private interface VendaRegister {
+        RegisterVendaResult register(Venda venda );
+    }
+
+
+
     private class  CalcResult {
 
         private Preco preco;
@@ -502,17 +615,19 @@ public class VendaNewController implements Initializable {
         private Producto producto;
     }
 
-    public class NewVendaResult {
+    public class RegisterVendaResult {
+
         private Map<String, Object > resultData;
         private boolean sucess;
         private Movimento movimento;
         private Venda venda;
+        private String message;
 
         public Map<String, Object> getResultData() {
             return resultData;
         }
 
-        public NewVendaResult setResultData(Map<String, Object> resultData) {
+        public RegisterVendaResult setResultData(Map<String, Object> resultData) {
             this.resultData = resultData;
             return this;
         }
@@ -521,7 +636,7 @@ public class VendaNewController implements Initializable {
             return sucess;
         }
 
-        public NewVendaResult setSucess(boolean sucess) {
+        public RegisterVendaResult setSucess(boolean sucess) {
             this.sucess = sucess;
             return this;
         }
@@ -530,7 +645,7 @@ public class VendaNewController implements Initializable {
             return movimento;
         }
 
-        public NewVendaResult setMovimento(Movimento movimento) {
+        public RegisterVendaResult setMovimento(Movimento movimento) {
             this.movimento = movimento;
             return this;
         }
@@ -539,11 +654,16 @@ public class VendaNewController implements Initializable {
             return venda;
         }
 
-        public NewVendaResult setVenda(Venda venda) {
+        public RegisterVendaResult setVenda(Venda venda) {
             this.venda = venda;
             return this;
         }
+
+        public String getMessage() {
+            return message;
+        }
     }
+
 
 
 }

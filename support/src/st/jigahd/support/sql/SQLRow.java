@@ -6,12 +6,13 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SQLRow implements Serializable {
 
-    Map< String, Integer > headerMap;
+    Map<String, Integer> headerMap;
     Map< String, Object > map;
     private Object[ ] values;
 
@@ -101,7 +102,7 @@ public class SQLRow implements Serializable {
         return (String) valueOf( columnName );
     }
 
-    public UUID asUUID( String columnName ){
+    public UUID asUUID(String columnName ){
         return (UUID) valueOf( columnName );
     }
 
@@ -114,7 +115,7 @@ public class SQLRow implements Serializable {
     }
 
     public Date asDate( String columnName ){
-        return (Date) valueOf( columnName );
+        return SQLRow.dateOf( valueOf( columnName ) );
     }
 
     public Calendar asCalendar( String columnName ){
@@ -148,5 +149,34 @@ public class SQLRow implements Serializable {
         if( o instanceof Double ) return (Double) o;
         if( o instanceof BigDecimal ) return ((BigDecimal)o ).doubleValue();
         return (Double) o;
+    }
+
+    public static Date dateOf( Object o) {
+        try {
+            if( o == null ) return null;
+            if( o instanceof Date ) return ( Date) o;
+            if( o instanceof String ) {
+                String format = null;
+                String campo[] = String.valueOf(o).split("[-T]");
+                if( campo[0].length() == 4 && campo[1].length()== 2 && campo[2].length() == 2 ){
+                    int p1 = Integer.parseInt( campo[1] );
+                    int p2 = Integer.parseInt( campo[2] );
+                    if( p1 > 0 && p1 < 13 && p2 > 0 && p2 < 32 ){
+                        format = "yyyy-MM-dd";
+                    }
+                }
+
+                if( format != null ) {
+                    DateFormat dateFormat = new SimpleDateFormat(  format);
+                    return dateFormat.parse( String.valueOf( o ) );
+                }
+            }
+
+            return (Date) o;
+        } catch ( Exception ex ){
+            ex.printStackTrace();
+            throw new RuntimeException( String.valueOf( o ), ex );
+        }
+
     }
 }

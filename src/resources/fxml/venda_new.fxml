@@ -65,7 +65,7 @@
                     </rowConstraints>
                      <children>
                         <JFXComboBox fx:id="comboxProduto" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="333.0" promptText="Produto" unFocusColor="#009688" GridPane.columnSpan="2" />
-                        <JFXComboBox fx:id="comboxPrecoUnidades" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="275.0" promptText="Unidade" unFocusColor="#009688" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="comboxPrecoUnidades" focusColor="#ff5722" labelFloat="true" prefHeight="30.0" prefWidth="275.0" promptText="Tipo de unidade" unFocusColor="#009688" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="8.0" />
                            </GridPane.margin>
@@ -141,7 +141,7 @@
                         </JFXTextField>
                      </children>
                   </GridPane>
-                  <JFXButton fx:id="buttonVendaCadastrarDivida" buttonType="RAISED" layoutX="180.0" layoutY="285.0" minHeight="40.0" style="-fx-background-color: #009688;" text="Cadastrar" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <JFXButton fx:id="buttonVendaCadastrarDivida" buttonType="RAISED" layoutX="180.0" layoutY="285.0" minHeight="40.0" style="-fx-background-color: #009688;" text="REGISTAR VENDA" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <padding>
                         <Insets left="16.0" right="16.0" />
                      </padding>
@@ -151,6 +151,11 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
+                  <JFXButton fx:id="buttonVendaFeito" layoutX="206.0" layoutY="196.0" minHeight="40.0" style="-fx-background-color: #009688;" text="FEITO" textFill="#fffdfd" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="164.0">
+                     <padding>
+                        <Insets left="16.0" right="16.0" />
+                     </padding>
+                  </JFXButton>
                </children>
                <padding>
                   <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />

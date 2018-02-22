@@ -35,9 +35,9 @@ public class DrawerController implements Initializable {
         menuItems.add( new DrawerHeader() );
         menuItems.add( new MenuItem("Dasborad", getClass().getResource("/fxml/dasborad.fxml") ) );
         menuItems.add( new MenuItem("Clientes", getClass().getResource("/fxml/cliente.fxml") ) );
-        menuItems.add( new MenuItem("Dividas", getClass().getResource("/fxml/divida.fxml") ) );
-        menuItems.add( new MenuItem("Vendas", getClass().getResource("/fxml/vendas.fxml") ) );
-        menuItems.add( new MenuItem("Despesas", getClass().getResource("/fxml/divida.fxml") ) );
+        menuItems.add( new MenuItem("Dividas", getClass().getResource("/fxml/venda_divida.fxml") ) );
+        menuItems.add( new MenuItem("Vendas", getClass().getResource("/fxml/venda_venda.fxml") ) );
+        menuItems.add( new MenuItem("Despesas", getClass().getResource("/fxml/venda_divida.fxml") ) );
         menuItems.add( new MenuItem("Produtos", getClass().getResource("/fxml/produto.fxml") ) );
         menuItems.add( new MenuItem("Produção", getClass().getResource("/fxml/producao.fxml") ) );
         menuItems.add( new MenuItem("Contas", getClass().getResource("/fxml/contas.fxml") ) );

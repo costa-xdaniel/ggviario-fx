@@ -117,29 +117,30 @@ public class ClienteController extends TableController< Cliente > implements Ini
             nome = SQLText.normalize( nome );
             return  new SimpleStringProperty( nome );
         } );
-        this.columnClienteNome.setCellFactory( cell -> this.getTextCell() );
+
+        this.columnClienteNome.setCellFactory( cell -> this.getSimpleTextCell() );
         this.columnClienteNome.setMinWidth( 150 );
 
         this.columnClienteMorada.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getClienteMorada() ) );
-        this.columnClienteMorada.setCellFactory( cell -> this.getTextCell());
+        this.columnClienteMorada.setCellFactory( cell -> this.getSimpleTextCell());
 
         this.columnClienteContacto.setCellValueFactory( data-> new SimpleStringProperty( data.getValue().getClienteMorada() ) );
-        this.columnClienteContacto.setCellFactory( cell -> this.getTextCell() );
+        this.columnClienteContacto.setCellFactory( cell -> this.getSimpleTextCell() );
 
         this.columnClienteMontanteVenda.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getClienteMonatenteCompra() ) );
-        this.columnClienteMontanteVenda.setCellFactory(cell -> getNumberCell() );
+        this.columnClienteMontanteVenda.setCellFactory(cell -> this.getMoneyCell( "STN") );
 
         this.columnClienteMontanteDivida.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMontanteDivida() ) );
-        this.columnClienteMontanteDivida.setCellFactory( cell -> this.getNumberCell() );
+        this.columnClienteMontanteDivida.setCellFactory( cell -> this.getMoneyCell( "STN") );
 
         this.columnClienteMontanteTotal.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMontanteTotal() ) );
-        this.columnClienteMontanteTotal.setCellFactory( cell -> this.getNumberCell() );
+        this.columnClienteMontanteTotal.setCellFactory( cell -> this.getMoneyCell( "STN") );
 
         this.columnClienteMontantePago.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMontantePago() ) );
-        this.columnClienteMontantePago.setCellFactory( cell -> this.getNumberCell() );
+        this.columnClienteMontantePago.setCellFactory( cell -> this.getMoneyCell( "STN") );
 
         this.columnClienteMontantePorPagar.setCellValueFactory( data -> new SimpleDoubleProperty( data.getValue().getClienteMontantePendente() ) );
-        this.columnClienteMontantePorPagar.setCellFactory( cell -> this.getNumberCell() );
+        this.columnClienteMontantePorPagar.setCellFactory( cell -> this.getMoneyCell( "STN") );
     }
 
 

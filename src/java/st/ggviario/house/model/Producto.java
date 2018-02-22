@@ -144,7 +144,11 @@ public class Producto {
         }
 
         public ProdutoBuilder load( SQLRow row) {
-            return this.load( row.toMap() );
+            this.id = SQLRow.uuidOf( row.valueOf( "produto_id" ) );
+            this.nome = SQLRow.stringOf( row.valueOf( "produto_nome" ) );
+            this.codigo = SQLRow.stringOf( row.valueOf( "produto_nome" ) );
+            this.stock = SQLRow.doubleOf(row.valueOf( "produto_stock" ) );
+            return this;
         }
 
         public ProdutoBuilder load( Map<String, Object > map ) {

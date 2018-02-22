@@ -156,7 +156,6 @@ public class ClienteNewController implements Initializable {
                             }
                         } else {
                             String msg = String.valueOf( row.valueOf("message") );
-                            System.out.println( msg );
                             Map< String, Object > root = new Gson().fromJson( msg, Map.class );
                             if( this.onNewClientSuccess != null ) this.onNewClientSuccess.onNewClienteResult( false, cliente, root );
                         }
