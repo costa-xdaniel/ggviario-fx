@@ -17,6 +17,7 @@
 *.tar.gz
 *.rar
 out/
+.idea/
 .idea/dataSources
 .idea/workspace.xml
 .idea/dataSources.xml
