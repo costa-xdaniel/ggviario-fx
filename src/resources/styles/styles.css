@@ -7,7 +7,9 @@
     md-text-color: #212121;
     md-primary-text-color: #FFFFFF;
     md-secondary-text-color: #757575;
-    md-divider-color: #BDBDBDBD
+    md-divider-color: #BDBDBDBD;
+    md-floating-action-size: 50px;
+    md-floating-action-icon-size: 66px;
 }
 
 /*Tool bar and its components*/
@@ -26,7 +28,6 @@
     -jfx-focus-color: md-accent-color;
     -jfx-unfocus-color: md-primary-text-color;
     -jfx-label-float: true;
-    -fx-cursor: md-primary-text-color;
     -fx-text-fill: md-primary-text-color;
     -fx-prompt-text-fill: md-primary-text-color;
 }
@@ -44,16 +45,31 @@
     -fx-background-radius :0px;
 }
 
-/* Floating action button */
 .floating-action-button {
-    -fx-background-color: md-accent-color;
-    -fx-pref-height: 50px;
-    -fx-pref-widtht: 50px;
+    -fx-background-color: #FF5722 ;
     -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 50px;
     -fx-border-color: #FFFFFF;
-    -fx-border-radius: 50px;
+
     -fx-border-width: 4px;
+    -fx-background-radius: 50px;
+    -fx-pref-height:       50px;
+    -fx-pref-widtht:       50px;
+    -fx-border-radius:     50px;
+
+
+}
+/* Floating action button */
+
+/* Floating action button */
+.floating-action-button-icon {
+    -fx-background-color: #FF5722 ;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 4px;
+    -fx-background-radius: 72px;
+    -fx-pref-height:       72px;
+    -fx-pref-widtht:       72px;
+    -fx-border-radius:     72px;
 }
 
 
@@ -62,11 +78,6 @@
     -fx-padding: 5 0 5 0;
 }
 
-
-
-.card-title .text {
-    -fx-fill: -fx-text-title-color;
-}
 
 .anchor-header {
     -fx-background-image: url(/images/backgroud.png);
@@ -107,16 +118,25 @@
 
 
 /*Details lateral*/
-.details-title{
+.details-header-title{
     -fx-text-fill: md-primary-color;
     -fx-font-size: 16px;
-    -fx-font-style: bold;
+    -fx-font-weight: bold;
+}
+
+.details-header-icon-area{
+    -fx-padding: 16px;
+}
+
+.details-header-icon-area MaterialDesignIconView{
+    -fx-fill: md-primary-color;
+    -fx-pref-width: -Infinity;
+    -fx-pref-height: -Infinity;
 }
 
 .details-area{
     -fx-text-fill: md-primary-color;
     -fx-font-size: 14px;
-    -fx-font-style: bold;
 }
 
 .details-area-field{
@@ -126,4 +146,66 @@
 .detail-area-field-value{
 
 }
+
+
+.venda-drawer-details {
+    -fx-pref-width: 450px;
+    -fx-min-height: 50px;
+    -fx-background-color: transparente;
+}
+
+.venda-drawer-details-page {
+    -fx-pref-width: 450px;
+}
+
+
+.modal {
+    -fx-border-color: #FFFFFF;
+}
+
+.form{
+    -fx-background-color: with;
+}
+
+.form JFXTextField {
+    -jfx-focus-color: md-accent-color;
+    -jfx-unfocus-color: md-primary-color;
+    -jfx-label-float: true;
+    -fx-pref-width: 250px;
+    -fx-text-fill: md-text-color;
+    -fx-prompt-text-fill: md-text-color;
+}
+
+.form JFXComboBox {
+    -jfx-focus-color: md-accent-color;
+    -jfx-unfocus-color: md-primary-color;
+    -jfx-label-float: true;
+    -fx-text-fill: md-primary-text-color;
+    -fx-prompt-text-fill: md-primary-text-color;
+    -fx-pref-width: 250px;
+}
+
+
+.form JFXDatePicker {
+    -jfx-default-color: md-primary-color;
+    -fx-text-fill: md-primary-text-color;
+    -fx-prompt-text-fill: md-primary-text-color;
+    -fx-pref-width: 250px;
+}
+
+.form-simple.form JFXTextField {
+    -fx-pref-width: 300px;
+}
+
+
+.form-simple.form JFXComboBox {
+    -fx-pref-width: 300px;
+}
+
+
+.form-simple.form  JFXDatePicker {
+    -fx-pref-width: default;
+}
+
+
 

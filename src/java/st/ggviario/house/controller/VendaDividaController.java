@@ -1,6 +1,7 @@
 package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,13 +12,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import st.ggviario.house.model.Cliente;
 import st.ggviario.house.model.TipoVenda;
 import st.ggviario.house.model.Venda;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class VendaDividaController extends VendaController {
@@ -26,7 +25,7 @@ public class VendaDividaController extends VendaController {
     private StackPane stackPane;
 
     @FXML
-    private AnchorPane anchorRoot;
+    private AnchorPane localRootPage;
 
     @FXML
     private TableView< Venda > tableViewVendaDivida;
@@ -64,12 +63,30 @@ public class VendaDividaController extends VendaController {
     @FXML
     private JFXButton buttonVendaDividaNew;
 
+    @FXML
+    private JFXDrawer drawerVendaDetails;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize( url, resourceBundle );
 
         this.structureTableColumns();
+    }
+
+    @Override
+    protected Pane getLocalRootPage() {
+        return this.localRootPage;
+    }
+
+    @Override
+    protected JFXDrawer getDrawerVendaDetails() {
+        return this.drawerVendaDetails;
+    }
+
+    @Override
+    String[] getAvalibleIcons() {
+        return new String[]{ "panelIconAdd", "panelIconPayNow", "panelIconListPayment" };
     }
 
 
@@ -99,8 +116,8 @@ public class VendaDividaController extends VendaController {
     }
 
     @Override
-    Pane getRoot() {
-        return this.anchorRoot;
+    Pane getGetLocalRootPage() {
+        return this.localRootPage;
     }
 
     @Override

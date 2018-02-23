@@ -18,11 +18,6 @@
 *.rar
 out/
 .idea/
-.idea/dataSources
-.idea/workspace.xml
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqldialects.xml
 
 
 

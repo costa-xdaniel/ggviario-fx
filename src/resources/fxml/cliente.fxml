@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -28,7 +30,13 @@
                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                    </columnResizePolicy>
                 </TableView>
-                <JFXButton fx:id="fabNewCliente" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                <JFXButton fx:id="fabNewCliente" buttonType="RAISED" prefHeight="50.0" prefWidth="66.0" styleClass="floating-action-button-icon" text=" " AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="ACCOUNT_PLUS" size="24" />
+                     </graphic></JFXButton>
              </children>
           </AnchorPane>
        </center>

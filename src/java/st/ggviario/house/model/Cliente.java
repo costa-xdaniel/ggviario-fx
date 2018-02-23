@@ -245,7 +245,7 @@ public class Cliente {
             this.localTrabalho = row.asString( "cliente_localtrabalho" );
             this.montanteCompra = row.asDouble( "cliente_monatntecompra" );
             this.montanteDivida = row.asDouble( "cliente_montantedivida" );
-            this.montanteTotal = row.asDouble( "cliente_montantetotal" );
+            this.montanteTotal = row.asDouble( "cliente_montantetatal" );
             this.montantePago = row.asDouble( "cliente_montantepago" );
             this.montantePendente = row.asDouble( "cliente_montantependente" );
             return this;

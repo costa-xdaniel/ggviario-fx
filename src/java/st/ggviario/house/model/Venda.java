@@ -63,7 +63,7 @@ public class Venda {
         return vendaQuantidadeProduto;
     }
 
-    public Double getVendaMontenteUnidario() {
+    public Double getVendaMontanteUnidario() {
         return vandaMontanteUnitario;
     }
 

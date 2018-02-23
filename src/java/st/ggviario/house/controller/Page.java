@@ -6,7 +6,7 @@ public interface Page {
 
     default void setRootPage( Node rootPage ) {}
 
-    default void setRoot(Node root) {}
+    default void setRoot( Node root ) {}
 
     default  void setRootController(HomeController rootController) {}
 

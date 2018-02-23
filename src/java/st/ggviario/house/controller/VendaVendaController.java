@@ -6,11 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import st.ggviario.house.model.TipoVenda;
@@ -24,7 +20,7 @@ public class VendaVendaController extends VendaController {
 
 
     @FXML
-    private AnchorPane root;
+    private AnchorPane getLocalRootPage;
 
     @FXML
     private TableView< Venda > tableViewVendaVenda;
@@ -53,46 +49,31 @@ public class VendaVendaController extends VendaController {
     @FXML
     private JFXButton buttonVendaVendaNew;
 
-    @FXML
-    private JFXDrawer drawerVenda;
-    private VendaVendaDetaisController vendaDetailController;
-    private Node vendaDetailContente;
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        this.events();
-        drawerVenda.close();
-        this.root.getChildren().remove(drawerVenda);
     }
 
-    private void events() {
-        this.tableViewVendaVenda.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVenda, newVenda) -> {
-            if( !this.root.getChildren().contains( this.drawerVenda ) ){
-                int index = root.getChildren().indexOf( this.tableViewVendaVenda );
-                this.root.getChildren().add( index+1, this.drawerVenda );
-            }
-            this.loadVendaDetailLayout();
-            this.drawerVenda.setSidePane( vendaDetailContente );
-            drawerVenda.open();
-
-
-
-        });
+    @Override
+    protected Pane getLocalRootPage() {
+        return this.getLocalRootPage;
     }
 
-    private void loadVendaDetailLayout() {
-        try{
-            if( this.vendaDetailController == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_venda_detais.fxml"  ) );
-                this.vendaDetailContente = loader.load();
-                this.vendaDetailController = loader.getController();
-            }
-        }catch ( Exception ex ){
-            ex.printStackTrace();
-        }
+    @Override
+    protected JFXDrawer getDrawerVendaDetails() {
+        return this.drawerVenda;
     }
+
+    @Override
+    String[] getAvalibleIcons() {
+        return new String[]{ "panelIconAdd" };
+    }
+
+    @FXML
+    private JFXDrawer drawerVenda;
+
+
+
 
 
     @Override
@@ -121,8 +102,8 @@ public class VendaVendaController extends VendaController {
     }
 
     @Override
-    Pane getRoot() {
-        return this.root;
+    Pane getGetLocalRootPage() {
+        return this.getLocalRootPage;
     }
 
     @Override
@@ -173,4 +154,6 @@ public class VendaVendaController extends VendaController {
         this.columnVendaVendaMontantePagar.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
         this.columnVendaVendaMontantePagar.setCellFactory(cell -> this.getMoneyCell("STN") );
     }
+
+
 }

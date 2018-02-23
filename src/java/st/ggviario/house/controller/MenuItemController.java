@@ -33,7 +33,7 @@ public class MenuItemController implements DrawerItem, Initializable {
     }
 
     @Override
-    public void setMenu(Menu menu) {
+    public void setMenu( Menu menu) {
         MenuItem menuItem = (MenuItem) menu;
         this.itemAction.setText( menuItem.getName() );
 
@@ -45,7 +45,9 @@ public class MenuItemController implements DrawerItem, Initializable {
             this.page.setRootPage( this.rootController.getRootPage() );
             this.page.setRootController( this.rootController );
         } catch ( Exception ex ){
+            System.out.println( menu );
             ex.printStackTrace();
+
         }
     }
 

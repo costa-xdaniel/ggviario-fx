@@ -1,5 +1,7 @@
 package st.ggviario.house.model;
 
+import com.google.gson.Gson;
+
 import java.net.URL;
 
 public class MenuItem implements Menu {
@@ -18,9 +20,7 @@ public class MenuItem implements Menu {
 
     @Override
     public String toString() {
-        return "MenuItem{" +
-                "name='" + name + '\'' +
-                '}';
+        return new Gson().toJson( this );
     }
 
     @Override
@@ -31,4 +31,5 @@ public class MenuItem implements Menu {
     public URL getContentPageLink() {
         return contentPageLink;
     }
+
 }

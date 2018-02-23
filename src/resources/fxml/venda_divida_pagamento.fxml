@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.VendaDividaPayNowController">
+   <children>
+      <VBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="textFieldClienteNome" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets top="32.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXDatePicker fx:id="dataPickerClienteDataNascimento" prefHeight="26.0" prefWidth="384.0" promptText="Data" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <GridPane.margin>
+                        <Insets top="32.0" />
+                     </GridPane.margin>
+                  </JFXDatePicker>
+                  <JFXTextField fx:id="textFieldClienteNome1" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688">
+                     <GridPane.margin>
+                        <Insets top="32.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="6.0" top="16.0" />
+               </VBox.margin>
+            </Separator>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label styleClass="details-area-field" text="Montante total">
+                     <GridPane.margin>
+                        <Insets right="16.0" />
+                     </GridPane.margin></Label>
+                  <Label styleClass="details-area-field" text="Pendente" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="16.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="16.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="16.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="16.0" />
+               </padding>
+            </GridPane>
+            <JFXButton fx:id="buttomPayNow" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="Pagar" textFill="#fffdfd">
+               <padding>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+   <styleClass>
+      <String fx:value="modal" />
+      <String fx:value="form-simple" />
+      <String fx:value="form" />
+   </styleClass>
+</AnchorPane>

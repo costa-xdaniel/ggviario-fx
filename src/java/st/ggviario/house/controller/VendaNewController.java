@@ -560,7 +560,7 @@ public class VendaNewController implements Initializable {
                         .withUUID( venda.getUnidade().getUnidadeId() )
                         .withUUID( venda.getCliente().getClienteId() )
                         .withNumeric( venda.getVandaQuantidade() )
-                        .withNumeric( venda.getVendaMontenteUnidario() )
+                        .withNumeric( venda.getVendaMontanteUnidario() )
                         .withNumeric( venda.getVendaMontanteBruto() )
                         .withNumeric( venda.getVendaMontanteDesconto() )
                         .withNumeric( venda.getVendaMontantePagar() )
@@ -574,7 +574,7 @@ public class VendaNewController implements Initializable {
             query.withUUID( venda.getUnidade().getUnidadeId() );
             query.withUUID( venda.getCliente().getClienteId() );
             query.withNumeric( venda.getVandaQuantidade() );
-            query.withNumeric( venda.getVendaMontenteUnidario() );
+            query.withNumeric( venda.getVendaMontanteUnidario() );
             query.withNumeric( venda.getVendaMontanteBruto() );
             query.withNumeric( venda.getVendaMontanteDesconto() );
             query.withNumeric( venda.getVendaMontantePagar() );
