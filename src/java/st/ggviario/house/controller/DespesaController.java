@@ -1,4 +1,7 @@
 package st.ggviario.house.controller;
 
-public class DespesaController {
+import javafx.scene.Node;
+
+public class DespesaController implements Page  {
+
 }

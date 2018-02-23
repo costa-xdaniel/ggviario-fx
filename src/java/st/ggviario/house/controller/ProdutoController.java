@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -25,7 +26,7 @@ import st.jigahd.support.sql.postgresql.PostgresSQL;
 import java.net.URL;
 import java.util.*;
 
-public class ProdutoController extends TableController<Producto> implements Initializable, ContentPage{
+public class ProdutoController extends TableController<Producto> implements Page, Initializable, ContentPage{
 
     private HomeController homeController;
 
@@ -182,4 +183,5 @@ public class ProdutoController extends TableController<Producto> implements Init
         ObservableList<Producto> observableListProduto = FXCollections.observableList(this.produtoList);
         this.tableViewProduto.setItems(observableListProduto);
     }
+
 }

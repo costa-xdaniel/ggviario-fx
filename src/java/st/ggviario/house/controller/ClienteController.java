@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteController extends TableController< Cliente > implements Initializable {
+public class ClienteController extends TableController< Cliente > implements Page, Initializable {
 
     @FXML
     private StackPane stackPane;
@@ -167,4 +167,5 @@ public class ClienteController extends TableController< Cliente > implements Ini
             ex.printStackTrace();
         }
     }
+
 }

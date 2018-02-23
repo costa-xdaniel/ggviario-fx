@@ -6,5 +6,5 @@ public interface DrawerItem {
 
     void setMenu( Menu menu );
 
-    void setHomeController(HomeController homeController);
+    void setRootController(HomeController rootController);
 }

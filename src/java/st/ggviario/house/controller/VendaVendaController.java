@@ -1,35 +1,30 @@
 package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import st.ggviario.house.model.*;
-import st.ggviario.house.singleton.PostgresSQLSingleton;
-import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.ggviario.house.model.TipoVenda;
+import st.ggviario.house.model.Venda;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class VendaVendaController extends VendaController {
 
 
     @FXML
-    private AnchorPane anchorRoot;
-
-    @FXML
-    private StackPane stackPane;
+    private AnchorPane root;
 
     @FXML
     private TableView< Venda > tableViewVendaVenda;
@@ -57,14 +52,52 @@ public class VendaVendaController extends VendaController {
 
     @FXML
     private JFXButton buttonVendaVendaNew;
+
+    @FXML
+    private JFXDrawer drawerVenda;
+    private VendaVendaDetaisController vendaDetailController;
+    private Node vendaDetailContente;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+        this.events();
+        drawerVenda.close();
+        this.root.getChildren().remove(drawerVenda);
+    }
+
+    private void events() {
+        this.tableViewVendaVenda.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVenda, newVenda) -> {
+            if( !this.root.getChildren().contains( this.drawerVenda ) ){
+                int index = root.getChildren().indexOf( this.tableViewVendaVenda );
+                this.root.getChildren().add( index+1, this.drawerVenda );
+            }
+            this.loadVendaDetailLayout();
+            this.drawerVenda.setSidePane( vendaDetailContente );
+            drawerVenda.open();
+
+
+
+        });
+    }
+
+    private void loadVendaDetailLayout() {
+        try{
+            if( this.vendaDetailController == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_venda_detais.fxml"  ) );
+                this.vendaDetailContente = loader.load();
+                this.vendaDetailController = loader.getController();
+            }
+        }catch ( Exception ex ){
+            ex.printStackTrace();
+        }
+    }
+
+
     @Override
     public JFXButton getButonNew() {
         return this.buttonVendaVendaNew;
-    }
-
-    @Override
-    public StackPane getStackPane() {
-        return this.stackPane;
     }
 
     @Override
@@ -89,7 +122,7 @@ public class VendaVendaController extends VendaController {
 
     @Override
     Pane getRoot() {
-        return this.anchorRoot;
+        return this.root;
     }
 
     @Override

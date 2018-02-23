@@ -1,0 +1,2 @@
+#n:venda_insert
+#i:(uuid,uuid,uuid,uuid,smallint,numeric,numeric,numeric,numeric,numeric,date,date)

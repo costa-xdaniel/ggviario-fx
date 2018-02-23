@@ -17,8 +17,8 @@ public class DrawerHeaderController implements Initializable, DrawerItem {
     }
 
     @Override
-    public void setHomeController(HomeController homeController) {
-        this.homeController = homeController;
+    public void setRootController(HomeController rootController) {
+        this.homeController = rootController;
     }
 
     @Override

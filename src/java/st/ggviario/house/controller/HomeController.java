@@ -5,9 +5,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 
-import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,9 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
-import st.ggviario.house.model.ContentPage;
-import st.jigahd.support.sql.postgresql.PostgresSQL;
+import javafx.scene.layout.StackPane;
 
 
 import java.io.IOException;
@@ -31,17 +26,17 @@ public class HomeController implements Initializable {
     private AnchorPane root;
 
     @FXML
-    private AnchorPane contentArea;
+    private StackPane rootPage;
 
     @FXML
     private JFXHamburger hamburger;
 
     @FXML
     private JFXDrawer drawer;
-    private Node lastContentPage;
-    private Node documentRoot;
+    private Node currentDocumentoPage;
     private HamburgerBackArrowBasicTransition basicTransition;
     private boolean show;
+    private Page currentPage;
 
 
     @Override
@@ -92,16 +87,34 @@ public class HomeController implements Initializable {
         }
     }
 
-    public void setDocumentRoot( Node documentRoot ) {
+    public void setDocumentRoot( Node documentRoot, Page page ) {
 
-        this.contentArea.getChildren().clear();
-        this.contentArea.getChildren().add( documentRoot );
+        if( this.currentPage != null ) this.currentPage.onBeforeRemove();
+        this.rootPage.getChildren().clear();
+        if( this.currentPage != null ) this.currentPage.onAfterRemove();
+
+        page.onBeforeAppend();
+
         AnchorPane.setTopAnchor( documentRoot, 0.0);
         AnchorPane.setLeftAnchor( documentRoot, 0.0);
         AnchorPane.setBottomAnchor( documentRoot, 0.0);
         AnchorPane.setRightAnchor( documentRoot, 0.0);
-        this.documentRoot = documentRoot;
+
+        this.rootPage.getChildren().add( documentRoot );
+        page.onAfterAppend();
+
+        this.currentDocumentoPage = documentRoot;
+        this.currentPage = page;
         this.processHamburger( this.basicTransition );
     }
 
+    public Node getRootPage() {
+        if( rootPage == null ) throw new RuntimeException( "Root page esta nullo" );
+        return this.rootPage;
+    }
+
+    public Node getRoot() {
+
+        return root;
+    }
 }

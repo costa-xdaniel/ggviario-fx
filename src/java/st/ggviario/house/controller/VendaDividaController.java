@@ -79,11 +79,6 @@ public class VendaDividaController extends VendaController {
     }
 
     @Override
-    public StackPane getStackPane() {
-        return this.stackPane;
-    }
-
-    @Override
     public String getNewTitle() {
         return "NOVA DIVIDA";
     }

@@ -1,4 +1,7 @@
 package st.ggviario.house.controller;
 
-public class ProducaoController {
+import javafx.scene.Node;
+
+public class ProducaoController implements Page {
+
 }

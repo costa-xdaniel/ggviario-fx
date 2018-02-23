@@ -29,7 +29,7 @@ public class MenuItemCell extends ListCell<Menu> {
                 Node root = loader.load();
                 DrawerItem controller = loader.getController();
 
-                controller.setHomeController(  this.homeController );
+                controller.setRootController(  this.homeController );
                 controller.setMenu( item );
                 setGraphic(root);
             }

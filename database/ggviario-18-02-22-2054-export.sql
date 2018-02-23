@@ -3383,11 +3383,11 @@ CREATE TABLE preco (
     preco_colaborador_id uuid NOT NULL,
     preco_colaborador_atualizacao uuid,
     preco_custounidade numeric,
+    preco_quantidadeproduto numeric,
+    preco_base boolean DEFAULT false NOT NULL,
     preco_estado smallint DEFAULT 1 NOT NULL,
     preco_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    preco_dataatualizacao timestamp without time zone,
-    preco_quantidadeproduto numeric,
-    preco_base boolean DEFAULT false NOT NULL
+    preco_dataatualizacao timestamp without time zone
 );
 
 
@@ -3413,6 +3413,7 @@ CREATE TABLE produto (
     produto_categoria_id uuid NOT NULL,
     produto_colaborador_id uuid NOT NULL,
     produto_colaborador_atualizacao uuid,
+    produto_codigo character varying(8),
     produto_nome character varying(32) NOT NULL,
     produto_stock numeric DEFAULT 0 NOT NULL,
     produto_stockminimo numeric DEFAULT 0 NOT NULL,
@@ -3424,7 +3425,6 @@ CREATE TABLE produto (
     produto_estado smallint DEFAULT 1,
     produto_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     produto_dataatualizacao timestamp without time zone,
-    produto_codigo character varying(8),
     CONSTRAINT ck_produto_nome_is_normalizede CHECK (lib.is_normalized((produto_nome)::text))
 );
 

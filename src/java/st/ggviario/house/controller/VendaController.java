@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public abstract class VendaController extends TableController<Venda> implements Initializable, VendaNewController.OnNewClienteRequest, VendaNewController.OnNewVendaResult, ClienteNewController.OnNewClienteResult, VendaNewController.OnVendaFeito {
+public abstract class VendaController extends TableController<Venda> implements Page,  Initializable, VendaNewController.OnNewClienteRequest, VendaNewController.OnNewVendaResult, ClienteNewController.OnNewClienteResult, VendaNewController.OnVendaFeito {
 
     private Pane dividaNewPanel;
     private VendaNewController vendaNewController;
@@ -34,32 +35,35 @@ public abstract class VendaController extends TableController<Venda> implements 
     private JFXDialogLayout dialogLayoutClienteNew;
 
     private Pane clienteNewPanel;
-    private ClienteNewController clienteNewController;
     private List<Venda> vendaList = new LinkedList<>();
     private List<Venda> filtredList = new LinkedList<>();
-    private ObservableList<Venda> observableListCliente;
+    private Node rootPage;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.getButonNew().setOnAction(actionEvent -> this.newDivida());
-        this.dialogLayoutCompraNew = new JFXDialogLayout();
-        this.dialogVendaNew = new JFXDialog( this.getStackPane(), this.dialogLayoutCompraNew, JFXDialog.DialogTransition.CENTER );
-
-        this.dialogLayoutClienteNew = new JFXDialogLayout();
-        this.dialogClienteNew = new JFXDialog( this.getStackPane(), this.dialogLayoutClienteNew, JFXDialog.DialogTransition.CENTER );
-        this.observableListCliente = FXCollections.observableList( this.filtredList );
-        this.getTableVenda().setItems( this.observableListCliente );
-
         this.structureTableColumns();
         this.reloadVendaData( null );
-        this.pushAll();
+        pushAll();
+    }
+
+    @Override
+    public void setRootPage(Node rootPage) {
+        this.rootPage = rootPage;
+        if( this.dialogVendaNew == null ){
+            this.dialogLayoutCompraNew = new JFXDialogLayout();
+            this.dialogVendaNew = new JFXDialog( (StackPane) this.rootPage, this.dialogLayoutCompraNew, JFXDialog.DialogTransition.CENTER );
+            this.dialogLayoutClienteNew = new JFXDialogLayout();
+            this.dialogClienteNew = new JFXDialog( (StackPane) this.rootPage, this.dialogLayoutClienteNew, JFXDialog.DialogTransition.CENTER );
+        }
     }
 
     private void pushAll() {
         this.filtredList.clear();
         this.filtredList.addAll( this.vendaList );
-        this.getTableVenda().refresh();
+        ObservableList<Venda> observableListCliente = FXCollections.observableList(this.filtredList);
+        this.getTableVenda().setItems(observableListCliente);
 
     }
 
@@ -94,8 +98,8 @@ public abstract class VendaController extends TableController<Venda> implements 
             if( this.clienteNewPanel == null ){
                 FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/cliente_new.fxml" ) );
                 this.clienteNewPanel = loader.load();
-                this.clienteNewController = loader.getController();
-                this.clienteNewController.setOnNewClienteResult( this );
+                ClienteNewController clienteNewController = loader.getController();
+                clienteNewController.setOnNewClienteResult( this );
             }
         } catch ( Exception ex ){
             ex.printStackTrace();
@@ -180,8 +184,6 @@ public abstract class VendaController extends TableController<Venda> implements 
     }
 
     abstract JFXButton getButonNew() ;
-
-    abstract StackPane getStackPane();
 
     abstract String getNewTitle();
 

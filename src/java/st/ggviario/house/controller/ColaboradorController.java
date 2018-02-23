@@ -1,4 +1,5 @@
 package st.ggviario.house.controller;
 
-public class ColaboradorController {
+public class ColaboradorController implements Page {
+
 }

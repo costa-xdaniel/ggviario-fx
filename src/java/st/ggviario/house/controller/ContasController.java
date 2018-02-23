@@ -1,4 +1,5 @@
 package st.ggviario.house.controller;
 
-public class ContasController {
+public class ContasController  implements Page {
+
 }

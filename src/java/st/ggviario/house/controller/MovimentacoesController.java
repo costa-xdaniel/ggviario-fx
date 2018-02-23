@@ -1,4 +1,5 @@
 package st.ggviario.house.controller;
 
-public class MovimentacoesController {
+public class MovimentacoesController implements  Page {
+
 }

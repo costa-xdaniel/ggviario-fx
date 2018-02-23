@@ -1,4 +1,5 @@
 package st.ggviario.house.controller;
 
-public class Dashboard {
+public class Dashboard implements Page {
+
 }

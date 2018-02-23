@@ -1,5 +1,6 @@
 package st.ggviario.house.controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -7,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import st.ggviario.house.model.ContentPage;
 import st.ggviario.house.model.DrawerItem;
 import st.ggviario.house.model.Menu;
 import st.ggviario.house.model.MenuItem;
@@ -23,15 +23,13 @@ public class MenuItemController implements DrawerItem, Initializable {
 
     @FXML
     private Label itemAction;
-    private HomeController homeController;
+    private HomeController rootController;
     private Node nodeContent;
+    private Page page;
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
-
-        item.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            this.homeController.setDocumentRoot( this.nodeContent );
-        });
+        item.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> this.rootController.setDocumentRoot( this.nodeContent, this.page ));
     }
 
     @Override
@@ -42,14 +40,17 @@ public class MenuItemController implements DrawerItem, Initializable {
         try{
             FXMLLoader loader = new FXMLLoader( menuItem.getContentPageLink() );
             this.nodeContent = loader.load();
-
+            this.page = loader.getController();
+            this.page.setRoot( this.rootController.getRoot() );
+            this.page.setRootPage( this.rootController.getRootPage() );
+            this.page.setRootController( this.rootController );
         } catch ( Exception ex ){
             ex.printStackTrace();
         }
     }
 
     @Override
-    public void setHomeController(HomeController homeController) {
-        this.homeController = homeController;
+    public void setRootController(HomeController rootController) {
+        this.rootController = rootController;
     }
 }

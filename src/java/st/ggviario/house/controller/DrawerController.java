@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import st.ggviario.house.factory.MenuItemCell;
 import st.ggviario.house.model.DrawerHeader;
@@ -15,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DrawerController implements Initializable {
+public class DrawerController implements Page,  Initializable {
 
     @FXML
     ListView<Menu> listView;
@@ -50,4 +51,5 @@ public class DrawerController implements Initializable {
     public void setHomeController(HomeController homeController) {
         this.homeController = homeController;
     }
+
 }
