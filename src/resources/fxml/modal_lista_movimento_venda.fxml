@@ -2,7 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
-<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -12,16 +12,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane fx:id="root" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.ModalListaMovimentoVendaController">
+<AnchorPane fx:id="root" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.ModalListaMovimentoVendaController">
    <children>
       <VBox fx:id="rootTable" alignment="CENTER_RIGHT">
          <children>
-            <JFXTreeTableView fx:id="treeTableView" prefHeight="250.0" />
+            <JFXTreeTableView fx:id="treeTableView" prefHeight="200.0" />
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="230.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="230.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="270.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="270.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
@@ -34,12 +33,12 @@
                   <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="details-area-field" text="Total a pagar" GridPane.rowIndex="2">
+                  <Label styleClass="lista-movimento-field-title" text="Total a pagar" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="labelVendaTotalPagar" styleClass="detail-area-field-value" text="Label" GridPane.rowIndex="3">
+                  <Label fx:id="labelVendaTotalPagar" styleClass="lista-movimento-field-value" text="Label" GridPane.rowIndex="3">
                      <padding>
                         <Insets bottom="16.0" />
                      </padding>
@@ -47,22 +46,22 @@
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label styleClass="details-area-field" text="Umtimo pagamento em" GridPane.rowIndex="4">
+                  <Label styleClass="lista-movimento-field-title" text="Umtimo pagamento em" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="labelVendaUltimoPagamento" styleClass="detail-area-field-value" text="Label" GridPane.rowIndex="5">
+                  <Label fx:id="labelVendaUltimoPagamento" styleClass="lista-movimento-field-value" text="Label" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label styleClass="details-area-field" text="Pendente" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label styleClass="lista-movimento-field-title" text="Pendente" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="lavelVendaPendente" styleClass="detail-area-field-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Label fx:id="lavelVendaPendente" styleClass="lista-movimento-field-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <padding>
                         <Insets bottom="16.0" />
                      </padding>
@@ -70,12 +69,12 @@
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label styleClass="details-area-field" text="Data fim" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <Label styleClass="lista-movimento-field-title" text="Data fim" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="labelVendaDatafim" styleClass="detail-area-field-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <Label fx:id="labelVendaDatafim" styleClass="lista-movimento-field-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets left="16.0" right="16.0" />
                      </GridPane.margin>
@@ -85,21 +84,17 @@
                         <Insets bottom="16.0" top="16.0" />
                      </GridPane.margin>
                   </Separator>
-                  <Label fx:id="labelVendaMontantePago" text="8373 3993 9494 STN" GridPane.rowIndex="7">
+                  <Label fx:id="labelVendaMontantePago" styleClass="lista-movimento-montante-paga" text="8373 3993 9494 STN" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                      </GridPane.margin>
-                     <styleClass>
-                        <String fx:value="good" />
-                        <String fx:value="destaque" />
-                     </styleClass>
                   </Label>
                   <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="16.0" top="16.0" />
                      </GridPane.margin>
                   </Separator>
-                  <Label fx:id="labelMovimentoLibele" text="Pagamento de divida com tatata" GridPane.columnSpan="2">
+                  <Label fx:id="labelMovimentoLibele" styleClass="lista-movimento-field-value" text="Pagamento de divida com tatata" GridPane.columnSpan="2">
                      <GridPane.margin>
                         <Insets left="16.0" />
                      </GridPane.margin>
@@ -117,4 +112,8 @@
          </padding>
       </JFXButton>
    </children>
+   <stylesheets>
+      <URL value="@../styles/styles.css" />
+      <URL value="@../styles/tree-table-styles.css" />
+   </stylesheets>
 </AnchorPane>

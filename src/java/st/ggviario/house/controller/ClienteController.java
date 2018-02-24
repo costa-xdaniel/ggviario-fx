@@ -179,7 +179,7 @@ public class ClienteController extends TableController< Cliente > implements Pag
     private void loadModalContent() {
         try{
             if( this.newClientModalContent == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente") );
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente.fxml") );
                 this.newClientModalContent = loader.load();
                 this.newClienteModalContentController = loader.getController();
             }

@@ -74,7 +74,7 @@ public class VendaDividaController extends VendaController {
 
 
     //Modal Novo agamento
-    private Pane modalNovoPagamentoPanel;
+    private Pane modalNovoPagamentoPage;
     private ModalNovoPagamentoController modalNovoPagamentoController;
     private JFXDialogLayout modalNovoPagamentoDialogLayout;
     private JFXDialog modalNovoPagamentoDialog;
@@ -97,18 +97,7 @@ public class VendaDividaController extends VendaController {
         this.structure();
     }
 
-    @Override
-    public void onSetRootPage(Node rootPage) {
-        super.onSetRootPage(rootPage);
 
-        this.modalNovoPagamentoDialogLayout = new JFXDialogLayout();
-        ( (Pane) modalNovoPagamentoDialogLayout.getChildren().get( 0 ) ).getChildren().remove( 2 );
-        this.modalNovoPagamentoDialog = new JFXDialog( (StackPane) this.rootPage, this.modalNovoPagamentoDialogLayout, JFXDialog.DialogTransition.CENTER );
-
-        this.modalListaMovimentoVendaDialogLayout = new JFXDialogLayout();
-        this.modalListaMovimentoVendaDialog = new JFXDialog((StackPane) this.rootPage, this.modalListaMovimentoVendaDialogLayout, JFXDialog.DialogTransition.CENTER );
-
-    }
 
     void structure() {
         this.tableViewVendaDivida.setRowFactory( clienteTableView -> new TableRow<Venda>(){
@@ -187,16 +176,29 @@ public class VendaDividaController extends VendaController {
         }
     }
 
-    private void loadModalPaymentNowDialog() {
+    @Override
+    public void onSetRootPage(Node rootPage) {
+        super.onSetRootPage(rootPage);
+
+        this.modalNovoPagamentoDialogLayout = new JFXDialogLayout();
+        ( (Pane) modalNovoPagamentoDialogLayout.getChildren().get( 0 ) ).getChildren().remove( 2 );
+        this.modalNovoPagamentoDialog = new JFXDialog( (StackPane) this.rootPage, this.modalNovoPagamentoDialogLayout, JFXDialog.DialogTransition.CENTER );
+
+        this.modalListaMovimentoVendaDialogLayout = new JFXDialogLayout();
+        this.modalListaMovimentoVendaDialog = new JFXDialog((StackPane) this.rootPage, this.modalListaMovimentoVendaDialogLayout, JFXDialog.DialogTransition.CENTER );
+    }
+
+    private void loadModalNovoPagamento() {
         try{
-            if( this.modalNovoPagamentoPanel == null ){
+            if( this.modalNovoPagamentoPage == null ){
                 FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_pagamento.fxml") );
-                this.modalNovoPagamentoPanel = loader.load();
+                this.modalNovoPagamentoPage = loader.load();
                 this.modalNovoPagamentoController = loader.getController();
                 this.modalNovoPagamentoController.setOnResultPayNow( this::onResultPayment );
                 this.modalNovoPagamentoController.ok( );
 
-                this.modalNovoPagamentoDialogLayout.setBody( this.modalNovoPagamentoPanel);
+                this.modalNovoPagamentoDialogLayout.setBody( this.modalNovoPagamentoPage);
+
                 this.modalNovoPagamentoDialogLayout.getStylesheets().add( getClass().getResource("/styles/styles.css").toExternalForm() );
                 this.modalNovoPagamentoDialogLayout.getStyleClass().add( "modal-width-1" );
             }
@@ -213,11 +215,33 @@ public class VendaDividaController extends VendaController {
                 this.modalListaMovimentoVendaController = loader.getController();
                 this.modalListaMovimentoVendaController.setOnOkCliek( this::onCliekOkListPayment );
                 this.modalListaMovimentoVendaController.ok( );
-                this.modalListaMovimentoVendaDialogLayout.setBody( this.modalListaMovimentoVendaPage);
+                this.modalListaMovimentoVendaDialogLayout.setBody( this.modalListaMovimentoVendaPage  );
             }
         } catch ( Exception ex ){
             ex.printStackTrace();
         }
+    }
+
+    private void openModalMovimentoVendaDivida(Venda venda ){
+        if( venda == null ) {
+            this.closeDetails();
+            return;
+        }
+        this.loadModalMovimentoDialog();
+        this.modalListaMovimentoVendaController.setVenda( venda );
+        this.modalListaMovimentoVendaDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
+        this.modalListaMovimentoVendaDialog.show();
+    }
+
+    private void openModalPaymentNow(Venda venda ){
+        if( venda == null ) {
+            this.closeDetails();
+            return;
+        }
+        this.loadModalNovoPagamento();
+        this.modalNovoPagamentoController.setVenda( venda );
+        this.modalNovoPagamentoDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
+        this.modalNovoPagamentoDialog.show();
     }
 
 
@@ -246,28 +270,7 @@ public class VendaDividaController extends VendaController {
         modalListaMovimentoVendaDialog.close();
     }
 
-    private void openModalMovimentoVendaDivida(Venda venda ){
-        if( venda == null ) {
-            this.closeDetails();
-            return;
-        }
 
-        this.loadModalMovimentoDialog();
-        this.modalListaMovimentoVendaController.setVenda( venda );
-        this.modalListaMovimentoVendaDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
-        this.modalListaMovimentoVendaDialog.show();
-    }
-
-    private void openModalPaymentNow(Venda venda ){
-        if( venda == null ) {
-            this.closeDetails();
-            return;
-        }
-        this.loadModalPaymentNowDialog();
-        this.modalNovoPagamentoController.setVenda( venda );
-        this.modalNovoPagamentoDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
-        this.modalNovoPagamentoDialog.show();
-    }
 
 
     @Override

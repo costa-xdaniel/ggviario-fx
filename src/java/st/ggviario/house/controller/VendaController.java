@@ -159,7 +159,7 @@ public abstract class VendaController extends TableController<Venda> implements 
     private void loadNewCliente() {
         try{
             if( this.modalNovoClientePane == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente") );
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente.fxml") );
                 this.modalNovoClientePane = loader.load();
                 modalNovoClienteController = loader.getController();
                 modalNovoClienteController.setOnNewClienteResult( this );
