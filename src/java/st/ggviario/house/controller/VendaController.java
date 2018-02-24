@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
@@ -20,35 +21,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public abstract class VendaController extends TableController<Venda> implements Page,  Initializable, VendaNewController.OnNewClienteRequest, VendaNewController.OnNewVendaResult, ClienteNewController.OnNewClienteResult, VendaNewController.OnVendaFeito {
+public abstract class VendaController extends TableController<Venda> implements Page,  Initializable, ModalNovaVendaController.OnNewClienteRequest, ModalNovaVendaController.OnNewVendaResult, ModalNovoClienteController.OnNewClienteResult, ModalNovaVendaController.OnVendaFeito {
 
-    private Pane dividaNewPanel;
-    private VendaNewController vendaNewController;
 
-    private JFXDialog dialogVendaNew;
-    private JFXDialogLayout dialogLayoutCompraNew;
+    //Modal Nova venda
+    private Pane modalNovaVendaPane;
+    private ModalNovaVendaController modalNovaVendaController;
+    private JFXDialogLayout modalNovaVendaDialogLayout;
+    private JFXDialog modalNovaVendaDialog;
+    //
 
-    private JFXDialog dialogClienteNew;
-    private JFXDialogLayout dialogLayoutClienteNew;
 
-    private Pane clienteNewPanel;
+    //Modal Novo cliente
+    private Pane modalNovoClientePane;
+    private ModalNovoClienteController modalNovoClienteController;
+    private JFXDialogLayout modalNovoClienteDialogLaout;
+    private JFXDialog modalNovoClienteDialog;
+    //
+
+
+    //Detalhes da venda
+    protected DrawerVendaDetalhesController drawerVendaDetalhesController;
+    protected Pane drawerVendaDetalhesPane;
+    //
+
     private List<Venda> vendaList = new LinkedList<>();
     private List<Venda> filtredList = new LinkedList<>();
-    private Node rootPage;
-
-
-    private VendaDetailsController vendaDetailController;
-    private Node vendaDetailContente;
-    private JFXDialogLayout dialogLayoutPayNow;
-    private JFXDialog dialogPayNow;
-    private Pane vendaDividaPayNowPanel;
-    private VendaDividaPayNowController vendaDividaPayNowController;
+    protected Node rootPage;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.getButonNew().setOnAction(actionEvent -> this.newDivida());
-        this.structureTableColumns();
+        this.getButonNew().setOnAction(actionEvent -> this.openModalVendaDividaNew());
+        this.structure();
         this.reloadVendaData( null );
         pushAll();
         events();
@@ -57,19 +62,15 @@ public abstract class VendaController extends TableController<Venda> implements 
 
 
     @Override
-    public void setRootPage(Node rootPage) {
+    public void onSetRootPage(Node rootPage) {
         this.rootPage = rootPage;
-        if( this.dialogVendaNew == null ){
+        if( this.modalNovaVendaDialog == null ){
 
-            this.dialogLayoutCompraNew = new JFXDialogLayout();
-            this.dialogVendaNew = new JFXDialog( (StackPane) this.rootPage, this.dialogLayoutCompraNew, JFXDialog.DialogTransition.CENTER );
+            this.modalNovaVendaDialogLayout = new JFXDialogLayout();
+            this.modalNovaVendaDialog = new JFXDialog( (StackPane) this.rootPage, this.modalNovaVendaDialogLayout, JFXDialog.DialogTransition.CENTER );
 
-            this.dialogLayoutClienteNew = new JFXDialogLayout();
-            this.dialogClienteNew = new JFXDialog( (StackPane) this.rootPage, this.dialogLayoutClienteNew, JFXDialog.DialogTransition.CENTER );
-
-            this.dialogLayoutPayNow = new JFXDialogLayout();
-            this.dialogPayNow = new JFXDialog( (StackPane) this.rootPage, this.dialogLayoutPayNow, JFXDialog.DialogTransition.CENTER );
-
+            this.modalNovoClienteDialogLaout = new JFXDialogLayout();
+            this.modalNovoClienteDialog = new JFXDialog( (StackPane) this.rootPage, this.modalNovoClienteDialogLaout, JFXDialog.DialogTransition.CENTER );
         }
     }
 
@@ -85,8 +86,8 @@ public abstract class VendaController extends TableController<Venda> implements 
         this.getTableVenda().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVenda, newVenda) -> {
             if( newVenda != null ){
                 this.loadVendaDetailLayout();
-                this.getDrawerVendaDetails().setSidePane( vendaDetailContente );
-                this.vendaDetailController.setVenda( newVenda );
+                this.getDrawerVendaDetails().setSidePane( this.drawerVendaDetalhesPane);
+                this.drawerVendaDetalhesController.setVenda( newVenda );
 
                 if( !this.getLocalRootPage().getChildren().contains( this.getDrawerVendaDetails() ) ){
                     int index = this.getLocalRootPage().getChildren().indexOf( this.getTableVenda() );
@@ -103,90 +104,65 @@ public abstract class VendaController extends TableController<Venda> implements 
         });
     }
 
-    protected abstract Pane getLocalRootPage();
 
-    protected abstract JFXDrawer getDrawerVendaDetails();
 
-    private void loadVendaDetailLayout() {
+    private void openModalVendaDividaNew() {
+        this.loadModalVendaDividaNew();
+        modalNovaVendaDialogLayout.setHeading( new Text( this.getNewTitle() ) );
+        modalNovaVendaDialogLayout.setBody( this.modalNovaVendaPane);
+        this.modalNovaVendaDialog.show();
+    }
+
+
+    protected void loadVendaDetailLayout() {
         try{
-            if( this.vendaDetailController == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_venda_details.fxml") );
-                this.vendaDetailContente = loader.load();
-                this.vendaDetailController = loader.getController();
-                this.vendaDetailController.setIconAvalible( this.getAvalibleIcons() );
-                this.vendaDetailController.setOnCloseVendaDetaisCallback( this::closeDetails );
-                this.vendaDetailController.setOnPayNow( this::payNow );
-                this.vendaDetailController.ok();
+            if( this.drawerVendaDetalhesController == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_details.fxml") );
+                this.drawerVendaDetalhesPane = loader.load();
+                this.drawerVendaDetalhesController = loader.getController();
+                this.drawerVendaDetalhesController.setIconAvalible( this.getAvalibleIcons() )
+                        .setOnCloseVendaDetaisCallback( this::closeDetails )
+                        .setTipoVenda( this.getTipoVenda() )
+                        .ok();
             }
         }catch ( Exception ex ){
             ex.printStackTrace();
         }
     }
 
-    abstract String[] getAvalibleIcons();
+    private void loadModalVendaDividaNew() {
+        try{
+            if( this.modalNovaVendaPane == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_nova_venda.fxml") );
+                this.modalNovaVendaPane = loader.load();
+                this.modalNovaVendaController = loader.getController();
+                this.modalNovaVendaController.setOnNewClienteRequest( this );
+                this.modalNovaVendaController.setOnNewVendaResult( this );
+                this.modalNovaVendaController.setOnVendaFeito( this );
+                this.modalNovaVendaController.setTipoVenda( this.getTipoVenda() );
+                this.modalNovaVendaController.setFunctionLoadClienteNew( this.getFunctionLoadClienteNew() );
+                this.modalNovaVendaController.ok();
+            }
+        } catch ( Exception ex ){
+            ex.printStackTrace();
+        }
+    }
 
-    private void closeDetails() {
+    protected void closeDetails() {
         if( this.getDrawerVendaDetails().isShown() )
             this.getDrawerVendaDetails().close();
     }
 
-    private void payNow(Venda venda ){
-        if( venda == null ) {
-            this.closeDetails();
-            return;
-        }
-        this.loadVendaDividaPayNowPanel();
-        this.vendaDividaPayNowController.setNewVenda( venda );
-        this.dialogLayoutPayNow.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
-        this.dialogLayoutPayNow.setBody( this.vendaDividaPayNowPanel );
-        this.dialogPayNow.show();
-    }
 
-    private void newDivida() {
-        this.loadNewVendaContent();
-        dialogLayoutCompraNew.setHeading( new Text( this.getNewTitle() ) );
-        dialogLayoutCompraNew.setBody( this.dividaNewPanel);
-        this.dialogVendaNew.show();
-    }
 
-    private void loadNewVendaContent() {
-        try{
-            if( this.dividaNewPanel == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_new.fxml") );
-                this.dividaNewPanel = loader.load();
-                this.vendaNewController = loader.getController();
-                this.vendaNewController.setOnNewClienteRequest( this );
-                this.vendaNewController.setOnNewVendaResult( this );
-                this.vendaNewController.setOnVendaFeito( this );
-                this.vendaNewController.setTipoVenda( this.getTipoVenda() );
-                this.vendaNewController.setFunctionLoadClienteNew( this.getFunctionLoadClienteNew() );
-                this.vendaNewController.ok();
-            }
-        } catch ( Exception ex ){
-            ex.printStackTrace();
-        }
-    }
-
-    private void loadVendaDividaPayNowPanel() {
-        try{
-            if( this.vendaDividaPayNowPanel == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_divida_pagamento.fxml") );
-                this.vendaDividaPayNowPanel = loader.load();
-                this.vendaDividaPayNowController = loader.getController();
-                this.vendaDividaPayNowController.ok();
-            }
-        } catch ( Exception ex ){
-            ex.printStackTrace();
-        }
-    }
 
     private void loadNewCliente() {
         try{
-            if( this.clienteNewPanel == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/cliente_new.fxml" ) );
-                this.clienteNewPanel = loader.load();
-                ClienteNewController clienteNewController = loader.getController();
-                clienteNewController.setOnNewClienteResult( this );
+            if( this.modalNovoClientePane == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente") );
+                this.modalNovoClientePane = loader.load();
+                modalNovoClienteController = loader.getController();
+                modalNovoClienteController.setOnNewClienteResult( this );
             }
         } catch ( Exception ex ){
             ex.printStackTrace();
@@ -196,63 +172,66 @@ public abstract class VendaController extends TableController<Venda> implements 
 
     @Override
     public void onRegisterNewClienteRequest() {
-        this.dialogVendaNew.setOnDialogClosed(jfxDialogEvent -> this.newCliente());
-        this.dialogVendaNew.close();
+        this.modalNovaVendaDialog.setOnDialogClosed(jfxDialogEvent -> this.newCliente());
+        this.modalNovaVendaDialog.close();
     }
 
     private void newCliente() {
         this.loadNewCliente();
-        this.dialogVendaNew.setOnDialogClosed( null );
+        this.modalNovaVendaDialog.setOnDialogClosed( null );
 
-        this.dialogLayoutClienteNew.setHeading( new Text("Novo cliente") );
-        this.dialogLayoutClienteNew.setBody( this.clienteNewPanel );
-        this.dialogClienteNew.show();
+        this.modalNovoClienteDialogLaout.setHeading( new Text("Novo cliente") );
+        this.modalNovoClienteDialogLaout.setBody( this.modalNovoClientePane);
+        this.modalNovoClienteDialog.show();
 
-        dialogClienteNew.setOnDialogClosed(jfxDialogEvent -> {
-            this.dialogClienteNew.setOnDialogClosed( null );
-            this.dialogVendaNew.show();
+        this.modalNovoClienteDialog.setOnDialogClosed(jfxDialogEvent -> {
+            this.modalNovoClienteDialog.setOnDialogClosed( null );
+            this.modalNovaVendaDialog.show();
         });
     }
 
 
     @Override
     public void onNewClienteResult(boolean result, Cliente cliente, Map<String, Object> data) {
-        this.vendaNewController.onClienteRequestResult( result, cliente, data );
-        dialogClienteNew.close();
-
+        this.modalNovaVendaController.onClienteRequestResult( result, cliente, data );
+        this.modalNovoClienteDialog.close();
     }
 
     @Override
-    public void onNewVendaResult(VendaNewController.RegisterVendaResult registerVendaResult) {
+    public void onNewVendaResult(ModalNovaVendaController.RegisterVendaResult registerVendaResult) {
         StringBuilder builder = new StringBuilder();
         String message  = registerVendaResult.getMessage();
         if ( message == null ) message = "Operação não concluida!";
         if( registerVendaResult.isSucess() ){
             builder.append( "Nova " ).append( this.getTipoVenda().name().toLowerCase() ).append(" cadatrada." );
-            message = builder.toString();
+            showSucessMessage( SQLText.normalize( builder.toString() ) );
+        }else showFailedMessage(message);
+    }
 
-            String css = getClass().getResource("/styles/snackbar-sucess.css").toExternalForm();
-            JFXSnackbar snackbar = new JFXSnackbar( this.getGetLocalRootPage() );
-            snackbar.getStylesheets().add( css );
-            snackbar.show( message, "Entendi", 5000, event -> snackbar.unregisterSnackbarContainer( this.getGetLocalRootPage() ) );
-        }else {
-            String css = getClass().getResource("/styles/snackbar-unsucess.css").toExternalForm();
-            JFXSnackbar snackbar = new JFXSnackbar( this.getGetLocalRootPage() );
-            snackbar.getStylesheets().add( css );
-            snackbar.show( message, "Entendi", 8000, event -> snackbar.unregisterSnackbarContainer( this.getGetLocalRootPage() ) );
-        }
+    protected void showSucessMessage(String message) {
+        String css = getClass().getResource("/styles/snackbar-success.css" ).toExternalForm();
+        JFXSnackbar snackbar = new JFXSnackbar(this.getGetLocalRootPage());
+        snackbar.getStylesheets().add(css);
+        snackbar.show(message, "Entendi", 5000, event -> snackbar.unregisterSnackbarContainer(this.getGetLocalRootPage()));
+    }
+
+    protected void showFailedMessage(String message) {
+        String css = getClass().getResource("/styles/snackbar-failed.css").toExternalForm();
+        JFXSnackbar snackbar = new JFXSnackbar( this.getGetLocalRootPage() );
+        snackbar.getStylesheets().add( css );
+        snackbar.show( message, "Entendi", 8000, event -> snackbar.unregisterSnackbarContainer( this.getGetLocalRootPage() ) );
     }
 
 
     @Override
-    public void onVendaFeinto(List<VendaNewController.RegisterVendaResult> results) {
-        this.dialogVendaNew.close();
-        this.dialogVendaNew.setOnDialogClosed( null );
+    public void onAfertOperation(List<ModalNovaVendaController.RegisterVendaResult> results) {
+        this.modalNovaVendaDialog.close();
+        this.modalNovaVendaDialog.setOnDialogClosed( null );
         this.reloadVendaData( results );
         this.pushAll( );
     }
 
-    void reloadVendaData(List<VendaNewController.RegisterVendaResult> results) {
+    void reloadVendaData(List<ModalNovaVendaController.RegisterVendaResult> results) {
         Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
         Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
@@ -261,7 +240,7 @@ public abstract class VendaController extends TableController<Venda> implements 
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
         this.vendaList.clear();
 
-        sql.query( this.getFunctionLoadVendaName() ).withJsonb( null ).callFunctionTable().onResultQuery( row -> {
+        sql.query( this.getFunctionLoadVendaName() ).withJsonb( (String) null).callFunctionTable().onResultQuery(row -> {
             vendaBuilder.load( row );
             vendaBuilder.cliente( clienteBuilder.load( row ).build() );
             vendaBuilder.produto( produtoBuilder.load( row ).build() );
@@ -285,5 +264,11 @@ public abstract class VendaController extends TableController<Venda> implements 
 
     abstract TableView<Venda> getTableVenda();
 
-    abstract void structureTableColumns();
+    abstract void structure();
+
+    abstract String[] getAvalibleIcons();
+
+    protected abstract Pane getLocalRootPage();
+
+    protected abstract JFXDrawer getDrawerVendaDetails();
 }

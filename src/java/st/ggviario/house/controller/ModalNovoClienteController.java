@@ -17,7 +17,7 @@ import st.jigahd.support.sql.postgresql.PostgresSQL;
 import java.net.URL;
 import java.util.*;
 
-public class ClienteNewController implements Initializable {
+public class ModalNovoClienteController implements Initializable {
 
     private List<Sexo> listSexo;
     private List<Distrito> listDistrito;
@@ -189,7 +189,7 @@ public class ClienteNewController implements Initializable {
         return nome != null;
     }
 
-    public ClienteNewController setOnNewClienteResult(OnNewClienteResult onNewClientSuccess) {
+    public ModalNovoClienteController setOnNewClienteResult(OnNewClienteResult onNewClientSuccess) {
         this.onNewClientSuccess = onNewClientSuccess;
         return this;
     }

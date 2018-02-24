@@ -1,8 +1,8 @@
 package st.ggviario.house.controller;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -10,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import st.ggviario.house.model.Cliente;
@@ -29,12 +31,15 @@ import java.util.ResourceBundle;
 
 public class ClienteController extends TableController< Cliente > implements Page, Initializable {
 
-    @FXML
-    private StackPane stackPane;
 
     @FXML
-    private JFXButton fabNewCliente;
+    private Pane fabArea;
 
+    @FXML
+    private MaterialDesignIconView fabIcon;
+
+    @FXML
+    private Button fabButton;
 
     @FXML
     private TableView< Cliente > tableViewCliente;
@@ -66,17 +71,32 @@ public class ClienteController extends TableController< Cliente > implements Pag
     private JFXDialogLayout dialogContent;
     private JFXDialog dialog;
     private Node newClientModalContent;
-    private ClienteNewController newClienteModalContentController;
+    private ModalNovoClienteController newClienteModalContentController;
     private List<Cliente> listCliente;
+    private StackPane stackPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.fabNewCliente.setOnAction( event -> this.newClient() );
-        this.dialogContent = new JFXDialogLayout();
-        this.dialog = new JFXDialog( this.stackPane, this.dialogContent, JFXDialog.DialogTransition.CENTER );
+//        JFXRippler rippler = new JFXRippler( this.fabIcon );
+//        this.fabArea.getChildren().add( rippler );
+//        AnchorPane.setLeftAnchor( rippler, 0.0 );
+//        AnchorPane.setRightAnchor( rippler, 0.0 );
+//        AnchorPane.setTopAnchor( rippler, 0.0 );
+//        AnchorPane.setBottomAnchor( rippler, 0.0 );
+//        rippler.setStyle( "-jfx-rippler-fill: #FFFFFF;");
+
+        this.fabIcon.setOnMouseClicked( event ->fabButton.fireEvent( event ) );
+        this.fabButton.setOnMouseClicked( event -> this.newClient() );
         this.listCliente = new LinkedList<Cliente>();
         this.structureColumns();
         this.reloadData();
+    }
+
+    @Override
+    public void onSetRootPage(Node rootPage) {
+        this.stackPane = (StackPane) rootPage;
+        this.dialogContent = new JFXDialogLayout();
+        this.dialog = new JFXDialog( this.stackPane, this.dialogContent, JFXDialog.DialogTransition.CENTER );
     }
 
     private void reloadData() {
@@ -159,7 +179,7 @@ public class ClienteController extends TableController< Cliente > implements Pag
     private void loadModalContent() {
         try{
             if( this.newClientModalContent == null ){
-                FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/cliente_new.fxml" ) );
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_cliente") );
                 this.newClientModalContent = loader.load();
                 this.newClienteModalContentController = loader.getController();
             }
@@ -167,5 +187,6 @@ public class ClienteController extends TableController< Cliente > implements Pag
             ex.printStackTrace();
         }
     }
+
 
 }

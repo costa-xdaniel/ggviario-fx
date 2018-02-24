@@ -2,7 +2,6 @@ package st.ggviario.house.model;
 
 import st.jigahd.support.sql.SQLRow;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -117,6 +116,10 @@ public class Venda {
 
     public Date getVaendaDataUltimaAtualizacao() {
         return vaendaDataUltimaAtualizacao;
+    }
+
+    public Double getVendaMontantePendente() {
+        return this.vendaMontantePagar - this.vendaMontanteAmortizado;
     }
 
     public static  class VendaBuilder {
@@ -258,7 +261,8 @@ public class Venda {
         public VendaBuilder load(SQLRow row) {
 
             this.id = row.asUUID( "venda_id" );
-            this.tipoVenda = TipoVenda.find( row.asShort( "tvenda_id" ) );
+            this.tipoVenda = TipoVenda.valueOf( row.asShort( "tvenda_id" ) );
+            if( tipoVenda == null ) throw  new RuntimeException("Tipo de venda esta nulo");
             this.faturaNumero = row.asString( "venda_faturanumero" );
             this.quantidade = row.asDouble( "venda_quantidade" );
             this.quantidadeProduto = row.asDouble( "venda_quantidadeproduto" );
@@ -280,7 +284,8 @@ public class Venda {
 
         public VendaBuilder load( Map<String, Object> map) {
             this.id = SQLRow.uuidOf( map.get( "venda_id" ) );
-            this.tipoVenda = TipoVenda.find( SQLRow.shortOf( map.get( "tvenda_id" ) ) );
+            this.tipoVenda = TipoVenda.valueOf( SQLRow.shortOf( map.get( "tvenda_id" ) ) );
+            if( tipoVenda == null ) throw  new RuntimeException("Tipo de venda esta nulo");
             this.faturaNumero = SQLRow.stringOf( map.get( "venda_faturanumero" ) );
             this.quantidade = SQLRow.doubleOf( map.get( "venda_quantidade" ) );
             this.quantidadeProduto = SQLRow.doubleOf( map.get( "venda_quantidadeproduto" ) );

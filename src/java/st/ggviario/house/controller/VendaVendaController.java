@@ -28,6 +28,10 @@ public class VendaVendaController extends VendaController {
     @FXML
     private TableColumn< Venda, String> columnVendaVendaCliente;
 
+
+    @FXML
+    private TableColumn< Venda, String> columnVendaVendaFaturaNumero;
+
     @FXML
     private TableColumn< Venda, String > columnVendaVendaProduto;
 
@@ -114,7 +118,7 @@ public class VendaVendaController extends VendaController {
 
 
     @Override
-    void structureTableColumns() {
+    void structure() {
 
         this.tableViewVendaVenda.setRowFactory( clienteTableView -> new TableRow<Venda>(){
             @Override
@@ -129,12 +133,20 @@ public class VendaVendaController extends VendaController {
             }
         });
 
+        this.columnVendaVendaCliente.setMinWidth( 150 );
+
+        this.columnVendaVendaFaturaNumero.setMinWidth( 72 );
+        this.columnVendaVendaFaturaNumero.setMaxWidth( 72 );
+
+        this.columnVendaVendaFaturaNumero.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getVendaFaturaNumero() ) );
+        this.columnVendaVendaFaturaNumero.setCellFactory( cell -> this.getSimpleTextCell());
+
         this.columnVendaVendaCliente.setCellValueFactory( data -> {
             String nome = data.getValue().getCliente().getClienteCompletName();
             return  new SimpleStringProperty( nome );
         } );
+
         this.columnVendaVendaCliente.setCellFactory( cell -> this.getSimpleTextCell() );
-        this.columnVendaVendaCliente.setMinWidth( 150 );
 
         this.columnVendaVendaProduto.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getProducto().getProdutoNome()) );
         this.columnVendaVendaProduto.setCellFactory( cell -> this.getSimpleTextCell());

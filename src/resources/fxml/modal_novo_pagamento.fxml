@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.VendaDividaPayNowController">
+<AnchorPane stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.ModalNovoPagamentoController">
    <children>
-      <VBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane>
                <columnConstraints>
@@ -28,24 +28,24 @@
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="textFieldClienteNome" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="1">
+                  <JFXTextField fx:id="textFieldMovimentoMontante" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXDatePicker fx:id="dataPickerClienteDataNascimento" prefHeight="26.0" prefWidth="384.0" promptText="Data" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                  <JFXDatePicker fx:id="datePickerMovimentoData" prefHeight="26.0" prefWidth="172.0" promptText="Data" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXDatePicker>
-                  <JFXTextField fx:id="textFieldClienteNome1" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688">
+                  <JFXTextField fx:id="textFieldMovimentoDocumento" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXTextField>
                </children>
             </GridPane>
-            <Separator prefWidth="200.0">
+            <Separator>
                <VBox.margin>
                   <Insets bottom="6.0" top="16.0" />
                </VBox.margin>
@@ -53,7 +53,7 @@
             <GridPane>
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -62,21 +62,21 @@
                <children>
                   <Label styleClass="details-area-field" text="Montante total">
                      <GridPane.margin>
-                        <Insets right="16.0" />
+                        <Insets />
                      </GridPane.margin></Label>
-                  <Label styleClass="details-area-field" text="Pendente" GridPane.columnIndex="1">
+                  <Label fx:id="labelVendaMontantePendenteDesc" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="details-area-field" text="Pendente" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets left="16.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="labelVendaDividaMontantePendente" alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20  000,11" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="16.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.rowIndex="1">
+                  <Label fx:id="labelVendaDividaMontanteTotalPagar" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets right="16.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                </children>
@@ -95,7 +95,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                  <Insets />
                </VBox.margin>
             </JFXButton>
          </children>

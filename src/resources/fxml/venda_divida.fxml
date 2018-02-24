@@ -10,10 +10,10 @@
    <children>
       <TableView fx:id="tableViewVendaDivida" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
+            <TableColumn fx:id="columnVendaDividaFaturaNumero" prefWidth="75.0" text="Fatura" />
             <TableColumn fx:id="columnVendaDividaCliente" prefWidth="75.0" text="Cliente" />
             <TableColumn fx:id="columnVendaDividaProduto" prefWidth="75.0" text="Produto" />
             <TableColumn fx:id="columnVendaDividaQuantidade" prefWidth="75.0" text="Qt" />
-            <TableColumn fx:id="columnVendaDividaUnidade" prefWidth="75.0" text="Unit" />
             <TableColumn fx:id="columnVendaDividaData" prefWidth="75.0" text="Data" />
             <TableColumn fx:id="columnVendaDividaDataFinalizar" prefWidth="75.0" text="Prazo" />
             <TableColumn fx:id="columnVendaDividaMontanteUnitario" prefWidth="75.0" text="Custo" />

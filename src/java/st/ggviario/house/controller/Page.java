@@ -4,9 +4,9 @@ import javafx.scene.Node;
 
 public interface Page {
 
-    default void setRootPage( Node rootPage ) {}
+    default void onSetRootPage(Node rootPage ) {}
 
-    default void setRoot( Node root ) {}
+    default void onSetRoot(Node root ) {}
 
     default  void setRootController(HomeController rootController) {}
 

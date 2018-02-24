@@ -2,18 +2,23 @@ package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXRippler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import st.ggviario.house.model.TipoVenda;
 import st.ggviario.house.model.Venda;
+import st.jigahd.support.sql.lib.SQLText;
 
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-public class VendaDetailsController  {
+public class DrawerVendaDetalhesController implements Initializable {
 
     @FXML
     private Label labelClienteNome;
@@ -58,6 +63,9 @@ public class VendaDetailsController  {
     private Label labelVendaMontantePagarAccent;
 
     @FXML
+    private Label lableVendaArreaInformacaoTitle;
+
+    @FXML
     private HBox headerPageIcon;
 
     @FXML
@@ -77,15 +85,25 @@ public class VendaDetailsController  {
 
     private OnCloseVendaDetaisCallback onCloseVendaDetaisCallback;
     private OnPayNow onPayNow;
+    private OnListPayment onListPayment;
 
     private NumberFormat moneyFormatter = NumberFormat.getInstance( Locale.FRANCE );
     private NumberFormat numeberFormat = NumberFormat.getInstance( Locale.FRANCE );
     private DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
     private Venda venda;
     private String[] iconsId;
+    private TipoVenda tipoVenda;
+    private ViewConfigurarion viewConfigurarion;
 
-    public void setIconAvalible( String [] iconsId ){
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.viewConfigurarion = new ViewConfigurarion();
+    }
+
+    public DrawerVendaDetalhesController setIconAvalible(String [] iconsId ){
         this.iconsId = iconsId;
+        return this;
     }
 
     public void ok(){
@@ -96,8 +114,6 @@ public class VendaDetailsController  {
 
         this.structureLayout();
         this.defineEvents();
-
-
     }
 
     private void structureLayout(){
@@ -115,10 +131,20 @@ public class VendaDetailsController  {
         this.showIcon( panelIconAdd, ripplerAdd );
         this.showIcon( panelIconPayNow, ripplerPayNow );
         this.showIcon( panelIconListPayment, ripplerListPay );
+
+        if( this.viewConfigurarion.difine ){
+            this.lableVendaArreaInformacaoTitle.setText( this.viewConfigurarion.descricaoTituloInformacao );
+        }
     }
 
     private void defineEvents(){
-        this.panelIconPayNow.setOnMouseClicked(event -> this.onPayNow.acceptOnPayNow( this.venda ));
+        this.panelIconPayNow.setOnMouseClicked(event ->{
+            if( onPayNow != null )
+                this.onPayNow.acceptOnPayNow( this.venda );
+        });
+        this.panelIconListPayment.setOnMouseClicked( event -> {
+            if( this.onListPayment != null) onListPayment.acceptNewListPaymentVenda( this.venda);
+        });
     }
 
     private void showIcon(Pane pane, JFXRippler rippler ){
@@ -143,24 +169,47 @@ public class VendaDetailsController  {
         if( this.onCloseVendaDetaisCallback != null ) this.onCloseVendaDetaisCallback.acceptCloseVendaDetails();
     }
 
-    public VendaDetailsController setOnCloseVendaDetaisCallback(OnCloseVendaDetaisCallback onCloseVendaDetaisCallback) {
+    public DrawerVendaDetalhesController setOnCloseVendaDetaisCallback(OnCloseVendaDetaisCallback onCloseVendaDetaisCallback) {
         this.onCloseVendaDetaisCallback = onCloseVendaDetaisCallback;
         return this;
     }
 
-    public VendaDetailsController setOnPayNow(OnPayNow onPayNow) {
+    public DrawerVendaDetalhesController setOnPayNow(OnPayNow onPayNow) {
         this.onPayNow = onPayNow;
+        return this;
+    }
+
+    public DrawerVendaDetalhesController setOnListPayment(OnListPayment onListPayment) {
+        this.onListPayment = onListPayment;
+        return this;
+    }
+
+    public DrawerVendaDetalhesController setTipoVenda(TipoVenda tipoVenda ){
+        this.tipoVenda = tipoVenda;
+
+        if( this.tipoVenda == TipoVenda.DIVIDA ){
+            this.viewConfigurarion.descricaoTituloInformacao = "Informações da divia";
+        } else if( this.tipoVenda == TipoVenda.VENDA ){
+            this.viewConfigurarion.descricaoTituloInformacao = "Informações da venda";
+        } else throw  new RuntimeException("Tipo de venda invalido ou não definido!" );
+        this.viewConfigurarion.difine = true;
         return this;
     }
 
     public  void setVenda(Venda venda ){
         this.venda = venda;
+        String firstName = SQLText.capitalize( this.venda.getCliente().getClienteNome().split(" ")[ 0 ].toLowerCase() );
+        if( this.tipoVenda == TipoVenda.DIVIDA )
+            this.labelHeaderTitle.setText(  "Divide de " + firstName  );
+        else if( this.tipoVenda == TipoVenda.VENDA ){
+            this.labelHeaderTitle.setText( "Venda para " + firstName );
+        }
+
         this.labelClienteNome.setText( venda.getCliente().getClienteCompletName() );
         this.labelClienteMontentePagar.setText( moneyFormatter(this.venda.getCliente().getClienteMontanteTotal())  );
         this.labelClienteMontantePendente.setText( moneyFormatter(this.venda.getCliente().getClienteMontantePendente())  );
         this.labelProdutoNome.setText( this.venda.getProducto().getProdutoNome() );
         this.labelUnidadeNome.setText( this.venda.getUnidade().getUnidadeNome()+" ("+this.venda.getUnidade().getUnidadeCodigo()+")" );
-        this.labelHeaderTitle.setText( this.venda.getCliente().getClienteCompletName() );
         this.labelVendaQuantidade.setText( this.numeberFormat.format( this.venda.getVandaQuantidade() ) );
         this.labelVendaMontanteUnitario.setText( this.numeberFormat.format( this.venda.getVendaMontanteUnidario() ) );
         this.labelVendaMontanteDesconto.setText(moneyFormatter(this.venda.getVendaMontanteDesconto()));
@@ -173,6 +222,8 @@ public class VendaDetailsController  {
 
     }
 
+
+
     private String moneyFormatter(Double vendaMontanteAmortizado) {
         return this.moneyFormatter.format(vendaMontanteAmortizado)+" STN";
     }
@@ -184,6 +235,15 @@ public class VendaDetailsController  {
 
     public interface OnPayNow {
         void acceptOnPayNow( Venda venda );
+    }
+
+    public interface OnListPayment {
+        void acceptNewListPaymentVenda( Venda venda );
+    }
+
+    private class ViewConfigurarion {
+        private String descricaoTituloInformacao;
+        private boolean difine;
     }
 
 

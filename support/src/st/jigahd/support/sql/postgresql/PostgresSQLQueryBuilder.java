@@ -1,6 +1,11 @@
 package st.jigahd.support.sql.postgresql;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.util.Pair;
+import org.json.JSONObject;
+import org.postgresql.core.Oid;
+import org.postgresql.util.PGobject;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -27,9 +32,14 @@ public class PostgresSQLQueryBuilder {
 
     static {
         Map<Integer, Setter > setters = new LinkedHashMap<>();
-        
+
+        setters.put( Types.OTHER, (statement, index, type, value ) -> {
+            System.out.println( String.valueOf( value ) );
+            statement.setObject( index,  value);
+        });
+
+
         setters.put(Types.NULL, (statement, index, type, value) -> statement.setNull( index,  type ));
-        setters.put(Types.OTHER, (statement, index, type, value) -> statement.setObject( index,  value));
         setters.put(Types.BOOLEAN, (statement, index, type, value) -> statement.setBoolean( index, (Boolean) value));
         setters.put(Types.BIT, (statement, index, type, value) -> statement.setByte( index, (Byte) value));
         setters.put(Types.TINYINT, (statement, index, type, value) -> statement.setShort( index, (Short) value));
@@ -144,7 +154,7 @@ public class PostgresSQLQueryBuilder {
             return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException( e );
+            throw new RuntimeException( );
         }
     }
 
@@ -368,10 +378,26 @@ public class PostgresSQLQueryBuilder {
         return this;
     }
 
-    public PostgresSQLQueryBuilder withJsonb(String doublePrecision ){
-        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+    public PostgresSQLQueryBuilder withJsonb( JsonElement jsonb ){
+        return this.withJsonb( jsonb == null? null : jsonb.toString() );
+    }
+
+    public PostgresSQLQueryBuilder withJsonb( String jsonb ){
+        try {
+            PGobject jsonObject = new PGobject();
+            jsonObject.setType("::jsonb");
+            jsonObject.setValue( jsonb );
+            parameters.add( new Pair<>( Types.OTHER, jsonb ) );
+        } catch ( Exception ex  ) {
+            throw new RuntimeException( ex );
+        }
         return this;
     }
+
+//    public PostgresSQLQueryBuilder withJsonb( String jsonb ){
+//        parameters.add( new Pair<>( Oid.JSON, jsonb ) );
+//        return this;
+//    }
 
     public PostgresSQLQueryBuilder withJson(String doublePrecision ){
         parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
@@ -505,5 +531,4 @@ public class PostgresSQLQueryBuilder {
         if( timestamp == null ) return null;
         return java.sql.Timestamp.valueOf( timestamp );
     }
-
 }

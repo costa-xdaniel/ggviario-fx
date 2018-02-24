@@ -179,4 +179,12 @@ public class SQLRow implements Serializable {
         }
 
     }
+
+    public static Integer integerOf(Object o) {
+        return (Integer) o;
+    }
+
+    public static Boolean booleanOf(Object o) {
+        return (Boolean) o;
+    }
 }

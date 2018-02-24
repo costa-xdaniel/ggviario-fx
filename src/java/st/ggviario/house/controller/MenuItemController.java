@@ -1,6 +1,5 @@
 package st.ggviario.house.controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -41,8 +40,8 @@ public class MenuItemController implements DrawerItem, Initializable {
             FXMLLoader loader = new FXMLLoader( menuItem.getContentPageLink() );
             this.nodeContent = loader.load();
             this.page = loader.getController();
-            this.page.setRoot( this.rootController.getRoot() );
-            this.page.setRootPage( this.rootController.getRootPage() );
+            this.page.onSetRoot( this.rootController.getRoot() );
+            this.page.onSetRootPage( this.rootController.getRootPage() );
             this.page.setRootController( this.rootController );
         } catch ( Exception ex ){
             System.out.println( menu );

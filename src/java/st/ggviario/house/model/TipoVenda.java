@@ -4,7 +4,7 @@ public enum TipoVenda {
     VENDA( (short) 1 ),
     DIVIDA( (short) 2);
 
-    public static TipoVenda find( Short tipoVendaId) {
+    public static TipoVenda valueOf(Short tipoVendaId) {
         if ( tipoVendaId == null ) return null;
         for( TipoVenda tv: TipoVenda.values() ){
             if( tv.tipoVendaId == tipoVendaId ) return tv;
@@ -18,4 +18,5 @@ public enum TipoVenda {
     TipoVenda( short tipoVendaId ){
         this.tipoVendaId = tipoVendaId;
     }
+
 }

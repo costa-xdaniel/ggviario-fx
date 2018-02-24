@@ -1,19 +1,25 @@
 package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXDrawer;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import st.ggviario.house.model.TipoVenda;
 import st.ggviario.house.model.Venda;
+import st.jigahd.support.sql.lib.SQLText;
 
 import java.net.URL;
 import java.util.Date;
@@ -31,16 +37,16 @@ public class VendaDividaController extends VendaController {
     private TableView< Venda > tableViewVendaDivida;
 
     @FXML
+    private TableColumn< Venda, String> columnVendaDividaFaturaNumero;
+
+    @FXML
     private TableColumn< Venda, String> columnVendaDividaCliente;
 
     @FXML
     private TableColumn< Venda, String > columnVendaDividaProduto;
 
     @FXML
-    private TableColumn< Venda, Number > columnVendaDividaQuantidade;
-
-    @FXML
-    private TableColumn< Venda, String > columnVendaDividaUnidade;
+    private TableColumn< Venda, String > columnVendaDividaQuantidade;
 
     @FXML
     private TableColumn< Venda, Date > columnVendaDividaData;
@@ -67,12 +73,202 @@ public class VendaDividaController extends VendaController {
     private JFXDrawer drawerVendaDetails;
 
 
+    //Modal Novo agamento
+    private Pane modalNovoPagamentoPanel;
+    private ModalNovoPagamentoController modalNovoPagamentoController;
+    private JFXDialogLayout modalNovoPagamentoDialogLayout;
+    private JFXDialog modalNovoPagamentoDialog;
+    //
+
+
+    //Modal Lista de movimento
+    private Pane modalListaMovimentoVendaPage;
+    private ModalListaMovimentoVendaController modalListaMovimentoVendaController;
+    private JFXDialogLayout modalListaMovimentoVendaDialogLayout;
+    private JFXDialog modalListaMovimentoVendaDialog;
+    //
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize( url, resourceBundle );
 
-        this.structureTableColumns();
+        this.structure();
     }
+
+    @Override
+    public void onSetRootPage(Node rootPage) {
+        super.onSetRootPage(rootPage);
+
+        this.modalNovoPagamentoDialogLayout = new JFXDialogLayout();
+        ( (Pane) modalNovoPagamentoDialogLayout.getChildren().get( 0 ) ).getChildren().remove( 2 );
+        this.modalNovoPagamentoDialog = new JFXDialog( (StackPane) this.rootPage, this.modalNovoPagamentoDialogLayout, JFXDialog.DialogTransition.CENTER );
+
+        this.modalListaMovimentoVendaDialogLayout = new JFXDialogLayout();
+        this.modalListaMovimentoVendaDialog = new JFXDialog((StackPane) this.rootPage, this.modalListaMovimentoVendaDialogLayout, JFXDialog.DialogTransition.CENTER );
+
+    }
+
+    void structure() {
+        this.tableViewVendaDivida.setRowFactory( clienteTableView -> new TableRow<Venda>(){
+            @Override
+            protected void updateItem(Venda item, boolean empty) {
+                super.updateItem(item, empty);
+                if( item == null || empty ){
+                    setItem( item );
+                } else{
+                    this.getStyleClass().add("row-normal");
+                    setItem( item );
+                }
+            }
+        });
+
+        this.columnVendaDividaCliente.setMinWidth( 140 );
+
+        this.columnVendaDividaFaturaNumero.setMaxWidth( 72 );
+        this.columnVendaDividaFaturaNumero.setMinWidth( 72 );
+
+        this.columnVendaDividaEstado.setMaxWidth( 100 );
+        this.columnVendaDividaEstado.setMinWidth( 100 );
+
+
+        this.columnVendaDividaFaturaNumero.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getVendaFaturaNumero() ));
+        this.columnVendaDividaFaturaNumero.setCellFactory( cell -> this.getSimpleTextCell() );
+
+        this.columnVendaDividaCliente.setCellValueFactory( data -> {
+            String nome = data.getValue().getCliente().getClienteCompletName();
+            return  new SimpleStringProperty( nome );
+        } );
+        this.columnVendaDividaCliente.setCellFactory( cell -> this.getSimpleTextCell() );
+
+        this.columnVendaDividaProduto.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getProducto().getProdutoNome()) );
+        this.columnVendaDividaProduto.setCellFactory( cell -> this.getSimpleTextCell());
+
+        this.columnVendaDividaQuantidade.setCellValueFactory( data-> new SimpleStringProperty( data.getValue().getVandaQuantidade()+" "+data.getValue().getUnidade().getUnidadeCodigo() ) );
+        this.columnVendaDividaQuantidade.setCellFactory( cell -> this.getSimpleTextCell() );
+
+        this.columnVendaDividaMontanteUnitario.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
+        this.columnVendaDividaMontanteUnitario.setCellFactory(cell -> this.getMoneyCell("STN") );
+
+        this.columnVendaDividaData.setCellValueFactory( data -> new SimpleObjectProperty<>( data.getValue().getVendaData() ));
+        this.columnVendaDividaData.setCellFactory( cell -> this.getDateCell() );
+
+        this.columnVendaDividaMontantePagar.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
+        this.columnVendaDividaMontantePagar.setCellFactory(cell -> this.getMoneyCell("STN" ) );
+
+        this.columnVendaDividaMontantePago.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontanteAmortizado() ) );
+        this.columnVendaDividaMontantePago.setCellFactory(cell -> this.getMoneyCell("STN" ) );
+
+        this.columnVendaDividaDataFinalizar.setCellValueFactory(data -> new SimpleObjectProperty<>( data.getValue().getVendaDataFinalizar()));
+        this.columnVendaDividaDataFinalizar.setCellFactory(cell -> this.getDateCell() );
+
+        this.columnVendaDividaEstado.setCellValueFactory(data -> new SimpleStringProperty( data.getValue().getVendaEstadoDesc() ));
+        this.columnVendaDividaEstado.setCellFactory(cell -> this.getSimpleTextCell() );
+
+    }
+
+    @Override
+    protected void loadVendaDetailLayout() {
+        try{
+            if( this.drawerVendaDetalhesController == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/venda_details.fxml") );
+                this.drawerVendaDetalhesPane = loader.load();
+                this.drawerVendaDetalhesController = loader.getController();
+                this.drawerVendaDetalhesController.setIconAvalible( this.getAvalibleIcons() )
+                        .setOnCloseVendaDetaisCallback( this::closeDetails )
+                        .setOnPayNow( this::openModalPaymentNow )
+                        .setOnListPayment( this::openModalMovimentoVendaDivida)
+                        .setTipoVenda( this.getTipoVenda() )
+                        .ok();
+            }
+        }catch ( Exception ex ){
+            ex.printStackTrace();
+        }
+    }
+
+    private void loadModalPaymentNowDialog() {
+        try{
+            if( this.modalNovoPagamentoPanel == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_novo_pagamento.fxml") );
+                this.modalNovoPagamentoPanel = loader.load();
+                this.modalNovoPagamentoController = loader.getController();
+                this.modalNovoPagamentoController.setOnResultPayNow( this::onResultPayment );
+                this.modalNovoPagamentoController.ok( );
+
+                this.modalNovoPagamentoDialogLayout.setBody( this.modalNovoPagamentoPanel);
+                this.modalNovoPagamentoDialogLayout.getStylesheets().add( getClass().getResource("/styles/styles.css").toExternalForm() );
+                this.modalNovoPagamentoDialogLayout.getStyleClass().add( "modal-width-1" );
+            }
+        } catch ( Exception ex ){
+            ex.printStackTrace();
+        }
+    }
+
+    private void loadModalMovimentoDialog() {
+        try{
+            if( this.modalListaMovimentoVendaPage == null ){
+                FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal_lista_movimento_venda.fxml") );
+                this.modalListaMovimentoVendaPage = loader.load();
+                this.modalListaMovimentoVendaController = loader.getController();
+                this.modalListaMovimentoVendaController.setOnOkCliek( this::onCliekOkListPayment );
+                this.modalListaMovimentoVendaController.ok( );
+                this.modalListaMovimentoVendaDialogLayout.setBody( this.modalListaMovimentoVendaPage);
+            }
+        } catch ( Exception ex ){
+            ex.printStackTrace();
+        }
+    }
+
+
+    private void onResultPayment( ModalNovoPagamentoController.MovimentoResult movimentoResult ) {
+        StringBuilder builder = new StringBuilder();
+        String message = movimentoResult.getMessage();
+        if( message == null ) message = "Operação falhou!";
+
+        if( movimentoResult.isSucess() ){
+            message = builder.append( "Novo pagamento para ")
+                    .append(" a ").append( movimentoResult.getMovimento().getVenda().getTipoVenda().name().toLowerCase() )
+                    .append(" com documento numero ").append( movimentoResult.getMovimento().getMovimentoDocumento() )
+                    .append(" cadastrado com sucesso")
+                    .toString();
+
+            this.showSucessMessage( SQLText.normalize(message) );
+            this.modalNovoPagamentoDialog.close();
+            this.modalNovoPagamentoController.clear();
+            this.onAfertOperation( null );
+        } else {
+            this.showFailedMessage(message);
+        }
+    }
+
+    private void onCliekOkListPayment() {
+        modalListaMovimentoVendaDialog.close();
+    }
+
+    private void openModalMovimentoVendaDivida(Venda venda ){
+        if( venda == null ) {
+            this.closeDetails();
+            return;
+        }
+
+        this.loadModalMovimentoDialog();
+        this.modalListaMovimentoVendaController.setVenda( venda );
+        this.modalListaMovimentoVendaDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
+        this.modalListaMovimentoVendaDialog.show();
+    }
+
+    private void openModalPaymentNow(Venda venda ){
+        if( venda == null ) {
+            this.closeDetails();
+            return;
+        }
+        this.loadModalPaymentNowDialog();
+        this.modalNovoPagamentoController.setVenda( venda );
+        this.modalNovoPagamentoDialogLayout.setHeading( new Text( "Pagamento de fatura " + venda.getVendaFaturaNumero() )  );
+        this.modalNovoPagamentoDialog.show();
+    }
+
 
     @Override
     protected Pane getLocalRootPage() {
@@ -125,55 +321,4 @@ public class VendaDividaController extends VendaController {
         return this.tableViewVendaDivida;
     }
 
-
-    void structureTableColumns() {
-        this.tableViewVendaDivida.setRowFactory( clienteTableView -> new TableRow<Venda>(){
-            @Override
-            protected void updateItem(Venda item, boolean empty) {
-                super.updateItem(item, empty);
-                if( item == null || empty ){
-                    setItem( item );
-                } else{
-                    this.getStyleClass().add("row-normal");
-                    setItem( item );
-                }
-            }
-        });
-
-
-        this.columnVendaDividaCliente.setCellValueFactory( data -> {
-            String nome = data.getValue().getCliente().getClienteCompletName();
-            return  new SimpleStringProperty( nome );
-        } );
-        this.columnVendaDividaCliente.setCellFactory( cell -> this.getSimpleTextCell() );
-        this.columnVendaDividaCliente.setMinWidth( 150 );
-
-        this.columnVendaDividaProduto.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getProducto().getProdutoNome()) );
-        this.columnVendaDividaProduto.setCellFactory( cell -> this.getSimpleTextCell());
-
-        this.columnVendaDividaQuantidade.setCellValueFactory( data-> new SimpleDoubleProperty( data.getValue().getVandaQuantidade() ) );
-        this.columnVendaDividaQuantidade.setCellFactory( cell -> this.getNumberCell() );
-
-        this.columnVendaDividaUnidade.setCellValueFactory(data -> new SimpleStringProperty( data.getValue().getUnidade().getUnidadeCodigo() ) );
-        this.columnVendaDividaUnidade.setCellFactory(cell -> getSimpleTextCell() );
-
-        this.columnVendaDividaMontanteUnitario.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
-        this.columnVendaDividaMontanteUnitario.setCellFactory(cell -> this.getMoneyCell("STN") );
-
-        this.columnVendaDividaData.setCellValueFactory( data -> new SimpleObjectProperty<>( data.getValue().getVendaData() ));
-        this.columnVendaDividaData.setCellFactory( cell -> this.getDateCell() );
-
-        this.columnVendaDividaMontantePagar.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
-        this.columnVendaDividaMontantePagar.setCellFactory(cell -> this.getMoneyCell("STN" ) );
-
-        this.columnVendaDividaMontantePago.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontanteAmortizado() ) );
-        this.columnVendaDividaMontantePago.setCellFactory(cell -> this.getMoneyCell("STN" ) );
-
-        this.columnVendaDividaDataFinalizar.setCellValueFactory(data -> new SimpleObjectProperty<>( data.getValue().getVendaDataFinalizar()));
-        this.columnVendaDividaDataFinalizar.setCellFactory(cell -> this.getDateCell() );
-
-        this.columnVendaDividaEstado.setCellValueFactory(data -> new SimpleStringProperty( data.getValue().getVendaEstadoDesc() ));
-        this.columnVendaDividaEstado.setCellFactory(cell -> this.getSimpleTextCell() );
-
-    }
 }

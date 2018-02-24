@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
-public class VendaNewController implements Initializable {
+public class ModalNovaVendaController implements Initializable {
 
     private Producto productoVasio;
     private Preco precoVasio;
@@ -307,7 +307,7 @@ public class VendaNewController implements Initializable {
 
     private void vendaFeito() {
         if( this.onVendaFeito != null ){
-            this.onVendaFeito.onVendaFeinto( this.listVendaResult );
+            this.onVendaFeito.onAfertOperation( this.listVendaResult );
         }
         this.listVendaResult = new LinkedList<>();
         this.newForm();
@@ -325,7 +325,7 @@ public class VendaNewController implements Initializable {
         if( this.datePickerVendaDataFinalizar.getValue() != null  )
             vendaDataFinalizar = java.sql.Date.valueOf( this.datePickerVendaDataFinalizar.getValue() );
 
-        VendaNewController.CalcResult cal = this.calculateNow();
+        ModalNovaVendaController.CalcResult cal = this.calculateNow();
         Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder()
                 .cliente( this.listViewCliente.getSelectionModel().getSelectedItem() )
                 .produto( cal.producto )
@@ -343,7 +343,7 @@ public class VendaNewController implements Initializable {
 
     private RegisterVendaResult validateForm() {
         RegisterVendaResult registerVendaResult = new RegisterVendaResult();
-        VendaNewController.CalcResult cal = this.calculateNow();
+        ModalNovaVendaController.CalcResult cal = this.calculateNow();
         Producto produto = this.comboxProduto.getSelectionModel().getSelectedItem();
         Preco preco = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
 
@@ -369,17 +369,17 @@ public class VendaNewController implements Initializable {
         }
     }
 
-    public VendaNewController setOnNewVendaResult(OnNewVendaResult onNewVendaResult) {
+    public ModalNovaVendaController setOnNewVendaResult(OnNewVendaResult onNewVendaResult) {
         this.onNewVendaResult = onNewVendaResult;
         return this;
     }
 
-    public VendaNewController setOnVendaFeito( OnVendaFeito onVendaFeito ) {
+    public ModalNovaVendaController setOnVendaFeito(OnVendaFeito onVendaFeito ) {
         this.onVendaFeito = onVendaFeito;
         return this;
     }
 
-    public VendaNewController setOnNewClienteRequest(OnNewClienteRequest onNewClienteRequest) {
+    public ModalNovaVendaController setOnNewClienteRequest(OnNewClienteRequest onNewClienteRequest) {
         this.onNewClienteRequest = onNewClienteRequest;
         return this;
     }
@@ -457,7 +457,7 @@ public class VendaNewController implements Initializable {
         this.clienteListFiltred.clear();
 
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        sql.query( this.functionLoadClienteNew ).withJsonb( null ).callFunctionTable() .onResultQuery( row ->{
+        sql.query( this.functionLoadClienteNew ).withJsonb( (String) null ).callFunctionTable() .onResultQuery( row ->{
             Cliente cliente;
             this.clienteList.add( cliente =  clienteBuilder.load( row ).build() );
             if( cliente.getClienteId().equals( new UUID(0, 1 ) ) )
@@ -482,7 +482,7 @@ public class VendaNewController implements Initializable {
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
         Gson gson = new Gson();
 
-        sql.query("funct_load_produto_venda") .withJsonb( null ) .callFunctionTable().onResultQuery( row ->{
+        sql.query("funct_load_produto_venda") .withJsonb( (String) null ) .callFunctionTable().onResultQuery( row ->{
             produtoBuilder.load( row );
             Producto produto;
             productoList.add( produto = produtoBuilder.build() );
@@ -553,19 +553,24 @@ public class VendaNewController implements Initializable {
     private void postgresSaveAction() {
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
         Colaborador colaborador = AuthSingleton.getAuth();
-        this.actionRegister.put( TipoVenda.VENDA, (venda )-> this.execute( venda,
-                sql.query("funct_reg_venda_venda")
-                        .withUUID( colaborador.getColaboradorId() )
-                        .withUUID( venda.getProducto().getProdutoId() )
-                        .withUUID( venda.getUnidade().getUnidadeId() )
-                        .withUUID( venda.getCliente().getClienteId() )
-                        .withNumeric( venda.getVandaQuantidade() )
-                        .withNumeric( venda.getVendaMontanteUnidario() )
-                        .withNumeric( venda.getVendaMontanteBruto() )
-                        .withNumeric( venda.getVendaMontanteDesconto() )
-                        .withNumeric( venda.getVendaMontantePagar() )
-                        .withDate( venda.getVendaData() )
-        ));
+        this.actionRegister.put(TipoVenda.VENDA, venda -> {
+            ContaManager contaManager = new ContaManager();
+            Conta conta = contaManager.getContaFor(ContaManager.ContaOperacao.PAGAMENTO_VENDA );
+            return  execute( venda,
+                    sql.query("funct_reg_venda_venda")
+                            .withUUID( colaborador.getColaboradorId() )
+                            .withUUID( venda.getProducto().getProdutoId() )
+                            .withUUID( venda.getUnidade().getUnidadeId() )
+                            .withUUID( venda.getCliente().getClienteId() )
+                            .withUUID( conta == null? null : conta.getContaId() )
+                            .withNumeric( venda.getVandaQuantidade() )
+                            .withNumeric( venda.getVendaMontanteUnidario() )
+                            .withNumeric( venda.getVendaMontanteBruto() )
+                            .withNumeric( venda.getVendaMontanteDesconto() )
+                            .withNumeric( venda.getVendaMontantePagar() )
+                            .withDate( venda.getVendaData() )
+            );
+        });
         this.actionRegister.put(TipoVenda.DIVIDA, venda ->{
             PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
             query.withUUID( colaborador.getColaboradorId() );
@@ -589,7 +594,7 @@ public class VendaNewController implements Initializable {
     }
 
     interface OnVendaFeito {
-        void onVendaFeinto(  List<RegisterVendaResult> results );
+        void onAfertOperation(List<RegisterVendaResult> results );
     }
 
 
