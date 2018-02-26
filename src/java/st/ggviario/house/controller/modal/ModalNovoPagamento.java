@@ -39,6 +39,11 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
     @FXML
     private AnchorPane root;
 
+    @FXML
+    private Label vendaFaturaNumero;
+
+    @FXML
+    private Label modalTitle;
 
     @FXML
     private AnchorPane anchorHeader;
@@ -149,7 +154,13 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         });
 
         this.buttomPayNow.setOnAction(event -> this.payNow());
+        this.vendaFaturaNumero.setOnMouseClicked(event -> this.onClickVendaFaturaNumero());
 
+    }
+
+    private void onClickVendaFaturaNumero( ){
+        if( this.venda != null ) this.textFieldMovimentoDocumento.setText(this.venda.getVendaFaturaNumero());
+        else this.textFieldMovimentoDocumento.setText( null );
     }
 
     @Override
@@ -178,6 +189,8 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         this.textFieldMovimentoMontante.setText( "" );
         this.textFieldMovimentoDocumento.setText( "" );
         this.datePickerMovimentoData.setValue( null );
+        this.vendaFaturaNumero.setText( null );
+        this.modalTitle.setText( null );
     }
 
     public void setVenda(Venda venda) {
@@ -187,6 +200,8 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         this.lastMovimentoMontente = .0;
         this.labelVendaDividaMontantePendente.setText( this.moneyFormatter.format( this.lastVendaDividaMontentePendente) );
         this.labelVendaDividaMontanteTotalPagar.setText( this.moneyFormatter.format( this.venda.getVendaMontantePagar() ) );
+        this.vendaFaturaNumero.setText( this.venda.getVendaFaturaNumero() );
+        this.modalTitle.setText( "Novo pagamento" );
     }
 
     private void payNow( ){

@@ -23,7 +23,7 @@
          <children>
             <AnchorPane fx:id="anchorHeader">
                <children>
-                  <Label styleClass="modal-title" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="modalTitle" styleClass="modal-title" text="Nova Amortizaçao" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <AnchorPane fx:id="iconArea" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -41,23 +41,41 @@
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="textFieldMovimentoMontante" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="1">
+                  <JFXTextField fx:id="textFieldMovimentoMontante" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXDatePicker fx:id="datePickerMovimentoData" prefHeight="26.0" prefWidth="172.0" promptText="Data" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                  <JFXDatePicker fx:id="datePickerMovimentoData" prefHeight="26.0" prefWidth="172.0" promptText="Data" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXDatePicker>
-                  <JFXTextField fx:id="textFieldMovimentoDocumento" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688">
+                  <JFXTextField fx:id="textFieldMovimentoDocumento" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXTextField>
+                  <Label styleClass="details-area-field" text="Fatura">
+                     <GridPane.margin>
+                        <Insets bottom="4.0" top="16.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="vendaFaturaNumero" styleClass="detail-area-field-value" text="D7338/18" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Separator prefWidth="200.0" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="16.0" top="16.0" />
+                     </GridPane.margin>
+                  </Separator>
                </children>
                <styleClass>
                   <String fx:value="form-simple" />
