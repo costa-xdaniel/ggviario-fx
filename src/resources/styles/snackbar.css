@@ -1,0 +1,16 @@
+.jfx-snackbar-content{
+    -fx-background-radius: 2px;
+}
+
+.jfx-snackbar-toast{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.jfx-snackbar-action{
+    -jfx-button-type: RAISED;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFF;
+}

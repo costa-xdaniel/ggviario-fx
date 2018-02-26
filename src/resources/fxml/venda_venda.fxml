@@ -2,11 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
+<?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="getLocalRootPage" prefHeight="447.0" prefWidth="657.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.VendaVendaController">
+<AnchorPane fx:id="getLocalRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.VendaVendaController">
    <children>
       <TableView fx:id="tableViewVendaVenda" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
@@ -26,4 +27,8 @@
       <JFXDrawer fx:id="drawerVenda" defaultDrawerSize="450.0" direction="RIGHT" overLayVisible="false" style="-fx-background-color: transparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="buttonVendaVendaNew" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
+   <stylesheets>
+      <URL value="@../styles/styles.css" />
+      <URL value="@../styles/material-design.css" />
+   </stylesheets>
 </AnchorPane>

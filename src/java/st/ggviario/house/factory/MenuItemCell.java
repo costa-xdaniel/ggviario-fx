@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import st.ggviario.house.controller.HomeController;
+import st.ggviario.house.controller.page.HomeController;
 import st.ggviario.house.model.DrawerItem;
 import st.ggviario.house.model.Menu;
 

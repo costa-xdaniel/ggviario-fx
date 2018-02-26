@@ -2,11 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
+<?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="localRootPage" prefHeight="447.0" prefWidth="657.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.VendaDividaController">
+<AnchorPane fx:id="localRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.VendaDividaController">
    <children>
       <TableView fx:id="tableViewVendaDivida" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
@@ -16,7 +17,6 @@
             <TableColumn fx:id="columnVendaDividaQuantidade" prefWidth="75.0" text="Qt" />
             <TableColumn fx:id="columnVendaDividaData" prefWidth="75.0" text="Data" />
             <TableColumn fx:id="columnVendaDividaDataFinalizar" prefWidth="75.0" text="Prazo" />
-            <TableColumn fx:id="columnVendaDividaMontanteUnitario" prefWidth="75.0" text="Custo" />
             <TableColumn fx:id="columnVendaDividaMontantePagar" prefWidth="75.0" text="Montante" />
             <TableColumn fx:id="columnVendaDividaMontantePago" prefWidth="75.0" text="Pago" />
             <TableColumn fx:id="columnVendaDividaEstado" prefWidth="75.0" text="Estado" />
@@ -25,7 +25,11 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXDrawer fx:id="drawerVendaDetails" defaultDrawerSize="450.0" direction="RIGHT" minHeight="50.0" prefWidth="450.0" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <JFXDrawer fx:id="drawerVendaDetails" defaultDrawerSize="450.0" direction="RIGHT" minHeight="50.0" prefWidth="450.0" style="-fx-background-color: tansparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="buttonVendaDividaNew" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
+   <stylesheets>
+      <URL value="@../styles/styles.css" />
+      <URL value="@../styles/material-design.css" />
+   </stylesheets>
 </AnchorPane>

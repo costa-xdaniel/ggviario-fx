@@ -24,8 +24,8 @@
     -fx-tree-table-rippler-color : rgba(255, 0, 0, 0.9);
 }
 .tree-table-view:focused .tree-table-row-cell:selected {
-    -fx-background-color: -fx-tree-table-color  ;
-    -fx-table-cell-border-color: -fx-tree-table-color;
+    -fx-background-color: -fx-tree-table-color  /*bom*/;
+    -fx-table-cell-border-color: /*-fx-tree-table-color*/ #FFFFFF;
 }
 
 .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
@@ -79,7 +79,7 @@
 }
 
 .tree-table-view:focused {
-    -fx-background-color: -fx-tree-table-color,-fx-box-border,-fx-control-inner-background;
+    -fx-background-color: #FFFFFF, -fx-box-border,-fx-control-inner-background;
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
     /*....*/

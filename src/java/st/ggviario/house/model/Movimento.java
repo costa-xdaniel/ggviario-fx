@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public class Movimento {
     private UUID movimentoId;
+    private String movimentoCodigo;
     private Conta conta;
     private TipoMovimento tipoMovimento;
     private Movimento movimentoSuper;
@@ -27,7 +28,6 @@ public class Movimento {
     private String movimentoEstadoDesc;
     private Date movimentoDataRegisto;
     private Date movimentoDataUltimaAtualizacao;
-    private String movimentoCodigo;
 
 
     private Movimento(){}
@@ -117,8 +117,8 @@ public class Movimento {
     }
 
     public static class MovimentoBuilder {
-        private String codigo;
         private UUID id;
+        private String codigo;
         private Conta conta;
         private TipoMovimento tipoMovimento;
         private Movimento movimentoSuper;
@@ -271,6 +271,7 @@ public class Movimento {
 
         public MovimentoBuilder load(Map<String, Object > map ){
             this.id = SQLRow.uuidOf( map.get( "movimento_id" ) );
+            this.codigo = SQLRow.stringOf( map.get( "movimento_codigo" ) );
             this.tipoMovimento = TipoMovimento.valueOf( SQLRow.shortOf( map.get( "tmovimento_id" ) ) );
             this.data = SQLRow.dateOf( map.get("movimento_data") );
             this.documento = SQLRow.stringOf( map.get( "movimento_documento" ) );
@@ -289,6 +290,7 @@ public class Movimento {
 
         public MovimentoBuilder load( SQLRow row ){
             this.id = SQLRow.uuidOf( row.valueOf( "movimento_id" ) );
+            this.codigo = SQLRow.stringOf( row.valueOf( "movimento_codigo" ) );
             this.tipoMovimento = TipoMovimento.valueOf( SQLRow.shortOf( row.valueOf( "tmovimento_id" ) ) );
             this.data = SQLRow.dateOf( row.valueOf("movimento_data") );
             this.documento = SQLRow.stringOf( row.valueOf( "movimento_documento" ) );

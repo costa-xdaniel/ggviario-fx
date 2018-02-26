@@ -1,6 +1,7 @@
 package st.jigahd.support.sql;
 
 import com.google.gson.Gson;
+import org.postgresql.util.PGobject;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -99,7 +100,7 @@ public class SQLRow implements Serializable {
     }
 
     public String asString( String columnName ){
-        return (String) valueOf( columnName );
+        return SQLRow.stringOf( this.valueOf( columnName ) );
     }
 
     public UUID asUUID(String columnName ){
@@ -141,7 +142,9 @@ public class SQLRow implements Serializable {
     public static String stringOf(Object o) {
         if( o == null ) return null;
         if( o instanceof String )return (String) o;
-        return (String) o;
+        if( o instanceof PGobject ){
+        }
+        return String.valueOf( o );
     }
 
     public static Double doubleOf(Object o) {

@@ -1,6 +1,7 @@
 package st.ggviario.house.model;
 
 import st.jigahd.support.sql.SQLRow;
+import st.jigahd.support.sql.lib.SQLResource;
 
 import java.util.Date;
 import java.util.Map;
@@ -284,8 +285,7 @@ public class Venda {
 
         public VendaBuilder load( Map<String, Object> map) {
             this.id = SQLRow.uuidOf( map.get( "venda_id" ) );
-            this.tipoVenda = TipoVenda.valueOf( SQLRow.shortOf( map.get( "tvenda_id" ) ) );
-            if( tipoVenda == null ) throw  new RuntimeException("Tipo de venda esta nulo");
+            this.tipoVenda = TipoVenda.valueOf( SQLRow.shortOf(SQLResource.coalesce( map.get( "tvenda_id" ), map.get("venda_tvenda_id" ) ) ) );
             this.faturaNumero = SQLRow.stringOf( map.get( "venda_faturanumero" ) );
             this.quantidade = SQLRow.doubleOf( map.get( "venda_quantidade" ) );
             this.quantidadeProduto = SQLRow.doubleOf( map.get( "venda_quantidadeproduto" ) );

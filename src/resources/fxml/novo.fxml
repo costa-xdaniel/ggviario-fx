@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovaVenda">
+   <stylesheets>
+      <URL value="@../styles/material-design.css" />
+      <URL value="@../styles/styles.css" />
+   </stylesheets>
+   <children>
+      <VBox layoutX="81.0" styleClass="venda-form" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="anchorHeader">
+               <children>
+                  <Label layoutX="32.0" layoutY="67.0" styleClass="modal-title" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="iconAreaCloseModal" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <MaterialDesignIconView styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+                     </children>
+                  </AnchorPane>
+                  <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <HBox>
+               <children>
+                  <AnchorPane>
+                     <children>
+                        <VBox>
+                           <children>
+                              <JFXTextField fx:id="textFieldClienteSearch" promptText="Proucurar">
+                                 <VBox.margin>
+                                    <Insets top="16.0" />
+                                 </VBox.margin></JFXTextField>
+                              <JFXListView fx:id="listViewCliente">
+                                 <VBox.margin>
+                                    <Insets top="16.0" />
+                                 </VBox.margin>
+                              </JFXListView>
+                           </children>
+                        </VBox>
+                        <AnchorPane styleClass="floating-action-area" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
+                           <children>
+                              <JFXButton fx:id="fabNewCliente" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="16.0" right="16.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="form" />
+                        <String fx:value="venda-form-list-clients" />
+                     </styleClass>
+                  </AnchorPane>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <AnchorPane>
+                     <children>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <JFXComboBox fx:id="comboxProduto" labelFloat="true" promptText="Produto" styleClass="long-field" GridPane.columnSpan="2">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin></JFXComboBox>
+                              <JFXComboBox fx:id="comboxPrecoUnidades" promptText="Tipo de unidade" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="8.0" top="24.0" />
+                                 </GridPane.margin>
+                              </JFXComboBox>
+                              <JFXTextField fx:id="textFieldVendaMontanteUnitirio" promptText="Preço Unitario" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="8.0" top="24.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="textFieldVendaQuantidade" alignment="CENTER_RIGHT" labelFloat="true" promptText="Quantidade" styleClass="number-field" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets right="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="textFieldVendaMontanteBruto" editable="false" promptText="Custo sem desconto" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="textFieldVendaDesconto" promptText="Desconto" styleClass="money-field" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets right="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="textFieldVendaMontantePagar" editable="false" promptText="Montante a pagar" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets left="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXDatePicker fx:id="datePickerVendaData" promptText="Data" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets right="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXDatePicker>
+                              <JFXDatePicker fx:id="datePickerVendaDataFinalizar" promptText="Prazo" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="8.0" top="32.0" />
+                                 </GridPane.margin>
+                              </JFXDatePicker>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="16.0" right="16.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="form" />
+                        <String fx:value="venda-form-form" />
+                     </styleClass>
+                  </AnchorPane>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <AnchorPane styleClass="venda-form-the-client">
+                     <children>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Cliente" GridPane.columnSpan="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="4.0" top="8.0" />
+                                 </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="details-area-field" />
+                                    <String fx:value="long-field" />
+                                 </styleClass>
+                              </Label>
+                              <Label fx:id="textFieldClienteNome" text="Nome do cliente selecionado" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="24.0" />
+                                 </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="detail-area-field-value" />
+                                    <String fx:value="long-field" />
+                                 </styleClass>
+                              </Label>
+                              <Label styleClass="details-area-field" text="Local" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="4.0" right="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label styleClass="details-area-field" text="Contancto" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="4.0" left="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="textFieldClienteMorada" styleClass="detail-area-field-value" text="Local de residencia" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="24.0" right="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="textFieldClienteContacto" styleClass="detail-area-field-value" text="Contacto docliente" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="24.0" left="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label styleClass="details-area-field" text="Montante" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="4.0" right="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label styleClass="details-area-field" text="Em divida" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="4.0" left="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="textFieldClienteMontanteTotal" styleClass="detail-area-field-value" text="Valor montante" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="8.0" right="8.0" />
+                                 </GridPane.margin></Label>
+                              <Label fx:id="textFieldClienteMontantePendente" styleClass="detail-area-field-value" text="Valor em divida" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="8.0" left="8.0" />
+                                 </GridPane.margin></Label>
+                              <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="16.0" />
+                                 </GridPane.margin>
+                              </Separator>
+                           </children>
+                        </GridPane>
+                        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label fx:id="labelVendaMontanteFinalPagar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="211.0" prefHeight="30.0" prefWidth="211.0" text="387836783838374" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="32.0" />
+                                 </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="venda-form-valor-final" />
+                                    <String fx:value="money-field" />
+                                    <String fx:value="long-field" />
+                                 </styleClass>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
+                                 <children>
+                                    <JFXButton fx:id="buttonVendaFeito" styleClass="venda-form-feito" text="Feito" />
+                                    <JFXButton fx:id="buttonNovaVenda" styleClass="venda-form-register" text="REGISTRAR VENDA">
+                                       <HBox.margin>
+                                          <Insets left="16.0" />
+                                       </HBox.margin>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="16.0" right="16.0" />
+                     </HBox.margin>
+                  </AnchorPane>
+               </children>
+               <padding>
+                  <Insets bottom="32.0" top="32.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

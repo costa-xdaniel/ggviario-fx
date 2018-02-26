@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="item" prefHeight="45.0" prefWidth="300.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.MenuItemController">
+<AnchorPane fx:id="item" prefHeight="45.0" prefWidth="300.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.MenuItemController">
    <children>
       <Label fx:id="itemAction" layoutX="14.0" layoutY="15.0" prefHeight="16.0" prefWidth="272.0" text="Label" />
    </children>

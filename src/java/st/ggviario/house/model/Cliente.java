@@ -1,8 +1,8 @@
 package st.ggviario.house.model;
 
+import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.lib.SQLText;
-import st.jigahd.support.sql.SQLRow;
 
 import java.util.Date;
 import java.util.Map;
@@ -121,6 +121,22 @@ public class Cliente {
         return this.getClienteCompletName();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if( this.clienteId == null ) return false;
+        Cliente cliente = (Cliente) o;
+        if( cliente.clienteId == null ) return false;
+        return this.clienteId.equals( cliente.clienteId );
+
+    }
+
+    @Override
+    public int hashCode() {
+        return clienteId != null ? clienteId.hashCode() : 0;
+    }
+
     public static class ClienteBuilder{
         private UUID id;
         private String nome;
@@ -228,45 +244,43 @@ public class Cliente {
             return this;
         }
 
-        public void id(Cliente cliente, UUID cliente_id) {
-            cliente.clienteId = cliente_id;
-        }
-
         public ClienteBuilder load(SQLRow row) {
-
-            this.id = row.asUUID("cliente_id" );
-            this.nome = row.asString( "cliente_nome" );
-            this.apelido = row.asString( "cliente_apelido" );
-            this.telefone = row.asString( "cliente_telefone" );
-            this.telemovel = row.asString( "cliente_telemovel" );
-            this.morada = row.asString( "cliente_morada" );
-            this.sexo = Sexo.from( row.asShort( "cliente_sexo" ) );
-            this.mail = row.asString( "cliente_mail" );
-            this.localTrabalho = row.asString( "cliente_localtrabalho" );
-            this.montanteCompra = row.asDouble( "cliente_monatntecompra" );
-            this.montanteDivida = row.asDouble( "cliente_montantedivida" );
-            this.montanteTotal = row.asDouble( "cliente_montantetatal" );
-            this.montantePago = row.asDouble( "cliente_montantepago" );
-            this.montantePendente = row.asDouble( "cliente_montantependente" );
+            this.id =  SQLRow.uuidOf( row.valueOf("cliente_id" ) );
+            this.nome = SQLRow.stringOf( row.valueOf( "cliente_nome" ) );
+            this.apelido = SQLRow.stringOf( row.valueOf( "cliente_apelido" ) );
+            this.telefone = SQLRow.stringOf(  row.valueOf( "cliente_telefone" ) );
+            this.telemovel = SQLRow.stringOf( row.valueOf( "cliente_telemovel" ) );
+            this.morada = SQLRow.stringOf( row.valueOf( "cliente_morada" ) );
+            this.sexo = Sexo.from( SQLRow.shortOf(  row.valueOf( "cliente_sexo" ) ) );
+            this.mail =  SQLRow.stringOf( row.valueOf( "cliente_mail" ) );
+            this.localTrabalho = SQLRow.stringOf( row.valueOf( "cliente_localtrabalho" ) );
+            this.montanteCompra = SQLRow.doubleOf( row.valueOf( "cliente_monatntecompra" ) );
+            this.montanteDivida = SQLRow.doubleOf( row.valueOf( "cliente_montantedivida" ) );
+            this.montanteTotal = SQLRow.doubleOf( row.valueOf( "cliente_montantetotal" ) );
+            this.montantePago = SQLRow.doubleOf( row.valueOf( "cliente_montantepago" ) );
+            this.montantePendente = SQLRow.doubleOf( row.valueOf( "cliente_montantependente" ) );
             return this;
         }
 
         public ClienteBuilder load(Map<String, Object> map) {
-
-            this.id = (UUID) map.get("cliente_id" );
-            this.nome = (String) map.get( "cliente_nome" );
-            this.apelido = (String) map.get( "cliente_apelido" );
-            this.telefone = (String) map.get( "cliente_telefone" );
-            this.telemovel = (String) map.get( "cliente_telemovel" );
-            this.morada  = (String) map.get( "cliente_morada" );
-            this.sexo = ( Sexo.from((Short) map.get( "cliente_sexo" )) );
-            this.mail = (String) map.get( "cliente_mail" );
-            this.localTrabalho = (String) map.get( "cliente_localtrabalho" );
-            this.montanteCompra = (Double) map.get( "cliente_monatntecompra" );
-            this.montanteDivida = (Double) map.get( "cliente_montantedivida" );
-            this.montanteTotal = (Double) map.get( "cliente_montantetotal" );
-            this.montantePago = (Double) map.get( "cliente_montantepago" );
-            this.montantePendente = (Double) map.get( "cliente_montantependente" );
+            System.out.println("Aqui dentro");
+            System.out.println( map );
+            this.id =  SQLRow.uuidOf( map.get("cliente_id" ) );
+            System.out.println("id do cliente");
+            System.out.println(this.id );
+            this.nome = SQLRow.stringOf( map.get( "cliente_nome" ) );
+            this.apelido = SQLRow.stringOf( map.get( "cliente_apelido" ) );
+            this.telefone = SQLRow.stringOf(  map.get( "cliente_telefone" ) );
+            this.telemovel = SQLRow.stringOf( map.get( "cliente_telemovel" ) );
+            this.morada = SQLRow.stringOf( map.get( "cliente_morada" ) );
+            this.sexo = Sexo.from( SQLRow.shortOf(  map.get( "cliente_sexo" ) ) );
+            this.mail =  SQLRow.stringOf( map.get( "cliente_mail" ) );
+            this.localTrabalho = SQLRow.stringOf( map.get( "cliente_localtrabalho" ) );
+            this.montanteCompra = SQLRow.doubleOf( map.get( "cliente_monatntecompra" ) );
+            this.montanteDivida = SQLRow.doubleOf( map.get( "cliente_montantedivida" ) );
+            this.montanteTotal = SQLRow.doubleOf( map.get( "cliente_montantetotal" ) );
+            this.montantePago = SQLRow.doubleOf( map.get( "cliente_montantepago" ) );
+            this.montantePendente = SQLRow.doubleOf( map.get( "cliente_montantependente" ) );
             return this;
         }
 
