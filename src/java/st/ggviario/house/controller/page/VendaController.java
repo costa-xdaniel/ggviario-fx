@@ -114,9 +114,20 @@ public abstract class VendaController extends TableController<Venda> implements 
     protected void loadVendaDetailLayout() {
         if( this.drawerVendaDetalhesController == null ){
             this.drawerVendaDetalhesController = DrawerVendaDetalhesController.load( this.getDrawerVendaDetails(), this.getTipoVenda(), this.getAvalibleIcons() );
+            this.drawerVendaDetalhesController.setOnNewVendaForClinet( this::onNewVendaFormCliente );
+
             if( drawerVendaDetalhesController == null ) throw  new RuntimeException( "Para Qui" );
 
         }
+    }
+
+    private void onNewVendaFormCliente( Cliente cliente ){
+        if( cliente == null ) {
+            this.closeDetails();
+            return;
+        }
+        this.lodaModalNovaVenda();
+        this.modalNovaVenda.openModalForCliente( cliente );
     }
 
     void closeDetails() {

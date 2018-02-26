@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import st.ggviario.house.controller.ControllerLoader;
+import st.ggviario.house.model.Cliente;
 import st.ggviario.house.model.TipoVenda;
 import st.ggviario.house.model.Venda;
 
@@ -22,14 +23,16 @@ import java.util.ResourceBundle;
 
 public class DrawerVendaDetalhesController implements Initializable {
 
+    private JFXRippler ripplerAdd;
 
-    public static DrawerVendaDetalhesController load( JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
+    public static DrawerVendaDetalhesController load(JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
         ControllerLoader< BorderPane, DrawerVendaDetalhesController > loader = new ControllerLoader<>("/fxml/includs/drawer_venda_details.fxml");
         DrawerVendaDetalhesController drawer = loader.getViewController().getController();
         drawer.avalibleIcons = avalibleIcons;
         drawer.drawer = drawerView;
         drawer.tipoVenda = tipoVenda;
         drawer.structureLayout();
+        drawer.defineEvents();
         drawer.moneyFormatter.setMinimumFractionDigits( 2 );
         drawer.moneyFormatter.setMaximumFractionDigits( 2 );
         drawer.moneyFormatter.setMinimumIntegerDigits( 1 );
@@ -104,6 +107,7 @@ public class DrawerVendaDetalhesController implements Initializable {
 
     private OnPayNow onPayNow;
     private OnListPayment onListPayment;
+    private OnNewVendaForClinet onNewVendaForClinet;
 
     private NumberFormat moneyFormatter = NumberFormat.getInstance( Locale.FRANCE );
     private NumberFormat numeberFormat = NumberFormat.getInstance( Locale.FRANCE );
@@ -118,12 +122,12 @@ public class DrawerVendaDetalhesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.viewConfigurarion = new ViewConfigurarion();
-        defineEvents();
+
     }
 
     private void structureLayout(){
         JFXRippler ripplerClose = new JFXRippler( panelIconClose );
-        JFXRippler ripplerAdd = new JFXRippler( panelIconAdd );
+        this.ripplerAdd = new JFXRippler( panelIconAdd );
         JFXRippler ripplerPayNow = new JFXRippler( panelIconPayNow );
         JFXRippler ripplerListPay = new JFXRippler( panelIconListPayment );
 
@@ -155,6 +159,10 @@ public class DrawerVendaDetalhesController implements Initializable {
         this.panelIconListPayment.setOnMouseClicked( event -> {
             if( this.onListPayment != null) onListPayment.acceptNewListPaymentVenda( this.venda);
         });
+
+        this.ripplerAdd.setOnMouseClicked(event -> {
+            if( this.onNewVendaForClinet != null && this.venda != null ) this.onNewVendaForClinet.onNewVendaForCliente( this.venda.getCliente() );
+        });
     }
 
     private void showIcon(Pane pane, JFXRippler rippler ){
@@ -180,6 +188,11 @@ public class DrawerVendaDetalhesController implements Initializable {
 
     public DrawerVendaDetalhesController setOnListPayment(OnListPayment onListPayment) {
         this.onListPayment = onListPayment;
+        return this;
+    }
+
+    public DrawerVendaDetalhesController setOnNewVendaForClinet(OnNewVendaForClinet onNewVendaForClinet) {
+        this.onNewVendaForClinet = onNewVendaForClinet;
         return this;
     }
 
@@ -237,6 +250,11 @@ public class DrawerVendaDetalhesController implements Initializable {
 
     public interface OnListPayment {
         void acceptNewListPaymentVenda( Venda venda );
+    }
+
+
+    public interface OnNewVendaForClinet {
+        void onNewVendaForCliente( Cliente cliente );
     }
 
     private class ViewConfigurarion {

@@ -166,6 +166,8 @@ public class VendaDividaController extends VendaController {
         this.modalAmoratizacoesDivida.openModal();
     }
 
+
+
     private void openModalNovoPagamento(Venda venda ){
         if( !canOpenModalOfVenda( venda ) ) return;
         this.loadModalNovoPagemnto();

@@ -159,6 +159,7 @@ public class Venda {
             venda.vendaQuantidadeProduto = this.quantidadeProduto;
             venda.vendaMontanteBruto = this.montanteBruto;
             venda.vendaMontanteDesconto = this.montanteDesconto;
+            if( venda.vendaMontanteDesconto == null ) venda.vendaMontanteDesconto = 0x0.0p0;
             venda.vendaMontantePagar = this.montantePagar;
             venda.vendaMontanteAmortizado = this.montanteAmortizado;
             venda.vandaMontanteUnitario = this.montanteUnitario;
@@ -225,6 +226,7 @@ public class Venda {
         }
 
         public VendaBuilder montanteDesconto(Double montanteDesconto) {
+            if( montanteDesconto == null ) montanteDesconto = 0x0.0p0;
             this.montanteDesconto = montanteDesconto;
             return this;
         }

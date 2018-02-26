@@ -50,6 +50,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private AnchorPane root;
 
     @FXML
+    private Label modalTitle;
+
+    @FXML
     private AnchorPane anchorHeader;
 
     @FXML
@@ -181,9 +184,15 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.textFieldVendaMontanteBruto.setText( null );
         this.textFieldVendaMontantePagar.setText( null );
         this.textFieldClienteSearch.setText( null );
+        this.newSearch("");
         this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
         this.datePickerVendaData.setValue(LocalDate.now());
         this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
+        this.textFieldClienteSearch.setEditable( true );
+        this.textFieldClienteSearch.setDisable( false );
+        this.listViewCliente.setDisable( false );
+        if( this.tipoVenda == TipoVenda.DIVIDA ) this.modalTitle.setText("Nova divida");
+        else this.modalTitle.setText( "Nova venda" );
     }
 
     private void componentStruture() {
@@ -569,10 +578,12 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             this.buttonNovaVenda.setText( "REGISTAR DIVIDA" );
             this.datePickerVendaDataFinalizar.setVisible( true );
             this.datePickerVendaDataFinalizar.setEditable( true );
+            this.modalTitle.setText( "Nova divida" );
         } else {
             this.buttonNovaVenda.setText( "REGISTAR VENDA" );
             this.datePickerVendaDataFinalizar.setVisible( false );
             this.datePickerVendaDataFinalizar.setEditable( false );
+            this.modalTitle.setText( "Nova venda" );
         }
     }
 
@@ -616,6 +627,22 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
                 return execute( venda, query );
             }
         });
+    }
+
+    @Override
+    public void openModal() {
+        super.openModal();
+    }
+
+    public void openModalForCliente(Cliente cliente ) {
+        this.openModal();
+        this.findClienteSelecter( cliente );
+        this.textFieldClienteSearch.setEditable( false );
+        this.textFieldClienteSearch.setDisable( true );
+        this.textFieldClienteSearch.setText( cliente.getClienteCompletName() );
+        this.listViewCliente.setDisable( true );
+        if( this.tipoVenda == TipoVenda.DIVIDA ) this.modalTitle.setText("Nova divida para " + cliente.getClienteCompletName());
+        else this.modalTitle.setText("Nova venda para " + cliente.getClienteCompletName());
     }
 
     private interface VendaRegister {
