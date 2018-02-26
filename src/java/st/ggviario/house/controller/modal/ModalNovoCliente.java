@@ -25,7 +25,7 @@ import java.util.*;
 public class ModalNovoCliente extends AbstractModal< Cliente > implements Initializable {
 
     public static ModalNovoCliente load(StackPane stackPane ){
-        ControllerLoader< AnchorPane, ModalNovoCliente > loader = new ControllerLoader<>( "/fxml/modal_novo_cliente.fxml" );
+        ControllerLoader< AnchorPane, ModalNovoCliente > loader = new ControllerLoader<>("/fxml/includs/modal_novo_cliente.fxml");
         ModalNovoCliente cliente = loader.getViewController().getController();
         cliente.createDialogModal( stackPane );
         return cliente;

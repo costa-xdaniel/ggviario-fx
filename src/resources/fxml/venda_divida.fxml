@@ -25,7 +25,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXDrawer fx:id="drawerVendaDetails" defaultDrawerSize="450.0" direction="RIGHT" minHeight="50.0" prefWidth="450.0" style="-fx-background-color: tansparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <JFXDrawer fx:id="drawerVendaDetails" defaultDrawerSize="450.0" direction="RIGHT" minHeight="50.0" prefWidth="450.0" style="-fx-background-color: transparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="buttonVendaDividaNew" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
    <stylesheets>

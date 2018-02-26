@@ -43,7 +43,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource("/fxml/drawer.fxml") );
+        loader.setLocation( getClass().getResource("/fxml/includs/drawer.fxml") );
         try {
             Node vBox = loader.load();
             DrawerController drawerController = loader.getController();

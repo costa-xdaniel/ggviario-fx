@@ -132,7 +132,7 @@
       </VBox>
    </children>
    <stylesheets>
-      <URL value="@../styles/styles.css" />
-      <URL value="@../styles/material-design.css" />
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/material-design.css" />
    </stylesheets>
 </AnchorPane>

@@ -33,7 +33,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
     private JFXRippler ripplerCloseModal;
 
     public static ModalAmoratizacoesDivida load(StackPane stackPane){
-        ControllerLoader<Pane, ModalAmoratizacoesDivida> loader = new ControllerLoader<>("/fxml/modal_detalhes_venda_amortizacao.fxml");
+        ControllerLoader<Pane, ModalAmoratizacoesDivida> loader = new ControllerLoader<>("/fxml/includs/modal_detalhes_venda_amortizacao.fxml");
         loader.getViewController().getController().createDialogModal( stackPane );
         return loader.getViewController().getController();
     }

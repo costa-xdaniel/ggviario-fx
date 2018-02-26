@@ -24,7 +24,7 @@ public class DrawerVendaDetalhesController implements Initializable {
 
 
     public static DrawerVendaDetalhesController load( JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
-        ControllerLoader< BorderPane, DrawerVendaDetalhesController > loader = new ControllerLoader<>( "/fxml/drawer_venda_details.fxml" );
+        ControllerLoader< BorderPane, DrawerVendaDetalhesController > loader = new ControllerLoader<>("/fxml/includs/drawer_venda_details.fxml");
         DrawerVendaDetalhesController drawer = loader.getViewController().getController();
         drawer.avalibleIcons = avalibleIcons;
         drawer.drawer = drawerView;
@@ -37,7 +37,7 @@ public class DrawerVendaDetalhesController implements Initializable {
     }
 
     @FXML
-    private BorderPane root;
+    private AnchorPane root;
 
     @FXML
     private Label labelClienteNome;
@@ -127,7 +127,7 @@ public class DrawerVendaDetalhesController implements Initializable {
         JFXRippler ripplerPayNow = new JFXRippler( panelIconPayNow );
         JFXRippler ripplerListPay = new JFXRippler( panelIconListPayment );
 
-        ripplerClose.setStyle("-jfx-rippler-fill: md-primary-color");
+        ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
         ripplerAdd.setStyle("-jfx-rippler-fill: md-primary-color");
         ripplerPayNow.setStyle("-jfx-rippler-fill: md-primary-color");
         ripplerListPay.setStyle("-jfx-rippler-fill: md-primary-color");
@@ -222,7 +222,7 @@ public class DrawerVendaDetalhesController implements Initializable {
         return this.moneyFormatter.format(vendaMontanteAmortizado)+" STN";
     }
 
-    public BorderPane getRoot() {
+    public AnchorPane getRoot() {
         return root;
     }
 

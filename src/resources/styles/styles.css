@@ -220,7 +220,7 @@
 
 .modal-title{
     -fx-text-fill: md-primary-color;
-    -fx-font-size: px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-padding: 16px;
     -fx-alignment: CENTER_LEFT;
