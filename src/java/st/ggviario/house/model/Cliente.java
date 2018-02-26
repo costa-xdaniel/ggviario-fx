@@ -263,11 +263,7 @@ public class Cliente {
         }
 
         public ClienteBuilder load(Map<String, Object> map) {
-            System.out.println("Aqui dentro");
-            System.out.println( map );
             this.id =  SQLRow.uuidOf( map.get("cliente_id" ) );
-            System.out.println("id do cliente");
-            System.out.println(this.id );
             this.nome = SQLRow.stringOf( map.get( "cliente_nome" ) );
             this.apelido = SQLRow.stringOf( map.get( "cliente_apelido" ) );
             this.telefone = SQLRow.stringOf(  map.get( "cliente_telefone" ) );

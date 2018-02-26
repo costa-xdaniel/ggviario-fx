@@ -34,7 +34,6 @@ public class PostgresSQLQueryBuilder {
         Map<Integer, Setter > setters = new LinkedHashMap<>();
 
         setters.put( Types.OTHER, (statement, index, type, value ) -> {
-            System.out.println( String.valueOf( value ) );
             statement.setObject( index,  value);
         });
 

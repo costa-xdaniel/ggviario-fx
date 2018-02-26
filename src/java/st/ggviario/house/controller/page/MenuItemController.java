@@ -44,7 +44,6 @@ public class MenuItemController implements DrawerItem, Initializable {
             this.page.onSetRootPage( this.rootController.getRootPage() );
             this.page.setRootController( this.rootController );
         } catch ( Exception ex ){
-            System.out.println( menu );
             ex.printStackTrace();
 
         }

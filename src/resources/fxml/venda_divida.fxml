@@ -2,34 +2,23 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import java.net.URL?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="localRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.VendaDividaController">
    <children>
-      <TableView fx:id="tableViewVendaDivida" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columns>
-            <TableColumn fx:id="columnVendaDividaFaturaNumero" prefWidth="75.0" text="Fatura" />
-            <TableColumn fx:id="columnVendaDividaCliente" prefWidth="75.0" text="Cliente" />
-            <TableColumn fx:id="columnVendaDividaProduto" prefWidth="75.0" text="Produto" />
-            <TableColumn fx:id="columnVendaDividaQuantidade" prefWidth="75.0" text="Qt" />
-            <TableColumn fx:id="columnVendaDividaData" prefWidth="75.0" text="Data" />
-            <TableColumn fx:id="columnVendaDividaDataFinalizar" prefWidth="75.0" text="Prazo" />
-            <TableColumn fx:id="columnVendaDividaMontantePagar" prefWidth="75.0" text="Montante" />
-            <TableColumn fx:id="columnVendaDividaMontantePago" prefWidth="75.0" text="Pago" />
-            <TableColumn fx:id="columnVendaDividaEstado" prefWidth="75.0" text="Estado" />
-        </columns>
+      <JFXTreeTableView fx:id="treeTableViewVendaDivida" layoutX="128.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy></JFXTreeTableView>
       <JFXDrawer fx:id="drawerVendaDetails" defaultDrawerSize="450.0" direction="RIGHT" minHeight="50.0" prefWidth="450.0" style="-fx-background-color: transparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="buttonVendaDividaNew" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
    <stylesheets>
       <URL value="@../styles/styles.css" />
       <URL value="@../styles/material-design.css" />
+      <URL value="@../styles/tree-table-styles.css" />
    </stylesheets>
 </AnchorPane>

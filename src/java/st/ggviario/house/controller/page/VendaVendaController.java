@@ -2,15 +2,12 @@ package st.ggviario.house.controller.page;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import st.ggviario.house.model.TipoVenda;
-import st.ggviario.house.model.Venda;
 
 import java.net.URL;
 import java.util.Date;
@@ -23,32 +20,16 @@ public class VendaVendaController extends VendaController {
     private AnchorPane getLocalRootPage;
 
     @FXML
-    private TableView< Venda > tableViewVendaVenda;
-
-    @FXML
-    private TableColumn< Venda, String> columnVendaVendaCliente;
+    private JFXTreeTableView< VendaViewModel > tableViewVendaVenda;
 
 
-    @FXML
-    private TableColumn< Venda, String> columnVendaVendaFaturaNumero;
-
-    @FXML
-    private TableColumn< Venda, String > columnVendaVendaProduto;
-
-    @FXML
-    private TableColumn< Venda, Number > columnVendaVendaQuantidade;
-
-    @FXML
-    private TableColumn< Venda, String > columnVendaVendaUnidade;
-
-    @FXML
-    private TableColumn< Venda, Number > columnVendaVendaMontanteUnitario;
-
-    @FXML
-    private TableColumn< Venda, Date> columnVendaVendaData;
-
-    @FXML
-    private TableColumn< Venda, Number > columnVendaVendaMontantePagar;
+    //Inicaliz columns manuale
+    private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaFaturaNumero = new JFXTreeTableColumn<>("FATURA" );
+    private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaCliente =  new JFXTreeTableColumn<>( "CLIENTE" );
+    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaProduto = new JFXTreeTableColumn<>( "PRODUTO" );
+    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaQuantidade =  new JFXTreeTableColumn<>( "QUANTIDADE" );
+    private JFXTreeTableColumn<VendaViewModel, Date > columnVendaDividaData =  new JFXTreeTableColumn<>( "DATA" );
+    private JFXTreeTableColumn<VendaViewModel, Number > columnVendaDividaMontantePagar = new JFXTreeTableColumn<>( "MONTANTE" );
 
     @FXML
     private JFXButton buttonVendaVendaNew;
@@ -101,60 +82,69 @@ public class VendaVendaController extends VendaController {
     }
 
     @Override
-    TableView<Venda> getTableVenda() {
+    JFXTreeTableView<VendaViewModel> getTableVenda() {
         return this.tableViewVendaVenda;
     }
 
-
-
     @Override
     void structure() {
+//
+//        this.tableViewVendaVenda.setRowFactory( clienteTableView -> new TableRow<Venda>(){
+//            @Override
+//            protected void updateItem(Venda item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if( item == null || empty ){
+//                    setItem( item );
+//                } else{
+//                    this.getStyleClass().add("row-normal");
+//                    setItem( item );
+//                }
+//            }
+//        });
 
-        this.tableViewVendaVenda.setRowFactory( clienteTableView -> new TableRow<Venda>(){
-            @Override
-            protected void updateItem(Venda item, boolean empty) {
-                super.updateItem(item, empty);
-                if( item == null || empty ){
-                    setItem( item );
-                } else{
-                    this.getStyleClass().add("row-normal");
-                    setItem( item );
-                }
-            }
-        });
+        columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
-        this.columnVendaVendaCliente.setMinWidth( 150 );
+        columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
+        columnVendaDividaCliente.setStyle("-fx-alignment: CENTER_LEFT;");
 
-        this.columnVendaVendaFaturaNumero.setMinWidth( 72 );
-        this.columnVendaVendaFaturaNumero.setMaxWidth( 72 );
+        columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
+        columnVendaDividaProduto.setStyle("-fx-alignment: CENTER_LEFT;");
 
-        this.columnVendaVendaFaturaNumero.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getVendaFaturaNumero() ) );
-        this.columnVendaVendaFaturaNumero.setCellFactory( cell -> this.getSimpleTextCell());
+        columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
+        columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
 
-        this.columnVendaVendaCliente.setCellValueFactory( data -> {
-            String nome = data.getValue().getCliente().getClienteCompletName();
-            return  new SimpleStringProperty( nome );
-        } );
+        columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
 
-        this.columnVendaVendaCliente.setCellFactory( cell -> this.getSimpleTextCell() );
+        columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
+        columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
 
-        this.columnVendaVendaProduto.setCellValueFactory( data -> new SimpleStringProperty( data.getValue().getProducto().getProdutoNome()) );
-        this.columnVendaVendaProduto.setCellFactory( cell -> this.getSimpleTextCell());
+        this.tableViewVendaVenda.getColumns().setAll(
+                columnVendaDividaFaturaNumero,
+                columnVendaDividaCliente,
+                columnVendaDividaProduto,
+                columnVendaDividaQuantidade,
+                columnVendaDividaData,
+                columnVendaDividaMontantePagar
+        );
 
-        this.columnVendaVendaQuantidade.setCellValueFactory( data-> new SimpleDoubleProperty( data.getValue().getVandaQuantidade() ) );
-        this.columnVendaVendaQuantidade.setCellFactory( cell -> this.getNumberCell() );
+        this.columnVendaDividaFaturaNumero.setMinWidth( 110 );
+        this.columnVendaDividaFaturaNumero.setMaxWidth( 110 );
+        this.columnVendaDividaCliente.setMinWidth( 180 );
 
-        this.columnVendaVendaUnidade.setCellValueFactory(data -> new SimpleStringProperty( data.getValue().getUnidade().getUnidadeCodigo() ) );
-        this.columnVendaVendaUnidade.setCellFactory(cell -> getSimpleTextCell() );
 
-        this.columnVendaVendaMontanteUnitario.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
-        this.columnVendaVendaMontanteUnitario.setCellFactory(cell -> this.getMoneyCell("STN") );
+        this.columnVendaDividaData.setMaxWidth( 110 );
+        this.columnVendaDividaData.setMinWidth( 110 );
 
-        this.columnVendaVendaData.setCellValueFactory( data -> new SimpleObjectProperty<>( data.getValue().getVendaData() ));
-        this.columnVendaVendaData.setCellFactory( cell -> this.getDateCell() );
 
-        this.columnVendaVendaMontantePagar.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getVendaMontantePagar() ) );
-        this.columnVendaVendaMontantePagar.setCellFactory(cell -> this.getMoneyCell("STN") );
+
+        this.columnVendaDividaProduto.setMinWidth( 80 );
+
+
+        this.columnVendaDividaQuantidade.setMaxWidth( 110 );
+        this.columnVendaDividaQuantidade.setMinWidth( 110 );
+
+        this.columnVendaDividaMontantePagar.setMinWidth( 130 );
+        this.columnVendaDividaMontantePagar.setMaxWidth( 130 );
     }
 
 

@@ -1,9 +1,10 @@
 package st.ggviario.house.controller.page;
 
 
-import java.text.ParseException;
 import javafx.scene.control.TextField;
+
 import javax.swing.text.MaskFormatter;
+import java.text.ParseException;
 
 /**
  *
@@ -24,7 +25,6 @@ public class TextFieldFormatter {
         try {
             mf.setMask(mask);
         } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
         }
 
         mf.setValidCharacters(CaracteresValidos);

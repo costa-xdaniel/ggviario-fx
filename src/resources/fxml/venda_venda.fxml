@@ -2,33 +2,23 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import java.net.URL?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="getLocalRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.VendaVendaController">
    <children>
-      <TableView fx:id="tableViewVendaVenda" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columns>
-            <TableColumn fx:id="columnVendaVendaFaturaNumero" prefWidth="75.0" text="Fatura" />
-            <TableColumn fx:id="columnVendaVendaCliente" prefWidth="75.0" text="Cliente" />
-            <TableColumn fx:id="columnVendaVendaProduto" prefWidth="75.0" text="Produto" />
-            <TableColumn fx:id="columnVendaVendaQuantidade" prefWidth="75.0" text="Qt" />
-            <TableColumn fx:id="columnVendaVendaUnidade" prefWidth="75.0" text="Unit" />
-            <TableColumn fx:id="columnVendaVendaMontanteUnitario" prefWidth="75.0" text="Custo unitario" />
-            <TableColumn fx:id="columnVendaVendaMontantePagar" prefWidth="75.0" text="Pagar" />
-            <TableColumn fx:id="columnVendaVendaData" prefWidth="75.0" text="Data" />
-        </columns>
+      <JFXTreeTableView fx:id="tableViewVendaVenda" layoutX="49.0" layoutY="-10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy></JFXTreeTableView>
       <JFXDrawer fx:id="drawerVenda" defaultDrawerSize="450.0" direction="RIGHT" overLayVisible="false" style="-fx-background-color: transparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="buttonVendaVendaNew" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
    <stylesheets>
       <URL value="@../styles/styles.css" />
       <URL value="@../styles/material-design.css" />
+      <URL value="@../styles/tree-table-styles.css" />
    </stylesheets>
 </AnchorPane>

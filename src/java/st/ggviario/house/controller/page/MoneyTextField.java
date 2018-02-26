@@ -79,28 +79,21 @@ public class MoneyTextField {
         this.textFieldObservable.setOnKeyReleased(keyEvent -> {
             int newPositionCaret = this.textFieldObservable.getCaretPosition();
             String text = this.textFieldObservable.getText( );
-            System.out.println("point 1");
             if( text.length() == lastResult.moneyTextRepresentation.length() && newPositionCaret != lastResult.caretPosition ){
-                System.out.println("point 2");
                 this.textFieldObservable.setText( text );
             } else if( keyEvent.getCode().isDigitKey() || SQLResource.existIn( keyEvent.getCode(), KeyCode.COMMA, KeyCode.PERIOD, KeyCode.BACK_SPACE, KeyCode.DELETE ) ) {
-                System.out.println("point 5");
                 ResultTransformation res = this.moneyTransformation( text );
                 applyResultInView( res );
                 if( res.sucess ){
-                    System.out.println("point 6");
                     if( this.onValidNumberInput != null ) onValidNumberInput.onValidNumberInput( keyEvent, lastResult.moneyNumberRepresentation, res.moneyNumberRepresentation, res.moneyTextRepresentation);
                     this.lastResult = res;
                 } else {
-                    System.out.println("point 7");
                     if( this.onInvalidNumberInput != null ) this.onInvalidNumberInput.onInvalidNumberInout( keyEvent, lastResult.moneyNumberRepresentation, text );
                 }
             } else if( text.length() != this.lastResult.moneyTextRepresentation.length() ){
-                System.out.println("point 8");
                 this.textFieldObservable.setText( this.lastResult.moneyTextRepresentation );
                 this.lastResult.caretPosition = caretPointFor( this.lastResult.moneyTextRepresentation );
             }
-            System.out.println("point 9");
             if( this.keyRelesed != null )
                 this.keyRelesed.handle( keyEvent );
         });
@@ -119,21 +112,17 @@ public class MoneyTextField {
     }
 
     private void applyResultInView( ResultTransformation res ) {
-        System.out.println("point 10");
         if( res.sucess ){
-            System.out.println("point 11");
 
             this.textFieldObservable.setText( res.moneyTextRepresentation);
             res.caretPosition = this.caretPointFor( res.moneyTextRepresentation );
         } else {
-            System.out.println("point 12");
             this.textFieldObservable.setText( this.lastResult.moneyTextRepresentation );
             this.lastResult.caretPosition = this.caretPointFor( this.lastResult.moneyTextRepresentation );
         }
     }
 
     private ResultTransformation moneyTransformation( String text ){
-        System.out.println("point 13");
         ResultTransformation res = new ResultTransformation();
         res.sucess = false;
 
@@ -144,30 +133,24 @@ public class MoneyTextField {
 
         String campos[ ] = res.moneyTextRepresentation.split( "["+ maskSeparatorScale +"]" );
         if( campos.length>2 ) {
-            System.out.println("point 14");
             return res;
         }
 
         if( campos[0].length() > this.numberFormat.getMaximumIntegerDigits() ) {
-            System.out.println("point 15");
             return res;
         }
 
         if( campos.length> 1 && campos[ 1 ].length()> numberFormat.getMaximumFractionDigits() ){
-            System.out.println("point 16");
             return res;
         }
 
         res.moneyTextRepresentation = res.moneyTextRepresentation.replace( ",", "." );
         if( res.moneyTextRepresentation.length() > 0 ){
-            System.out.println("point 17");
             res.moneyNumberRepresentation = Double.valueOf( res.moneyTextRepresentation );
         } else {
-            System.out.println("point 18");
             res.moneyNumberRepresentation = 0.0;
         }
-        
-        System.out.println("point 19");
+
         res.moneyTextRepresentation = format( res.moneyNumberRepresentation );
         res.sucess = true;
         return res;
@@ -175,13 +158,11 @@ public class MoneyTextField {
 
 
     public String format(Double value) {
-        System.out.println("point 20");
         String newTextMoney = this.numberFormat.format( value );
         if( this.positionMoneyCurrency == CurrencyPosition.LEFT ){
-            System.out.println("point 21");
+
             newTextMoney = this.maskCurrencyName + newTextMoney;
         } else{
-            System.out.println("point 22");
             newTextMoney = newTextMoney + maskCurrencyName;
         }
         return newTextMoney;

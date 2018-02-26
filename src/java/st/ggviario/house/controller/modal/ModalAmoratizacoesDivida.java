@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -103,11 +104,24 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
         JFXTreeTableColumn< VendaMovimento, Date > movimentoDataRegisto = new JFXTreeTableColumn<>( "Registo" );
         movimentoDataRegisto.setCellValueFactory( param -> param.getValue().getValue().movimentoDatargisto );
+        movimentoDataRegisto.setCellFactory(param -> new TreeTableCell< VendaMovimento, Date> (){
+
+            @Override
+            protected void updateItem(Date item, boolean empty) {
+                super.updateItem(item, empty);
+                if( item != null && !empty) {
+                    setText( dateFormat.format( item ) );
+                }
+                this.setItem( item );
+            }
+        });
 
         this.treeTableView.getColumns().setAll( movimentoCodigo, movimentoDocumento, movimentoMontante, movimentoData, movimentoDataRegisto );
+
         this.ripplerCloseModal = new JFXRippler( this.anchorClose );
         this.ripplerCloseModal.setStyle("-jfx-rippler-fill: md-red-500");
         this.anchorHeader.getChildren().add( this.ripplerCloseModal );
+
         AnchorPane.setTopAnchor( this.ripplerCloseModal, 0x0.0p0 );
         AnchorPane.setRightAnchor( this.ripplerCloseModal, 0x0.0p0 );
 
@@ -135,11 +149,10 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
     public void setVenda(Venda venda ){
         ObservableList<VendaMovimento> movimentoVenda = this.loadMovimentoData(venda);
-        final TreeItem< VendaMovimento > root = new RecursiveTreeItem< VendaMovimento >( movimentoVenda, RecursiveTreeObject::getChildren );
+        final TreeItem< VendaMovimento > root = new RecursiveTreeItem<>(movimentoVenda, RecursiveTreeObject::getChildren );
         this.treeTableView.setRoot(root);
         this.treeTableView.setShowRoot(false);
         this.venda = venda;
-        System.out.println(   );
         this.labelMovimentoLibele.setText("");
         this.labelVendaDatafim.setText( this.venda.getVendaDataFim() == null? "" : this.dateFormat.format( this.venda.getVendaDataFim() ) );
         this.labelVendaUltimoPagamento.setText(  this.venda.getVendaDataUltimaMovimentacao() == null? "" : this.dateFormat.format( this.venda.getVendaDataUltimaMovimentacao() ) );

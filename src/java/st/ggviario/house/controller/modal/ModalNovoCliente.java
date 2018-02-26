@@ -142,7 +142,6 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                     .onResultQuery( row -> {
                         boolean result  = row.asBoolean("result" );
                         String doc = row.asString("message" );
-                        System.out.println( doc );
                         res.map  = new Gson().fromJson( doc, Map.class );
                         if( result ){
                             Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
