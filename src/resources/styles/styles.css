@@ -176,8 +176,8 @@
     -jfx-focus-color: md-accent-color;
     -jfx-unfocus-color: md-primary-color;
     -jfx-label-float: true;
-    -fx-text-fill: md-primary-text-color;
-    -fx-prompt-text-fill: md-primary-text-color;
+    -fx-text-fill: md-text-color;
+    -fx-prompt-text-fill: md-text-color;
     -fx-pref-width: 250px;
     -fx-max-width:  250px;
     -fx-min-width:  250px;
