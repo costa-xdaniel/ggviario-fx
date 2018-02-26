@@ -183,7 +183,7 @@
                   <children>
                      <AnchorPane fx:id="panelIconClose" styleClass="details-header-icon-area">
                         <children>
-                           <MaterialDesignIconView glyphName="CLOSE" size="24" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           <MaterialDesignIconView glyphName="CLOSE" size="24" styleClass="icon-close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                         <padding>
                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
