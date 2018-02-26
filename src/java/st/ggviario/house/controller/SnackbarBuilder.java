@@ -34,10 +34,10 @@ public class SnackbarBuilder {
         addStylesheet( "/styles/material-design.css");
         addStylesheet( "/styles/styles.css");
         addStylesheet( "/styles/snackbar.css");
-        this.successTimeOut = 5000;
-        this.informationTimeOut = 7000;
-        this.warningTimeOut = 10000;
-        this.errorTimeOut = 15000;
+        this.successTimeOut = 10000;
+        this.informationTimeOut = 12000;
+        this.warningTimeOut = 15000;
+        this.errorTimeOut = 20000;
     }
 
     private void addStylesheet(String location ) {
