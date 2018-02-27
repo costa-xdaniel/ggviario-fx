@@ -206,7 +206,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         this.labelVendaDividaMontantePendente.setText( this.moneyFormatter.format( this.lastVendaDividaMontentePendente) );
         this.labelVendaDividaMontanteTotalPagar.setText( this.moneyFormatter.format( this.venda.getVendaMontantePagar() ) );
         this.vendaFaturaNumero.setText( this.venda.getVendaFaturaNumero() );
-        this.modalTitle.setText( "Novo pagamento" );
+        this.setTitle( "FATURA "+this.venda.getVendaFaturaNumero() );
     }
 
     private void payNow( ){
@@ -230,7 +230,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
                 .withVarchar( movimento.getMovimentoDocumento() )
                 .callFunctionTable()
                     .onResultQuery( row -> { if( row.asBoolean("result" ) ){
-                            String documentRegister = String.valueOf( row.valueOf("message") );
+                            String documentRegister = String.valueOf( row.get("message") );
 
                             movimentoResult.resultData = gson.fromJson( documentRegister, Map.class );
                             //movimento

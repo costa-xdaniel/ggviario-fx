@@ -542,7 +542,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             productoList.add( produto = produtoBuilder.build() );
             List<Preco> equivalenciaList = new LinkedList<>();
             equivalenciaList.add( this.precoVasio );
-            String documentEquivalencia = String.valueOf( row.valueOf("produto_precos"));
+            String documentEquivalencia = String.valueOf( row.get("produto_precos"));
 
             List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
             for( Map<String, Object > map : aux ){

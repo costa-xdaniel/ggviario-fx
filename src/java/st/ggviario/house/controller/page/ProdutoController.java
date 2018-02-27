@@ -145,16 +145,6 @@ public class ProdutoController extends TableController<Producto> implements Page
         this.columnProdutoStock.setCellValueFactory( data ->  new SimpleDoubleProperty( data.getValue().getProdutoStock() ));
         this.columnProdutoVenda.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getProdutoVenda()));
         this.columnProdutoCompra.setCellValueFactory(data -> new SimpleDoubleProperty( data.getValue().getProdutoCompra()));
-
-        this.columnProdutoCodigo.setCellFactory( cell -> getSimpleTextCell() );
-        this.columnProdutoNome.setCellFactory( cell -> getSimpleTextCell());
-        this.columnProdutoCategoria.setCellFactory( cell -> getSimpleTextCell());
-        this.columnProdutoCusto.setCellFactory( cell -> getNumberCell() );
-        this.columnProdutoProducao.setCellFactory( cell -> getNumberCell() );
-        this.columnProdutoStock.setCellFactory( cell -> getNumberCell() );
-        this.columnProdutoVenda.setCellFactory( cell -> getNumberCell() );
-        this.columnProdutoCompra.setCellFactory( cell -> this.getNumberCell() );
-
     }
 
 

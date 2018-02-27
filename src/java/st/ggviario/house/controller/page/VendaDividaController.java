@@ -1,9 +1,6 @@
 package st.ggviario.house.controller.page;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -30,7 +27,7 @@ public class VendaDividaController extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaFaturaNumero = new JFXTreeTableColumn<>("FATURA" );
     private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaCliente =  new JFXTreeTableColumn<>( "CLIENTE" );
     private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaProduto = new JFXTreeTableColumn<>( "PRODUTO" );
-    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaQuantidade =  new JFXTreeTableColumn<>( "QUANTIDADE" );
+    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaQuantidade =  new JFXTreeTableColumn<>( "Qt." );
     private JFXTreeTableColumn<VendaViewModel, Date > columnVendaDividaData =  new JFXTreeTableColumn<>( "DATA" );
     private JFXTreeTableColumn<VendaViewModel, Date> columnVendaDividaDataFinalizar =  new JFXTreeTableColumn<>( "PRAZO" );
     private JFXTreeTableColumn<VendaViewModel, Number > columnVendaDividaMontantePagar = new JFXTreeTableColumn<>( "MONTANTE" );
@@ -62,6 +59,7 @@ public class VendaDividaController extends VendaController {
     }
 
     void structure() {
+        super.structure();
 //        this.treeTableViewVendaDivida.setRowFactory( clienteTableView -> new TableRow<Venda>(){
 //            @Override
 //            protected void updateItem(Venda item, boolean empty) {
@@ -79,26 +77,26 @@ public class VendaDividaController extends VendaController {
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
-        columnVendaDividaCliente.setStyle("-fx-alignment: CENTER_LEFT;");
+        columnVendaDividaCliente.getStyleClass().add( "table-cell-left" );
 
         columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
-        columnVendaDividaProduto.setStyle("-fx-alignment: CENTER_LEFT;");
+        columnVendaDividaProduto.getStyleClass().add( "table-cell-left" );
 
         columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
-        columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
+        columnVendaDividaQuantidade.getStyleClass().add( "table-cell-number" );
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
 
         columnVendaDividaDataFinalizar.setCellValueFactory( param -> param.getValue().getValue().vendaDataFinalizar );
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
-        columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
+        columnVendaDividaMontantePagar.getStyleClass().add( "table-cell-money" );
 
         columnVendaDividaMontanteAmortizado.setCellValueFactory(param -> param.getValue().getValue().vendaMontanteAmortizado );
-        columnVendaDividaMontanteAmortizado.setStyle("-fx-alignment: CENTER_RIGHT;");
+        columnVendaDividaMontanteAmortizado.getStyleClass().add( "table-cell-money" );
 
         columnVendaDividaEstado.setCellValueFactory( param -> param.getValue().getValue().vendaEstado );
-        columnVendaDividaEstado.setStyle("-fx-alignment: CENTER_LEFT;");
+        columnVendaDividaEstado.getStyleClass().add( "table-cell-money" );
 
         this.treeTableViewVendaDivida.getColumns().setAll(
                 columnVendaDividaFaturaNumero,
@@ -122,9 +120,11 @@ public class VendaDividaController extends VendaController {
 
         this.columnVendaDividaData.setMaxWidth( 110 );
         this.columnVendaDividaData.setMinWidth( 110 );
+        this.columnVendaDividaData.setCellFactory( this.createDateFromatFactory() );
 
         this.columnVendaDividaDataFinalizar.setMaxWidth( 110 );
         this.columnVendaDividaDataFinalizar.setMinWidth( 110 );
+        this.columnVendaDividaDataFinalizar.setCellFactory( this.createDateFromatFactory() );
 
 
         this.columnVendaDividaProduto.setMinWidth( 80 );
@@ -162,7 +162,7 @@ public class VendaDividaController extends VendaController {
             return;
         }
         this.modalAmoratizacoesDivida.setVenda( venda );
-        this.modalAmoratizacoesDivida.setTitle(  "Pagamento de fatura " + venda.getVendaFaturaNumero() );
+        this.modalAmoratizacoesDivida.setTitle(  "FATURA " + venda.getVendaFaturaNumero() );
         this.modalAmoratizacoesDivida.openModal();
     }
 
@@ -172,7 +172,7 @@ public class VendaDividaController extends VendaController {
         if( !canOpenModalOfVenda( venda ) ) return;
         this.loadModalNovoPagemnto();
         this.modalNovoPagamento.setVenda( venda );
-        this.modalNovoPagamento.setTitle(  "Pagamento de fatura " + venda.getVendaFaturaNumero() );
+        this.modalNovoPagamento.setTitle(  "FATURA " + venda.getVendaFaturaNumero() );
         this.modalNovoPagamento.openModal();
     }
 

@@ -26,10 +26,10 @@ public class Venda {
     private Date vendaDataFinalizar;
     private Date vendaDataFim;
     private Date vendaDataUltimaMovimentacao;
-    private String vendaEstadoDesc;
-    private Short vendaEstado;
     private Date vendaDataRegisto;
     private Date vaendaDataUltimaAtualizacao;
+    private VendaEstado vendaEstado;
+
 
     public UUID getVendaId() {
         return vendaId;
@@ -63,7 +63,7 @@ public class Venda {
         return vendaQuantidadeProduto;
     }
 
-    public Double getVendaMontanteUnidario() {
+    public Double getVandaMontanteUnitario() {
         return vandaMontanteUnitario;
     }
 
@@ -99,18 +99,6 @@ public class Venda {
         return vendaDataUltimaMovimentacao;
     }
 
-    public String getVendaEstadoDesc() {
-        return vendaEstadoDesc;
-    }
-
-    public Double getVandaMontanteUnitario() {
-        return vandaMontanteUnitario;
-    }
-
-    public Short getVendaEstado() {
-        return vendaEstado;
-    }
-
     public Date getVendaDataRegisto() {
         return vendaDataRegisto;
     }
@@ -119,8 +107,43 @@ public class Venda {
         return vaendaDataUltimaAtualizacao;
     }
 
-    public Double getVendaMontantePendente() {
-        return this.vendaMontantePagar - this.vendaMontanteAmortizado;
+    public VendaEstado getVendaEstado() {
+        return vendaEstado;
+    }
+
+    public enum VendaEstado {
+
+        PENDENTE( 2, "Pendente" ),
+        PAGAMENTO(1, "Pagamento" ),
+        PAGO(0, "Pago" ),
+        ANULADO(-1, "Anulado" );
+
+        private final int estado;
+        private final String showName;
+
+        VendaEstado(int estado, String showName ) {
+            this.estado = estado;
+            this.showName = showName;
+        }
+
+        public static VendaEstado find( int estado ) {
+            for( VendaEstado ve: values() ){
+                if( ve.estado == estado ) return ve;
+            }
+            return null;
+        }
+
+        public int getEstado() {
+            return estado;
+        }
+
+        public String getShowName() {
+            return showName;
+        }
+    }
+
+    public String getTipoVendaCod() {
+        return this.tipoVenda.name().toLowerCase();
     }
 
     public static  class VendaBuilder {
@@ -143,7 +166,6 @@ public class Venda {
         private Date dataFim;
         private Date dataUltimaMovimentacao;
         private Short estado;
-        private String estadoDesc;
         private Date dataRegisto;
         private Date dataUltimaAtualizacao;
 
@@ -168,8 +190,7 @@ public class Venda {
             venda.vendaDataFinalizar = this.dataFinalizar;
             venda.vendaDataFim = this.dataFim;
             venda.vendaDataUltimaMovimentacao = this.dataUltimaMovimentacao;
-            venda.vendaEstado = this.estado;
-            venda.vendaEstadoDesc = this.estadoDesc;
+            venda.vendaEstado = VendaEstado.find( this.estado );
             venda.vendaDataRegisto = this.dataRegisto;
             venda.vaendaDataUltimaAtualizacao = this.dataRegisto;
             return venda;
@@ -279,7 +300,6 @@ public class Venda {
             this.dataFim = row.asDate( "venda_datafim" );
             this.dataUltimaMovimentacao = row.asDate( "venda_dataultimamovimentacao" );
             this.estado = row.asShort( "venda_estado" );
-            this.estadoDesc = row.asString( "venda_estadodesc" );
             this.dataRegisto = row.asDate( "venda_dataregisto" );
             this.dataUltimaAtualizacao = row.asDate( "venda_dataatualizacao" );
             return this;
@@ -301,7 +321,6 @@ public class Venda {
             this.dataFim = SQLRow.dateOf( map.get( "venda_datafim" ) );
             this.dataUltimaMovimentacao = SQLRow.dateOf( map.get("venda_dataultimamovimentacao" ) );
             this.estado = SQLRow.shortOf( map.get( "venda_estado" ) );
-            this.estadoDesc = SQLRow.stringOf( map.get( "venda_estadodesc" ) );
             this.dataRegisto = SQLRow.dateOf( map.get( "venda_estadodesc" ) );
             this.dataUltimaAtualizacao = SQLRow.dateOf( map.get("venda_estadodesc" ) );
             return this;

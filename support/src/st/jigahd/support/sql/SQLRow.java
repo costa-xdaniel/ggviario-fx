@@ -10,8 +10,11 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-public class SQLRow implements Serializable {
+public class SQLRow implements Serializable, Map< String, Object >{
 
     Map<String, Integer> headerMap;
     Map< String, Object > map;
@@ -58,65 +61,73 @@ public class SQLRow implements Serializable {
         return this.toJson();
     }
 
-    public Object valueOf(String columnName ) {
+
+    @Override
+    public Object get(Object o) {
+        if( o == null ) return null;
+        return  this.get( String.valueOf( o ) );
+    }
+
+
+    public Object get(String columnName ) {
         int index = this.indexOf( columnName );
         return index < 0 || index > values.length? null : values[ index ];
     }
 
     public Boolean asBoolean( String columnName ){
-        return (Boolean) valueOf( columnName );
+        return (Boolean) get( columnName );
     }
 
     public Byte asByte(String columnName){
-        return (Byte) valueOf( columnName );
+        return (Byte) get( columnName );
     }
 
     public Short asShort( String columnName ){
-        return (Short) valueOf( columnName );
+        return (Short) get( columnName );
     }
 
     public Integer asInteger( String columnName ){
-        return (Integer) valueOf( columnName );
+        return (Integer) get( columnName );
     }
 
     public Long asLong(String columnName ){
-        return (Long) valueOf( columnName );
+        return (Long) get( columnName );
     }
 
     public Float asFloat( String columnName ){
-        return (Float) valueOf( columnName );
+        return (Float) get( columnName );
     }
 
     public Double asDouble( String columnName ){
-        return SQLRow.doubleOf( valueOf( columnName ) );
+        return SQLRow.doubleOf( get( columnName ) );
     }
 
     public BigDecimal asNumber( String columnName ){
-        return (BigDecimal) valueOf( columnName );
+        return (BigDecimal) get( columnName );
     }
 
     public Character asCharater( String columnName ){
-        return (Character) valueOf( columnName );
+        return (Character) get( columnName );
     }
 
     public String asString( String columnName ){
-        return SQLRow.stringOf( this.valueOf( columnName ) );
+        return SQLRow.stringOf( this.get( columnName ) );
     }
 
     public UUID asUUID(String columnName ){
-        return (UUID) valueOf( columnName );
+        return (UUID) get( columnName );
     }
 
     public InputStream asInputSteran( String columnName ){
-        return (InputStream) valueOf( columnName );
+        return (InputStream) get( columnName );
     }
 
     public Reader asReader( String columnName ){
-        return (Reader) valueOf( columnName );
+        return (Reader) get( columnName );
     }
 
     public Date asDate( String columnName ){
-        return SQLRow.dateOf( valueOf( columnName ) );
+        return SQLRow.dateOf( get( columnName ) );
     }
 
     public Calendar asCalendar( String columnName ){
@@ -190,4 +201,131 @@ public class SQLRow implements Serializable {
     public static Boolean booleanOf(Object o) {
         return (Boolean) o;
     }
+
+
+    @Override
+    public int size() {
+        return this.values.length;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.values.length == 0;
+    }
+
+    @Override
+    public boolean containsKey(Object o) {
+        return this.headerMap.containsKey( o );
+    }
+
+    @Override
+    public boolean containsValue(Object o) {
+        for( Object o1: this.values ) if (o1 != null && o != null && o1.equals(o)) return true;
+        return false;
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return this.headerMap.keySet();
+    }
+
+    @Override
+    public Collection<Object> values() {
+        return Arrays.asList( this.values );
+    }
+
+    @Override
+    public Set<Entry<String, Object>> entrySet(){
+        Set< Entry< String, Object > > entries = new LinkedHashSet<>();
+        for( Entry< String, Integer > item : this.headerMap.entrySet() ){
+            entries.add(new Entry<String, Object>() {
+                @Override
+                public String getKey() {
+                    return item.getKey();
+                }
+
+                @Override
+                public Object getValue() {
+                    return values[ item.getValue() ];
+                }
+
+                @Override
+                public Object setValue(Object o) {
+                    throw new UnsupportedOperationException( "this operation is not supported yet" );
+                }
+            });
+        }
+        return entries;
+    }
+
+    @Override
+    public Object put(String s, Object o) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object remove(Object o) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ?> map) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public void forEach(BiConsumer<? super String, ? super Object> biConsumer) {
+        this.headerMap.forEach((s, integer) -> biConsumer.accept( s, this.values [ integer ]));
+    }
+
+    @Override
+    public void replaceAll(BiFunction<? super String, ? super Object, ?> biFunction) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object putIfAbsent(String s, Object o) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public boolean remove(Object o, Object o1) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public boolean replace(String s, Object o, Object v1) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object replace(String s, Object o) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object computeIfAbsent(String s, Function<? super String, ?> function) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object computeIfPresent(String s, BiFunction<? super String, ? super Object, ?> biFunction) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object compute(String s, BiFunction<? super String, ? super Object, ?> biFunction) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
+    @Override
+    public Object merge(String s, Object o, BiFunction<? super Object, ? super Object, ?> biFunction) {
+        throw new UnsupportedOperationException( "this operation is not supported yet" );
+    }
+
 }

@@ -245,20 +245,20 @@ public class Cliente {
         }
 
         public ClienteBuilder load(SQLRow row) {
-            this.id =  SQLRow.uuidOf( row.valueOf("cliente_id" ) );
-            this.nome = SQLRow.stringOf( row.valueOf( "cliente_nome" ) );
-            this.apelido = SQLRow.stringOf( row.valueOf( "cliente_apelido" ) );
-            this.telefone = SQLRow.stringOf(  row.valueOf( "cliente_telefone" ) );
-            this.telemovel = SQLRow.stringOf( row.valueOf( "cliente_telemovel" ) );
-            this.morada = SQLRow.stringOf( row.valueOf( "cliente_morada" ) );
-            this.sexo = Sexo.from( SQLRow.shortOf(  row.valueOf( "cliente_sexo" ) ) );
-            this.mail =  SQLRow.stringOf( row.valueOf( "cliente_mail" ) );
-            this.localTrabalho = SQLRow.stringOf( row.valueOf( "cliente_localtrabalho" ) );
-            this.montanteCompra = SQLRow.doubleOf( row.valueOf( "cliente_monatntecompra" ) );
-            this.montanteDivida = SQLRow.doubleOf( row.valueOf( "cliente_montantedivida" ) );
-            this.montanteTotal = SQLRow.doubleOf( row.valueOf( "cliente_montantetotal" ) );
-            this.montantePago = SQLRow.doubleOf( row.valueOf( "cliente_montantepago" ) );
-            this.montantePendente = SQLRow.doubleOf( row.valueOf( "cliente_montantependente" ) );
+            this.id =  SQLRow.uuidOf( row.get("cliente_id" ) );
+            this.nome = SQLRow.stringOf( row.get( "cliente_nome" ) );
+            this.apelido = SQLRow.stringOf( row.get( "cliente_apelido" ) );
+            this.telefone = SQLRow.stringOf(  row.get( "cliente_telefone" ) );
+            this.telemovel = SQLRow.stringOf( row.get( "cliente_telemovel" ) );
+            this.morada = SQLRow.stringOf( row.get( "cliente_morada" ) );
+            this.sexo = Sexo.from( SQLRow.shortOf(  row.get( "cliente_sexo" ) ) );
+            this.mail =  SQLRow.stringOf( row.get( "cliente_mail" ) );
+            this.localTrabalho = SQLRow.stringOf( row.get( "cliente_localtrabalho" ) );
+            this.montanteCompra = SQLRow.doubleOf( row.get( "cliente_monatntecompra" ) );
+            this.montanteDivida = SQLRow.doubleOf( row.get( "cliente_montantedivida" ) );
+            this.montanteTotal = SQLRow.doubleOf( row.get( "cliente_montantetotal" ) );
+            this.montantePago = SQLRow.doubleOf( row.get( "cliente_montantepago" ) );
+            this.montantePendente = SQLRow.doubleOf( row.get( "cliente_montantependente" ) );
             return this;
         }
 

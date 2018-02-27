@@ -289,21 +289,21 @@ public class Movimento {
         }
 
         public MovimentoBuilder load( SQLRow row ){
-            this.id = SQLRow.uuidOf( row.valueOf( "movimento_id" ) );
-            this.codigo = SQLRow.stringOf( row.valueOf( "movimento_codigo" ) );
-            this.tipoMovimento = TipoMovimento.valueOf( SQLRow.shortOf( row.valueOf( "tmovimento_id" ) ) );
-            this.data = SQLRow.dateOf( row.valueOf("movimento_data") );
-            this.documento = SQLRow.stringOf( row.valueOf( "movimento_documento" ) );
-            this.montante =SQLRow.doubleOf( row.valueOf( "movimento_montante" ) );
-            this.libele = SQLRow.stringOf( row.valueOf( "movimento_libele" ) );
-            this.transfernciaNumero = SQLRow.integerOf( row.valueOf( "movimento_transferencianumero" ) );
-            this.devolucao = SQLRow.booleanOf( row.valueOf( "movimento_devolucao" ) );
-            this.devolucaoUltimaData  = SQLRow.dateOf( row.valueOf( "movimento_devolucaoultimadada" ) );
-            this.devolucaoMontanteDevolvido = SQLRow.doubleOf( row.valueOf( "movimento_devolucamontantedevolvido" ) );
-            this.estado = SQLRow.shortOf( row.valueOf("movimento_estado") );
-            this.estadoDesc = SQLRow.stringOf( row.valueOf( "movimento_estadodesc" ) );
-            this.dataRegisto = SQLRow.dateOf( row.valueOf( "movimento_dataregisto" ) );
-            this.dataUltimaAtualizacao = SQLRow.dateOf( row.valueOf( "movimento_dataatualizacao" ) );
+            this.id = SQLRow.uuidOf( row.get( "movimento_id" ) );
+            this.codigo = SQLRow.stringOf( row.get( "movimento_codigo" ) );
+            this.tipoMovimento = TipoMovimento.valueOf( SQLRow.shortOf( row.get( "tmovimento_id" ) ) );
+            this.data = SQLRow.dateOf( row.get("movimento_data") );
+            this.documento = SQLRow.stringOf( row.get( "movimento_documento" ) );
+            this.montante =SQLRow.doubleOf( row.get( "movimento_montante" ) );
+            this.libele = SQLRow.stringOf( row.get( "movimento_libele" ) );
+            this.transfernciaNumero = SQLRow.integerOf( row.get( "movimento_transferencianumero" ) );
+            this.devolucao = SQLRow.booleanOf( row.get( "movimento_devolucao" ) );
+            this.devolucaoUltimaData  = SQLRow.dateOf( row.get( "movimento_devolucaoultimadada" ) );
+            this.devolucaoMontanteDevolvido = SQLRow.doubleOf( row.get( "movimento_devolucamontantedevolvido" ) );
+            this.estado = SQLRow.shortOf( row.get("movimento_estado") );
+            this.estadoDesc = SQLRow.stringOf( row.get( "movimento_estadodesc" ) );
+            this.dataRegisto = SQLRow.dateOf( row.get( "movimento_dataregisto" ) );
+            this.dataUltimaAtualizacao = SQLRow.dateOf( row.get( "movimento_dataatualizacao" ) );
             return this;
         }
     }

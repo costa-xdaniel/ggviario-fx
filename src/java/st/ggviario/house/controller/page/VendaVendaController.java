@@ -27,9 +27,10 @@ public class VendaVendaController extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaFaturaNumero = new JFXTreeTableColumn<>("FATURA" );
     private JFXTreeTableColumn<VendaViewModel, String> columnVendaDividaCliente =  new JFXTreeTableColumn<>( "CLIENTE" );
     private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaProduto = new JFXTreeTableColumn<>( "PRODUTO" );
-    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaQuantidade =  new JFXTreeTableColumn<>( "QUANTIDADE" );
+    private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaQuantidade =  new JFXTreeTableColumn<>( "Qt." );
     private JFXTreeTableColumn<VendaViewModel, Date > columnVendaDividaData =  new JFXTreeTableColumn<>( "DATA" );
     private JFXTreeTableColumn<VendaViewModel, Number > columnVendaDividaMontantePagar = new JFXTreeTableColumn<>( "MONTANTE" );
+    private JFXTreeTableColumn<VendaViewModel, Date > columnVendaVendaRegisto = new JFXTreeTableColumn<>( "REGISTO" );
 
     @FXML
     private JFXButton buttonVendaVendaNew;
@@ -88,19 +89,7 @@ public class VendaVendaController extends VendaController {
 
     @Override
     void structure() {
-//
-//        this.tableViewVendaVenda.setRowFactory( clienteTableView -> new TableRow<Venda>(){
-//            @Override
-//            protected void updateItem(Venda item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if( item == null || empty ){
-//                    setItem( item );
-//                } else{
-//                    this.getStyleClass().add("row-normal");
-//                    setItem( item );
-//                }
-//            }
-//        });
+        super.structure();
 
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
@@ -110,13 +99,19 @@ public class VendaVendaController extends VendaController {
         columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
         columnVendaDividaProduto.setStyle("-fx-alignment: CENTER_LEFT;");
 
+
         columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
         columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
+        columnVendaDividaData.setCellFactory( createDateFromatFactory());
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
         columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
+
+        this.columnVendaVendaRegisto.setCellValueFactory( param -> param.getValue().getValue().vendaDataRegisto );
+        this.columnVendaVendaRegisto.setCellFactory( createDateFromatFactory());
+
 
         this.tableViewVendaVenda.getColumns().setAll(
                 columnVendaDividaFaturaNumero,
@@ -124,11 +119,14 @@ public class VendaVendaController extends VendaController {
                 columnVendaDividaProduto,
                 columnVendaDividaQuantidade,
                 columnVendaDividaData,
-                columnVendaDividaMontantePagar
+                columnVendaDividaMontantePagar,
+                columnVendaVendaRegisto
         );
 
         this.columnVendaDividaFaturaNumero.setMinWidth( 110 );
         this.columnVendaDividaFaturaNumero.setMaxWidth( 110 );
+
+
         this.columnVendaDividaCliente.setMinWidth( 180 );
 
 
@@ -145,7 +143,12 @@ public class VendaVendaController extends VendaController {
 
         this.columnVendaDividaMontantePagar.setMinWidth( 130 );
         this.columnVendaDividaMontantePagar.setMaxWidth( 130 );
+
+        this.columnVendaVendaRegisto.setMinWidth( 110 );
+        this.columnVendaVendaRegisto.setMaxWidth( 110 );
     }
+
+
 
 
 }

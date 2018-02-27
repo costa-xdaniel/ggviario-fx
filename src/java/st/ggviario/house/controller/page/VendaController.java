@@ -1,9 +1,6 @@
 package st.ggviario.house.controller.page;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -27,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public abstract class VendaController extends TableController<Venda> implements Page,  Initializable {
+public abstract class VendaController extends TableController< VendaController.VendaViewModel > implements Page,  Initializable {
 
 
     //Modals
@@ -40,8 +37,7 @@ public abstract class VendaController extends TableController<Venda> implements 
 
     private List< VendaViewModel > vendaList = new LinkedList<>();
     private List< VendaViewModel > filtredList = new LinkedList<>();
-    protected Node rootPage;
-
+    Node rootPage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,8 +47,6 @@ public abstract class VendaController extends TableController<Venda> implements 
         pushAll();
         defineEvents();
     }
-
-
 
     @Override
     public void onSetRootPage(Node rootPage) {
@@ -164,7 +158,20 @@ public abstract class VendaController extends TableController<Venda> implements 
 
     abstract JFXTreeTableView<VendaViewModel> getTableVenda();
 
-    abstract void structure();
+    void structure(){
+        this.getTableVenda().setRowFactory(param -> new JFXTreeTableRow< VendaViewModel>(){
+            @Override
+            protected void updateItem(VendaViewModel item, boolean empty) {
+                super.updateItem(item, empty);
+                if( item != null && !empty ){
+                    String estado = item.venda.getVendaEstado().name().toLowerCase();
+                    String tipo = item.venda.getTipoVendaCod();
+                    System.out.println("adicionar classes: "+ tipo + "."+ estado  );
+                    this.getStyleClass().addAll( tipo, estado );
+                }
+            }
+        });
+    }
 
     abstract String[] getAvalibleIcons();
 
@@ -181,6 +188,7 @@ public abstract class VendaController extends TableController<Venda> implements 
         protected ObjectProperty< Number > vendaMontantePagar;
         protected ObjectProperty< Number > vendaMontanteAmortizado;
         protected ObjectProperty< Date > vendaDataFinalizar;
+        protected ObjectProperty< Date > vendaDataRegisto;
         protected StringProperty vendaEstado;
         protected Venda venda;
         private VendaViewModel(Venda venda ) {
@@ -192,7 +200,8 @@ public abstract class VendaController extends TableController<Venda> implements 
             vendaMontantePagar = new SimpleObjectProperty<>( venda.getVendaMontantePagar() );
             vendaMontanteAmortizado = new SimpleObjectProperty<>( venda.getVendaMontanteAmortizado() );
             vendaDataFinalizar = new SimpleObjectProperty<>( venda.getVendaDataFinalizar() );
-            vendaEstado = new SimpleStringProperty( venda.getVendaEstadoDesc() );
+            vendaEstado = new SimpleStringProperty( venda.getVendaEstado().getShowName() );
+            vendaDataRegisto = new SimpleObjectProperty<>( venda.getVendaDataRegisto() );
             this.venda = venda;
         }
     }
