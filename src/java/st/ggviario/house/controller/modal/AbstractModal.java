@@ -1,6 +1,7 @@
 package st.ggviario.house.controller.modal;
 
 import com.jfoenix.controls.JFXDialog;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
@@ -41,6 +42,11 @@ public abstract class AbstractModal< R > implements Modal<R> {
     }
 
     @Override
+    public void setTitle(String title) {
+        this.getTitleNode().setText( title );
+    }
+
+    @Override
     public JFXDialog getDialogModal() {
         return this.dialogModal;
     }
@@ -66,5 +72,5 @@ public abstract class AbstractModal< R > implements Modal<R> {
 
     abstract Region getContentRoot();
 
-
+    abstract Label getTitleNode();
 }

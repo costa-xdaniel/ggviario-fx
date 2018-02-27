@@ -164,6 +164,11 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         return this.root;
     }
 
+    @Override
+    Label getTitleNode() {
+        return this.modalTitle;
+    }
+
 
     private void createVoidItems() {
         Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();

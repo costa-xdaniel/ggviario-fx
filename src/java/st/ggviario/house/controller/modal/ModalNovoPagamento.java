@@ -90,6 +90,11 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         return this.root;
     }
 
+    @Override
+    Label getTitleNode() {
+        return this.modalTitle;
+    }
+
 
     private void structure(){
         moneyFormatter.setMinimumFractionDigits( 2 );

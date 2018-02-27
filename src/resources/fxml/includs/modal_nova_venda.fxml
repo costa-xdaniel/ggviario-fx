@@ -241,11 +241,16 @@
                               </Label>
                               <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                                  <children>
-                                    <JFXButton fx:id="buttonVendaFeito" styleClass="venda-form-feito" text="Feito" />
-                                    <JFXButton fx:id="buttonNovaVenda" styleClass="venda-form-register" text="REGISTRAR VENDA">
+                                    <JFXButton fx:id="buttonVendaFeito" styleClass="accent" text="Feito" />
+                                    <JFXButton fx:id="buttonNovaVenda" text="REGISTRAR VENDA">
                                        <HBox.margin>
                                           <Insets left="16.0" />
                                        </HBox.margin>
+                                       <styleClass>
+                                          <String fx:value="button" />
+                                          <String fx:value="primary" />
+                                          <String fx:value="raised" />
+                                       </styleClass>
                                     </JFXButton>
                                  </children>
                               </HBox>

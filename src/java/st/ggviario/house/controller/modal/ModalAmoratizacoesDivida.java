@@ -42,6 +42,9 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
     @FXML
     private AnchorPane root;
 
+    @FXML
+    private Label modalTitle;
+
 
     @FXML
     private AnchorPane anchorHeader;
@@ -160,6 +163,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
         this.lavelVendaPendente.setText( this.moneyFormat.format( this.venda.getVendaMontantePendente() )+" STN");
         this.labelVendaTotalPagar.setText( this.moneyFormat.format( this.venda.getVendaMontantePagar() ) + " STN" );
         this.labelVendaMontanteAmortizado.setText( this.moneyFormat.format( this.venda.getVendaMontanteAmortizado() )+" STN" );
+        this.modalTitle.setText( "Amortização da fatura "+ this.venda.getVendaFaturaNumero() );
     }
 
     private ObservableList<VendaMovimento> loadMovimentoData(Venda venda) {
@@ -188,6 +192,12 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
     @Override
     Region getContentRoot() {
         return this.root;
+    }
+
+
+    @Override
+    Label getTitleNode() {
+        return this.modalTitle;
     }
 
     private class VendaMovimento extends RecursiveTreeObject<VendaMovimento >{

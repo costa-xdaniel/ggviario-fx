@@ -3,16 +3,21 @@ package st.ggviario.house.controller.modal;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.ControllerLoader;
-import st.ggviario.house.model.*;
+import st.ggviario.house.model.Cliente;
+import st.ggviario.house.model.Distrito;
+import st.ggviario.house.model.Sexo;
+import st.ggviario.house.model.TipoDocumento;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.SQLRow;
@@ -31,8 +36,18 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         return cliente;
     }
 
+
     @FXML
     private AnchorPane root;
+
+    @FXML
+    private AnchorPane anchorHeader;
+
+    @FXML
+    private AnchorPane anchorCloseArea;
+
+    @FXML
+    private Label modalTitle;
 
     @FXML
     private JFXTextField textFieldClienteNome;
@@ -67,6 +82,8 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     @FXML
     private JFXButton buttonClientRegister;
 
+    private JFXRippler rippler;
+
     private List<Sexo> listSexo;
     private List<Distrito> listDistrito;
     private List<TipoDocumento> listTipoDocumento;
@@ -74,12 +91,27 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.buttonClientRegister.setOnAction( actionEvent -> this.register());
+        this.rippler = new JFXRippler( this.anchorCloseArea );
+        this.anchorHeader.getChildren().add( this.rippler );
+
+        AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
+        AnchorPane.setTopAnchor( this.rippler, 0x0.0p0 );
+        this.rippler.setStyle( "-jfx-rippler-fill: md-red-500" );
+        this.rippler.setOnMouseClicked(mouseEvent -> {
+            this.clear();
+            this.closeModal();
+        });
         this.loadForm();
     }
 
     @Override
     Region getContentRoot() {
         return this.root;
+    }
+
+    @Override
+    Label getTitleNode() {
+        return this.modalTitle;
     }
 
     private void loadForm() {

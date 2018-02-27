@@ -19,7 +19,7 @@
          <children>
             <AnchorPane fx:id="anchorHeader">
                <children>
-                  <Label contentDisplay="CENTER" styleClass="modal-title" text="Amortizaçao da divida" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="modalTitle" contentDisplay="CENTER" styleClass="modal-title" text="Amortizaçao da divida" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <AnchorPane fx:id="anchorClose" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <MaterialDesignIconView glyphName="CLOSE" size="24" style="-fx-fill: md-red-500;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

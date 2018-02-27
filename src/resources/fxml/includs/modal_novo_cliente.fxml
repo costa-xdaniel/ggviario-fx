@@ -4,8 +4,12 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,11 +17,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoCliente">
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoCliente">
    <children>
       <VBox alignment="CENTER_RIGHT">
          <children>
-            <GridPane>
+            <AnchorPane fx:id="anchorHeader">
+               <children>
+                  <Label fx:id="modalTitle" styleClass="modal-title" text="Novo cliente" />
+                  <AnchorPane fx:id="anchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <MaterialDesignIconView layoutX="60.0" layoutY="105.0" styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+                     </children>
+                  </AnchorPane>
+                  <Separator layoutX="50.0" layoutY="25.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <GridPane styleClass="form">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -81,8 +96,11 @@
                      </GridPane.margin>
                   </JFXDatePicker>
                   </children>
+               <VBox.margin>
+                  <Insets left="16.0" right="16.0" />
+               </VBox.margin>
             </GridPane>
-            <JFXButton fx:id="buttonClientRegister" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="Cadastrar" textFill="#fffdfd">
+            <JFXButton fx:id="buttonClientRegister" contentDisplay="RIGHT" text="Cadastrar" textFill="#fffdfd">
                <padding>
                   <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                </padding>
@@ -92,12 +110,17 @@
                <VBox.margin>
                   <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                </VBox.margin>
+               <styleClass>
+                  <String fx:value="primary" />
+                  <String fx:value="raised" />
+                  <String fx:value="button" />
+               </styleClass>
             </JFXButton>
          </children>
       </VBox>
    </children>
-   <styleClass>
-      <String fx:value="modal" />
-      <String fx:value="form" />
-   </styleClass>
+   <stylesheets>
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/material-design.css" />
+   </stylesheets>
 </AnchorPane>

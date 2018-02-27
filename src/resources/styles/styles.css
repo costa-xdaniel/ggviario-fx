@@ -213,6 +213,33 @@
     -fx-min-width:  300px;
 }
 
+/** Buttom */
+
+.button{
+    -fx-padding: 16px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.button.primary{
+    -fx-background-color: md-primary-color;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button.accent{
+    -fx-background-color: md-accent-color;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button.unaccent{
+    -fx-background-color: md-grey-500;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button.raised{
+    -jfx-button-type: RAISED;
+}
+
 
 /**Modal Styles**/
 .modal{
@@ -226,6 +253,11 @@
     -fx-alignment: CENTER_LEFT;
 }
 
+
+
+.modal-button-success {
+
+}
 
 
 
@@ -342,15 +374,6 @@
     -fx-max-width:  filed-size-normal;
 }
 
-.venda-form-the-client JFXButton {
-    -fx-background-color: md-primary-color;
-    -fx-padding: 16px;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
-    -fx-text: "OLA MUNDO"
-}
-
 .venda-form-the-client .long-field  {
     -fx-pref-width: filed-size-long;
     -fx-min-width:  filed-size-long;
@@ -358,20 +381,10 @@
 }
 
 
-.venda-form-the-client .long-field  {
+.venda-form-the-client .long-field {
     -fx-pref-width: filed-size-long;
-    -fx-min-width:  filed-size-long;
-    -fx-max-width:  filed-size-long;
-}
-
-
-.venda-form-register {
-    -jfx-button-type: RAISED;
-}
-
-.venda-form-feito {
-    -jfx-button-type: FATE;
-    -fx-background-color: md-accent-color;
+    -fx-min-width: filed-size-long;
+    -fx-max-width: filed-size-long;
 }
 
 .venda-form-valor-final {
@@ -379,20 +392,6 @@
     -fx-font-weight: bold;
     -fx-text-fill: md-orange-500;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
