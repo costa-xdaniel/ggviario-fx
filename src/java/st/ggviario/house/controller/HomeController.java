@@ -2,21 +2,20 @@ package st.ggviario.house.controller;
 
 
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.controls.JFXRippler;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import st.ggviario.house.controller.page.Page;
+import st.jigahd.support.sql.lib.SQLText;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,64 +29,69 @@ public class HomeController implements Initializable {
     private StackPane rootPage;
 
     @FXML
-    private JFXHamburger hamburger;
+    private AnchorPane iconAreaMenu;
+
+    @FXML
+    private AnchorPane drawerArea;
+
+    @FXML
+    private HBox vboxMenuArea;
+
+    @FXML
+    private JFXTextField textFieldSearch;
 
     @FXML
     private JFXDrawer drawer;
     private Node currentDocumentoPage;
-    private HamburgerBackArrowBasicTransition basicTransition;
-    private boolean show;
     private Page currentPage;
     private Stage primaryStage;
     private Scene scene;
 
+    private JFXRippler rippler;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ControllerLoader< AnchorPane,  DrawerController > loader = new ControllerLoader<>("/fxml/includs/drawer.fxml");
+        DrawerController controller = loader.getViewController().getController();
+        controller.setOnClickMenuIcon(this::closeDrawer);
+        controller.setHomeController( this );
+        AnchorPane view = loader.getViewController().getNodeView();
+        this.drawer.setSidePane( view );
+        StackPane.setAlignment( view, Pos.TOP_LEFT );
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource("/fxml/includs/drawer.fxml") );
-        try {
-            Node vBox = loader.load();
-            DrawerController drawerController = loader.getController();
-            drawerController.setHomeController( this );
-            drawer.setSidePane( vBox );
-            drawer.setPadding( new Insets( -1, 0, -1, -1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        this.basicTransition = new HamburgerBackArrowBasicTransition( hamburger );
-        this.basicTransition.setRate( -1 );
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, ( e ) -> {
-            processHamburger(basicTransition);
+        this.root.heightProperty().addListener((observable, oldValue, newValue) -> {
+            view.setPrefHeight( newValue.doubleValue() );
         });
 
-    }
+        this.textFieldSearch.setOnKeyReleased(event -> {
+            if( this.currentPage != null ) this.currentPage.onSearch( event, SQLText.normalize( this.textFieldSearch.getText().toLowerCase() ) );
+        });
 
-
-    private void processHamburger(HamburgerBackArrowBasicTransition basicTransition) {
-        basicTransition.setRate( basicTransition.getRate() * -1 );
-        basicTransition.play();
-        basicTransition.setOnFinished(actionEvent -> {
-            if(!this.show) {
+        this.drawer.setOnDrawerClosed(event -> {
+            if( this.root.getChildren().contains( this.drawer ) ){
                 this.root.getChildren().remove( this.drawer );
             }
         });
 
+        this.rippler = new JFXRippler( this.iconAreaMenu);
+        this.rippler.setMaskType( JFXRippler.RipplerMask.CIRCLE );
+        this.rippler.setOnMouseClicked(event -> openDrawer(  ) );
+        this.vboxMenuArea.getChildren().add( 0, this.rippler );
 
-        if( drawer.isShown() ){
-            drawer.close();
-            this.show = false;
+        this.root.getChildren().remove( this.drawer );
+        this.closeDrawer();
+    }
 
-        } else {
-            drawer.open();
-            if( !this.root.getChildren().contains( this.drawer ))
-                this.root.getChildren().add( this.drawer );
-
-            this.show = true;
+    private void openDrawer() {
+        if( !this.root.getChildren().contains( this.drawer ) ){
+            this.root.getChildren().add( this.drawer );
         }
+        drawer.open();
+    }
+
+    private void closeDrawer(){
+        drawer.close();
     }
 
     public void setDocumentRoot( Node documentRoot, Page page ) {
@@ -108,7 +112,8 @@ public class HomeController implements Initializable {
 
         this.currentDocumentoPage = documentRoot;
         this.currentPage = page;
-        this.processHamburger( this.basicTransition );
+        this.currentPage.onSearch( null, SQLText.normalize( this.textFieldSearch.getText().toLowerCase() ) );
+        this.closeDrawer();
     }
 
     public Node getRootPage() {

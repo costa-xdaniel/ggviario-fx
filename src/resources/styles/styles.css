@@ -393,5 +393,33 @@
     -fx-text-fill: md-orange-500;
 }
 
+.menu-area {
+    -fx-padding: 0px  0px  0px  32px;
+}
+
+.menu-area Label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.menu-area MaterialDesignIconView {
+    -glyph-name: MENU;
+    -glyph-size: 32px;
+    -fx-fill: #ffffff;
+}
+
+.menu-area.dark {
+    -fx-background-color: #FFFFFF;
+}
+
+.menu-area.dark Label{
+    -fx-text-fill: md-primary-color;
+}
+
+.menu-area.dark MaterialDesignIconView {
+    -fx-fill: md-primary-color;
+}
+
 
 

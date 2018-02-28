@@ -11,6 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modal.ModalNovaVenda;
@@ -36,14 +38,14 @@ public abstract class VendaController extends TableController< VendaController.V
     //
 
     private List< VendaViewModel > vendaList = new LinkedList<>();
-    private List< VendaViewModel > filtredList = new LinkedList<>();
     Node rootPage;
+    private String oldTextFilter;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.getButonNew().setOnAction(actionEvent -> this.openModalNovaVenda());
         this.structure();
-        this.reloadVendaData( null );
+        this.loadData( null );
         pushAll();
         defineEvents();
     }
@@ -54,13 +56,15 @@ public abstract class VendaController extends TableController< VendaController.V
     }
 
     private void pushAll() {
-        this.filtredList.clear();
-        this.filtredList.addAll( this.vendaList );
-        ObservableList< VendaViewModel > observableListVenda = FXCollections.observableList( this.filtredList );
+        push( this.vendaList );
+    }
 
+    private void push(List<VendaViewModel> showValues) {
+        ObservableList< VendaViewModel > observableListVenda = FXCollections.observableList( showValues );
         final TreeItem< VendaViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
         this.getTableVenda().setRoot(root);
         this.getTableVenda().setShowRoot(false);
+        this.getTableVenda().refresh();
     }
 
     private void defineEvents() {
@@ -72,7 +76,7 @@ public abstract class VendaController extends TableController< VendaController.V
 
                 if( !this.getLocalRootPage().getChildren().contains( this.getDrawerVendaDetails() ) ){
                     int index = this.getLocalRootPage().getChildren().indexOf( this.getTableVenda() );
-                    this.getLocalRootPage().getChildren().add( index+1, this.getDrawerVendaDetails() );
+                    this.getLocalRootPage().getChildren().add(index+1, this.getDrawerVendaDetails() );
                 }
                 this.getDrawerVendaDetails().open();
             } else {
@@ -97,7 +101,7 @@ public abstract class VendaController extends TableController< VendaController.V
         if( this.modalNovaVenda == null){
             this.modalNovaVenda = ModalNovaVenda.load( this.getTipoVenda(), this.getFunctionLoadClienteNew(), (StackPane) this.rootPage);
             this.modalNovaVenda.setOnModalResult(operationResult -> {
-                this.reloadVendaData( operationResult.getResltValue() );
+                this.loadData( null );
                 this.pushAll();
             });
         }
@@ -128,7 +132,7 @@ public abstract class VendaController extends TableController< VendaController.V
     }
 
 
-    void reloadVendaData(List<ModalNovaVenda.RegisterVendaResult> results) {
+    void loadData( String text ) {
         Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
         Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
@@ -144,6 +148,27 @@ public abstract class VendaController extends TableController< VendaController.V
             vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
             this.vendaList.add( new VendaViewModel( vendaBuilder.build() ) );
         });
+    }
+
+    @Override
+    public void onSearch(KeyEvent event, String textFilter) {
+        boolean full = event != null && event.getCode() == KeyCode.ENTER;
+        if( full ) {
+            this.loadData( textFilter );
+            this.pushAll();
+        } else if( this.oldTextFilter != null && textFilter == null ) {
+            this.pushAll();
+        } else if( textFilter != null & oldTextFilter != null && ! textFilter.equals( oldTextFilter ) ){
+            List< VendaViewModel > search = new LinkedList<>( );
+            for( VendaViewModel next : this.vendaList  ){
+                Venda venda  = next.venda;
+                Cliente cliente  = next.venda.getCliente();
+                if( cliente.getClienteCompletName().toLowerCase().contains( textFilter ) ) search.add( next );
+                else if( venda.getProducto().getProdutoNome().toLowerCase().contains( textFilter ) ) search.add( next );
+            }
+            this.push( search );
+        }
+        this.oldTextFilter = textFilter;
     }
 
     abstract JFXButton getButonNew() ;
@@ -164,7 +189,10 @@ public abstract class VendaController extends TableController< VendaController.V
                 if( item != null && !empty ){
                     String estado = item.venda.getVendaEstado().name().toLowerCase();
                     String tipo = item.venda.getTipoVendaCod();
-                    System.out.println("adicionar classes: "+ tipo + "."+ estado  );
+                    for(Venda.VendaEstado vendaEstado : item.venda.getVendaEstado().others( ) ){
+                        getStyleClass().remove( vendaEstado.name().toLowerCase() );
+                    }
+                    getStyleClass().remove( item.venda.getTipoVenda().other().name().toLowerCase() );
                     this.getStyleClass().addAll( tipo, estado );
                 }
             }

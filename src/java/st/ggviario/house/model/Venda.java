@@ -3,9 +3,7 @@ package st.ggviario.house.model;
 import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLResource;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Venda {
 
@@ -111,6 +109,7 @@ public class Venda {
         return vendaEstado;
     }
 
+
     public Double getVendaMontantePendente() {
         return this.vendaMontantePagar - this.vendaMontanteAmortizado;
     }
@@ -118,12 +117,20 @@ public class Venda {
     public enum VendaEstado {
 
         PENDENTE( 2, "Pendente" ),
-        PAGAMENTO(1, "Pagamento" ),
-        PAGO(0, "Pago" ),
-        ANULADO(-1, "Anulado" );
+        PAGAMENTO( 1, "Pagamento" ),
+        PAGO( 0, "Pago" ),
+        ANULADO( -1, "Anulado" );
 
         private final int estado;
         private final String showName;
+
+        public List< VendaEstado > others( ){
+            List<VendaEstado > list = new LinkedList<>();
+            for( VendaEstado vendaEstado : this.values() ){
+                if( !this.equals( vendaEstado ) ) list.add( vendaEstado );
+            }
+            return list;
+        }
 
         VendaEstado(int estado, String showName ) {
             this.estado = estado;

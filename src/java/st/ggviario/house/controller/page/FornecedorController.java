@@ -16,10 +16,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import st.ggviario.house.controller.modal.ModalNovoFornecedor;
 import st.ggviario.house.model.Fornecedor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
-import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
@@ -64,6 +64,10 @@ public class FornecedorController extends TableController< FornecedorController.
     }
 
     private void structure(){
+        Text text = new Text( "Nenhum fornecedor encontrado!" );
+        text.getStyleClass().add( "table-no-data-found" );
+
+        this.tableViewFornecedor.setPlaceholder( text  );
         this.columnFornecedorNIF.setCellValueFactory( param -> param.getValue().getValue().fornecedorNif );
         this.columnFornecedorNome.setCellValueFactory( param -> param.getValue().getValue().fornecedorNome );
         this.columnFornecedorTelemovel.setCellValueFactory( param -> param.getValue().getValue().fornecedorTelemovel );
@@ -134,14 +138,15 @@ public class FornecedorController extends TableController< FornecedorController.
 
     @Override
     public void onSearch(KeyEvent event, String textFilter) {
-        textFilter = SQLText.normalize( textFilter );
-        if( event.getCode() == KeyCode.ENTER ){
+        if( event == null && textFilter == null ) return;
+
+        if( event  != null && event.getCode() == KeyCode.ENTER ){
             this.loadData();
         }
 
         if( textFilter == null ){
             this.pushAll();
-        } else if( !textFilter.equals( this.oldTextSearch ) || event.getCode() == KeyCode.ENTER ) {
+        } else if( !textFilter.equals( this.oldTextSearch ) || (  event != null && event.getCode() == KeyCode.ENTER ) ) {
             List< FornecedorViewModel > searchResult = new LinkedList<>();
             for( FornecedorViewModel model : this.listForenecedor ){
                 if( model.fornecedor.getFornecedorNome().toLowerCase().contains( textFilter ) ) searchResult.add( model );
@@ -150,6 +155,7 @@ public class FornecedorController extends TableController< FornecedorController.
             final TreeItem< FornecedorViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
             this.tableViewFornecedor.setRoot( root );
             this.tableViewFornecedor.setShowRoot( false );
+            this.tableViewFornecedor.refresh();
         }
 
         this.oldTextSearch = textFilter;

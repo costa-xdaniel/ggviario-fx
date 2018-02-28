@@ -1,6 +1,7 @@
 package st.ggviario.house.model;
 
 public enum TipoVenda {
+
     VENDA( (short) 1 ),
     DIVIDA( (short) 2);
 
@@ -10,6 +11,10 @@ public enum TipoVenda {
             if( tv.tipoVendaId == tipoVendaId ) return tv;
         }
         return null;
+    }
+
+    public TipoVenda other() {
+        return this.equals( VENDA )? DIVIDA : VENDA;
     }
 
 
