@@ -77,26 +77,26 @@ public class VendaDividaController extends VendaController {
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
-        columnVendaDividaCliente.getStyleClass().add( "table-cell-left" );
+        columnVendaDividaCliente.getStyleClass().add( "table-column-left" );
 
         columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
-        columnVendaDividaProduto.getStyleClass().add( "table-cell-left" );
+        columnVendaDividaProduto.getStyleClass().add( "table-column-left" );
 
         columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
-        columnVendaDividaQuantidade.getStyleClass().add( "table-cell-number" );
+        columnVendaDividaQuantidade.getStyleClass().add( "table-column-number" );
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
 
         columnVendaDividaDataFinalizar.setCellValueFactory( param -> param.getValue().getValue().vendaDataFinalizar );
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
-        columnVendaDividaMontantePagar.getStyleClass().add( "table-cell-money" );
+        columnVendaDividaMontantePagar.getStyleClass().add( "table-column-money" );
 
         columnVendaDividaMontanteAmortizado.setCellValueFactory(param -> param.getValue().getValue().vendaMontanteAmortizado );
-        columnVendaDividaMontanteAmortizado.getStyleClass().add( "table-cell-money" );
+        columnVendaDividaMontanteAmortizado.getStyleClass().add( "table-column-money" );
 
         columnVendaDividaEstado.setCellValueFactory( param -> param.getValue().getValue().vendaEstado );
-        columnVendaDividaEstado.getStyleClass().add( "table-cell-money" );
+        columnVendaDividaEstado.getStyleClass().add( "table-clumn-money" );
 
         this.treeTableViewVendaDivida.getColumns().setAll(
                 columnVendaDividaFaturaNumero,
@@ -187,7 +187,7 @@ public class VendaDividaController extends VendaController {
     private void loadModalNovoPagemnto( ){
         if( this.modalNovoPagamento == null ){
             this.modalNovoPagamento = ModalNovoPagamento.load((StackPane) rootPage);
-            this.modalNovoPagamento.setOnOperationResult(operationResult -> {
+            this.modalNovoPagamento.setOnModalResult(operationResult -> {
                 if( operationResult.isSucceed() ){
                 }
             });

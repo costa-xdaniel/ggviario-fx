@@ -1,5 +1,7 @@
 
 
+/*============================== DEFAULT TABLE STYLES ========================================*/
+
 
 .tree-table-view{
     -fx-tree-table-color: md-blue-500;
@@ -50,13 +52,6 @@
     -fx-border-color:#F3F3F3;
 }
 
-.tree-table-view .tree-table-cell{
-    -fx-border-color: md-grey-300;
-    -fx-border-style: solid;
-    -fx-border-width: 1px;
-    -fx-padding : 16 16 16 16;
-}
-
 
 .tree-table-view .column-overlay{
     -fx-background-color: -fx-tree-table-color;
@@ -84,19 +79,57 @@
     -fx-focus-color: rgba(240,40,40);
 }
 
-.table-cell-left{
+
+/*============================== CUSTOM TABLE STYLES ========================================*/
+
+
+
+/*CELL'S AND PADDING'S*/
+
+.tree-table-view .tree-table-cell{
+    -fx-border-color: md-grey-300;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-padding : 16 16 16 16;
+}
+
+.tree-table-view .column-header-background StackPane{
     -fx-padding: 16px;
-    -fx-alignment: BOTTOM LEFT;
 }
 
-.table-cell-number{
-    -fx-alignment: BOTTOM RIGHT;
+
+
+/*ALIGNMENTTs */
+.tree-table-view .column-header-background .table-column-left StackPane{
+    -fx-alignment: CENTER_LEFT;
 }
 
-.table-cell-money{
-    -fx-alignment: BOTTOM RIGHT;
+.tree-table-view .virtual-flow .table-column-left{
+    -fx-alignment: TOP_LEFT;
 }
 
+.tree-table-view .column-header-background .table-column-number StackPane {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.tree-table-view .virtual-flow .table-column-number{
+    -fx-alignment: TOP_RIGHT;
+}
+
+
+.tree-table-view .column-header-background .table-column-money StackPane {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.tree-table-view .virtual-flow .table-column-money{
+    -fx-alignment: TOP_RIGHT;
+}
+
+
+
+
+
+/* nth-child(2) */
 /*.tree-table-view .divida.pendente{*/
     /*-fx-background-color: md-orange-500;;*/
 /*}*/

@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import st.ggviario.house.controller.HomeController;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.ContentPage;

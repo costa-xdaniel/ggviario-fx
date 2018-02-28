@@ -1,19 +1,20 @@
-package st.ggviario.house.controller.page;
+package st.ggviario.house.controller;
 
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-
+import javafx.stage.Stage;
+import st.ggviario.house.controller.page.Page;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +38,8 @@ public class HomeController implements Initializable {
     private HamburgerBackArrowBasicTransition basicTransition;
     private boolean show;
     private Page currentPage;
+    private Stage primaryStage;
+    private Scene scene;
 
 
     @Override
@@ -116,5 +119,18 @@ public class HomeController implements Initializable {
     public Node getRoot() {
 
         return root;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public void accept(Stage primaryStage, Scene scene) {
+        this.primaryStage = primaryStage;
+        this.scene = scene;
     }
 }

@@ -91,7 +91,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
     }
 
     @Override
-    Label getTitleNode() {
+    Label getModalTitleView() {
         return this.modalTitle;
     }
 
@@ -265,9 +265,9 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
                     + " cadatrado com sucesso!";
             this.closeModal();
             this.clear();
-            snackbarBuilder.success( message );
+            snackbarBuilder.showSucess( message );
         } else {
-            snackbarBuilder.error( message );
+            snackbarBuilder.showError( message );
         }
 
 
@@ -313,7 +313,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
     }
 
 
-    public class MovimentoResult implements OperationResult<Movimento> {
+    public class MovimentoResult implements ModalResult<Movimento> {
         private MovimentoResult(){
 
         }
@@ -340,7 +340,13 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
 
         @Override
         public Movimento getResltValue() {
+
             return movimento;
+        }
+
+        @Override
+        public SnackbarBuilder.MessageLevel getLevel() {
+            return null;
         }
 
         @Override

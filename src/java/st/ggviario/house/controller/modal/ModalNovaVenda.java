@@ -165,7 +165,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     @Override
-    Label getTitleNode() {
+    Label getModalTitleView() {
         return this.modalTitle;
     }
 
@@ -343,9 +343,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
         this.vendasResult.add( result );
         if( result.isSucceed() ){
-            snackbarBuilder.success( "Nova "+this.tipoVenda.name().toLowerCase()+" cadastrada com sucesso");
+            snackbarBuilder.showSucess( "Nova "+this.tipoVenda.name().toLowerCase()+" cadastrada com sucesso");
         } else {
-            snackbarBuilder.error( result.message );
+            snackbarBuilder.showError( result.message );
         }
     }
 
@@ -363,9 +363,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         super.executeOnOperationResult( result );
         this.vendasResult = new LinkedList<>();
         SnackbarBuilder builder = new SnackbarBuilder( this.getStakePane() );
-        if( countSuccess == 1 ) builder.information( countSuccess+" novas "+this.tipoVenda.name().toLowerCase()+" foi cadastradas!" );
-        else if( countSuccess > 1 ) builder.information( countSuccess+" novas "+this.tipoVenda.name().toLowerCase()+" foram cadastradas!" );
-        else builder.warning( "Nenhuma nova "+this.tipoVenda.name().toLowerCase()+" foi cadastrada!");
+        if( countSuccess == 1 ) builder.showInformation( countSuccess+" novas "+this.tipoVenda.name().toLowerCase()+" foi cadastradas!" );
+        else if( countSuccess > 1 ) builder.showInformation( countSuccess+" novas "+this.tipoVenda.name().toLowerCase()+" foram cadastradas!" );
+        else builder.showWarning( "Nenhuma nova "+this.tipoVenda.name().toLowerCase()+" foi cadastrada!");
     }
 
 
@@ -430,7 +430,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         if( this.modalNovoCliente == null ){
             this.modalNovoCliente = ModalNovoCliente.load( this.getStakePane() );
             this.modalNovoCliente.getDialogModal().setOnDialogClosed(jfxDialogEvent -> this.openModal());
-            this.modalNovoCliente.setOnOperationResult( operationResult -> {
+            this.modalNovoCliente.setOnModalResult(operationResult -> {
                 if( operationResult.isSucceed() ){
                     this.loadClienteDatasource();
                     boolean res = this.findClienteSelecter( operationResult.getResltValue() );
@@ -558,7 +558,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
     }
 
-    public Double getVendaQuantidade() {
+    private Double getVendaQuantidade() {
         String text = this.textFieldVendaQuantidade.getText();
         text = SQLText.normalize( text );
         try{
@@ -567,7 +567,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         return null;
     }
 
-    public Double getVendaDesconto() {
+    private Double getVendaDesconto() {
         String desconto = textFieldVendaDesconto.getText();
         desconto = SQLText.normalize( desconto );
         try{
@@ -606,36 +606,33 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
                             .withUUID( venda.getCliente().getClienteId() )
                             .withUUID( conta == null? null : conta.getContaId() )
                             .withNumeric( venda.getVandaQuantidade() )
-                            .withNumeric( venda.getVendaMontanteUnidario() )
+                            .withNumeric( venda.getVendaMontanteUnitario() )
                             .withNumeric( venda.getVendaMontanteBruto() )
                             .withNumeric( venda.getVendaMontanteDesconto() )
                             .withNumeric( venda.getVendaMontantePagar() )
                             .withDate( venda.getVendaData() )
             );
         });
-        this.actionRegister.put(TipoVenda.DIVIDA, new VendaRegister() {
-            @Override
-            public RegisterVendaResult register(Venda venda) {
-                PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
-                query.withUUID( colaborador.getColaboradorId() );
-                Producto p = venda.getProducto();
-                query.withUUID( p.getProdutoId() );
-                query.withUUID( venda.getUnidade().getUnidadeId() );
-                query.withUUID( venda.getCliente().getClienteId() );
-                query.withNumeric( venda.getVandaQuantidade() );
-                query.withNumeric( venda.getVendaMontanteUnidario() );
-                query.withNumeric( venda.getVendaMontanteBruto() );
-                query.withNumeric( venda.getVendaMontanteDesconto() );
-                query.withNumeric( venda.getVendaMontantePagar() );
-                query.withDate( venda.getVendaData() );
-                query.withDate( venda.getVendaDataFinalizar() );
-                return execute( venda, query );
-            }
+        this.actionRegister.put(TipoVenda.DIVIDA, venda -> {
+            PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
+            query.withUUID( colaborador.getColaboradorId() );
+            Producto p = venda.getProducto();
+            query.withUUID( p.getProdutoId() );
+            query.withUUID( venda.getUnidade().getUnidadeId() );
+            query.withUUID( venda.getCliente().getClienteId() );
+            query.withNumeric( venda.getVandaQuantidade() );
+            query.withNumeric( venda.getVendaMontanteUnitario() );
+            query.withNumeric( venda.getVendaMontanteBruto() );
+            query.withNumeric( venda.getVendaMontanteDesconto() );
+            query.withNumeric( venda.getVendaMontantePagar() );
+            query.withDate( venda.getVendaData() );
+            query.withDate( venda.getVendaDataFinalizar() );
+            return execute( venda, query );
         });
     }
 
     @Override
-    public void openModal() {
+    public void openModal(){
         super.openModal();
     }
 
@@ -668,7 +665,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         private Producto producto;
     }
 
-    public static class RegisterVendaResult implements OperationResult< List > {
+    public static class RegisterVendaResult implements ModalResult< List > {
 
         private Map<String, Object > resultData;
         private boolean success;
@@ -696,6 +693,11 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         @Override
         public List< RegisterVendaResult > getResltValue() {
             return this.vendasResult;
+        }
+
+        @Override
+        public SnackbarBuilder.MessageLevel getLevel() {
+            return null;
         }
 
         @Override

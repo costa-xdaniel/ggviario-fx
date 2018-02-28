@@ -1,6 +1,6 @@
 package st.ggviario.house.model;
 
-import st.ggviario.house.controller.page.HomeController;
+import st.ggviario.house.controller.HomeController;
 
 public interface DrawerItem {
 

@@ -153,7 +153,7 @@ public class ClienteController extends TableController< Cliente > implements Pag
     private void loadModalContent() {
         if( this.modalNovoCliente == null ) {
             this.modalNovoCliente = ModalNovoCliente.load( this.rootPagePane );
-            this.modalNovoCliente.setOnOperationResult(operationResult -> this.reloadData());
+            this.modalNovoCliente.setOnModalResult(operationResult -> this.reloadData());
         }
     }
 }

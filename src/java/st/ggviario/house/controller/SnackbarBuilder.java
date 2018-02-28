@@ -8,12 +8,6 @@ import java.util.Map;
 
 public class SnackbarBuilder {
 
-    public static final int SUCCESS_MESSAGE = 0x3;
-    public static final int INFORMATION_MESSAGE = 0x2;
-    public static final int WARNING_MESSAGE = 0x1;
-    public static final int ERROR_MESSAGE = 0x0;
-
-
     JFXSnackbar snackbar;
     private int successTimeOut;
     private int informationTimeOut;
@@ -70,34 +64,40 @@ public class SnackbarBuilder {
         return this;
     }
 
-    public void success(String message ){
+    public void show( String message, MessageLevel leve ) {
+        Map< MessageLevel, Runnable > map = new HashMap<>();
+        map.put( MessageLevel.ERROR, () -> this.showError( message ) );
+        map.put( MessageLevel.WARNING, () -> this.showWarning( message ) );
+        map.put( MessageLevel.INFORMATION, () -> this.showInformation( message ) );
+        map.put( MessageLevel.SUCCESS, () -> this.showSucess( message ) );
+        map.get( leve ).run();
+    }
+
+    public void showSucess(String message ){
         this.addStylesheet("/styles/snackbar-success.css");
         snackbar.show( message, "Entendi", this.successTimeOut, event -> snackbar.close() );
     }
 
 
-    public void information( String message ){
+    public void showInformation(String message ){
         this.addStylesheet("/styles/snackbar-information.css");
         snackbar.show( message, "Entendi", this.informationTimeOut, event -> snackbar.close() );
     }
 
-    public void warning( String message ){
+    public void showWarning(String message ){
         this.addStylesheet("/styles/snackbar-warning.css");
         snackbar.show( message, "Entendi", this.warningTimeOut, event -> snackbar.close() );
     }
 
-    public void error( String message ){
+    public void showError(String message ){
         this.addStylesheet("/styles/snackbar-error.css");
         snackbar.show( message, "Entendi", this.errorTimeOut, event -> snackbar.close() );
     }
 
-    public void show( String message, int leve ){
-
-        Map< Integer, Runnable > map = new HashMap<>();
-        map.put( ERROR_MESSAGE, () -> this.error( message ) );
-        map.put( WARNING_MESSAGE, () -> this.error( message ) );
-        map.put( INFORMATION_MESSAGE, () -> this.error( message ) );
-        map.put( SUCCESS_MESSAGE, () -> this.error( message ) );
-        map.get( leve ).run();
+    public enum MessageLevel {
+        ERROR,
+        WARNING,
+        INFORMATION,
+        SUCCESS;
     }
 }

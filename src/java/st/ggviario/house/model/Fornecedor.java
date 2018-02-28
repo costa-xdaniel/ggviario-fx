@@ -230,9 +230,9 @@ public class Fornecedor {
             this.telemovel = SQLRow.stringOf( map.get( "fornecedor_telemovel" ) );
             this.mail = SQLRow.stringOf( map.get( "fornecedor_mail" ) );
             this.local = SQLRow.stringOf( map.get( "fornecedor_local" ));
-            this.montanteCompras = SQLRow.doubleOf( map.get( "fornecedor_montantecompra" ) );
-            this.montantePendentes = SQLRow.doubleOf( map.get( "fornecedor_montantependente" ) );
-            this.montantePagos = SQLRow.doubleOf( map.get( "fornecedor_montantepago" ) );
+            this.montanteCompras = SQLRow.doubleOf( map.get( "fornecedor_compras" ) );
+            this.montantePagos = SQLRow.doubleOf( map.get( "fornecedor_compraspago" ) );
+            this.montantePendentes = SQLRow.doubleOf( map.get( "fornecedor_compraspendentes" ) );
             return this;
         }
     }

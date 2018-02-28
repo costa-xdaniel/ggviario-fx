@@ -196,7 +196,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
 
     @Override
-    Label getTitleNode() {
+    Label getModalTitleView() {
         return this.modalTitle;
     }
 

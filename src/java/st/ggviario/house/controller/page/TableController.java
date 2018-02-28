@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class TableController<Type> {
+public class TableController< Type > {
 
     private NumberFormat moneyNumberFormat = NumberFormat.getInstance( Locale.FRANCE );
     private DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
@@ -21,8 +21,8 @@ public class TableController<Type> {
     }
 
 
-    Callback<TreeTableColumn<VendaController.VendaViewModel, Date>, TreeTableCell<VendaController.VendaViewModel, Date>> createDateFromatFactory() {
-        return param -> new TreeTableCell<VendaController.VendaViewModel, Date>(){
+    Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > createDateFromatFactory() {
+        return param -> new TreeTableCell< Type , Date>(){
             @Override
             protected void updateItem(Date item, boolean empty) {
                 super.updateItem(item, empty);

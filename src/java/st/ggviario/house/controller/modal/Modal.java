@@ -2,6 +2,7 @@ package st.ggviario.house.controller.modal;
 
 import com.jfoenix.controls.JFXDialog;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.SnackbarBuilder;
 
 import java.util.Map;
 
@@ -23,7 +24,9 @@ public interface Modal<R> {
 
     default void setOnCloseModal( OnCloseModal onCloseModal ){ }
 
-    default void setOnOperationResult( OnOperationResult<R> onOperationResult){ }
+    default void setOnModalResult(OnModalResult<R> onModalResult){ }
+
+    default void clear() {}
 
 
 
@@ -36,11 +39,11 @@ public interface Modal<R> {
 
     }
 
-    interface OnOperationResult<T> {
-        void onOperationSucessed( OperationResult<T> operationResult );
+    interface OnModalResult<T> {
+        void onModalResult(ModalResult<T> modalResult);
     }
 
-    interface OperationResult<T> {
+    interface ModalResult<T> {
 
         boolean isSucceed();
 
@@ -49,6 +52,8 @@ public interface Modal<R> {
         boolean isTerminated();
 
         T getResltValue();
+
+        SnackbarBuilder.MessageLevel getLevel();
 
         Map<String, Object > mapResults();
     }

@@ -58,11 +58,9 @@ public abstract class VendaController extends TableController< VendaController.V
         this.filtredList.addAll( this.vendaList );
         ObservableList< VendaViewModel > observableListVenda = FXCollections.observableList( this.filtredList );
 
-
         final TreeItem< VendaViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
         this.getTableVenda().setRoot(root);
         this.getTableVenda().setShowRoot(false);
-
     }
 
     private void defineEvents() {
@@ -98,7 +96,7 @@ public abstract class VendaController extends TableController< VendaController.V
     private void lodaModalNovaVenda() {
         if( this.modalNovaVenda == null){
             this.modalNovaVenda = ModalNovaVenda.load( this.getTipoVenda(), this.getFunctionLoadClienteNew(), (StackPane) this.rootPage);
-            this.modalNovaVenda.setOnOperationResult(operationResult -> {
+            this.modalNovaVenda.setOnModalResult(operationResult -> {
                 this.reloadVendaData( operationResult.getResltValue() );
                 this.pushAll();
             });

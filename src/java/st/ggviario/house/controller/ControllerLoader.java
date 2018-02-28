@@ -3,13 +3,19 @@ package st.ggviario.house.controller;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class ControllerLoader<Node, Controller> {
 
     private final ViewResource<Node, Controller> viewController;
-    private String location;
+    private URL location;
 
     public ControllerLoader(String location) {
+        this.location = getClass().getResource( location );
+        this.viewController = load();
+    }
+
+    public ControllerLoader(URL location) {
         this.location = location;
         this.viewController = load();
     }
@@ -21,7 +27,7 @@ public class ControllerLoader<Node, Controller> {
     private   ViewResource< Node, Controller > load(){
         ViewResource< Node, Controller > view = new ViewResource<>( );
         try{
-            view.loader = new FXMLLoader( getClass().getResource( location ) );
+            view.loader = new FXMLLoader( this.location );
             view.nodeView = view.loader.load();
             view.controller = view.loader.getController();
         } catch (IOException e) {

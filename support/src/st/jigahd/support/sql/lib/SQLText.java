@@ -2,7 +2,7 @@ package st.jigahd.support.sql.lib;
 
 public class SQLText {
     public static String normalize( String text ){
-        if( text == null ) return  null;
+        if( text == null || text.length()  == 0 ) return  null;
         int lenth = text.length();
         text = text.replace("  ", " " ).trim();
         if( lenth != text.length() )

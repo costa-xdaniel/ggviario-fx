@@ -10,7 +10,7 @@ public abstract class AbstractModal< R > implements Modal<R> {
     private JFXDialog dialogModal;
     private OnOpenModal onOpenModal;
     protected OnCloseModal onCloseModal;
-    protected OnOperationResult<R> onOperationResult;
+    protected OnModalResult<R> onModalResult;
     private StackPane stackPane;
 
     @Override
@@ -36,14 +36,14 @@ public abstract class AbstractModal< R > implements Modal<R> {
         return stackPane;
     }
 
-    void executeOnOperationResult( OperationResult<R> operationResult ){
-        if( this.onOperationResult != null )
-            this.onOperationResult.onOperationSucessed( operationResult );
+    void executeOnOperationResult( ModalResult<R> modalResult){
+        if( this.onModalResult != null )
+            this.onModalResult.onModalResult(modalResult);
     }
 
     @Override
     public void setTitle(String title) {
-        this.getTitleNode().setText( title );
+        this.getModalTitleView().setText( title );
     }
 
     @Override
@@ -62,8 +62,8 @@ public abstract class AbstractModal< R > implements Modal<R> {
     }
 
     @Override
-    public void setOnOperationResult( OnOperationResult<R> onOperationResult ) {
-        this.onOperationResult = onOperationResult;
+    public void setOnModalResult(OnModalResult<R> onModalResult) {
+        this.onModalResult = onModalResult;
     }
 
     JFXDialog.DialogTransition getDialogTransition(){
@@ -72,5 +72,5 @@ public abstract class AbstractModal< R > implements Modal<R> {
 
     abstract Region getContentRoot();
 
-    abstract Label getTitleNode();
+    abstract Label getModalTitleView();
 }

@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.ControllerLoader;
+import st.ggviario.house.controller.SnackbarBuilder;
 import st.ggviario.house.model.Cliente;
 import st.ggviario.house.model.Distrito;
 import st.ggviario.house.model.Sexo;
@@ -110,7 +111,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     }
 
     @Override
-    Label getTitleNode() {
+    Label getModalTitleView() {
         return this.modalTitle;
     }
 
@@ -239,7 +240,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     }
 
 
-    private class ReseultClient implements OperationResult< Cliente > {
+    private class ReseultClient implements ModalResult< Cliente > {
         private boolean success = false;
         private String message;
         private boolean terminated;
@@ -264,6 +265,11 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         @Override
         public Cliente getResltValue() {
             return cliente;
+        }
+
+        @Override
+        public SnackbarBuilder.MessageLevel getLevel() {
+            return null;
         }
 
         @Override

@@ -17,7 +17,7 @@ public class Venda {
     private String vendaFaturaNumero;
     private Double vandaQuantidade;
     private Double vendaQuantidadeProduto;
-    private Double vandaMontanteUnitario;
+    private Double vendaMontanteUnitario;
     private Double vendaMontanteBruto;
     private Double vendaMontanteDesconto;
     private Double vendaMontantePagar;
@@ -63,8 +63,8 @@ public class Venda {
         return vendaQuantidadeProduto;
     }
 
-    public Double getVandaMontanteUnitario() {
-        return vandaMontanteUnitario;
+    public Double getVendaMontanteUnitario() {
+        return vendaMontanteUnitario;
     }
 
     public Double getVendaMontanteBruto() {
@@ -109,6 +109,10 @@ public class Venda {
 
     public VendaEstado getVendaEstado() {
         return vendaEstado;
+    }
+
+    public Double getVendaMontantePendente() {
+        return this.vendaMontantePagar - this.vendaMontanteAmortizado;
     }
 
     public enum VendaEstado {
@@ -184,7 +188,7 @@ public class Venda {
             if( venda.vendaMontanteDesconto == null ) venda.vendaMontanteDesconto = 0x0.0p0;
             venda.vendaMontantePagar = this.montantePagar;
             venda.vendaMontanteAmortizado = this.montanteAmortizado;
-            venda.vandaMontanteUnitario = this.montanteUnitario;
+            venda.vendaMontanteUnitario = this.montanteUnitario;
 
             venda.vendaData = this.data;
             venda.vendaDataFinalizar = this.dataFinalizar;
