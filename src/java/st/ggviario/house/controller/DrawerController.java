@@ -2,7 +2,6 @@ package st.ggviario.house.controller;
 
 import com.jfoenix.controls.JFXRippler;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -34,32 +33,54 @@ public class DrawerController implements Page,  Initializable {
     private HomeController homeController;
     private OnClickMenuIcon onClickMenuIcon;
     private JFXRippler rippler;
+    private List<Menu> menuList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<Menu> list = loadMenus();
-        listView.setItems( list );
-        listView.setCellFactory(param -> new MenuItemCell( homeController ) );
+        this.menuList = new LinkedList<>();
+        this.structure();
+        this.defineEvents();
+        this.loadDataMenus();
+        if( this.menuList.size() > 1 ){
+            this.menuList.get( 1 ).setClickMe( true );
+        }
+        this.pushAll();
+    }
+
+    private void structure( ){
         this.rippler = new JFXRippler( this.iconMenu );
+        this.iconMenuArea.getChildren().add( 0, rippler );
+        this.listView.setCellFactory(param -> new MenuItemCell( homeController ) );
+
+    }
+
+    private void defineEvents(){
         this.rippler.setOnMouseClicked(event -> {
             if( this.onClickMenuIcon != null ) this.onClickMenuIcon.onClickMenuIcon();
         });
-        this.iconMenuArea.getChildren().add( 0, rippler );
+
+    }
+
+    private void pushAll(){
+        this.pushMenu( this.menuList );
+    }
+
+    private void pushMenu(List< Menu > menuList ){
+        this.listView.setItems( FXCollections.observableList( menuList ));
     }
 
     public void setOnClickMenuIcon( OnClickMenuIcon onClickMenuIcon  ){
         this.onClickMenuIcon = onClickMenuIcon;
     }
 
-    private ObservableList<Menu> loadMenus() {
-        List<Menu> menuItems = new LinkedList<>();
-        menuItems.add( new DrawerHeader() );
-        menuItems.add( new MenuItem("Dividas", getClass().getResource("/fxml/venda_divida.fxml") ) );
-        menuItems.add( new MenuItem("Venda", getClass().getResource("/fxml/venda_venda.fxml") ) );
-        menuItems.add( new MenuItem("Clientes", getClass().getResource("/fxml/cliente.fxml") ) );
-        menuItems.add( new MenuItem("Produtos", getClass().getResource("/fxml/produto.fxml") ) );
-        menuItems.add( new MenuItem("Fornecedor", getClass().getResource("/fxml/fornecedor.fxml") ) );
-        return FXCollections.observableList( menuItems );
+    private void loadDataMenus() {
+        this.menuList.add( new DrawerHeader() );
+        this.menuList.add( new MenuItem("Despesa", getClass().getResource("/fxml/page_despesa.fxml") ) );
+        this.menuList.add( new MenuItem("Dividas", getClass().getResource("/fxml/venda_divida.fxml") ) );
+        this.menuList.add( new MenuItem("Venda", getClass().getResource("/fxml/venda_venda.fxml") ) );
+        this.menuList.add( new MenuItem("Clientes", getClass().getResource("/fxml/cliente.fxml") ) );
+        this.menuList.add( new MenuItem("Produtos", getClass().getResource("/fxml/produto.fxml") ) );
+        this.menuList.add( new MenuItem("Fornecedor", getClass().getResource("/fxml/fornecedor.fxml") ) );
     }
 
     public void setHomeController(HomeController homeController) {

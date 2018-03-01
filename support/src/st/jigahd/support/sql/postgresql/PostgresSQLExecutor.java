@@ -11,6 +11,7 @@ public abstract class PostgresSQLExecutor {
 
     PostgresSQL postgresSQL;
     CallableStatement statement;
+    private Connection con;
 
 
     PostgresSQLExecutor(PostgresSQL postgresSQL) {
@@ -23,10 +24,12 @@ public abstract class PostgresSQLExecutor {
 
 
     void execute() throws SQLException {
-        Connection con = this.postgresSQL.getCurrentConnection();
+        if( this.con == null || con.isClosed() ){
+            this.con = this.postgresSQL.getCurrentConnection();
+        }
         String query = this.postgresSQL.getProcessedQuery();
         if( this.statement != null && this.postgresSQL.autoCloseStatement() ) PostgresSQL.closeStatement( statement );
-        this.statement = con.prepareCall( query );
+        this.statement = this.con.prepareCall( query );
         this.setParameters();
         this.statement.execute();
     }

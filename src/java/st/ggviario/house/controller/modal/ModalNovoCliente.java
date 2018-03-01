@@ -32,7 +32,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
 
     public static ModalNovoCliente load(StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovoCliente > loader = new ControllerLoader<>("/fxml/includs/modal_novo_cliente.fxml");
-        ModalNovoCliente cliente = loader.getViewController().getController();
+        ModalNovoCliente cliente = loader.getController();
         cliente.createDialogModal( stackPane );
         return cliente;
     }

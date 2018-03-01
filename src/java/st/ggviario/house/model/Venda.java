@@ -137,7 +137,8 @@ public class Venda {
             this.showName = showName;
         }
 
-        public static VendaEstado find( int estado ) {
+        public static VendaEstado find( Short estado ) {
+            if( estado == null ) return null;
             for( VendaEstado ve: values() ){
                 if( ve.estado == estado ) return ve;
             }

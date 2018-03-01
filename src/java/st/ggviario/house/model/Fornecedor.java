@@ -1,6 +1,7 @@
 package st.ggviario.house.model;
 
 import st.jigahd.support.sql.SQLRow;
+import st.jigahd.support.sql.lib.SQLResource;
 
 import java.util.Date;
 import java.util.Map;
@@ -19,9 +20,9 @@ public class Fornecedor {
     private String fornecedorLocal;
     private FornecedorEstado fornecedorEstado;
     private Date fornecedorDataregisto;
-    private Double fornecedorMontanteCompras;
-    private Double fornecedorMontantePagos;
-    private Double fornecedorMonntantePendentes;
+    private Double fornecedorMontanteCompras = 0x0.0p0;
+    private Double fornecedorMontantePagos = 0x0.0p0;
+    private Double fornecedorMonntantePendentes = 0x0.0p0;
 
     public UUID getFornecedorId() {
         return fornecedorId;
@@ -79,6 +80,11 @@ public class Fornecedor {
         return fornecedorMonntantePendentes;
     }
 
+    @Override
+    public String toString() {
+        return this.getFornecedorNome();
+    }
+
     public enum FornecedorEstado {
 
         ;
@@ -120,9 +126,9 @@ public class Fornecedor {
         private Short estado;
         private String estadoDesc;
         private Date dataRegisto;
-        private Double montanteCompras;
-        private Double montantePagos;
-        private Double montantePendentes;
+        private Double montanteCompras = 0x0.0p0;
+        private Double montantePagos = 0x0.0p0;
+        private Double montantePendentes = 0x0.0p0;
 
         public Fornecedor build(){
             Fornecedor fornecedor = new Fornecedor();
@@ -230,9 +236,9 @@ public class Fornecedor {
             this.telemovel = SQLRow.stringOf( map.get( "fornecedor_telemovel" ) );
             this.mail = SQLRow.stringOf( map.get( "fornecedor_mail" ) );
             this.local = SQLRow.stringOf( map.get( "fornecedor_local" ));
-            this.montanteCompras = SQLRow.doubleOf( map.get( "fornecedor_compras" ) );
-            this.montantePagos = SQLRow.doubleOf( map.get( "fornecedor_compraspago" ) );
-            this.montantePendentes = SQLRow.doubleOf( map.get( "fornecedor_compraspendentes" ) );
+            this.montanteCompras = SQLResource.coalesce( SQLRow.doubleOf( map.get( "fornecedor_compras" ) ), 0x0.0p0 );
+            this.montantePagos = SQLResource.coalesce( SQLRow.doubleOf( map.get( "fornecedor_compraspago" ) ), 0x0.0p0 );
+            this.montantePendentes = SQLResource.coalesce( SQLRow.doubleOf( map.get( "fornecedor_compraspendentes" ) ), 0x0.0p0 );
             return this;
         }
     }

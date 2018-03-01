@@ -1,10 +1,9 @@
 package st.jigahd.support.sql;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.postgresql.util.PGobject;
 
-import java.io.InputStream;
-import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -75,39 +74,31 @@ public class SQLRow implements Serializable, Map< String, Object >{
     }
 
     public Boolean asBoolean( String columnName ){
-        return (Boolean) get( columnName );
+        return SQLRow.booleanOf( this.get( columnName ) );
     }
 
     public Byte asByte(String columnName){
-        return (Byte) get( columnName );
+        return SQLRow.byteOf( get( columnName ) );
     }
 
     public Short asShort( String columnName ){
-        return (Short) get( columnName );
+        return SQLRow.shortOf(  get( columnName ) );
     }
 
     public Integer asInteger( String columnName ){
-        return (Integer) get( columnName );
+        return SQLRow.integerOf( get( columnName ) );
     }
 
     public Long asLong(String columnName ){
-        return (Long) get( columnName );
+        return SQLRow.longOf( get( columnName ) );
     }
 
     public Float asFloat( String columnName ){
-        return (Float) get( columnName );
+        return SQLRow.floatOf( get( columnName ) );
     }
 
     public Double asDouble( String columnName ){
         return SQLRow.doubleOf( get( columnName ) );
-    }
-
-    public BigDecimal asNumber( String columnName ){
-        return (BigDecimal) get( columnName );
-    }
-
-    public Character asCharater( String columnName ){
-        return (Character) get( columnName );
     }
 
     public String asString( String columnName ){
@@ -115,54 +106,94 @@ public class SQLRow implements Serializable, Map< String, Object >{
     }
 
     public UUID asUUID(String columnName ){
-        return (UUID) get( columnName );
-    }
-
-    public InputStream asInputSteran( String columnName ){
-        return (InputStream) get( columnName );
-    }
-
-    public Reader asReader( String columnName ){
-        return (Reader) get( columnName );
+        return SQLRow.uuidOf( get( columnName ) );
     }
 
     public Date asDate( String columnName ){
         return SQLRow.dateOf( get( columnName ) );
     }
 
-    public Calendar asCalendar( String columnName ){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime( asDate(columnName ) );
-        return calendar;
+    public static Boolean booleanOf(Object o) {
+        if( o == null ) return null;
+        if( o instanceof String ) return Boolean.valueOf( String.valueOf( o ) );
+        if( o instanceof  JsonElement )  return ((JsonElement) o).getAsBoolean();
+        return (Boolean) o;
+    }
+
+    public static Byte byteOf( Object o ){
+        return (Byte) o;
     }
 
     public static Short shortOf(Object o ){
         if( o == null ) return null;
         if( o instanceof Short ) return (Short) o;
-        if( o instanceof Double ) return ((Double) o).shortValue();
+        if( o instanceof Number ) return ((Number) o).shortValue();
+        if( o instanceof String && ((String) o).length() > 0) return Short.valueOf( String.valueOf( o ) );
+        if( o instanceof  String ) return null;
+        if( o instanceof BigDecimal ) return ((BigDecimal)o ).shortValueExact();
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsShort();
         return (Short) o;
+    }
+
+    public static Integer integerOf(Object o) {
+        if( o == null ) return null;
+        if( o instanceof Integer ) return (Integer) o;
+        if( o instanceof Number ) return ((Number) o).intValue();
+        if( o instanceof String && ((String) o).length() > 0 ) return Integer.valueOf( String.valueOf( o ) );
+        if( o instanceof  String ) return null;
+        if( o instanceof BigDecimal ) return ((BigDecimal)o ).intValueExact();
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsInt();
+        return (Integer) o;
+    }
+
+    public static Long longOf( Object o) {
+        if( o == null ) return null;
+        if( o instanceof Long ) return (Long) o;
+        if( o instanceof Number ) return  ((Number) o).longValue();
+        if( o instanceof String && ((String) o).length() > 0) return Long.valueOf( String.valueOf( o ) );
+        if( o instanceof  String ) return null;
+        if( o instanceof BigDecimal ) return ((BigDecimal)o ).longValueExact();
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsLong();
+        return (Long) o;
+    }
+
+    public static Float floatOf( Object o) {
+        if( o == null ) return null;
+        if( o instanceof Float ) return (Float) o;
+        if( o instanceof Number ) return  ((Number) o).floatValue();
+        if( o instanceof String&& ((String) o).length() >0 ) return Float.valueOf( String.valueOf( o ) );
+        if( o instanceof  String ) return null;
+        if( o instanceof BigDecimal ) return ((BigDecimal)o ).floatValue();
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsFloat();
+        return (Float) o;
+    }
+
+    public static Double doubleOf(Object o) {
+        if( o == null ) return null;
+        if( o instanceof Double ) return (Double) o;
+        if( o instanceof Number ) return  ((Number) o).doubleValue();
+        if( o instanceof String && ((String) o).length()>0 ) return Double.valueOf( String.valueOf( o ) );
+        if( o instanceof  String ) return null;
+        if( o instanceof BigDecimal ) return ((BigDecimal)o ).doubleValue();
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsDouble();
+        return (Double) o;
     }
 
     public static UUID uuidOf(Object o) {
         if( o == null ) return null;
         if( o instanceof UUID ) return (UUID) o;
         if( o instanceof String ) return UUID.fromString((String) o);
+        if( o instanceof JsonElement ) return UUID.fromString( ((JsonElement) o).getAsString() );
         return (UUID) o;
     }
 
     public static String stringOf(Object o) {
         if( o == null ) return null;
         if( o instanceof String )return (String) o;
+        if( o instanceof JsonElement ) return ((JsonElement) o).getAsString();
         if( o instanceof PGobject ){
         }
         return String.valueOf( o );
-    }
-
-    public static Double doubleOf(Object o) {
-        if( o == null ) return null;
-        if( o instanceof Double ) return (Double) o;
-        if( o instanceof BigDecimal ) return ((BigDecimal)o ).doubleValue();
-        return (Double) o;
     }
 
     public static Date dateOf( Object o) {
@@ -185,7 +216,7 @@ public class SQLRow implements Serializable, Map< String, Object >{
                     return dateFormat.parse( String.valueOf( o ) );
                 }
             }
-
+            if( o instanceof  JsonElement ) return dateOf( ((JsonElement) o).getAsString() );
             return (Date) o;
         } catch ( Exception ex ){
             ex.printStackTrace();
@@ -193,15 +224,6 @@ public class SQLRow implements Serializable, Map< String, Object >{
         }
 
     }
-
-    public static Integer integerOf(Object o) {
-        return (Integer) o;
-    }
-
-    public static Boolean booleanOf(Object o) {
-        return (Boolean) o;
-    }
-
 
     @Override
     public int size() {

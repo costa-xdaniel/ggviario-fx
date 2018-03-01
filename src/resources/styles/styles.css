@@ -193,6 +193,16 @@
     -fx-min-width:  250px;
 }
 
+
+.form JFXToggleButton {
+    -jfx-default-color: md-primary-color;
+    -fx-text-fill: md-text-color;
+    -fx-prompt-text-fill: md-text-color;
+    -fx-pref-width: 250px;
+    -fx-max-width:  250px;
+    -fx-min-width:  250px;
+}
+
 .form-simple.form JFXTextField {
     -fx-pref-width: 300px;
     -fx-max-width:  300px;
@@ -324,7 +334,7 @@
 
 
 
-.venda-form-list-clients JFXListView{
+.operacao-form-list JFXListView{
     -fx-pref-width: filed-size-long;
     -fx-min-width:  filed-size-long;
     -fx-max-width:  filed-size-long;
@@ -335,7 +345,7 @@
 }
 
 
-.venda-form-list-clients JFXTextField{
+.operacao-form-list JFXTextField{
     -fx-pref-width: filed-size-long;
     -fx-min-width:  filed-size-long;
     -fx-max-width:  filed-size-long;
@@ -351,6 +361,13 @@
 
 
 .venda-form-form JFXComboBox {
+    -fx-pref-width: filed-size-normal;
+    -fx-min-width:  filed-size-normal;
+    -fx-max-width:  filed-size-normal;
+}
+
+
+.venda-form-form JFXToggleButton {
     -fx-pref-width: filed-size-normal;
     -fx-min-width:  filed-size-normal;
     -fx-max-width:  filed-size-normal;

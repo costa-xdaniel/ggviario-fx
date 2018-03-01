@@ -8,6 +8,7 @@ public class MenuItem implements Menu {
 
     private final URL contentPageLink;
     private String name;
+    private boolean clickMe;
 
     public MenuItem( String name, URL contentPageLink ) {
         this.name = name;
@@ -26,6 +27,16 @@ public class MenuItem implements Menu {
     @Override
     public URL getFXMLUrl() {
         return getClass().getResource("/fxml/includs/menu_item.fxml");
+    }
+
+    @Override
+    public void setClickMe(boolean b) {
+        this.clickMe = b;
+    }
+
+    @Override
+    public boolean isClickMe() {
+        return clickMe;
     }
 
     public URL getContentPageLink() {

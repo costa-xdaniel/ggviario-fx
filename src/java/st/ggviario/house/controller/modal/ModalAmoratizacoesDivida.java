@@ -35,8 +35,8 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
     public static ModalAmoratizacoesDivida load(StackPane stackPane){
         ControllerLoader<Pane, ModalAmoratizacoesDivida> loader = new ControllerLoader<>("/fxml/includs/modal_detalhes_venda_amortizacao.fxml");
-        loader.getViewController().getController().createDialogModal( stackPane );
-        return loader.getViewController().getController();
+        loader.getController().createDialogModal( stackPane );
+        return loader.getController();
     }
 
     @FXML

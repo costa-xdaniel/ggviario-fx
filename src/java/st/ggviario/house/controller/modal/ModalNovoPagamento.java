@@ -32,8 +32,8 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
 
     public static ModalNovoPagamento load(StackPane stackPane ){
         ControllerLoader<AnchorPane, ModalNovoPagamento > loader = new ControllerLoader<>("/fxml/includs/modal_novo_pagamento.fxml");
-        loader.getViewController().getController().createDialogModal( stackPane );
-        return loader.getViewController().getController();
+        loader.getController().createDialogModal( stackPane );
+        return loader.getController();
     }
 
     @FXML

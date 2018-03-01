@@ -14,9 +14,7 @@ public class MenuItemCell extends ListCell<Menu> {
 
     public MenuItemCell(HomeController homeController) {
         this.homeController = homeController;
-
     }
-
 
     @Override
     protected void updateItem(Menu item, boolean empty ) {
@@ -28,7 +26,6 @@ public class MenuItemCell extends ListCell<Menu> {
                 FXMLLoader loader = new FXMLLoader(item.getFXMLUrl());
                 Node root = loader.load();
                 DrawerItem controller = loader.getController();
-
                 controller.setRootController(  this.homeController );
                 controller.setMenu( item );
                 setGraphic(root);

@@ -53,10 +53,10 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ControllerLoader< AnchorPane,  DrawerController > loader = new ControllerLoader<>("/fxml/includs/drawer.fxml");
-        DrawerController controller = loader.getViewController().getController();
+        DrawerController controller = loader.getController();
         controller.setOnClickMenuIcon(this::closeDrawer);
         controller.setHomeController( this );
-        AnchorPane view = loader.getViewController().getNodeView();
+        AnchorPane view = loader.getNode();
         this.drawer.setSidePane( view );
         StackPane.setAlignment( view, Pos.TOP_LEFT );
 
@@ -80,7 +80,7 @@ public class HomeController implements Initializable {
         this.vboxMenuArea.getChildren().add( 0, this.rippler );
 
         this.root.getChildren().remove( this.drawer );
-        this.closeDrawer();
+        this.openDrawer();
     }
 
     private void openDrawer() {

@@ -28,18 +28,21 @@ public class MenuItemController implements DrawerItem, Initializable {
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
-
         item.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->{
-            this.load();
-            this.rootController.setDocumentRoot( this.nodeContent, this.page );
+            onClickMenu();
         });
+    }
+
+    private void onClickMenu(){
+        this.load();
+        this.rootController.setDocumentRoot( this.nodeContent, this.page );
     }
 
     private void load() {
         if( this.page == null ){
             ControllerLoader< Node, Page > loader = new ControllerLoader<>(this.menuItem.getContentPageLink() );
-            this.page = loader.getViewController().getController();
-            this.nodeContent = loader.getViewController().getNodeView();
+            this.page = loader.getController();
+            this.nodeContent = loader.getNode();
             this.page.onSetRoot( this.rootController.getRoot() );
             this.page.onSetRootPage( this.rootController.getRootPage() );
             this.page.accept( this.rootController.getPrimaryStage(), this.rootController.getScene() );
@@ -51,6 +54,9 @@ public class MenuItemController implements DrawerItem, Initializable {
     public void setMenu( Menu menu) {
         this.menuItem = (MenuItem) menu;
         this.itemAction.setText( menuItem.getName() );
+        if( menuItem.isClickMe() ){
+            this.onClickMenu();
+        }
     }
 
     @Override

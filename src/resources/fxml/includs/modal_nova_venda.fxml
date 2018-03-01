@@ -65,7 +65,7 @@
                      </HBox.margin>
                      <styleClass>
                         <String fx:value="form" />
-                        <String fx:value="venda-form-list-clients" />
+                        <String fx:value="operacao-form-list" />
                      </styleClass>
                   </AnchorPane>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />

@@ -1,5 +1,6 @@
 package st.ggviario.house.model;
 
+import com.google.gson.JsonObject;
 import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
@@ -57,7 +58,7 @@ public class Unidade {
             return unidade;
         }
 
-        public UnidadeBuilder id(UUID id) {
+        public UnidadeBuilder setId(UUID id) {
             this.id = id;
             return this;
         }
@@ -88,10 +89,28 @@ public class Unidade {
         }
 
         public UnidadeBuilder load( Map<String, Object > map ){
-            this.id = SQLRow.uuidOf( map.get( "unidade_id" ) );
-            this.nome = SQLRow.stringOf( map.get( "unidade_nome" ) );
-            this.codigo = SQLRow.stringOf( map.get( "unidade_codigo" )  );
-            this.estado = SQLRow.shortOf(  map.get( "unidade_estado" ) );
+            return loader(
+                    map.get("unidade_id"),
+                    map.get("unidade_nome"),
+                    map.get("unidade_codigo"),
+                    map.get("unidade_estado")
+            );
+        }
+
+        public UnidadeBuilder load(JsonObject element){
+            return loader(
+                    element.get("unidade_id"),
+                    element.get( "unidade_nome" ),
+                    element.get( "unidade_codigo" ),
+                    element.get(  "unidade_estado" )
+            );
+        }
+
+        private UnidadeBuilder loader(Object id, Object nome, Object codigo, Object estado ){
+            this.id = SQLRow.uuidOf(id);
+            this.nome = SQLRow.stringOf(nome);
+            this.codigo = SQLRow.stringOf(codigo);
+            this.estado = SQLRow.shortOf(estado);
             return this;
         }
 

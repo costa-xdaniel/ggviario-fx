@@ -49,7 +49,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
 
     public static ModalNovoFornecedor load(StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovoFornecedor > loader = new ControllerLoader<>("/fxml/includs/modal_novo_fornecedor.fxml");
-        ModalNovoFornecedor modal = loader.getViewController().getController();
+        ModalNovoFornecedor modal = loader.getController();
         modal.createDialogModal( stackPane );
         modal.structure();
         modal.defineEvent();
@@ -117,10 +117,10 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
                     .onResultQuery(row -> {
                         SQLResult res = new SQLResult( row );
                         result.message = res.getMessage();
-                        result.success = res.isResult();
+                        result.success = res.isSuccess();
                         result.map = res.getData();
 
-                        if( res.isResult() ){
+                        if( res.isSuccess() ){
                             result.fornecedor = builder.load( (Map<String, Object> ) res.getData().get("fornecedor") ).build();
                             result.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             result.message = "Novo fornecedor cadastrado com sucesso";

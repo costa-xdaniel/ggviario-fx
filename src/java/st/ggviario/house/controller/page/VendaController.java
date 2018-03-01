@@ -1,16 +1,16 @@
 package st.ggviario.house.controller.page;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTreeTableRow;
+import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -56,15 +56,7 @@ public abstract class VendaController extends TableController< VendaController.V
     }
 
     private void pushAll() {
-        push( this.vendaList );
-    }
-
-    private void push(List<VendaViewModel> showValues) {
-        ObservableList< VendaViewModel > observableListVenda = FXCollections.observableList( showValues );
-        final TreeItem< VendaViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
-        this.getTableVenda().setRoot(root);
-        this.getTableVenda().setShowRoot(false);
-        this.getTableVenda().refresh();
+        push( this.vendaList, this.getTableVenda()  );
     }
 
     private void defineEvents() {
@@ -148,6 +140,8 @@ public abstract class VendaController extends TableController< VendaController.V
             vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
             this.vendaList.add( new VendaViewModel( vendaBuilder.build() ) );
         });
+
+        System.out.println( vendaList );
     }
 
     @Override
@@ -166,7 +160,7 @@ public abstract class VendaController extends TableController< VendaController.V
                 if( cliente.getClienteCompletName().toLowerCase().contains( textFilter ) ) search.add( next );
                 else if( venda.getProducto().getProdutoNome().toLowerCase().contains( textFilter ) ) search.add( next );
             }
-            this.push( search );
+            this.push( search, this.getTableVenda() );
         }
         this.oldTextFilter = textFilter;
     }
