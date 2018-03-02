@@ -11,6 +11,7 @@ import java.util.UUID;
 public class Cliente {
 
     private UUID clienteId;
+    private String clienteCodigo;
     private Sexo sexo;
     private Distrito distrito;
     private TipoDocumento tipoDocumento;
@@ -29,10 +30,15 @@ public class Cliente {
     private Double clienteMontantePendente;
     private String clienteTelemovel;
     private Date clienteDataNascimento;
+    private Date clienteDataRegisto;
 
 
     public UUID getClienteId() {
         return clienteId;
+    }
+
+    public String getClienteCodigo() {
+        return clienteCodigo;
     }
 
     public Sexo getSexo() {
@@ -103,6 +109,10 @@ public class Cliente {
         return clienteDataNascimento;
     }
 
+    public Date getClienteDataRegisto() {
+        return clienteDataRegisto;
+    }
+
     public String getClienteCompletName() {
         String nomeCompleto = this.clienteNome + " " + SQLResource.coalesce( this.clienteApelido, "" );
         return SQLText.normalize( nomeCompleto );
@@ -139,6 +149,7 @@ public class Cliente {
 
     public static class ClienteBuilder{
         private UUID id;
+        private String codigo;
         private String nome;
         private String apelido;
         private Sexo sexo;
@@ -158,10 +169,12 @@ public class Cliente {
         private Double montantePago;
         private Double montantePendente;
         private Date dataNascimento;
+        private Date dataRegisto;
 
         public Cliente build(){
             Cliente cliente = new Cliente();
             cliente.clienteId = id;
+            cliente.clienteCodigo = this.codigo;
             cliente.clienteNome = nome;
             cliente.clienteApelido = apelido;
             cliente.sexo = sexo;
@@ -180,12 +193,18 @@ public class Cliente {
             cliente.clienteMontanteTotal = montanteTotal == null? 0.0 : montanteTotal;
             cliente.clienteMontantePago = montantePago == null? 0.0 : montantePago;
             cliente.clienteMontantePendente = montantePendente == null? 0.0 : montantePendente;
+            cliente.clienteDataRegisto = this.dataRegisto;
 
             return cliente;
         }
 
         public ClienteBuilder id(UUID id) {
             this.id = id;
+            return this;
+        }
+
+        public ClienteBuilder setCodigo(String codigo) {
+            this.codigo = codigo;
             return this;
         }
 
@@ -244,26 +263,9 @@ public class Cliente {
             return this;
         }
 
-        public ClienteBuilder load(SQLRow row) {
-            this.id =  SQLRow.uuidOf( row.get("cliente_id" ) );
-            this.nome = SQLRow.stringOf( row.get( "cliente_nome" ) );
-            this.apelido = SQLRow.stringOf( row.get( "cliente_apelido" ) );
-            this.telefone = SQLRow.stringOf(  row.get( "cliente_telefone" ) );
-            this.telemovel = SQLRow.stringOf( row.get( "cliente_telemovel" ) );
-            this.morada = SQLRow.stringOf( row.get( "cliente_morada" ) );
-            this.sexo = Sexo.from( SQLRow.shortOf(  row.get( "cliente_sexo" ) ) );
-            this.mail =  SQLRow.stringOf( row.get( "cliente_mail" ) );
-            this.localTrabalho = SQLRow.stringOf( row.get( "cliente_localtrabalho" ) );
-            this.montanteCompra = SQLRow.doubleOf( row.get( "cliente_monatntecompra" ) );
-            this.montanteDivida = SQLRow.doubleOf( row.get( "cliente_montantedivida" ) );
-            this.montanteTotal = SQLRow.doubleOf( row.get( "cliente_montantetotal" ) );
-            this.montantePago = SQLRow.doubleOf( row.get( "cliente_montantepago" ) );
-            this.montantePendente = SQLRow.doubleOf( row.get( "cliente_montantependente" ) );
-            return this;
-        }
-
         public ClienteBuilder load(Map<String, Object> map) {
             this.id =  SQLRow.uuidOf( map.get("cliente_id" ) );
+            this.codigo = SQLRow.stringOf( map.get( "cliente_codigo" ) );
             this.nome = SQLRow.stringOf( map.get( "cliente_nome" ) );
             this.apelido = SQLRow.stringOf( map.get( "cliente_apelido" ) );
             this.telefone = SQLRow.stringOf(  map.get( "cliente_telefone" ) );
@@ -277,6 +279,7 @@ public class Cliente {
             this.montanteTotal = SQLRow.doubleOf( map.get( "cliente_montantetotal" ) );
             this.montantePago = SQLRow.doubleOf( map.get( "cliente_montantepago" ) );
             this.montantePendente = SQLRow.doubleOf( map.get( "cliente_montantependente" ) );
+            this.dataRegisto = SQLRow.dateOf( map.get( "cliente_dataregisto" ) );
             return this;
         }
 

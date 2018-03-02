@@ -50,5 +50,9 @@ public class TableController< Type extends RecursiveTreeObject< Type> > {
         };
     }
 
+    void columnMinWidth(TreeTableColumn column, double width ){
+        column.setMinWidth( width );
+    }
+
 
 }
