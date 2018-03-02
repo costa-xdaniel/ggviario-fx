@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FornecedorController extends TableController< FornecedorController.FornecedorViewModel > implements Page, Initializable {
+public class PageFornecedor extends TableController< PageFornecedor.FornecedorViewModel > implements Page, Initializable {
 
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< FornecedorViewModel > tableViewFornecedor;
@@ -88,7 +88,7 @@ public class FornecedorController extends TableController< FornecedorController.
         );
 
         this.columnFornecedorNIF.getStyleClass().add("nif");
-        this.columnFornecedorRegisto.setCellFactory( createDateFromatFactory() );
+        this.columnFornecedorRegisto.setCellFactory( createDateFormatTableCell( DD_MM_YYYY ) );
         this.columnFornecedorNome.getStyleClass().add( "table-column-left" );
         this.columnFornecedorTelemovel.getStyleClass().add( "table-column-left"  );
         this.columnFornecedorTelefone.getStyleClass().add( "table-column-left" );

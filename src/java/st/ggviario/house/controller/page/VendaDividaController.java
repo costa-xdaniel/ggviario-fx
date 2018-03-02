@@ -120,11 +120,11 @@ public class VendaDividaController extends VendaController {
 
         this.columnVendaDividaData.setMaxWidth( 110 );
         this.columnVendaDividaData.setMinWidth( 110 );
-        this.columnVendaDividaData.setCellFactory( this.createDateFromatFactory() );
+        this.columnVendaDividaData.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
 
         this.columnVendaDividaDataFinalizar.setMaxWidth( 110 );
         this.columnVendaDividaDataFinalizar.setMinWidth( 110 );
-        this.columnVendaDividaDataFinalizar.setCellFactory( this.createDateFromatFactory() );
+        this.columnVendaDividaDataFinalizar.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
 
 
         this.columnVendaDividaProduto.setMinWidth( 80 );

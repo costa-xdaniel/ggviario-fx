@@ -105,6 +105,8 @@ public class PageDespesa extends TableController<PageDespesa.DespesaModelView> i
         this.columnEstado.setMinWidth( 135 );
         this.columnEstado.setMaxWidth( 135 );
 
+        this.columnData.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
+        this.columnRegisto.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
     }
 
     private void defineEvents(){

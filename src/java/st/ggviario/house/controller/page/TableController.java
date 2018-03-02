@@ -19,16 +19,17 @@ import java.util.Locale;
 
 public class TableController< Type extends RecursiveTreeObject< Type> > {
 
-    private NumberFormat moneyNumberFormat = NumberFormat.getInstance( Locale.FRANCE );
-    private DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
+    public static final NumberFormat MONEY = NumberFormat.getInstance( Locale.FRANCE );
+    public static final DateFormat DD_MM_YYYY = new SimpleDateFormat( "dd-MM-yyyy" );
 
-    public TableController(){
-        this.moneyNumberFormat.setMaximumFractionDigits( 2 );
-        this.moneyNumberFormat.setMinimumFractionDigits( 2 );
+
+    static {
+        MONEY.setMaximumFractionDigits( 2 );
+        MONEY.setMinimumFractionDigits( 2 );
     }
 
 
-    protected void push( List<Type> showValues, JFXTreeTableView< Type > tableView ) {
+    void push(List<Type> showValues, JFXTreeTableView<Type> tableView) {
         ObservableList< Type > observableListVenda = FXCollections.observableList( showValues );
         final TreeItem< Type > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
         tableView.setRoot(root);
@@ -37,7 +38,7 @@ public class TableController< Type extends RecursiveTreeObject< Type> > {
     }
 
 
-    Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > createDateFromatFactory() {
+    Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > createDateFormatTableCell(DateFormat dateFormat) {
         return param -> new TreeTableCell< Type , Date>(){
             @Override
             protected void updateItem(Date item, boolean empty) {

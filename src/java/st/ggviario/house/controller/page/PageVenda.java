@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class VendaVendaController extends VendaController {
+public class PageVenda extends VendaController {
 
 
     @FXML
@@ -104,13 +104,13 @@ public class VendaVendaController extends VendaController {
         columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
-        columnVendaDividaData.setCellFactory( createDateFromatFactory());
+        columnVendaDividaData.setCellFactory( createDateFormatTableCell( DD_MM_YYYY ));
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
         columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
 
         this.columnVendaVendaRegisto.setCellValueFactory( param -> param.getValue().getValue().vendaDataRegisto );
-        this.columnVendaVendaRegisto.setCellFactory( createDateFromatFactory());
+        this.columnVendaVendaRegisto.setCellFactory( createDateFormatTableCell( DD_MM_YYYY ));
 
 
         this.tableViewVendaVenda.getColumns().setAll(
