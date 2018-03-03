@@ -11,7 +11,7 @@ public class Despesa {
     private UUID despesaId;
     private String despesaCodigo;
     private Fornecedor fornecedor;
-    private Producto producto;
+    private Produto produto;
     private Unidade unidade;
     private Colaborador colaborador;
     private Colaborador colaboradorAtualizacao;
@@ -35,8 +35,8 @@ public class Despesa {
         return fornecedor;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public Produto getProduto() {
+        return produto;
     }
 
     public Unidade getUnidade() {
@@ -137,7 +137,7 @@ public class Despesa {
         private UUID id;
         private  String codigo;
         private Fornecedor fornecedor;
-        private Producto producto;
+        private Produto produto;
         private Unidade unidade;
         private Colaborador colaborador;
         private Colaborador colaboradorAtualizacao;
@@ -157,7 +157,7 @@ public class Despesa {
             Despesa despesa = new Despesa();
             despesa.estado = this.estado;
             despesa.unidade = this.unidade;
-            despesa.producto = this.producto;
+            despesa.produto = this.produto;
             despesa.despesaId = this.id;
             despesa.fornecedor = this.fornecedor;
             despesa.colaborador = this.colaborador;
@@ -190,8 +190,8 @@ public class Despesa {
             return this;
         }
 
-        public DespesaBuilder setProducto(Producto producto) {
-            this.producto = producto;
+        public DespesaBuilder setProduto(Produto produto) {
+            this.produto = produto;
             return this;
         }
 

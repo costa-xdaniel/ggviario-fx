@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Preco {
 
     private UUID precoId;
-    private Producto producto;
+    private Produto produto;
     private Unidade unidade;
     private Double precoQuantidadeProduto;
     private Double precoCustoUnidade;
@@ -17,8 +17,8 @@ public class Preco {
         return precoId;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public Produto getProduto() {
+        return produto;
     }
 
     public Unidade getUnidade() {
@@ -36,14 +36,14 @@ public class Preco {
     @Override
     public String toString() {
         if( this.unidade != null ) return this.unidade.toString();
-        if( this.producto != null ) return this.producto.toString();
+        if( this.produto != null ) return this.produto.toString();
         return super.toString();
     }
 
     public static class PrecoBuilder {
 
         private UUID id;
-        private Producto producto;
+        private Produto produto;
         private Unidade unidade;
         private Double quantidadeProduto;
         private Double custoUnidade;
@@ -51,7 +51,7 @@ public class Preco {
         public Preco build( ){
             Preco equivalencia = new Preco();
             equivalencia.precoId = this.id;
-            equivalencia.producto = this.producto;
+            equivalencia.produto = this.produto;
             equivalencia.unidade = this.unidade;
             equivalencia.precoQuantidadeProduto = this.quantidadeProduto;
             equivalencia.precoCustoUnidade = this.custoUnidade;
@@ -63,8 +63,8 @@ public class Preco {
             return this;
         }
 
-        public PrecoBuilder produto(Producto producto) {
-            this.producto = producto;
+        public PrecoBuilder produto(Produto produto) {
+            this.produto = produto;
             return this;
         }
 

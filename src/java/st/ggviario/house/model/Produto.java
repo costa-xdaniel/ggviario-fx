@@ -5,7 +5,7 @@ import st.jigahd.support.sql.SQLRow;
 import java.util.Map;
 import java.util.UUID;
 
-public class Producto {
+public class Produto {
 
     private UUID produtoId;
     private String produtoCodigo;
@@ -83,8 +83,8 @@ public class Producto {
             this.categoria = categoria;
         }
 
-        public Producto build() {
-            Producto produto = new Producto();
+        public Produto build() {
+            Produto produto = new Produto();
             produto.produtoId = this.id;
             produto.produtoCodigo = codigo;
             produto.produtoNome = this.nome;

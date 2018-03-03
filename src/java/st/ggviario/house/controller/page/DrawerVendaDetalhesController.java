@@ -215,7 +215,7 @@ public class DrawerVendaDetalhesController implements Initializable {
         this.labelClienteNome.setText( venda.getCliente().getClienteCompletName() );
         this.labelClienteMontentePagar.setText( moneyFormatter(this.venda.getCliente().getClienteMontanteTotal())  );
         this.labelClienteMontantePendente.setText( moneyFormatter(this.venda.getCliente().getClienteMontantePendente())  );
-        this.labelProdutoNome.setText( this.venda.getProducto().getProdutoNome() );
+        this.labelProdutoNome.setText( this.venda.getProduto().getProdutoNome() );
         this.labelUnidadeNome.setText( this.venda.getUnidade().getUnidadeNome()+" ("+this.venda.getUnidade().getUnidadeCodigo()+")" );
         this.labelVendaQuantidade.setText( this.numeberFormat.format( this.venda.getVandaQuantidade() ) );
         this.labelVendaMontanteUnitario.setText( this.numeberFormat.format( this.venda.getVendaMontanteUnitario() ) );

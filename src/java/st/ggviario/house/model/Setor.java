@@ -113,6 +113,7 @@ public class Setor {
         public Setor build(){
             Setor setor = new Setor();
             setor.setorId = this.id;
+            setor.setorNome = this.nome;
             setor.setorCodigo = this.codigo;
             setor.setorPosicao = this.posicao;
             setor.setorTotalSubSetor = this.totalSubSetor;
@@ -188,8 +189,8 @@ public class Setor {
 
         public SetorBuilder load(Map< String, Object > map ){
             this.id = SQLRow.uuidOf( map.get( "setor_id" ) );
-            this.codigo = SQLRow.stringOf( map.get( "setor_codigo" ) );
             this.nome = SQLRow.stringOf( map.get( "setor_nome" ) );
+            this.codigo = SQLRow.stringOf( map.get( "setor_codigo" ) );
             this.posicao = SQLRow.shortOf( map.get( "setor_posicao" ) );
             this.nivel = SQLRow.shortOf( map.get( "setor_nivel" ) );
             this.totalSubSetor = SQLRow.shortOf( map.get( "setor_totalsubsetores" ) );
@@ -198,7 +199,6 @@ public class Setor {
             this.dataAtualizacao = SQLRow.dateOf( map.get( "setor_dataatualizacao" ) );
             return this;
         }
-
     }
 
 

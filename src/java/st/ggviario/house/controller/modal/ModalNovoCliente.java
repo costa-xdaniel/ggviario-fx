@@ -273,7 +273,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         }
 
         @Override
-        public Cliente getResltValue() {
+        public Cliente getResultValue() {
             return cliente;
         }
 

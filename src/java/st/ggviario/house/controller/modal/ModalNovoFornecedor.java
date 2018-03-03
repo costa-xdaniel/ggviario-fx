@@ -219,7 +219,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         }
 
         @Override
-        public Fornecedor getResltValue() {
+        public Fornecedor getResultValue() {
             return this.fornecedor;
         }
 

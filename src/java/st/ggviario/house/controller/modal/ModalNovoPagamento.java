@@ -349,7 +349,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         }
 
         @Override
-        public Movimento getResltValue() {
+        public Movimento getResultValue() {
 
             return movimento;
         }

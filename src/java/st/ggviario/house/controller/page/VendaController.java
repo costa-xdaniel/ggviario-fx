@@ -126,7 +126,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
     void loadData( String text ) {
         Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
@@ -157,7 +157,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
                 Venda venda  = next.venda;
                 Cliente cliente  = next.venda.getCliente();
                 if( cliente.getClienteCompletName().toLowerCase().contains( textFilter ) ) search.add( next );
-                else if( venda.getProducto().getProdutoNome().toLowerCase().contains( textFilter ) ) search.add( next );
+                else if( venda.getProduto().getProdutoNome().toLowerCase().contains( textFilter ) ) search.add( next );
             }
             this.push( search, this.getTableVenda() );
         }
@@ -213,7 +213,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
         private VendaViewModel(Venda venda ) {
             vendaFaturaNumero = new SimpleStringProperty( venda.getVendaFaturaNumero() );
             vendaCliente = new SimpleStringProperty( venda.getCliente().getClienteCompletName() );
-            vendaProduto = new SimpleStringProperty( venda.getProducto().getProdutoNome() );
+            vendaProduto = new SimpleStringProperty( venda.getProduto().getProdutoNome() );
             vendaQuantidade = new SimpleStringProperty( venda.getVandaQuantidade() + " "+ venda.getUnidade().getUnidadeCodigo() );
             vendaData = new SimpleObjectProperty<>( venda.getVendaData() );
             vendaMontantePagar = new SimpleObjectProperty<>( venda.getVendaMontantePagar() );

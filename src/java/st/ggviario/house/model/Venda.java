@@ -8,7 +8,7 @@ import java.util.*;
 public class Venda {
 
     private UUID vendaId;
-    private Producto producto;
+    private Produto produto;
     private Unidade unidade;
     private Cliente cliente;
     private TipoVenda tipoVenda;
@@ -33,8 +33,8 @@ public class Venda {
         return vendaId;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public Produto getProduto() {
+        return produto;
     }
 
     public Unidade getUnidade() {
@@ -161,7 +161,7 @@ public class Venda {
     public static  class VendaBuilder {
 
         private UUID id;
-        private Producto producto;
+        private Produto produto;
         private Unidade unidade;
         private Cliente cliente;
         private TipoVenda tipoVenda;
@@ -184,7 +184,7 @@ public class Venda {
         public Venda build(){
             Venda venda = new Venda();
             venda.vendaId = this.id;
-            venda.producto = this.producto;
+            venda.produto = this.produto;
             venda.unidade = this.unidade;
             venda.cliente = this.cliente;
             venda.tipoVenda = this.tipoVenda;
@@ -213,8 +213,8 @@ public class Venda {
             return this;
         }
 
-        public VendaBuilder produto(Producto producto) {
-            this.producto = producto;
+        public VendaBuilder produto(Produto produto) {
+            this.produto = produto;
             return this;
         }
 

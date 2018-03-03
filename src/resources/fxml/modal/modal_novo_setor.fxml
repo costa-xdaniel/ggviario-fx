@@ -42,7 +42,7 @@
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="textFieldCategoriaNome" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Nome" unFocusColor="#009688" GridPane.rowIndex="1">
+                  <JFXTextField fx:id="textFieldSetorNome" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Nome" unFocusColor="#009688" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
@@ -102,7 +102,7 @@
             </Separator>
             <StackPane>
                <children>
-                  <JFXButton fx:id="buttomPayNow" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="Pagar" textFill="#fffdfd" StackPane.alignment="CENTER_RIGHT">
+                  <JFXButton fx:id="buttonRegistar" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="REGISTAR" textFill="#fffdfd" StackPane.alignment="CENTER_RIGHT">
                      <padding>
                         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                      </padding>

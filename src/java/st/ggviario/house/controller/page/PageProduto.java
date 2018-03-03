@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
 import st.ggviario.house.controller.HomeController;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.ContentPage;
-import st.ggviario.house.model.Producto;
+import st.ggviario.house.model.Produto;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
@@ -42,7 +42,7 @@ public class PageProduto  extends RowsController<PageProduto.FornecedorMovelView
 
 
     @FXML
-    private TableView<Producto> tableViewProduto;
+    private TableView<Produto> tableViewProduto;
 
     @FXML
     private StackPane stackPane;
@@ -51,32 +51,32 @@ public class PageProduto  extends RowsController<PageProduto.FornecedorMovelView
     private JFXButton buttonNewProduto;
 
     @FXML
-    private TableColumn<Producto, String> columnProdutoNome;
+    private TableColumn<Produto, String> columnProdutoNome;
 
     @FXML
-    private TableColumn<Producto, String> columnProdutoCodigo;
+    private TableColumn<Produto, String> columnProdutoCodigo;
 
     @FXML
-    private TableColumn<Producto, String> columnProdutoCategoria;
+    private TableColumn<Produto, String> columnProdutoCategoria;
 
     @FXML
-    private TableColumn<Producto, Number> columnProdutoStock;
+    private TableColumn<Produto, Number> columnProdutoStock;
 
     @FXML
-    private TableColumn<Producto, Number> columnProdutoCusto;
+    private TableColumn<Produto, Number> columnProdutoCusto;
 
     @FXML
-    private TableColumn<Producto, Number> columnProdutoProducao;
+    private TableColumn<Produto, Number> columnProdutoProducao;
 
     @FXML
-    private TableColumn<Producto, Number> columnProdutoVenda;
+    private TableColumn<Produto, Number> columnProdutoVenda;
 
     @FXML
-    private TableColumn<Producto, Number> columnProdutoCompra;
+    private TableColumn<Produto, Number> columnProdutoCompra;
 
 
 
-    private List<Producto> produtoList = new LinkedList<>();
+    private List<Produto> produtoList = new LinkedList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,9 +126,9 @@ public class PageProduto  extends RowsController<PageProduto.FornecedorMovelView
         this.columnProdutoNome.setMinWidth( 200 );
         this.columnProdutoCategoria.setMinWidth( 70 );
 
-        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Producto>(){
+        this.tableViewProduto.setRowFactory(produtoTableView -> new TableRow<Produto>(){
             @Override
-            protected void updateItem(Producto item, boolean empty) {
+            protected void updateItem(Produto item, boolean empty) {
                 super.updateItem(item, empty);
                 if( item == null || empty ){
                     setItem( item );
@@ -152,7 +152,7 @@ public class PageProduto  extends RowsController<PageProduto.FornecedorMovelView
 
     public void loadProdutos() {
 
-        Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
         Categoria.CategoriaBuilder cat  = new Categoria.CategoriaBuilder();
 
         builder.categoria( cat.nome( "Aviario" ).build() );
@@ -171,7 +171,7 @@ public class PageProduto  extends RowsController<PageProduto.FornecedorMovelView
             this.produtoList.add( builder.codigo("21").nome( "Cosinha" ).build() );
 
 
-        ObservableList<Producto> observableListProduto = FXCollections.observableList(this.produtoList);
+        ObservableList<Produto> observableListProduto = FXCollections.observableList(this.produtoList);
         this.tableViewProduto.setItems(observableListProduto);
     }
 

@@ -18,10 +18,12 @@ public class SQLRow implements Serializable, Map< String, Object >{
     Map<String, Integer> headerMap;
     Map< String, Object > map;
     private Object[ ] values;
+    private Gson gson;
 
     protected SQLRow(Map<String, Integer> headerMap){
         this.headerMap = headerMap;
         this.values = new Object[ this.headerMap.size() ];
+        this.gson = new Gson();
     }
 
     protected void set( int index, Object value ){
@@ -103,6 +105,11 @@ public class SQLRow implements Serializable, Map< String, Object >{
 
     public String asString( String columnName ){
         return SQLRow.stringOf( this.get( columnName ) );
+    }
+
+    public Map< String, Object > asMapJsonn( String columnName ){
+        String document = SQLRow.stringOf( this.get( columnName ) );
+        return this.gson.fromJson( document, Map.class );
     }
 
     public UUID asUUID(String columnName ){

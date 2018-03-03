@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
@@ -17,15 +18,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoPagamento">
+<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovaProducao">
    <children>
       <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="anchorHeader">
                <children>
-                  <Label fx:id="modalTitle" styleClass="modal-title" text="Nova Amortizaçao" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="modalTitle" styleClass="modal-title" text="Nova produção" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <AnchorPane fx:id="iconAreaCloseModal" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="iconArea" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <MaterialDesignIconView glyphName="" styleClass="icon-close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
@@ -38,44 +39,32 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="72.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="72.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="72.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="72.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="textFieldMovimentoMontante" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Montente" unFocusColor="#009688" GridPane.rowIndex="4">
+                  <JFXTextField fx:id="textFieldProducaoQuantidade" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Quantidade" unFocusColor="#009688" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXDatePicker fx:id="datePickerMovimentoData" prefHeight="26.0" prefWidth="172.0" promptText="Data" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+                  <JFXComboBox fx:id="comboxProduto" promptText="Produto">
+                     <GridPane.margin>
+                        <Insets top="24.0" />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <JFXComboBox fx:id="comboxSector" promptText="Sector" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets top="24.0" />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <JFXDatePicker fx:id="datePickeProducaoData" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets top="32.0" />
                      </GridPane.margin>
                   </JFXDatePicker>
-                  <JFXTextField fx:id="textFieldMovimentoDocumento" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Documento" unFocusColor="#009688" GridPane.rowIndex="3">
-                     <GridPane.margin>
-                        <Insets top="32.0" />
-                     </GridPane.margin>
-                  </JFXTextField>
-                  <Label styleClass="details-area-field" text="Fatura">
-                     <GridPane.margin>
-                        <Insets bottom="4.0" top="16.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="vendaFaturaNumero" styleClass="detail-area-field-value" text="D7338/18" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Label>
-                  <Separator prefWidth="200.0" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets bottom="16.0" top="16.0" />
-                     </GridPane.margin>
-                  </Separator>
                </children>
                <styleClass>
                   <String fx:value="form-simple" />
@@ -86,16 +75,16 @@
                </VBox.margin>
             </GridPane>
             <GridPane>
-              <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Label styleClass="details-area-field" text="Montante total">
+                  <Label styleClass="details-area-field" text="Total no setor">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -103,23 +92,16 @@
                         <Insets bottom="4.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="labelVendaMontantePendenteDesc" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="details-area-field" text="Pendente" GridPane.columnIndex="1">
+                  <Label fx:id="labelTotalSetor" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
+                  </Label>
+                  <Label fx:id="labelTotalDia" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="41" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="details-area-field" text="Total do dia" GridPane.columnIndex="1">
                      <padding>
                         <Insets bottom="4.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="labelVendaDividaMontantePendente" alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20  000,11" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="labelVendaDividaMontanteTotalPagar" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
                   </Label>
                </children>
                <VBox.margin>
@@ -133,7 +115,7 @@
             </Separator>
             <StackPane>
                <children>
-                  <JFXButton fx:id="buttomPayNow" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="Pagar" textFill="#fffdfd" StackPane.alignment="CENTER_RIGHT">
+                  <JFXButton fx:id="buttonRegistar" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="REGISTAR" textFill="#fffdfd" StackPane.alignment="CENTER_RIGHT">
                      <padding>
                         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                      </padding>

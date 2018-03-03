@@ -10,8 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.modal.ModalNovaProducao;
 import st.ggviario.house.controller.modal.ModalNovoSetor;
 import st.ggviario.house.model.Producao;
+import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLResource;
@@ -25,21 +27,24 @@ import java.util.ResourceBundle;
 
 public class PageProducao extends RowsController< PageProducao.ProducaoModelView > implements Page, Initializable {
 
-    @FXML private JFXTreeTableView< ProducaoModelView > tableProducao;
-    @FXML private AnchorPane fabNewPorducaoArea;
-    @FXML  private JFXButton fabNewPorducaoButtom;
-    @FXML  private MaterialDesignIconView fabNewPorducaoIcon;
+    @FXML private JFXTreeTableView< ProducaoModelView > treeTableProducao;
+    @FXML private AnchorPane fabNewProducaoArea;
+    @FXML  private JFXButton fabNewProducaoButtom;
+    @FXML  private MaterialDesignIconView fabNewProducaoIcon;
     @FXML  private JFXListView< Setor > listViewSetor;
-    @FXML private AnchorPane fabNewCategoriaArea;
-    @FXML  private JFXButton fabNewCategoriaButton;
-    @FXML private MaterialDesignIconView fabNewCategoriaIcon;
+    @FXML private AnchorPane fabNewSetorArea;
+    @FXML  private JFXButton fabNewSetorButton;
+    @FXML private MaterialDesignIconView fabNewSetorIcon;
 
 
     private List< ProducaoModelView > producaoModelViewList;
-    private List<Setor> setorAtivoList;
-    private List<Setor> setorFechadoList;
+    private List< Setor> setorProducaoList;
+    private List< Setor> sectorAtivosList;
+    private List< Setor> setorFechadoList;
+    private List< Produto > produtoList;
 
     private ModalNovoSetor modalNovoSetor;
+    private ModalNovaProducao modalNovaProducao;
     private StackPane rootPage;
 
 
@@ -49,8 +54,8 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
         this.structure();
         this.defineEvents();
         this.loadData();
-        this.pushSetorAtivoProtegido();
-        this.push( producaoModelViewList, this.tableProducao );
+        this.pushSetor( this.setorProducaoList );
+        this.push( producaoModelViewList, this.treeTableProducao );
     }
 
     @Override
@@ -59,58 +64,89 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
     }
 
     private void init(){
-        this.setorAtivoList = new LinkedList<>();
+        this.sectorAtivosList = new LinkedList<>();
+        this.setorProducaoList = new LinkedList<>();
         this.setorFechadoList = new LinkedList<>();
         this.producaoModelViewList = new LinkedList<>();
+        this.produtoList = new LinkedList<>();
     }
 
     private void structure(){
-
     }
 
     private void defineEvents(){
-        this.fabNewCategoriaArea.setOnMouseClicked(event -> {
-            openModalNovoSetor();
-        });
+        this.fabNewSetorArea.setOnMouseClicked(event -> onOpenModalNovoSetor());
+        this.fabNewProducaoArea.setOnMouseClicked(event -> onOpemModalNovaProducao() );
+        this.fabNewProducaoButtom.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
+        this.fabNewProducaoIcon.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
     }
 
     private void loadData(){
         this.loadSetorData();
-        this.loadProducaoData();
+        this.loadDataProducao();
+        this.loadDataProduto();
     }
 
 
-    private void loadProducaoData(){
+    private void loadDataProducao(){
 
+    }
+
+    private void loadDataProduto(){
+        this.produtoList.clear();
+        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
+        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        sql.query( "funct_load_produto_producao" )
+            .withJsonb( ( String ) null )
+            .callFunctionTable()
+                .onResultQuery(row -> produtoList.add( builder.load( row ).build() ));
     }
 
     private void loadSetorData(){
-        Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
+        Setor.SetorBuilder builder = new Setor.SetorBuilder();
+        Setor.SetorBuilder setorSuperBuilder = new Setor.SetorBuilder();
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        this.setorProducaoList.clear();
+        this.setorFechadoList.clear();
         sql.query( "funct_load_setor" )
             .withJsonb( ( String ) null )
             .callFunctionTable()
                 .onResultQuery(row -> {
-                    Setor setor = setorBuilder.load( row ).build();
+                    builder.load( row );
+
+                    if( row.get( "setor_super" ) !=  null ){
+                        setorSuperBuilder.load( row.asMapJsonn( "setor_super" ) );
+                        builder.setSetorSuper( setorSuperBuilder.build() );
+                    }
+
+                    Setor setor  = builder.build();
                     if(SQLResource.existIn( setor.getSetorEstado(), Setor.SetorEstado.ATIVO, Setor.SetorEstado.PROTEGIDO ) )
-                        this.setorAtivoList.add( setor );
+                        this.setorProducaoList.add( setor );
                     else this.setorFechadoList.add( setor );
+
+                    if(SQLResource.existIn( setor.getSetorEstado(), Setor.SetorEstado.ATIVO ) ) this.sectorAtivosList.add( setor );
                 })
         ;
     }
 
-    private void pushSetorAtivoProtegido(){
-        this.listViewSetor.setItems(FXCollections.observableList( this.setorAtivoList ) );
+    private void pushSetor(List<Setor> setorList ){
+        this.listViewSetor.setItems(FXCollections.observableList( setorList ) );
+        this.listViewSetor.refresh();
 
     }
 
-    private void pushSetorFechadoProtegido(){
-        this.listViewSetor.setItems(FXCollections.observableList( this.setorFechadoList ) );
-    }
 
-    private void openModalNovoSetor( ){
+    private void onOpenModalNovoSetor( ){
         loadModalNovoSetor();
+        this.modalNovoSetor.pushSetorSupers( this.setorProducaoList);
         this.modalNovoSetor.openModal();
+    }
+
+    private void onOpemModalNovaProducao(){
+        this.loadModalNovaProducao();
+        this.modalNovaProducao.pushSetor( this.sectorAtivosList );
+        this.modalNovaProducao.pushProduto( this.produtoList );
+        this.modalNovaProducao.openModal();
     }
 
 
@@ -120,7 +156,19 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
             this.modalNovoSetor.setOnModalResult(modalResult -> {
                 if( modalResult.isSucceed() ){
                     this.loadSetorData();
-                    this.pushSetorAtivoProtegido();
+                    this.pushSetor( this.setorProducaoList);
+                }
+            });
+        }
+    }
+
+    private void loadModalNovaProducao(){
+        if( this.modalNovaProducao == null ){
+            this.modalNovaProducao = ModalNovaProducao.load( this.rootPage );
+            this.modalNovaProducao.setOnModalResult(modalResult -> {
+                if( modalResult.isSucceed() ){
+                    this.loadDataProducao();
+                    this.push( this.producaoModelViewList, this.treeTableProducao );
                 }
             });
         }

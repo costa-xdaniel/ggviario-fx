@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modal.ModalNovaDespesa;
 import st.ggviario.house.model.Despesa;
 import st.ggviario.house.model.Fornecedor;
-import st.ggviario.house.model.Producto;
+import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Unidade;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
@@ -121,7 +121,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
     private void loadDataDespesa( ){
         this.despesaModelViewList.clear();
         Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
-        Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
         Fornecedor.FornecedorBuilder fornecedorBuilder = new Fornecedor.FornecedorBuilder();
 
@@ -131,7 +131,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
             .callFunctionTable()
                 .onResultQuery(row -> {
                     builder.load( row );
-                    builder.setProducto( produtoBuilder.load( row ).build() );
+                    builder.setProduto( produtoBuilder.load( row ).build() );
                     builder.setFornecedor( fornecedorBuilder.load( row ).build() );
                     builder.setUnidade( unidadeBuilder.load( row ).build() );
                     this.despesaModelViewList.add( new DespesaModelView(  builder.build() ) );
@@ -179,7 +179,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
             this.despesa = despesa;
             this.codigo = new SimpleStringProperty( despesa.getDespesaCodigo() );
             this.fornecedor = new SimpleStringProperty( despesa.getFornecedor().getFornecedorNome() );
-            this.produto = new SimpleStringProperty( despesa.getProducto().getProdutoNome() );
+            this.produto = new SimpleStringProperty( despesa.getProduto().getProdutoNome() );
             this.quantiade = new SimpleStringProperty( despesa.getDespesaQuantidade() + " "+despesa.getUnidade().getUnidadeCodigo() );
             this.montanteTotal = new SimpleObjectProperty<>( despesa.getDespesaMontanteTotal() );
             this.montanteAmortizado = new SimpleObjectProperty<>( despesa.getDespesaMontanteAmortizado() );

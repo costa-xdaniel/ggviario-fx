@@ -66,7 +66,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private JFXListView< Cliente > listViewCliente;
 
     @FXML
-    private JFXComboBox< Producto > comboxProduto;
+    private JFXComboBox<Produto> comboxProduto;
 
     @FXML
     private JFXComboBox<Preco> comboxPrecoUnidades;
@@ -120,12 +120,12 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private JFXButton buttonVendaFeito;
 
 
-    private Producto productoVasio;
+    private Produto produtoVasio;
     private Preco precoVasio;
 
     private String functionLoadCliente;
 
-    private List< Producto > productoList = new LinkedList<>();
+    private List<Produto> produtoList = new LinkedList<>();
     private List< Cliente > clienteList = new LinkedList<>();
     private Map< UUID, List<Preco> > mapListEquivalencia = new LinkedHashMap<>();
 
@@ -175,9 +175,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void createVoidItems() {
-        Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
         builder.nome("Selecione");
-        this.productoVasio = builder.build();
+        this.produtoVasio = builder.build();
 
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         precoBuilder.unidade( new Unidade.UnidadeBuilder().nome( "Selecione" ).build() );
@@ -380,7 +380,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         ModalNovaVenda.CalcResult cal = this.onCalculateValue();
         Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder()
                 .cliente( this.listViewCliente.getSelectionModel().getSelectedItem() )
-                .produto( cal.producto )
+                .produto( cal.produto)
                 .unidade( cal.unidade )
                 .montanteUnitario( cal.vendaMontanteUnitario )
                 .quantidade( cal.vendaQuantidade )
@@ -396,14 +396,14 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private RegisterVendaResult validateForm() {
         RegisterVendaResult registerVendaResult = new RegisterVendaResult();
         ModalNovaVenda.CalcResult cal = this.onCalculateValue();
-        Producto produto = this.comboxProduto.getSelectionModel().getSelectedItem();
+        Produto produto = this.comboxProduto.getSelectionModel().getSelectedItem();
         Preco preco = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
 
 
         registerVendaResult.success = false;
         if( this.listViewCliente.getSelectionModel().getSelectedItem() == null ){
             registerVendaResult.message = "Nenum cliente seleicionado!";
-        } else if( produto  == null || produto.equals( this.productoVasio ) ){
+        } else if( produto  == null || produto.equals( this.produtoVasio) ){
             registerVendaResult.message = "Nenhum produto selecionado!";
         } else if( preco == null || preco.equals( this.precoVasio ) ){
             registerVendaResult.message = "Nenhuma unidade selecionada!";
@@ -432,8 +432,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             this.modalNovoCliente.setOnModalResult(operationResult -> {
                 if( operationResult.isSucceed() ){
                     this.loadClienteDatasource();
-                    boolean res = this.findClienteSelecter( operationResult.getResltValue() );
-                    this.textFieldClienteSearch.setText( operationResult.getResltValue().getClienteCompletName() );
+                    boolean res = this.findClienteSelecter( operationResult.getResultValue() );
+                    this.textFieldClienteSearch.setText( operationResult.getResultValue().getClienteCompletName() );
                 }
             });
         }
@@ -441,12 +441,12 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
     private void pushToView() {
 
-        this.comboxProduto.setItems( FXCollections.observableList( this.productoList ) );
+        this.comboxProduto.setItems( FXCollections.observableList( this.produtoList) );
         this.onSearchCliente( null );
     }
 
-    private void onSelectProduto(Producto oldItem, Producto newItem ) {
-        if( newItem != null && !newItem.equals( this.productoVasio ) )
+    private void onSelectProduto(Produto oldItem, Produto newItem ) {
+        if( newItem != null && !newItem.equals( this.produtoVasio) )
             this.comboxPrecoUnidades.setItems( FXCollections.observableList( this.mapListEquivalencia.get( newItem.getProdutoId()) ) );
         else this.comboxPrecoUnidades.setItems( FXCollections.observableList( Arrays.asList( this.precoVasio ) ) );
 
@@ -475,8 +475,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             calcResult.vendaMontanteUnitario = calcResult.preco.getPrecoCustoUnidade();
         }
 
-        calcResult.producto = this.comboxProduto.getSelectionModel().getSelectedItem();
-        if( calcResult.producto == null || calcResult.producto.equals( this.productoVasio ) ) calcResult.producto = null;
+        calcResult.produto = this.comboxProduto.getSelectionModel().getSelectedItem();
+        if( calcResult.produto == null || calcResult.produto.equals( this.produtoVasio) ) calcResult.produto = null;
 
         calcResult.vendaQuantidade = this.getVendaQuantidade();
         calcResult.vendaMontanteDesconto = this.getVendaDesconto();
@@ -518,12 +518,12 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void loadProdutoDatasource() {
-        this.productoList.clear();
+        this.produtoList.clear();
         this.mapListEquivalencia.clear();
 
-        this.productoList.add( this.productoVasio );
+        this.produtoList.add( this.produtoVasio);
 
-        Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
@@ -532,8 +532,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
         sql.query("funct_load_produto_venda") .withJsonb( (String) null ) .callFunctionTable().onResultQuery( row ->{
             produtoBuilder.load( row );
-            Producto produto;
-            productoList.add( produto = produtoBuilder.build() );
+            Produto produto;
+            produtoList.add( produto = produtoBuilder.build() );
             List<Preco> equivalenciaList = new LinkedList<>();
             equivalenciaList.add( this.precoVasio );
             String documentEquivalencia = String.valueOf( row.get("produto_precos"));
@@ -595,7 +595,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             return  execute( venda,
                     sql.query("funct_reg_venda_venda")
                             .withUUID( colaborador.getColaboradorId() )
-                            .withUUID( venda.getProducto().getProdutoId() )
+                            .withUUID( venda.getProduto().getProdutoId() )
                             .withUUID( venda.getUnidade().getUnidadeId() )
                             .withUUID( venda.getCliente().getClienteId() )
                             .withUUID( conta == null? null : conta.getContaId() )
@@ -610,7 +610,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.actionRegister.put(TipoVenda.DIVIDA, venda -> {
             PostgresSQLQueryBuilder query = sql.query( "funct_reg_venda_divida" );
             query.withUUID( colaborador.getColaboradorId() );
-            Producto p = venda.getProducto();
+            Produto p = venda.getProduto();
             query.withUUID( p.getProdutoId() );
             query.withUUID( venda.getUnidade().getUnidadeId() );
             query.withUUID( venda.getCliente().getClienteId() );
@@ -656,7 +656,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         private Double vendaMontantePagar;
         private Double vendaMontanteUnitario;
         private Unidade unidade;
-        private Producto producto;
+        private Produto produto;
     }
 
     public static class RegisterVendaResult implements ModalResult< List > {
@@ -685,7 +685,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         }
 
         @Override
-        public List< RegisterVendaResult > getResltValue() {
+        public List< RegisterVendaResult > getResultValue() {
             return this.vendasResult;
         }
 

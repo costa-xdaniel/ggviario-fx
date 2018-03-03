@@ -1,10 +1,7 @@
 package st.jigahd.support.sql.postgresql;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import javafx.util.Pair;
-import org.json.JSONObject;
-import org.postgresql.core.Oid;
 import org.postgresql.util.PGobject;
 
 import java.io.InputStream;
@@ -152,8 +149,7 @@ public class PostgresSQLQueryBuilder {
             this.mapReturns = mapReturs;
             return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException( );
+            throw new RuntimeException( e );
         }
     }
 

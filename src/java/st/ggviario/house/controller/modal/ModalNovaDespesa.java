@@ -46,7 +46,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
     @FXML private AnchorPane anchorHeader;
     @FXML private AnchorPane iconAreaCloseModal;
     @FXML private JFXListView< Fornecedor > listViewFornecedor;
-    @FXML private JFXComboBox< Producto > comboxProduto;
+    @FXML private JFXComboBox<Produto> comboxProduto;
     @FXML private JFXComboBox< Unidade > comboxUnidades;
     @FXML private Label labelFornecedorNome;
     @FXML private Label labelFornecedorLocal;
@@ -67,11 +67,11 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
 
     private JFXRippler ripllerCloseModa;
     private List< Fornecedor > fornecedorList;
-    private List< Producto > productoList;
+    private List<Produto> produtoList;
     private Map< UUID, List< Unidade > > productoListMap;
     private NumberFormat moneyFormat;
     private Unidade unidadeVoid;
-    private Producto productoVoid;
+    private Produto produtoVoid;
     private String oldText;
 
 
@@ -99,13 +99,13 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.fornecedorList = new LinkedList<>();
         this.productoListMap = new LinkedHashMap<>();
-        this.productoList = new LinkedList<>();
+        this.produtoList = new LinkedList<>();
         this.moneyFormat = NumberFormat.getInstance( Locale.FRANCE );
         this.moneyFormat.setMaximumFractionDigits( 2 );
         this.moneyFormat.setMinimumFractionDigits( 2 );
         this.moneyFormat.setMinimumIntegerDigits( 1 );
         this.unidadeVoid = new Unidade();
-        this.productoVoid = new Producto();
+        this.produtoVoid = new Produto();
         this.datePickeDespesaData.setValue( LocalDate.now() );
     }
 
@@ -193,7 +193,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
         }
     }
 
-    private void onSelectProduto( Producto oldProduto, Producto newProduto ){
+    private void onSelectProduto(Produto oldProduto, Produto newProduto ){
         if( newProduto == null || newProduto.getProdutoId() == null ){
             this.comboxProduto.setValue( null );
             this.comboxUnidades.setItems( null );
@@ -225,7 +225,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
         Double unit;
 
         despesaBuilder.setFornecedor( this.listViewFornecedor.getSelectionModel().getSelectedItem() );
-        despesaBuilder.setProducto( this.comboxProduto.getValue() );
+        despesaBuilder.setProduto( this.comboxProduto.getValue() );
         despesaBuilder.setUnidade( this.comboxUnidades.getValue() );
         despesaBuilder.setQuantidade( quant = SQLRow.doubleOf( this.textFieldDespesaQuantidade.getText() ) );
         despesaBuilder.setMontanteUnitario( unit = SQLRow.doubleOf( this.textFieldDespesaMontanteUnitirio.getText() ) );
@@ -257,7 +257,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
         }
 
         if( res.despesa.getFornecedor() == null ) res.message = "Selecione um fornecedor!";
-        else if( res.despesa.getProducto() == null ) res.message = "Selecione um produto!";
+        else if( res.despesa.getProduto() == null ) res.message = "Selecione um produto!";
         else if( res.despesa.getUnidade() == null ) res.message = "Selecione uma uniade";
         else if( res.despesa.getDespesaMontanteUnitario() == null ) res.message = "Informe o custo unitario";
         else if( quant == null ) res.message = "Informe a quantidade do produto!";
@@ -293,7 +293,7 @@ arg_colaborador_id uuid,
             sql.query( "ggviario.funct_reg_despesa" )
                 .withUUID( colaborador.getColaboradorId() )
                 .withUUID( res.despesa.getFornecedor().getFornecedorId() )
-                .withUUID( res.despesa.getProducto().getProdutoId() )
+                .withUUID( res.despesa.getProduto().getProdutoId() )
                 .withUUID( res.despesa.getUnidade().getUnidadeId() )
                 .withNumeric( res.despesa.getDespesaQuantidade() )
                 .withNumeric( res.despesa.getDespesaMontanteUnitario() )
@@ -364,12 +364,12 @@ arg_colaborador_id uuid,
     }
 
     private void loadDataProduto(){
-        this.productoList.clear();
+        this.produtoList.clear();
         this.productoListMap.clear();
-        this.productoList.add( this.productoVoid );
+        this.produtoList.add( this.produtoVoid);
 
         PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-        Producto.ProdutoBuilder produtoBuilder = new Producto.ProdutoBuilder();
+        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
         Gson gson = new Gson();
         //Load produtos
@@ -377,7 +377,7 @@ arg_colaborador_id uuid,
                 .withJsonb( ( String )null )
                 .callFunctionTable()
                 .onResultQuery(row -> {
-                    Producto producto = produtoBuilder.load( row ).build();
+                    Produto produto = produtoBuilder.load( row ).build();
                     String documnetUnidade = row.asString( "produto_unidades" );
                     List< Object > list = gson.fromJson( documnetUnidade, List.class );
 
@@ -387,21 +387,21 @@ arg_colaborador_id uuid,
                         System.out.println( String.valueOf( o ) );
                         unidades.add( unidadeBuilder.load((Map<String, Object>) o).build() );
                     }
-                    this.productoListMap.put( producto.getProdutoId(), unidades );
-                    this.productoList.add( producto );
+                    this.productoListMap.put( produto.getProdutoId(), unidades );
+                    this.produtoList.add(produto);
                 });
     }
 
     private void pushAll(){
         this.pushFornecedor( this.fornecedorList );
-        this.pushPorduto( this.productoList );
+        this.pushPorduto( this.produtoList);
     }
 
     private void pushFornecedor( List<Fornecedor > list ){
         this.listViewFornecedor.setItems(FXCollections.observableList( list ) );
     }
 
-    private void pushPorduto( List<Producto > list ){
+    private void pushPorduto( List<Produto> list ){
         this.comboxProduto.setItems(FXCollections.observableList( list ) );
     }
 
@@ -434,7 +434,7 @@ arg_colaborador_id uuid,
         }
 
         @Override
-        public Despesa getResltValue() {
+        public Despesa getResultValue() {
             return this.despesa;
         }
 
