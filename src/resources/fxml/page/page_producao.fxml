@@ -46,7 +46,7 @@
       </BorderPane>
  </children>
    <stylesheets>
-      <URL value="@../styles/styles.css" />
-      <URL value="@../styles/tree-table-styles.css" />
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/tree-table-styles.css" />
    </stylesheets>
 </AnchorPane>

@@ -75,13 +75,13 @@ public class DrawerController implements Page,  Initializable {
 
     private void loadDataMenus() {
         this.menuList.add( new DrawerHeader() );
-        this.menuList.add( new MenuItem("Produção", getClass().getResource("/fxml/page_producao.fxml") ) );
-        this.menuList.add( new MenuItem("Despesa", getClass().getResource("/fxml/page_despesa.fxml") ) );
-        this.menuList.add( new MenuItem("Dividas", getClass().getResource("/fxml/page_venda_divida.fxml") ) );
-        this.menuList.add( new MenuItem("Venda", getClass().getResource("/fxml/page_venda_venda.fxml") ) );
-        this.menuList.add( new MenuItem("Clientes", getClass().getResource("/fxml/cliente.fxml") ) );
-        this.menuList.add( new MenuItem("Produtos", getClass().getResource("/fxml/page_produto.fxml") ) );
-        this.menuList.add( new MenuItem("Fornecedor", getClass().getResource("/fxml/page_fornecedor.fxml") ) );
+        this.menuList.add( new MenuItem("Produção", getClass().getResource("/fxml/page/page_producao.fxml") ) );
+        this.menuList.add( new MenuItem("Despesa", getClass().getResource("/fxml/page/page_despesa.fxml") ) );
+        this.menuList.add( new MenuItem("Dividas", getClass().getResource("/fxml/page/page_venda_divida.fxml") ) );
+        this.menuList.add( new MenuItem("Venda", getClass().getResource("/fxml/page/page_venda_venda.fxml") ) );
+        this.menuList.add( new MenuItem("Clientes", getClass().getResource("/fxml/page/page_cliente.fxml") ) );
+        this.menuList.add( new MenuItem("Produtos", getClass().getResource("/fxml/page/page_produto.fxml") ) );
+        this.menuList.add( new MenuItem("Fornecedor", getClass().getResource("/fxml/page/page_fornecedor.fxml") ) );
     }
 
     public void setHomeController(HomeController homeController) {

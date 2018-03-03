@@ -26,7 +26,7 @@ public class MenuItem implements Menu {
 
     @Override
     public URL getFXMLUrl() {
-        return getClass().getResource("/fxml/includs/menu_item.fxml");
+        return getClass().getResource("/fxml/item/menu_item.fxml");
     }
 
     @Override

@@ -26,7 +26,7 @@ public class DrawerVendaDetalhesController implements Initializable {
     private JFXRippler ripplerAdd;
 
     public static DrawerVendaDetalhesController load(JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
-        ControllerLoader< BorderPane, DrawerVendaDetalhesController > loader = new ControllerLoader<>("/fxml/includs/drawer_venda_details.fxml");
+        ControllerLoader< BorderPane, DrawerVendaDetalhesController > loader = new ControllerLoader<>("/fxml/drawer/drawer_venda_details.fxml");
         DrawerVendaDetalhesController drawer = loader.getController();
         drawer.avalibleIcons = avalibleIcons;
         drawer.drawer = drawerView;

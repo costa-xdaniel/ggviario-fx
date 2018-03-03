@@ -17,8 +17,8 @@
       <JFXButton fx:id="fabNewFornecedor" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
    <stylesheets>
-      <URL value="@../styles/styles.css" />
-      <URL value="@../styles/material-design.css" />
-      <URL value="@../styles/tree-table-styles.css" />
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/material-design.css" />
+      <URL value="@../../styles/tree-table-styles.css" />
    </stylesheets>
 </AnchorPane>

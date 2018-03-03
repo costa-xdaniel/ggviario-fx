@@ -48,7 +48,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
     private Distrito voidDistrito;
 
     public static ModalNovoFornecedor load(StackPane stackPane ){
-        ControllerLoader< AnchorPane, ModalNovoFornecedor > loader = new ControllerLoader<>("/fxml/includs/modal_novo_fornecedor.fxml");
+        ControllerLoader< AnchorPane, ModalNovoFornecedor > loader = new ControllerLoader<>("/fxml/modal/modal_novo_fornecedor.fxml");
         ModalNovoFornecedor modal = loader.getController();
         modal.createDialogModal( stackPane );
         modal.structure();

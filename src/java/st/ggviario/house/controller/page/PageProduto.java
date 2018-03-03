@@ -96,7 +96,7 @@ public class PageProduto  extends TableController<PageProduto.FornecedorMovelVie
 
     private void newProduct() {
         try{
-            FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/moda_produto_new.fxml"));
+            FXMLLoader loader = new FXMLLoader( getClass().getResource("/fxml/modal/moda_produto_new.fxml"));
             AnchorPane node = loader.load();
             JFXDialogLayout content = new JFXDialogLayout();
             content.setHeading( new Text("Cadastro de novo produto"));

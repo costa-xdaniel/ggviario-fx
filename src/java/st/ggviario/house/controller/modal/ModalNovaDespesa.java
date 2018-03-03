@@ -31,7 +31,7 @@ import java.util.*;
 public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initializable{
 
     public static ModalNovaDespesa load(StackPane stackPane ){
-        ControllerLoader< AnchorPane, ModalNovaDespesa > loader = new ControllerLoader<>("/fxml/includs/modal_nova_despesa.fxml");
+        ControllerLoader< AnchorPane, ModalNovaDespesa > loader = new ControllerLoader<>("/fxml/modal/modal_nova_despesa.fxml");
         loader.getController().structure();
         loader.getController().difineEvents();
         loader.getController().loadData();

@@ -33,7 +33,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private JFXRippler ripplerCloseModal;
 
     public static ModalNovaVenda load(TipoVenda tipoVenda, String functionLoadCliente, StackPane stackPane ){
-        ControllerLoader< AnchorPane, ModalNovaVenda> loader = new ControllerLoader<>("/fxml/includs/modal_nova_venda.fxml");
+        ControllerLoader< AnchorPane, ModalNovaVenda> loader = new ControllerLoader<>("/fxml/modal/modal_nova_venda.fxml");
         ModalNovaVenda modal = loader.getController();
         modal.functionLoadCliente = functionLoadCliente;
         modal.createDialogModal( stackPane );

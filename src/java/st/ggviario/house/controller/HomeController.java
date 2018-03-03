@@ -52,7 +52,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ControllerLoader< AnchorPane,  DrawerController > loader = new ControllerLoader<>("/fxml/includs/drawer.fxml");
+        ControllerLoader< AnchorPane,  DrawerController > loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
         DrawerController controller = loader.getController();
         controller.setOnClickMenuIcon(this::closeDrawer);
         controller.setHomeController( this );
