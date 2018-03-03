@@ -15,6 +15,7 @@
 
 .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
     -fx-text-fill: white;
+    -fx-font-style: bold;
 }
 
 .tree-table-view .jfx-rippler {
@@ -128,19 +129,27 @@
 
 
 
+/*TABELA DIVIAD*/
+.tree-table-view .tree-table-row-cell.divida.pendente {
+    -fx-background-color: md-orange-500;;
+}
+.tree-table-view .tree-table-row-cell.divida.pagamento {
+    -fx-background-color: md-green-500;
+}
+.tree-table-view .tree-table-row-cell.divida.pago {
+    -fx-background-color: md-grey-500;
+}
+.tree-table-view .tree-table-row-cell.divida.pendente:selected,
+.tree-table-view .tree-table-row-cell.divida.pagamento:selected,
+.tree-table-view .tree-table-row-cell.divida.pago:selected{
+    -fx-background-color: md-blue-500;
+}
 
-/* nth-child(2) */
-/*.tree-table-view .divida.pendente{*/
-    /*-fx-background-color: md-orange-500;;*/
-/*}*/
 
-/*.tree-table-view .divida.pagamento{*/
-    /*-fx-background-color: md-blue-500;;*/
-/*}*/
-
-/*.tree-table-view  .divida.pendente  .tree-table-cell, .tree-table-view .divida.pagamento .tree-table-cell {*/
-    /*-fx-font-weight: bold;*/
-    /*-fx-text-fill: #ffffff;*/
-/*}*/
+.tree-table-view .divida.pendente .tree-table-cell,
+.tree-table-view .divida.pagamento .tree-table-cell,
+.tree-table-view .divida.pago .tree-table-cell {
+    -fx-text-fill: #ffffff;
+}
 
 

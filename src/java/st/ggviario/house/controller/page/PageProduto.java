@@ -92,8 +92,6 @@ public class PageProduto  extends TableController<PageProduto.FornecedorMovelVie
 
     private void loadCategorias() {
 
-
-
     }
 
     private void newProduct() {
