@@ -12,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.util.StringConverter;
 import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.controller.SnackbarBuilder;
 import st.ggviario.house.model.*;
@@ -25,7 +24,6 @@ import st.jigahd.support.sql.postgresql.PostgresSQLQueryBuilder;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ModalNovaVenda extends AbstractModal< List > implements Initializable {
@@ -185,30 +183,14 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void componentStruture() {
-        datePickerVendaData.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        });
+        datePickerVendaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
 
         datePickerVendaDataFinalizar.setConverter(this.datePickerVendaData.getConverter());
 
         this.comboxPrecoUnidades.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPreco, newPreco ) -> this.onSeletedUnidade( newPreco ) );
     }
+
+
 
     private void defineEvents() {
 

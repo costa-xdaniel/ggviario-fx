@@ -7,11 +7,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public abstract class AbstractModal< R > implements Modal<R>, Initializable {
+
+    public static String FORMAT_DD_MM_YYYY = "dd-MM-yyyy";
 
     private JFXDialog dialogModal;
     private OnOpenModal onOpenModal;
@@ -68,6 +73,28 @@ public abstract class AbstractModal< R > implements Modal<R>, Initializable {
     void executeOnOperationResult( ModalResult<R> modalResult){
         if( this.onModalResult != null )
             this.onModalResult.onModalResult(modalResult);
+    }
+
+    protected StringConverter<LocalDate> createDateConverter( String format ) {
+        return new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern( format );
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        };
     }
 
     @Override

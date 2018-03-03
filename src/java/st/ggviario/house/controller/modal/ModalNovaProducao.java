@@ -35,6 +35,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         novoSetor.createDialogModal( stackPane );
         novoSetor.structure();
         novoSetor.defineEvent();
+        novoSetor.clear();
         return novoSetor;
     }
 
@@ -85,7 +86,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
     }
 
     private void structure(){
-
+        this.datePickeProducaoData.setConverter( super.createDateConverter( FORMAT_DD_MM_YYYY ) );
     }
 
     private void defineEvent(){

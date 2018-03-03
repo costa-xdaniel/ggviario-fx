@@ -5,14 +5,18 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modal.ModalNovaProducao;
 import st.ggviario.house.controller.modal.ModalNovoSetor;
-import st.ggviario.house.model.Producao;
 import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -20,6 +24,7 @@ import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,6 +40,12 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
     @FXML private AnchorPane fabNewSetorArea;
     @FXML  private JFXButton fabNewSetorButton;
     @FXML private MaterialDesignIconView fabNewSetorIcon;
+
+    private TreeTableColumn< ProducaoModelView, Date > columnPoducaoData = new TreeTableColumn<>( "Data" );
+    private TreeTableColumn< ProducaoModelView, String > columnProducaoProduto = new TreeTableColumn<>("Produto" );
+    private TreeTableColumn< ProducaoModelView, String > columnProducaoSetor = new TreeTableColumn<>("Setor");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidade = new TreeTableColumn<>("Qt.");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoLancamento  = new TreeTableColumn<>("Lanc.");
 
 
     private List< ProducaoModelView > producaoModelViewList;
@@ -55,7 +66,8 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
         this.defineEvents();
         this.loadData();
         this.pushSetor( this.setorProducaoList );
-        this.push( producaoModelViewList, this.treeTableProducao );
+        pushFunctLodaProducao();
+
     }
 
     @Override
@@ -72,6 +84,11 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
     }
 
     private void structure(){
+        this.columnPoducaoData.setCellValueFactory( param -> param.getValue().getValue().producaoData );
+        this.columnProducaoProduto.setCellValueFactory( param -> param.getValue().getValue().producaoProduto );
+        this.columnProducaoSetor.setCellValueFactory( param -> param.getValue().getValue().producaoSector );
+        this.columnProducaoQuantidade.setCellValueFactory( param -> param.getValue().getValue().producaoQuantidade );
+        this.columnProducaoLancamento.setCellValueFactory( param -> param.getValue().getValue().producaoLancamento );
     }
 
     private void defineEvents(){
@@ -83,13 +100,35 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
 
     private void loadData(){
         this.loadSetorData();
-        this.loadDataProducao();
         this.loadDataProduto();
     }
 
+    private void pushFunctLodaProducao( ){
+        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        this.producaoModelViewList.clear();
+        sql.query( "funct_load_producao" )
+            .withJsonb( (String ) null)
+            .callFunctionTable()
+                .onResultQuery(row -> {
+                    ProducaoModelView producao;
+                    this.producaoModelViewList.add( producao =  new ProducaoModelView() );
+                    producao.setProducaoData( row.asDate( "producao_data" ) );
+                    producao.setProducaoLancamento( row.asDouble( "producao_lancamento" ) );
+                    producao.setProducaoProduto( row.asString( "produto_nome" ) );
+                    producao.setProducaoSector( row.asString( "setor_nome" ) );
+                    producao.setProducaoQuantidade( row.asDouble( "producao_quantidade" ) );
+                })
+        ;
 
-    private void loadDataProducao(){
+        this.treeTableProducao.getColumns().setAll(
+                this.columnPoducaoData,
+                this.columnProducaoProduto,
+                this.columnProducaoSetor,
+                this.columnProducaoQuantidade,
+                this.columnProducaoLancamento
+        );
 
+        this.push( this.producaoModelViewList, this.treeTableProducao );
     }
 
     private void loadDataProduto(){
@@ -167,7 +206,7 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
             this.modalNovaProducao = ModalNovaProducao.load( this.rootPage );
             this.modalNovaProducao.setOnModalResult(modalResult -> {
                 if( modalResult.isSucceed() ){
-                    this.loadDataProducao();
+                    this.pushFunctLodaProducao();
                     this.push( this.producaoModelViewList, this.treeTableProducao );
                 }
             });
@@ -176,6 +215,39 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
 
 
     class ProducaoModelView extends RecursiveTreeObject< ProducaoModelView >{
-        private Producao producto;
+
+        private ObjectProperty<Date> producaoData;
+        private StringProperty producaoProduto;
+        private StringProperty producaoSector;
+        private ObjectProperty< Number > producaoQuantidade;
+        private ObjectProperty< Number > producaoLancamento;
+
+        public ProducaoModelView() {
+            this.producaoData = new SimpleObjectProperty<>();
+            this.producaoProduto = new SimpleStringProperty();
+            this.producaoSector = new SimpleStringProperty();
+            this.producaoQuantidade = new SimpleObjectProperty<>();
+            this.producaoLancamento = new SimpleObjectProperty<>();
+        }
+
+        public void setProducaoData(Date producaoData) {
+            this.producaoData.set(producaoData);
+        }
+
+        public void setProducaoProduto(String producaoProduto) {
+            this.producaoProduto.set(producaoProduto);
+        }
+
+        public void setProducaoSector(String producaoSector) {
+            this.producaoSector.set(producaoSector);
+        }
+
+        public void setProducaoQuantidade(Number producaoQuantidade) {
+            this.producaoQuantidade.set(producaoQuantidade);
+        }
+
+        public void setProducaoLancamento(Number producaoLancamento) {
+            this.producaoLancamento.set(producaoLancamento);
+        }
     }
 }
