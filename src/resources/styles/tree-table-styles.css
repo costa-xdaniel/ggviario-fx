@@ -15,7 +15,7 @@
 
 .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
     -fx-text-fill: white;
-    -fx-font-style: bold;
+    -fx-font-weight: bold;
 }
 
 .tree-table-view .jfx-rippler {
