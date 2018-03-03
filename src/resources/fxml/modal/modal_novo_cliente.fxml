@@ -24,7 +24,7 @@
             <AnchorPane fx:id="anchorHeader">
                <children>
                   <Label fx:id="modalTitle" styleClass="modal-title" text="Novo cliente" />
-                  <AnchorPane fx:id="anchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="iconAnchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <MaterialDesignIconView layoutX="60.0" layoutY="105.0" styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
                      </children>

@@ -3,12 +3,12 @@ package st.ggviario.house.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public interface EnumTypes< Enum extends EnumTypes,  NumberClass extends Number > {
+public interface EnumTypes< E extends EnumTypes,  N extends Number > {
 
 
-     Enum [ ] allValues();
+     E[ ] allValues();
 
-     NumberClass value();
+     N value();
 
      static < E extends EnumTypes, N extends Number> E find( E [ ] enumTypes, N value ){
          if( value == null ) return null;
@@ -17,9 +17,9 @@ public interface EnumTypes< Enum extends EnumTypes,  NumberClass extends Number 
          return null;
      }
 
-    default List<Enum> others() {
-        List< Enum > list = new LinkedList<>();
-        for( Enum etNum : this.allValues() ){
+    default List<E> others() {
+        List<E> list = new LinkedList<>();
+        for( E etNum : this.allValues() ){
             if( !this.equals( etNum ) )  list.add( etNum );
 
         }

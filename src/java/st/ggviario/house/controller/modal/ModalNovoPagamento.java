@@ -70,7 +70,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
     private JFXButton buttomPayNow;
 
     @FXML
-    private AnchorPane iconArea;
+    private AnchorPane iconAreaCloseModal;
 
     private Venda venda;
 
@@ -95,12 +95,22 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         return this.modalTitle;
     }
 
+    @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAreaCloseModal;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
+    }
+
 
     private void structure(){
         moneyFormatter.setMinimumFractionDigits( 2 );
         moneyFormatter.setMaximumFractionDigits( 2 );
         moneyFormatter.setMinimumIntegerDigits( 1 );
-        this.ripplerCloeseModal = new JFXRippler( this.iconArea );
+        this.ripplerCloeseModal = new JFXRippler( this.iconAreaCloseModal);
         this.ripplerCloeseModal.setStyle( "-jfx-rippler-fill: md-red-500" );
         this.anchorHeader.getChildren().add(ripplerCloeseModal);
         AnchorPane.setTopAnchor( this.ripplerCloeseModal, 0.0 );

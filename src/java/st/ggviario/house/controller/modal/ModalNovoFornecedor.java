@@ -32,7 +32,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
     @FXML private AnchorPane root;
     @FXML private AnchorPane anchorHeader;
     @FXML private Label modalTitle;
-    @FXML private AnchorPane anchorCloseArea;
+    @FXML private AnchorPane iconAnchorCloseArea;
     @FXML private JFXTextField textFieldFornecedorNIF;
     @FXML private JFXTextField textFieldFornecedorTelemovel;
     @FXML private JFXTextField textFieldFornecedorTelefone;
@@ -59,7 +59,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
     }
 
     private void structure( ){
-        this.rippler = new JFXRippler( this.anchorCloseArea );
+        this.rippler = new JFXRippler( this.iconAnchorCloseArea);
         this.anchorHeader.getChildren().add( this.rippler );
         AnchorPane.setTopAnchor( this.rippler, 0x0.0p0 );
         AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
@@ -182,6 +182,16 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
     @Override
     Label getModalTitleView() {
         return this.modalTitle;
+    }
+
+    @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAnchorCloseArea;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
     }
 
     private class ModalNovoFornecedorResult implements ModalResult< Fornecedor > {

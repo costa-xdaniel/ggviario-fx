@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -26,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public abstract class VendaController extends TableController< VendaController.VendaViewModel > implements Page,  Initializable {
+public abstract class VendaController extends RowsController< VendaController.VendaViewModel > implements Page,  Initializable {
 
 
     //Modals
@@ -38,7 +37,7 @@ public abstract class VendaController extends TableController< VendaController.V
     //
 
     private List< VendaViewModel > vendaList = new LinkedList<>();
-    Node rootPage;
+    StackPane rootPage;
     private String oldTextFilter;
 
     @Override
@@ -51,7 +50,7 @@ public abstract class VendaController extends TableController< VendaController.V
     }
 
     @Override
-    public void onSetRootPage(Node rootPage) {
+    public void onSetRootPage( StackPane rootPage) {
         this.rootPage = rootPage;
     }
 

@@ -71,7 +71,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
     private Label labelMovimentoLibele;
 
     @FXML
-    private AnchorPane anchorClose;
+    private AnchorPane iconAreaCloseModal;
 
     private Venda venda;
 
@@ -121,7 +121,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
         this.treeTableView.getColumns().setAll( movimentoCodigo, movimentoDocumento, movimentoMontante, movimentoData, movimentoDataRegisto );
 
-        this.ripplerCloseModal = new JFXRippler( this.anchorClose );
+        this.ripplerCloseModal = new JFXRippler( this.iconAreaCloseModal);
         this.ripplerCloseModal.setStyle("-jfx-rippler-fill: md-red-500");
         this.anchorHeader.getChildren().add( this.ripplerCloseModal );
 
@@ -198,6 +198,16 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
     @Override
     Label getModalTitleView() {
         return this.modalTitle;
+    }
+
+    @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAreaCloseModal;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
     }
 
     private class VendaMovimento extends RecursiveTreeObject<VendaMovimento >{

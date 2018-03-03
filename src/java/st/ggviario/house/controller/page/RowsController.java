@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TableController< Type extends RecursiveTreeObject< Type> > {
+public class RowsController< Type extends RecursiveTreeObject< Type> > {
 
     public static final NumberFormat MONEY = NumberFormat.getInstance( Locale.FRANCE );
     public static final DateFormat DD_MM_YYYY = new SimpleDateFormat( "dd-MM-yyyy" );

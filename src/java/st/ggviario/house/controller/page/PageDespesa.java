@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modal.ModalNovaDespesa;
 import st.ggviario.house.model.Despesa;
@@ -26,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PageDespesa extends TableController<PageDespesa.DespesaModelView> implements  Page, Initializable {
+public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> implements  Page, Initializable {
 
     @FXML private JFXButton fabNovaDespesa;
     @FXML private JFXTreeTableView <DespesaModelView> treeTableViewDespesa;
@@ -43,7 +42,7 @@ public class PageDespesa extends TableController<PageDespesa.DespesaModelView> i
     private JFXTreeTableColumn <DespesaModelView, String > columnEstado = new JFXTreeTableColumn<>("Estado");
 
 
-    private Node rootPage;
+    private StackPane rootPage;
     private ModalNovaDespesa modalNovaDespesa;
 
     private List<DespesaModelView> despesaModelViewList = new LinkedList<>();
@@ -57,7 +56,7 @@ public class PageDespesa extends TableController<PageDespesa.DespesaModelView> i
     }
 
     @Override
-    public void onSetRootPage(Node rootPage) {
+    public void onSetRootPage( StackPane rootPage) {
         this.rootPage = rootPage;
     }
 

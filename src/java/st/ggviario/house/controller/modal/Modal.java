@@ -6,7 +6,7 @@ import st.ggviario.house.controller.SnackbarBuilder;
 
 import java.util.Map;
 
-public interface Modal<R> {
+public interface Modal< R > {
 
     void openModal();
 
@@ -24,7 +24,7 @@ public interface Modal<R> {
 
     default void setOnCloseModal( OnCloseModal onCloseModal ){ }
 
-    default void setOnModalResult(OnModalResult<R> onModalResult){ }
+    default void setOnModalResult( OnModalResult<R> onModalResult ){ }
 
     default void clear() {}
 
@@ -43,7 +43,7 @@ public interface Modal<R> {
         void onModalResult(ModalResult<T> modalResult);
     }
 
-    interface ModalResult<T> {
+    interface ModalResult< T > {
 
         boolean isSucceed();
 

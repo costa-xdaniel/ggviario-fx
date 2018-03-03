@@ -1,17 +1,46 @@
 package st.ggviario.house.controller.modal;
 
 import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXRippler;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
-public abstract class AbstractModal< R > implements Modal<R> {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public abstract class AbstractModal< R > implements Modal<R>, Initializable {
 
     private JFXDialog dialogModal;
     private OnOpenModal onOpenModal;
     protected OnCloseModal onCloseModal;
     protected OnModalResult<R> onModalResult;
     private StackPane stackPane;
+    private JFXRippler ripplerCloseModal;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.structureCloseButton();
+        this.defineEventClickCloseButton();
+    }
+
+    void structureCloseButton(){
+        this.ripplerCloseModal = new JFXRippler( this.getIconAreaCloseModal() );
+        this.getAnchorHeader().getChildren().add( this.ripplerCloseModal );
+        AnchorPane.setTopAnchor( this.ripplerCloseModal, 0.0 );
+        AnchorPane.setRightAnchor( this.ripplerCloseModal, 0.0 );
+        this.ripplerCloseModal.setStyle( "-jfx-rippler-fill: md-red-500" );
+    }
+
+    void defineEventClickCloseButton(){
+        this.ripplerCloseModal.setOnMouseClicked(event -> {
+            this.clear();
+            this.closeModal();
+        });
+    }
+
 
     @Override
     public void openModal() {
@@ -73,4 +102,8 @@ public abstract class AbstractModal< R > implements Modal<R> {
     abstract Region getContentRoot();
 
     abstract Label getModalTitleView();
+
+    abstract AnchorPane getIconAreaCloseModal();
+
+    abstract AnchorPane getAnchorHeader();
 }

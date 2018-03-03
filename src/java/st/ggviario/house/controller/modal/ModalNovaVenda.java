@@ -30,7 +30,9 @@ import java.util.*;
 
 public class ModalNovaVenda extends AbstractModal< List > implements Initializable {
 
-    private JFXRippler ripplerCloseModal;
+    public ModalNovaVenda(Cliente clienteAnonimo) {
+        this.clienteAnonimo = clienteAnonimo;
+    }
 
     public static ModalNovaVenda load(TipoVenda tipoVenda, String functionLoadCliente, StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovaVenda> loader = new ControllerLoader<>("/fxml/modal/modal_nova_venda.fxml");
@@ -44,7 +46,6 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
         return modal;
     }
-
 
     @FXML
     private AnchorPane root;
@@ -142,17 +143,11 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize( location, resources );
         moneyFormater.setMinimumFractionDigits(2);
         moneyFormater.setMaximumFractionDigits(2);
-
-        this.ripplerCloseModal = new JFXRippler( this.iconAreaCloseModal);
-        this.anchorHeader.getChildren().add( this.ripplerCloseModal );
-        AnchorPane.setTopAnchor( ripplerCloseModal, 0.0 );
-        AnchorPane.setRightAnchor( ripplerCloseModal, 0.0 );
-        this.ripplerCloseModal.setStyle( "-jfx-rippler-fill: md-red-500" );
-
         createVoidItems();
-        this.newForm();
+        this.clear();
         componentStruture();
         defineEvents();
         postgresSaveAction();
@@ -169,6 +164,15 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         return this.modalTitle;
     }
 
+    @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAreaCloseModal;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
+    }
 
     private void createVoidItems() {
         Producto.ProdutoBuilder builder = new Producto.ProdutoBuilder();
@@ -178,26 +182,6 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         precoBuilder.unidade( new Unidade.UnidadeBuilder().nome( "Selecione" ).build() );
         this.precoVasio = precoBuilder.build();
-    }
-
-    private void newForm() {
-        this.listViewCliente.getSelectionModel().select( null );
-        this.comboxProduto.getSelectionModel().select( null );
-        this.comboxPrecoUnidades.getSelectionModel().select( null );
-        this.textFieldVendaQuantidade.setText( null );
-        this.textFieldVendaMontanteUnitirio.setText( null );
-        this.textFieldVendaMontanteBruto.setText( null );
-        this.textFieldVendaMontantePagar.setText( null );
-        this.textFieldClienteSearch.setText( null );
-        this.newSearch("");
-        this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
-        this.datePickerVendaData.setValue(LocalDate.now());
-        this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
-        this.textFieldClienteSearch.setEditable( true );
-        this.textFieldClienteSearch.setDisable( false );
-        this.listViewCliente.setDisable( false );
-        if( this.tipoVenda == TipoVenda.DIVIDA ) this.modalTitle.setText("Nova divida");
-        else this.modalTitle.setText( "Nova venda" );
     }
 
     private void componentStruture() {
@@ -244,14 +228,28 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
         this.buttonNovaVenda.setOnAction(event -> this.onNovaVenda() );
         this.buttonVendaFeito.setOnAction( event -> this.onVendaFeito() );
-        this.ripplerCloseModal.setOnMouseClicked(mouseEvent -> {
-            this.newForm();
-            this.closeModal();
-        });
-
     }
 
-
+    @Override
+    public void clear() {
+        this.listViewCliente.getSelectionModel().select( null );
+        this.comboxProduto.getSelectionModel().select( null );
+        this.comboxPrecoUnidades.getSelectionModel().select( null );
+        this.textFieldVendaQuantidade.setText( null );
+        this.textFieldVendaMontanteUnitirio.setText( null );
+        this.textFieldVendaMontanteBruto.setText( null );
+        this.textFieldVendaMontantePagar.setText( null );
+        this.textFieldClienteSearch.setText( null );
+        this.newSearch("");
+        this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
+        this.datePickerVendaData.setValue(LocalDate.now());
+        this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
+        this.textFieldClienteSearch.setEditable( true );
+        this.textFieldClienteSearch.setDisable( false );
+        this.listViewCliente.setDisable( false );
+        if( this.tipoVenda == TipoVenda.DIVIDA ) this.modalTitle.setText("Nova divida");
+        else this.modalTitle.setText( "Nova venda" );
+    }
 
     private void onSelectCliente(Cliente newCliente) {
         if (newCliente == null) {
@@ -301,6 +299,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         newSearch(text);
     }
 
+
     private void newSearch(String text) {
         this.clienteListFiltred.clear();
         if( text == null ){
@@ -336,7 +335,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             Venda venda = this.mountVenda();
             result = this.actionRegister.get(this.tipoVenda).register(venda);
             if( result.success){
-                this.newForm();
+                this.clear();
             }
         }
 
@@ -358,7 +357,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             if( result1.isSucceed() ) countSuccess ++;
         }
         this.closeModal();
-        this.newForm();
+        this.clear();
 
         super.executeOnOperationResult( result );
         this.vendasResult = new LinkedList<>();
@@ -513,12 +512,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.clienteListFiltred.clear();
 
         Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        sql.query( this.functionLoadCliente).withJsonb( (String) null ).callFunctionTable() .onResultQuery(row ->{
-            Cliente cliente;
-            this.clienteList.add( cliente =  clienteBuilder.load( row ).build() );
-            if( cliente.getClienteId().equals( new UUID(0, 1 ) ) )
-                this.clienteAnonimo = cliente;
-        });
+        sql.query( this.functionLoadCliente).withJsonb( (String) null ).callFunctionTable() .onResultQuery(row -> this.clienteList.add(clienteBuilder.load( row ).build()));
 
         this.clienteListFiltred.addAll( this.clienteList );
     }

@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -28,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PageFornecedor extends TableController< PageFornecedor.FornecedorViewModel > implements Page, Initializable {
+public class PageFornecedor extends RowsController< PageFornecedor.FornecedorViewModel > implements Page, Initializable {
 
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< FornecedorViewModel > tableViewFornecedor;
@@ -37,7 +36,7 @@ public class PageFornecedor extends TableController< PageFornecedor.FornecedorVi
 
     private List< FornecedorViewModel > listForenecedor = new LinkedList<>();
 
-    private Node rootPage;
+    private StackPane rootPage;
     private ModalNovoFornecedor modalNovoFornecedor;
     private JFXTreeTableColumn< FornecedorViewModel, String > columnFornecedorNIF = new JFXTreeTableColumn<>( "NIF" );
     private JFXTreeTableColumn< FornecedorViewModel, String > columnFornecedorNome = new JFXTreeTableColumn<>( "NOME" );
@@ -59,7 +58,7 @@ public class PageFornecedor extends TableController< PageFornecedor.FornecedorVi
     }
 
     @Override
-    public void onSetRootPage(Node rootPage) {
+    public void onSetRootPage( StackPane rootPage) {
         this.rootPage = rootPage;
     }
 

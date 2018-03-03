@@ -86,6 +86,16 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
     }
 
     @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAreaCloseModal;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.fornecedorList = new LinkedList<>();
         this.productoListMap = new LinkedHashMap<>();

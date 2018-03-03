@@ -116,7 +116,7 @@ public class HomeController implements Initializable {
         this.closeDrawer();
     }
 
-    public Node getRootPage() {
+    public StackPane getRootPage() {
         if( rootPage == null ) throw new RuntimeException( "Root page esta nullo" );
         return this.rootPage;
     }

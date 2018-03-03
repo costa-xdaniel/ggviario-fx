@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovaCategoria">
+<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoSetor">
    <children>
       <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -63,8 +63,8 @@
             </GridPane>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -79,10 +79,16 @@
                         <Insets bottom="4.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="labelCategoriaNivel" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="20 000 000,11" GridPane.rowIndex="1">
+                  <Label fx:id="labelCategoriaNivel" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
+                  </Label>
+                  <Label fx:id="labelCategoriaSuper" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" style="-fx-text-fill: md-accent-color; -fx-font-size: 16px;" styleClass="detail-area-field-value" text="Nenhuma" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="details-area-field" text="Super" GridPane.columnIndex="1">
+                     <padding>
+                        <Insets bottom="4.0" />
+                     </padding>
                   </Label>
                </children>
                <VBox.margin>

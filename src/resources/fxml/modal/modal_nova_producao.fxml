@@ -25,7 +25,7 @@
                <children>
                   <Label fx:id="modalTitle" styleClass="modal-title" text="Nova Amortizaçao" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <AnchorPane fx:id="iconArea" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="iconAreaCloseModal" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <MaterialDesignIconView glyphName="" styleClass="icon-close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>

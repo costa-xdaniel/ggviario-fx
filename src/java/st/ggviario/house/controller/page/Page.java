@@ -3,6 +3,7 @@ package st.ggviario.house.controller.page;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import st.ggviario.house.controller.HomeController;
 
@@ -10,7 +11,7 @@ import java.net.URL;
 
 public interface Page {
 
-    default void onSetRootPage(Node rootPage ) {}
+    default void onSetRootPage( StackPane rootPage ) {}
 
     default void onSetRoot(Node root ) {}
 

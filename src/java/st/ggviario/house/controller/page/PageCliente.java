@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -27,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PageCliente extends TableController<PageCliente.ClienteViewModel> implements Page, Initializable {
+public class PageCliente extends RowsController<PageCliente.ClienteViewModel> implements Page, Initializable {
 
 
     @FXML private Pane fabArea;
@@ -54,8 +53,8 @@ public class PageCliente extends TableController<PageCliente.ClienteViewModel> i
     private StackPane rootPagePane;
 
     @Override
-    public void onSetRootPage(Node rootPage) {
-        this.rootPagePane = (StackPane) rootPage;
+    public void onSetRootPage( StackPane rootPage) {
+        this.rootPagePane = rootPage;
     }
 
     @Override

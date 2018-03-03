@@ -45,7 +45,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     private AnchorPane anchorHeader;
 
     @FXML
-    private AnchorPane anchorCloseArea;
+    private AnchorPane iconAnchorCloseArea;
 
     @FXML
     private Label modalTitle;
@@ -92,7 +92,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.buttonClientRegister.setOnAction( actionEvent -> this.register());
-        this.rippler = new JFXRippler( this.anchorCloseArea );
+        this.rippler = new JFXRippler( this.iconAnchorCloseArea);
         this.anchorHeader.getChildren().add( this.rippler );
 
         AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
@@ -113,6 +113,16 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     @Override
     Label getModalTitleView() {
         return this.modalTitle;
+    }
+
+    @Override
+    AnchorPane getIconAreaCloseModal() {
+        return this.iconAnchorCloseArea;
+    }
+
+    @Override
+    AnchorPane getAnchorHeader() {
+        return this.anchorHeader;
     }
 
     private void loadForm() {

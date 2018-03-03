@@ -1,8 +1,10 @@
 package st.ggviario.house.controller.page;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -150,9 +152,9 @@ public class VendaDividaController extends VendaController {
     }
 
     @Override
-    public void onSetRootPage(Node rootPage) {
+    public void onSetRootPage( StackPane rootPage) {
         super.onSetRootPage(rootPage);
-        this.modalAmoratizacoesDivida = ModalAmoratizacoesDivida.load((StackPane) rootPage);
+        this.modalAmoratizacoesDivida = ModalAmoratizacoesDivida.load( rootPage );
     }
 
 
