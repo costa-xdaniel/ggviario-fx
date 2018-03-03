@@ -21,7 +21,7 @@ public class Main extends Application {
         AuthSingleton.login( null, null );
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource( "/fxml/home.fxml" ) );
+        loader.setLocation( getClass().getResource("/fxml/page_home.fxml") );
         Parent parent  = loader.load();
         HomeController homeController = loader.getController();
         Scene scene = new Scene( parent );
