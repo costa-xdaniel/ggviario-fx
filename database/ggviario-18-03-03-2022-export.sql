@@ -2014,14 +2014,14 @@ CREATE TABLE setor (
     setor_setor_id uuid,
     setor_colaborador_id uuid NOT NULL,
     setor_colaborador_atualizacao uuid,
+    setor_codigo character varying(6) NOT NULL,
     setor_nome character varying(32) NOT NULL,
     setor_posicao smallint,
+    setor_nivel smallint DEFAULT 0 NOT NULL,
     setor_totalsubsetores smallint DEFAULT 0 NOT NULL,
     setor_estado smallint DEFAULT 1,
     setor_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     setor_dataatualizacao timestamp without time zone,
-    setor_codigo character varying(6) NOT NULL,
-    setor_nivel smallint DEFAULT 0 NOT NULL,
     CONSTRAINT ck_setor_nome_is_normalized CHECK (lib.is_normalized((setor_nome)::text))
 );
 
@@ -3767,13 +3767,13 @@ CREATE TABLE categoria (
     categoria_colaborador_id uuid NOT NULL,
     categoria_colaborador_atualizacao uuid,
     categoria_categoria_id uuid,
+    categoria_codigo character varying(6),
     categoria_nome character varying(32) NOT NULL,
+    categoria_posisao smallint,
+    categoria_nivel smallint DEFAULT 0 NOT NULL,
     categoria_estado smallint DEFAULT 1 NOT NULL,
     categoria_dataregito timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     categoria_dataatualizacao timestamp without time zone,
-    categoria_nivel smallint DEFAULT 0 NOT NULL,
-    categoria_codigo character varying(6),
-    categoria_posisao smallint,
     CONSTRAINT ck_categoria_nome_is_normalized CHECK (lib.is_normalized((categoria_nome)::text))
 );
 
@@ -5296,6 +5296,7 @@ CREATE TABLE cliente (
     cliente_tdocumento_id smallint,
     cliente_colaborador_id uuid,
     cliente_colaborador_atualizacao uuid,
+    cliente_codigo character varying(16) NOT NULL,
     cliente_documentonumero character varying(32),
     cliente_nome character varying(48) NOT NULL,
     cliente_apelido character varying(48),
@@ -5308,7 +5309,6 @@ CREATE TABLE cliente (
     cliente_estado smallint DEFAULT 1 NOT NULL,
     cliente_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     cliente_dataatualizacao timestamp without time zone,
-    cliente_codigo character varying(16) NOT NULL,
     CONSTRAINT ck_cliente_apelido_is_normalized CHECK (lib.is_normalized((cliente_apelido)::text)),
     CONSTRAINT ck_cliente_documentonumero_is_normalized CHECK (lib.is_normalized((cliente_documentonumero)::text)),
     CONSTRAINT ck_cliente_morada_is_normalized CHECK (lib.is_normalized((cliente_morada)::text)),
@@ -5470,6 +5470,7 @@ CREATE TABLE fornecedor (
     fornecedor_distrito_id smallint,
     fornecedor_colaborador_id uuid NOT NULL,
     fornecedor_colaborador_atualizacao uuid,
+    fornecedor_codigo character varying( 6 ),
     fornecedor_nome character varying(32) NOT NULL,
     fornecedor_nif character varying(9) DEFAULT NULL::character varying,
     fornecedor_telefone character varying(15) DEFAULT NULL::character varying,
@@ -6512,12 +6513,12 @@ CREATE TABLE producao (
     producao_setor_id uuid NOT NULL,
     producao_colaborador_id uuid NOT NULL,
     producao_colaborador_atualizacao uuid,
+    producao_codigo character varying(9) NOT NULL,
     producao_quantidade numeric,
     producao_data date,
     producao_estado smallint DEFAULT 1 NOT NULL,
     producao_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    producao_dataatualizacao timestamp without time zone,
-    producao_codigo character varying(9) NOT NULL
+    producao_dataatualizacao timestamp without time zone
 );
 
 
