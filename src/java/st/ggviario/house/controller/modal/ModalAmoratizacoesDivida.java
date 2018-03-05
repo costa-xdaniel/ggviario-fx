@@ -91,7 +91,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
         this.moneyFormat.setMaximumIntegerDigits( 1 );
     }
 
-    private void structure(){
+    void structure(){
         JFXTreeTableColumn<VendaMovimento, String > movimentoCodigo = new JFXTreeTableColumn<>("Cod");
         movimentoCodigo.setCellValueFactory(param -> param.getValue().getValue().movimentoCodigo );
 

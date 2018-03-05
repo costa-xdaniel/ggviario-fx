@@ -1,4 +1,4 @@
-package st.ggviario.house.controller.page;
+package st.ggviario.house.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;

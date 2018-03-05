@@ -34,7 +34,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         ModalNovaProducao novoSetor = loader.getController();
         novoSetor.createDialogModal( stackPane );
         novoSetor.structure();
-        novoSetor.defineEvent();
+        novoSetor.defineEvents();
         novoSetor.clear();
         return novoSetor;
     }
@@ -85,11 +85,11 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         this.datePickeProducaoData.setValue( LocalDate.now() );
     }
 
-    private void structure(){
+    void structure(){
         this.datePickeProducaoData.setConverter( super.createDateConverter( FORMAT_DD_MM_YYYY ) );
     }
 
-    private void defineEvent(){
+    void defineEvents(){
         this.buttonRegistar.setOnAction(event -> this.onRegistarNovoSetor() );
         this.comboxSector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.onChangeDateReload();
@@ -120,7 +120,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
 
     private void onRegistarNovoSetor() {
         ModalNovaProducaoResult res = this.validateForm();
-        if( res.isSucceed() ){
+        if( res.isSuccess() ){
             /*
             funct_reg_producao(
             arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid)
@@ -152,7 +152,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
 
             SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
             snackbarBuilder.show( res.message, res.level );
-            if( res.isSucceed() ){
+            if( res.isSuccess() ){
                 this.clear();
                 this.closeModal();
             }
@@ -220,7 +220,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         private SnackbarBuilder.MessageLevel level;
 
         @Override
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return this.succeed;
         }
 
@@ -245,7 +245,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return this.map;
         }
     }

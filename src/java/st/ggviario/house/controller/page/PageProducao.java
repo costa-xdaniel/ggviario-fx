@@ -15,8 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import st.ggviario.house.controller.modal.ModalNovaProducao;
 import st.ggviario.house.controller.modal.ModalNovoSetor;
+import st.ggviario.house.controller.modal.ModalNovaProducao;
 import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -193,7 +193,7 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
         if( this.modalNovoSetor == null ){
             this.modalNovoSetor = ModalNovoSetor.load( this.rootPage );
             this.modalNovoSetor.setOnModalResult(modalResult -> {
-                if( modalResult.isSucceed() ){
+                if( modalResult.isSuccess() ){
                     this.loadSetorData();
                     this.pushSetor( this.setorProducaoList);
                 }
@@ -205,7 +205,7 @@ public class PageProducao extends RowsController< PageProducao.ProducaoModelView
         if( this.modalNovaProducao == null ){
             this.modalNovaProducao = ModalNovaProducao.load( this.rootPage );
             this.modalNovaProducao.setOnModalResult(modalResult -> {
-                if( modalResult.isSucceed() ){
+                if( modalResult.isSuccess() ){
                     this.pushFunctLodaProducao();
                     this.push( this.producaoModelViewList, this.treeTableProducao );
                 }

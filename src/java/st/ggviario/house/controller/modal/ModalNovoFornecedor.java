@@ -52,20 +52,20 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         ModalNovoFornecedor modal = loader.getController();
         modal.createDialogModal( stackPane );
         modal.structure();
-        modal.defineEvent();
+        modal.defineEvents();
         modal.loadData();
         modal.pushAll();
         return modal;
     }
 
-    private void structure( ){
+    void structure( ){
         this.rippler = new JFXRippler( this.iconAnchorCloseArea);
         this.anchorHeader.getChildren().add( this.rippler );
         AnchorPane.setTopAnchor( this.rippler, 0x0.0p0 );
         AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
     }
 
-    private void defineEvent() {
+    void defineEvents() {
         this.rippler.setOnMouseClicked(mouseEvent -> {
             this.clear();
             this.closeModal();
@@ -100,7 +100,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         Fornecedor.FornecedorBuilder builder = new Fornecedor.FornecedorBuilder();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
 
-        if( result.isSucceed() ){
+        if( result.isSuccess() ){
             Colaborador colaborador = AuthSingleton.getAuth();
             PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
             Fornecedor fornecedor = result.fornecedor;
@@ -132,7 +132,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
 
         SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
         snackbarBuilder.show( result.message, result.level  );
-        if( result.isSucceed() ){
+        if( result.isSuccess() ){
             result.terminated = true;
             this.clear();
             this.closeModal();
@@ -204,7 +204,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         private SnackbarBuilder.MessageLevel level;
 
         @Override
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return this.success;
         }
 
@@ -229,7 +229,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return this.map;
         }
     }

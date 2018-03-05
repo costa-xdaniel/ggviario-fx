@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovaUnidade">
+   <children>
+      <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="anchorHeader">
+               <children>
+                  <Label fx:id="modalTitle" styleClass="modal-title" text="Nova Unidade" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <AnchorPane fx:id="iconAreaCloseModal" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <MaterialDesignIconView glyphName="" styleClass="icon-close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <StackPane />
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="textFieldUnidadeNome" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Unidade" unFocusColor="#009688">
+                     <GridPane.margin>
+                        <Insets top="32.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="textFieldUnidadeCodigo" alignment="CENTER_RIGHT" focusColor="#ff5722" labelFloat="true" prefHeight="26.0" prefWidth="384.0" promptText="Codigo" unFocusColor="#009688" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets top="32.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+               </children>
+               <styleClass>
+                  <String fx:value="form-simple" />
+                  <String fx:value="form" />
+               </styleClass>
+               <VBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" />
+               </VBox.margin>
+            </GridPane>
+            <StackPane>
+               <children>
+                  <JFXButton fx:id="buttonRegistar" buttonType="RAISED" contentDisplay="RIGHT" style="-fx-background-color: #009688;" text="REGISTAR" textFill="#fffdfd" StackPane.alignment="CENTER_RIGHT">
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </StackPane.margin>
+                  </JFXButton>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/material-design.css" />
+   </stylesheets>
+</AnchorPane>

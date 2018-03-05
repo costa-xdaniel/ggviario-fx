@@ -2,6 +2,7 @@ package st.ggviario.house.controller.modal;
 
 import com.jfoenix.controls.JFXDialog;
 import javafx.scene.layout.StackPane;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import st.ggviario.house.controller.SnackbarBuilder;
 
 import java.util.Map;
@@ -45,17 +46,21 @@ public interface Modal< R > {
 
     interface ModalResult< T > {
 
-        boolean isSucceed();
+        @Getter
+        boolean isSuccess();
 
+        @Getter
         String getMessage();
 
+        @Getter
         boolean isTerminated();
 
+        @Getter
         T getResultValue();
 
         SnackbarBuilder.MessageLevel getLevel();
 
-        Map<String, Object > mapResults();
+        Map<String, Object > getData();
     }
 
 }

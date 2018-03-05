@@ -63,12 +63,12 @@ public class Unidade {
             return this;
         }
 
-        public UnidadeBuilder nome(String nome) {
+        public UnidadeBuilder setNome(String nome) {
             this.nome = nome;
             return this;
         }
 
-        public UnidadeBuilder codigo(String codigo) {
+        public UnidadeBuilder setCodigo(String codigo) {
             this.codigo = codigo;
             return this;
         }

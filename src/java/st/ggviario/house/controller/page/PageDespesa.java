@@ -150,7 +150,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
         if( this.modalNovaDespesa == null ){
             this.modalNovaDespesa =  ModalNovaDespesa.load( (StackPane) this.rootPage );
             this.modalNovaDespesa.setOnModalResult(modalResult -> {
-                if( modalResult.isSucceed() ) {
+                if( modalResult.isSuccess() ) {
                     this.loadDataDespesa();
                     this.push( this.despesaModelViewList, this.treeTableViewDespesa );
                 }

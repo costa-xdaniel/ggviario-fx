@@ -106,7 +106,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
     }
 
 
-    private void structure(){
+    void structure(){
         moneyFormatter.setMinimumFractionDigits( 2 );
         moneyFormatter.setMaximumFractionDigits( 2 );
         moneyFormatter.setMinimumIntegerDigits( 1 );
@@ -137,7 +137,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         });
     }
 
-    private void defineEvents(){
+    void defineEvents(){
         this.ripplerCloeseModal.setOnMouseClicked(event -> this.closeModal() );
         this.labelVendaDividaMontantePendente.setOnMouseClicked(mouseEvent -> {
             if(this.lastMovimentoMontente.equals(this.venda.getVendaMontantePendente())){
@@ -269,7 +269,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         SnackbarBuilder snackbarBuilder = new SnackbarBuilder( getStakePane() );
         if( message == null ) message = "Operação falhou!";
 
-        if( movimentoResult.isSucceed() ){
+        if( movimentoResult.isSuccess() ){
             message = "Novo pagamento para a divida com documento numero "
                     + movimentoResult.movimento.getMovimentoDocumento()
                     + " cadatrado com sucesso!";
@@ -335,7 +335,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
 
         private String message;
 
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return succeed;
         }
 
@@ -360,7 +360,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return this.resultData;
         }
     }

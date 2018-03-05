@@ -1,0 +1,15 @@
+
+.jfx-tab-pane .headers-region{
+    /*           top      right    bottom   left*/
+    /*-fx-padding: 16px     16px     -16px     16px;*/
+
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: md-primary-color;
+}
+
+.jfx-tab-pane .headers-region .tab-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}

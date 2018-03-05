@@ -11,9 +11,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.controller.SnackbarBuilder;
+import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.Colaborador;
 import st.ggviario.house.model.SQLResult;
-import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
@@ -23,13 +23,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ModalNovoSetor extends AbstractModal< Setor > {
+public class ModalNovaCategoria extends AbstractModal<Categoria> {
 
-    private static Setor SECTOR_VOID = new Setor();
+    private static Categoria CATEGORIA_VOID = new Categoria();
 
-    public static ModalNovoSetor load(StackPane stackPane ) {
-        ControllerLoader< AnchorPane, ModalNovoSetor> loader = new ControllerLoader<>("/fxml/modal/modal_novo_setor.fxml");
-        ModalNovoSetor novoSetor = loader.getController();
+    public static ModalNovaCategoria load(StackPane stackPane ) {
+        ControllerLoader< AnchorPane, ModalNovaCategoria> loader = new ControllerLoader<>("/fxml/modal/modal_nova_categoria.fxml");
+        ModalNovaCategoria novoSetor = loader.getController();
         novoSetor.createDialogModal( stackPane );
         novoSetor.structure();
         novoSetor.defineEvent();
@@ -41,12 +41,12 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
     @FXML private Label modalTitle;
     @FXML private AnchorPane iconArea;
     @FXML private JFXTextField textFieldSetorNome;
-    @FXML private JFXComboBox< Setor > comboxCategoriaSuper;
+    @FXML private JFXComboBox<Categoria> comboxCategoriaSuper;
     @FXML private Label labelCategoriaNivel;
     @FXML private Label labelCategoriaSuper;
     @FXML private JFXButton buttonRegistar;
 
-    private List<Setor> setorList = new LinkedList<>();
+    private List< Categoria > setorList = new LinkedList<>();
 
     @Override
     Region getContentRoot() {
@@ -83,36 +83,36 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
     void defineEvent(){
         this.buttonRegistar.setOnAction(event -> this.onRegistarNovoSetor() );
         this.comboxCategoriaSuper.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.onChangeSetor(newValue );
+            this.onChangeCategoria(newValue );
         });
     }
 
-    public void pushSetorSupers(List<Setor> setorList){
+    public void pushCategoriaSupers(List<Categoria> setorList){
         this.setorList.clear();
-        this.setorList.add( SECTOR_VOID );
+        this.setorList.add(CATEGORIA_VOID);
         this.setorList.addAll( setorList );
         this.comboxCategoriaSuper.setItems( FXCollections.observableList( this.setorList) );
     }
 
 
     private void onRegistarNovoSetor() {
-        ModalNovoSetorResult res = this.validateForm();
+        ModalNovaCategoriaResult res = this.validateForm();
         if( res.isSuccess() ){
             /*
             funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying)
              */
             PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
             Colaborador colaborador = AuthSingleton.getAuth();
-            sql.query( "ggviario.funct_reg_setor" )
+            sql.query( "ggviario.funct_reg_categoria" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withUUID( res.getResultValue().getSetorSuper().getSetorId() )
-                .withVarchar( res.getResultValue().getSetorNome() )
+                .withUUID( res.getResultValue().getCategoriaSuper().getCategoriaId() )
+                .withVarchar( res.getResultValue().getCategoriaNome() )
                 .callFunctionTable()
                     .onResultQuery(row -> {
                         SQLResult result = new SQLResult( row );
                         if( result.isSuccess() ){
                             res.succeed = true;
-                            res.message = "Novo setor cadastrado com sucesso";
+                            res.message = "Nova categoria cadastrada com sucesso cadastrado com sucesso";
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             res.terminated = true;
                         } else {
@@ -133,41 +133,41 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
         }
     }
 
-    void onChangeSetor(Setor newSetor){
-        if(newSetor == null || newSetor.equals(SECTOR_VOID)){
+    void onChangeCategoria(Categoria newSetor ){
+        if(newSetor == null || newSetor.equals(CATEGORIA_VOID)){
             this.comboxCategoriaSuper.setValue( null );
             this.labelCategoriaNivel.setText("");
             this.labelCategoriaSuper.setText( "" );
         }  else {
-            this.labelCategoriaNivel.setText( String.valueOf(  newSetor.getSetorNivel() ) );
-            this.labelCategoriaSuper.setText( newSetor.getSetorSuper() == null ? null : newSetor.getSetorSuper().getSetorNome() );
+            this.labelCategoriaNivel.setText( String.valueOf(  newSetor.getCategoriaNivel() ) );
+            this.labelCategoriaSuper.setText( newSetor.getCategoriaSuper() == null ? null : newSetor.getCategoriaSuper().getCategoriaNome() );
         }
     }
 
-    private ModalNovoSetorResult validateForm(){
-        ModalNovoSetorResult res = new ModalNovoSetorResult();
-        Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
-        setorBuilder.setNome(SQLText.normalize( this.textFieldSetorNome.getText() ) );
-        setorBuilder.setSetorSuper( this.comboxCategoriaSuper.getValue() );
-        res.resultVale = setorBuilder.build();
+    private ModalNovaCategoriaResult validateForm(){
+        ModalNovaCategoriaResult res = new ModalNovaCategoriaResult();
+        Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
+        categoriaBuilder.setNome(SQLText.normalize( this.textFieldSetorNome.getText() ) );
+        categoriaBuilder.setCategoriaSuper( this.comboxCategoriaSuper.getValue() );
+        res.resultVale = categoriaBuilder.build();
         res.level = SnackbarBuilder.MessageLevel.WARNING;
 
-        if( res.resultVale.getSetorNome() == null )
-            res.message = "Informe o nome sotor!";
-        else if( res.resultVale.getSetorSuper() == null || res.resultVale.getSetorSuper().getSetorId() == null ){
-            res.message = "Informe o setor mãe";
+        if( res.resultVale.getCategoriaNome() == null )
+            res.message = "Informe o nome da categoria!";
+        else if( res.resultVale.getCategoriaSuper() == null || res.resultVale.getCategoriaSuper().getCategoriaId() == null ){
+            res.message = "Informe a categoria super!";
         } else {
             res.succeed = true;
         }
         return res;
     }
 
-    class ModalNovoSetorResult implements ModalResult< Setor >{
+    class ModalNovaCategoriaResult implements ModalResult< Categoria >{
 
         private boolean succeed;
         private String message;
         private boolean terminated;
-        private Setor resultVale;
+        private Categoria resultVale;
         private Map< String, Object > map;
         private SnackbarBuilder.MessageLevel level;
 
@@ -187,7 +187,7 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
         }
 
         @Override
-        public Setor getResultValue() {
+        public Categoria getResultValue() {
             return this.resultVale;
         }
 

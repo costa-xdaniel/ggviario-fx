@@ -1,15 +1,16 @@
 package st.ggviario.house.controller;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class ControllerLoader<Node, Controller> {
+public class ControllerLoader< NodeView extends Node, Controller> {
 
     private URL location;
     private FXMLLoader loader;
-    private Node node;
+    private NodeView nodeView;
     private Controller controller;
 
     public ControllerLoader(String location) {
@@ -25,10 +26,11 @@ public class ControllerLoader<Node, Controller> {
     private  void load(){
         try{
             this.loader = new FXMLLoader( this.location );
-            this.node = this.loader.load();
+            this.nodeView = this.loader.load();
             this.controller = this.loader.getController();
         } catch (IOException e) {
-            throw new RuntimeException( e );
+            e.printStackTrace();
+            throw new RuntimeException( e.getMessage()+ " | url: "+String.valueOf( location ), e );
         }
     }
 
@@ -41,8 +43,8 @@ public class ControllerLoader<Node, Controller> {
         return loader;
     }
 
-    public Node getNode() {
-        return node;
+    public NodeView getNodeView() {
+        return nodeView;
     }
 
     public Controller getController() {

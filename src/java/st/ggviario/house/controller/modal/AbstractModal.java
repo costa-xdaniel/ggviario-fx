@@ -62,6 +62,8 @@ public abstract class AbstractModal< R > implements Modal<R>, Initializable {
     @Override
     public void createDialogModal(StackPane stackPane) {
         this.stackPane = stackPane;
+        if( this.getContentRoot() == null ) throw  new RuntimeException( "O root não pode ser nulo!" );
+        if( stackPane == null ) throw  new RuntimeException( "O Stack pane não pode ser nulo!" );
         this.dialogModal = new JFXDialog( stackPane, this.getContentRoot(), getDialogTransition() );
     }
 
@@ -133,4 +135,8 @@ public abstract class AbstractModal< R > implements Modal<R>, Initializable {
     abstract AnchorPane getIconAreaCloseModal();
 
     abstract AnchorPane getAnchorHeader();
+
+    void structure(){}
+
+    void defineEvents(){}
 }

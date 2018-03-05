@@ -39,71 +39,29 @@ public class DrawerVendaDetalhesController implements Initializable {
         return drawer;
     }
 
-    @FXML
-    private AnchorPane root;
-
-    @FXML
-    private Label labelClienteNome;
-
-    @FXML
-    private Label labelClienteMontentePagar;
-
-    @FXML
-    private Label labelClienteMontantePendente;
-
-    @FXML
-    private Label labelProdutoNome;
-
-    @FXML
-    private Label labelUnidadeNome;
-
-    @FXML
-    private Label labelVendaQuantidade;
-
-    @FXML
-    private Label labelVendaMontanteUnitario;
-
-    @FXML
-    private Label labelVendaMontanteDesconto;
-
-    @FXML
-    private Label lableVendaMontanteBruto;
-
-    @FXML
-    private Label labelVendaData;
-
-    @FXML
-    private Label labelVendaDataFinalizar;
-
-    @FXML
-    private Label labelVendaMontantePagar;
-
-    @FXML
-    private Label labelVendaMontanteAmortizado;
-
-    @FXML
-    private Label labelVendaMontantePagarAccent;
-
-    @FXML
-    private Label lableVendaArreaInformacaoTitle;
-
-    @FXML
-    private HBox headerPageIcon;
-
-    @FXML
-    private AnchorPane panelIconClose;
-
-    @FXML
-    private AnchorPane panelIconAdd;
-
-    @FXML
-    private AnchorPane panelIconPayNow;
-
-    @FXML
-    private AnchorPane panelIconListPayment;
-
-    @FXML
-    private Label labelHeaderTitle;
+    @FXML private AnchorPane root;
+    @FXML private Label labelClienteNome;
+    @FXML private Label labelClienteMontentePagar;
+    @FXML private Label labelClienteMontantePendente;
+    @FXML private Label labelProdutoNome;
+    @FXML private Label labelUnidadeNome;
+    @FXML private Label labelVendaQuantidade;
+    @FXML private Label labelVendaMontanteUnitario;
+    @FXML private Label labelVendaMontanteDesconto;
+    @FXML private Label lableVendaMontanteBruto;
+    @FXML private Label labelVendaData;
+    @FXML private Label labelVendaDataFinalizar;
+    @FXML private Label labelVendaMontantePagar;
+    @FXML private Label labelVendaMontanteAmortizado;
+    @FXML private Label labelVendaMontantePagarAccent;
+    @FXML private Label lableVendaArreaInformacaoTitle;
+    @FXML private HBox headerPageIcon;
+    @FXML private AnchorPane panelIconClose;
+    @FXML private AnchorPane panelIconAdd;
+    @FXML private AnchorPane panelIconPayNow;
+    @FXML private AnchorPane panelIconDelete;
+    @FXML private AnchorPane panelIconListPayment;
+    @FXML private Label labelHeaderTitle;
 
     private OnPayNow onPayNow;
     private OnListPayment onListPayment;
@@ -130,16 +88,19 @@ public class DrawerVendaDetalhesController implements Initializable {
         this.ripplerAdd = new JFXRippler( panelIconAdd );
         JFXRippler ripplerPayNow = new JFXRippler( panelIconPayNow );
         JFXRippler ripplerListPay = new JFXRippler( panelIconListPayment );
+        JFXRippler ripplerListDelete = new JFXRippler( this.panelIconDelete  );
 
         ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
-        ripplerAdd.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerAdd.setStyle("-jfx-rippler-fill: md-primary-color");
         ripplerPayNow.setStyle("-jfx-rippler-fill: md-primary-color");
         ripplerListPay.setStyle("-jfx-rippler-fill: md-primary-color");
+        ripplerListDelete.setStyle("-jfx-rippler-fill: md-primary-color");
 
         this.headerPageIcon.getChildren().add( ripplerClose );
         this.showIcon( panelIconAdd, ripplerAdd );
-        this.showIcon( panelIconPayNow, ripplerPayNow );
         this.showIcon( panelIconListPayment, ripplerListPay );
+        this.showIcon( panelIconPayNow, ripplerPayNow );
+        this.showIcon( this.panelIconDelete, ripplerListDelete );
 
         if( this.viewConfigurarion.difine ){
             this.lableVendaArreaInformacaoTitle.setText( this.viewConfigurarion.descricaoTituloInformacao );

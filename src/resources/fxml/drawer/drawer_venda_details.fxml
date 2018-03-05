@@ -204,9 +204,14 @@
                            <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
+                     <AnchorPane fx:id="panelIconDelete" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView glyphName="DELETE" layoutX="10.0" layoutY="33.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
                   </children>
                </HBox>
-               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="Otavio mendes rompan" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="V00000/18" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
                <Separator layoutX="87.0" layoutY="108.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             </children>
          </AnchorPane>

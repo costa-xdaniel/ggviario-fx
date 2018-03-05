@@ -1,6 +1,6 @@
 .jfx-toolbar {
     -fx-min-height:40;
-    -fx-background-color: md-primary-dark-color;
+    -fx-background-color: md-primary-color;
     -fx-padding: 16px;
 }
 
@@ -64,24 +64,11 @@
     -fx-border-radius:     72px;
 }
 
-
-.card-title {
-    -fx-font-size: 20px;
-    -fx-padding: 5 0 5 0;
-}
-
-
 .anchor-header {
     -fx-background-image: url(/images/backgroud.png);
     -fx-background-size: cover;
     -fx-pref-height: 150;
     -fx-pref-width: 300;
-}
-
-.row-normal{
-    -fx-pref-height: 40px;
-    -fx-grid-lines-visible: true;
-    -fx-text-alignment: center;
 }
 
 .card-primary-color{
@@ -92,17 +79,11 @@
     -fx-start-margin: 0;
 }
 
-.card-primary-color Label {
-    -fx-text-fill: md-primary-text;
-    -fx-alignment: center;
-}
-
 .text-field {
     -fx-unfocus-color: md-primary-color;
     -fx-focus-color: md-accent-color;
     -fx-label-float:true;
 }
-
 
 .combo-box {
     -fx-pref-height: 40;
@@ -141,17 +122,17 @@
 
 
 .venda-drawer-details {
-    -fx-pref-width: 450px;
-    -fx-max-width: 450px;
-    -fx-min-width: 450px;
+    -fx-pref-width: 500px;
+    -fx-max-width: 500px;
+    -fx-min-width: 500px;
     -fx-min-height: 50px;
 
 }
 
 .venda-drawer-details-page {
-    -fx-pref-width: 450px;
-    -fx-max-width: 450px;
-    -fx-min-width: 450px;
+    -fx-pref-width: 500px;
+    -fx-max-width: 500px;
+    -fx-min-width: 500px;
 }
 
 
@@ -332,8 +313,6 @@
 }
 
 
-
-
 .operacao-form-list JFXListView{
     -fx-pref-width: filed-size-long;
     -fx-min-width:  filed-size-long;
@@ -410,8 +389,11 @@
     -fx-text-fill: md-orange-500;
 }
 
+/*<< MENU =============== */
+
 .menu-area {
-    -fx-padding: 0px  0px  0px  32px;
+    /*           top      right    bottom   left*/
+    -fx-padding: 0px      0px      0px      0px;
 }
 
 .menu-area Label {
@@ -438,5 +420,4 @@
     -fx-fill: md-primary-color;
 }
 
-
-
+/*=============== MENU >>/

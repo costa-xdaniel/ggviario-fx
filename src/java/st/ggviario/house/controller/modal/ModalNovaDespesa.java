@@ -109,7 +109,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
         this.datePickeDespesaData.setValue( LocalDate.now() );
     }
 
-    private void structure() {
+    void structure() {
 
         //Striucture rippler
         this.ripllerCloseModa = new JFXRippler( this.iconAreaCloseModal );
@@ -269,7 +269,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
 
     private void onRegister ( ){
         ModalDepesaResult res = this.onCalculateNow();
-        if( res.isSucceed() ){
+        if( res.isSuccess() ){
 
             ContaManager contaManager = new ContaManager();
             Conta conta = contaManager.getContaFor(ContaManager.ContaOperacao.PAGAMENTO_DESPESA);
@@ -320,7 +320,7 @@ arg_colaborador_id uuid,
 
         SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
         snackbarBuilder.show( res.message, res.level );
-        if( res.isSucceed() ){
+        if( res.isSuccess() ){
             this.clear();
             this.closeModal();
             this.executeOnOperationResult( res );
@@ -419,7 +419,7 @@ arg_colaborador_id uuid,
         private Map<String,Object> result;
 
         @Override
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return this.success;
         }
 
@@ -444,7 +444,7 @@ arg_colaborador_id uuid,
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return this.result;
         }
     }

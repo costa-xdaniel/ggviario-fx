@@ -28,10 +28,6 @@ import java.util.*;
 
 public class ModalNovaVenda extends AbstractModal< List > implements Initializable {
 
-    public ModalNovaVenda(Cliente clienteAnonimo) {
-        this.clienteAnonimo = clienteAnonimo;
-    }
-
     public static ModalNovaVenda load(TipoVenda tipoVenda, String functionLoadCliente, StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovaVenda> loader = new ControllerLoader<>("/fxml/modal/modal_nova_venda.fxml");
         ModalNovaVenda modal = loader.getController();
@@ -138,7 +134,6 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private ModalNovoCliente modalNovoCliente;
     private List< RegisterVendaResult > vendasResult = new LinkedList<>();
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize( location, resources );
@@ -173,12 +168,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void createVoidItems() {
-        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
-        builder.nome("Selecione");
-        this.produtoVasio = builder.build();
-
+        this.produtoVasio = new Produto();
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        precoBuilder.unidade( new Unidade.UnidadeBuilder().nome( "Selecione" ).build() );
+        precoBuilder.unidade( new Unidade.UnidadeBuilder().setNome( "" ).build() );
         this.precoVasio = precoBuilder.build();
     }
 
@@ -192,7 +184,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
 
 
-    private void defineEvents() {
+    void defineEvents() {
 
         this.comboxProduto.getSelectionModel().selectedItemProperty().addListener((observable, oldItem, newItem) -> this.onSelectProduto( oldItem, newItem ));
         this.listViewCliente.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCliente, newCliente) -> onSelectCliente(newCliente));
@@ -323,7 +315,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
         SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
         this.vendasResult.add( result );
-        if( result.isSucceed() ){
+        if( result.isSuccess() ){
             snackbarBuilder.showSucess( "Nova "+this.tipoVenda.name().toLowerCase()+" cadastrada com sucesso");
         } else {
             snackbarBuilder.showError( result.message );
@@ -336,7 +328,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         result.vendasResult = this.vendasResult;
         int countSuccess = 0;
         for( RegisterVendaResult result1 : this.vendasResult ){
-            if( result1.isSucceed() ) countSuccess ++;
+            if( result1.isSuccess() ) countSuccess ++;
         }
         this.closeModal();
         this.clear();
@@ -412,7 +404,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             this.modalNovoCliente = ModalNovoCliente.load( this.getStakePane() );
             this.modalNovoCliente.getDialogModal().setOnDialogClosed(jfxDialogEvent -> this.openModal());
             this.modalNovoCliente.setOnModalResult(operationResult -> {
-                if( operationResult.isSucceed() ){
+                if( operationResult.isSuccess() ){
                     this.loadClienteDatasource();
                     boolean res = this.findClienteSelecter( operationResult.getResultValue() );
                     this.textFieldClienteSearch.setText( operationResult.getResultValue().getClienteCompletName() );
@@ -652,7 +644,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
 
         @Override
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return this.success;
         }
 
@@ -677,7 +669,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return resultData;
         }
     }

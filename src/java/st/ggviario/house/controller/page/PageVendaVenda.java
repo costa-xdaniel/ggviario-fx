@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class PageVenda extends VendaController {
+public class PageVendaVenda extends VendaController {
 
 
     @FXML

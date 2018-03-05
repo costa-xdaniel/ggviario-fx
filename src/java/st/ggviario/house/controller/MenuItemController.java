@@ -42,7 +42,7 @@ public class MenuItemController implements DrawerItem, Initializable {
         if( this.page == null ){
             ControllerLoader< Node, Page > loader = new ControllerLoader<>(this.menuItem.getContentPageLink() );
             this.page = loader.getController();
-            this.nodeContent = loader.getNode();
+            this.nodeContent = loader.getNodeView();
             this.page.onSetRoot( this.rootController.getRoot() );
             this.page.onSetRootPage( this.rootController.getRootPage() );
             this.page.accept( this.rootController.getPrimaryStage(), this.rootController.getScene() );

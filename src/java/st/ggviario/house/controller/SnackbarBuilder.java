@@ -14,12 +14,7 @@ public class SnackbarBuilder {
     private int warningTimeOut;
     private int errorTimeOut;
 
-    public SnackbarBuilder() {
-        this.snackbar =  new JFXSnackbar();
-        init();
-    }
-
-    public SnackbarBuilder(Pane pane) {
+    public SnackbarBuilder( Pane pane ) {
         this.snackbar =  new JFXSnackbar( pane );
         init();
     }

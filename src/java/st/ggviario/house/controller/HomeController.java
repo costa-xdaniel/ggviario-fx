@@ -56,7 +56,7 @@ public class HomeController implements Initializable {
         DrawerController controller = loader.getController();
         controller.setOnClickMenuIcon(this::closeDrawer);
         controller.setHomeController( this );
-        AnchorPane view = loader.getNode();
+        AnchorPane view = loader.getNodeView();
         this.drawer.setSidePane( view );
         StackPane.setAlignment( view, Pos.TOP_LEFT );
 
@@ -75,7 +75,6 @@ public class HomeController implements Initializable {
         });
 
         this.rippler = new JFXRippler( this.iconAreaMenu);
-        this.rippler.setMaskType( JFXRippler.RipplerMask.CIRCLE );
         this.rippler.setOnMouseClicked(event -> openDrawer(  ) );
         this.vboxMenuArea.getChildren().add( 0, this.rippler );
 

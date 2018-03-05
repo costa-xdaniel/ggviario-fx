@@ -1,7 +1,6 @@
-package st.ggviario.house.controller.page;
+package st.ggviario.house.controller;
 
 import javafx.fxml.Initializable;
-import st.ggviario.house.controller.HomeController;
 import st.ggviario.house.model.DrawerItem;
 import st.ggviario.house.model.Menu;
 

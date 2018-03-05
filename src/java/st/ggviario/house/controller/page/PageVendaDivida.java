@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class VendaDividaController extends VendaController {
+public class PageVendaDivida extends VendaController {
     @FXML
     private AnchorPane localRootPage;
 
@@ -190,7 +190,7 @@ public class VendaDividaController extends VendaController {
         if( this.modalNovoPagamento == null ){
             this.modalNovoPagamento = ModalNovoPagamento.load((StackPane) rootPage);
             this.modalNovoPagamento.setOnModalResult(operationResult -> {
-                if( operationResult.isSucceed() ){
+                if( operationResult.isSuccess() ){
                 }
             });
         }
@@ -209,7 +209,7 @@ public class VendaDividaController extends VendaController {
 
     @Override
     String[] getAvalibleIcons() {
-        return new String[]{ "panelIconAdd", "panelIconPayNow", "panelIconListPayment" };
+        return new String[]{ "panelIconAdd", "panelIconPayNow", "panelIconListPayment", "panelIconDelete" };
     }
 
 

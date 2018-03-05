@@ -3,6 +3,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="200.0" prefWidth="300.0" styleClass="anchor-header" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.page.DrawerHeaderController">
+<AnchorPane prefHeight="200.0" prefWidth="300.0" styleClass="anchor-header" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.DrawerHeaderController">
 
 </AnchorPane>

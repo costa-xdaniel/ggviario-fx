@@ -165,7 +165,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
 
     private void register() {
         ReseultClient res = this.validadeForm();
-        if( res.isSucceed() ){
+        if( res.isSuccess() ){
             PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
             postgresSQL.query( "ggviario.funct_reg_cliente" )
                     .withOther( AuthSingleton.getAuth().getColaboradorId() )
@@ -198,7 +198,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                     });
         }
 
-        if( res.isSucceed() ){
+        if( res.isSuccess() ){
             this.closeModal();
             this.clear();
         }
@@ -258,7 +258,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         private Map<String, Object > map;
 
         @Override
-        public boolean isSucceed() {
+        public boolean isSuccess() {
             return this.success;
         }
 
@@ -283,7 +283,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         }
 
         @Override
-        public Map<String, Object> mapResults() {
+        public Map<String, Object> getData() {
             return this.map;
         }
     }
