@@ -1981,6 +1981,7 @@ CREATE TABLE categoria (
     categoria_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     categoria_colaborador_id uuid NOT NULL,
     categoria_colaborador_atualizacao uuid,
+    categoria_categoria_id uuid,
     categoria_codigo character varying(6),
     categoria_nome character varying(32) NOT NULL,
     categoria_posisao smallint,
@@ -1988,7 +1989,6 @@ CREATE TABLE categoria (
     categoria_estado smallint DEFAULT 1 NOT NULL,
     categoria_dataregito timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     categoria_dataatualizacao timestamp without time zone,
-    categoria_categoria_id uuid,
     CONSTRAINT ck_categoria_nome_is_normalized CHECK (lib.is_normalized((categoria_nome)::text))
 );
 
