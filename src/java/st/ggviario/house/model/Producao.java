@@ -66,13 +66,15 @@ public class Producao {
 
     public enum ProducaoEstado implements EnumTypes< ProducaoEstado, Short> {
 
-        ATIVO( 1 ),
+        ATIVO( 1, "Ativo" ),
 
         ;
         private short estado;
+        private String nome;
 
-        ProducaoEstado(int estado) {
+        ProducaoEstado(int estado, String nome ) {
             this.estado = (short) estado;
+            this.nome = nome;
         }
 
         @Override
@@ -84,6 +86,12 @@ public class Producao {
         public Short value() {
             return this.estado;
         }
+
+        @Override
+        public String getNome() {
+            return null;
+        }
+
     }
 
     public static class ProducaoBuilder {

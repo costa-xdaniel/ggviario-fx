@@ -142,7 +142,12 @@
     -fx-background-color: with;
 }
 
-.form JFXTextField {
+.form JFXTextField,
+.form JFXTextArea,
+.form JFXComboBox,
+.form JFXDatePicker,
+.form JFXToggleButton
+{
     -jfx-focus-color: md-accent-color;
     -jfx-unfocus-color: md-primary-color;
     -jfx-label-float: true;
@@ -153,36 +158,25 @@
     -fx-min-width:  250px;
 }
 
-.form JFXComboBox {
-    -jfx-focus-color: md-accent-color;
-    -jfx-unfocus-color: md-primary-color;
-    -jfx-label-float: true;
-    -fx-text-fill: md-text-color;
-    -fx-prompt-text-fill: md-text-color;
-    -fx-pref-width: 250px;
-    -fx-max-width:  250px;
-    -fx-min-width:  250px;
-}
+/*.form JFXDatePicker*/
+ /*{*/
+    /*-jfx-default-color: md-primary-color;*/
+    /*-fx-text-fill: md-primary-text-color;*/
+    /*-fx-prompt-text-fill: md-primary-text-color;*/
+    /*-fx-pref-width: 250px;*/
+    /*-fx-max-width:  250px;*/
+    /*-fx-min-width:  250px;*/
+/*}*/
 
 
-.form JFXDatePicker {
-    -jfx-default-color: md-primary-color;
-    -fx-text-fill: md-primary-text-color;
-    -fx-prompt-text-fill: md-primary-text-color;
-    -fx-pref-width: 250px;
-    -fx-max-width:  250px;
-    -fx-min-width:  250px;
-}
-
-
-.form JFXToggleButton {
-    -jfx-default-color: md-primary-color;
-    -fx-text-fill: md-text-color;
-    -fx-prompt-text-fill: md-text-color;
-    -fx-pref-width: 250px;
-    -fx-max-width:  250px;
-    -fx-min-width:  250px;
-}
+/*.form JFXToggleButton {*/
+    /*-jfx-default-color: md-primary-color;*/
+    /*-fx-text-fill: md-text-color;*/
+    /*-fx-prompt-text-fill: md-text-color;*/
+    /*-fx-pref-width: 250px;*/
+    /*-fx-max-width:  250px;*/
+    /*-fx-min-width:  250px;*/
+/*}*/
 
 .form-simple.form JFXTextField {
     -fx-pref-width: 300px;
@@ -203,6 +197,28 @@
     -fx-max-width:  300px;
     -fx-min-width:  300px;
 }
+
+.form-simple.form Label {
+    -fx-pref-width: 300px;
+    -fx-max-width:  300px;
+    -fx-min-width:  300px;
+}
+
+.form-simple.form JFXTextArea {
+    -fx-pref-width: 300px;
+    -fx-max-width:  300px;
+    -fx-min-width:  300px;
+    -fx-pref-height: 100px;
+    -fx-max-height:  100px;
+    -fx-min-height:  100px;
+}
+
+.form-simple.form TextArea {
+    -fx-pref-width: 300px;
+    -fx-max-width:  300px;
+    -fx-min-width:  300px;
+}
+
 
 /** Buttom */
 
@@ -252,11 +268,6 @@
 
 
 
-.form-simple.form  Label {
-    -fx-pref-width: 150px;
-    -fx-max-width:  150px;
-    -fx-min-width:  150px;
-}
 
 .lista-movimento-field-title{
     -fx-text-fill: md-secondary-text-color;

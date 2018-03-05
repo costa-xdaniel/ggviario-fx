@@ -75,14 +75,16 @@ public class Setor {
     }
 
     public enum SetorEstado implements EnumTypes <  SetorEstado, Short >{
-        PROTEGIDO( 2 ),
-        ATIVO( 1 ),
-        FECHADO( 0 );
+        PROTEGIDO( 2, "Protegido"),
+        ATIVO( 1, "Ativo" ),
+        FECHADO( 0, "Fachado" );
 
         private final short estado;
+        private String nome;
 
-        SetorEstado( int estado ){
+        SetorEstado( int estado, String nome ){
             this.estado  = (short) estado;
+            this.nome = nome;
         }
 
         @Override
@@ -93,6 +95,11 @@ public class Setor {
         @Override
         public Short value() {
             return this.estado;
+        }
+
+        @Override
+        public String getNome() {
+            return nome;
         }
     }
 

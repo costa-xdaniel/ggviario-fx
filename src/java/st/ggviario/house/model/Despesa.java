@@ -128,7 +128,7 @@ public class Despesa {
             return this.estado;
         }
 
-        public String showName( ){
+        public String getNome( ){
             return this.showName;
         }
     }

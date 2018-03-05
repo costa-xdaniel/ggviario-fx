@@ -112,8 +112,8 @@ public class PageVendaDivida extends VendaController {
                 columnVendaDividaEstado
         );
 
-        this.columnVendaDividaFaturaNumero.setMinWidth( 110 );
-        this.columnVendaDividaFaturaNumero.setMaxWidth( 110 );
+        this.columnVendaDividaFaturaNumero.setMinWidth( 115 );
+        this.columnVendaDividaFaturaNumero.setMaxWidth( 115 );
         this.columnVendaDividaCliente.setMinWidth( 180 );
 
         this.columnVendaDividaEstado.setMinWidth( 135 );

@@ -25,11 +25,13 @@ public class Produto {
     private Date produtoDataRegisto;
     private Date produtoDataAtualizacao;
 
-    private Double produtoValorUnitario = null;
+    private Preco preco = null;
     private Double produtoQuantidadeProduzido = 0d;
     private Double produtoMontanteVendas = 0d;
     private Double produtoMontanteVendaPagas = 0d;
     private Double produtoMontanteVendaPendentes = 0d;
+    private Double produtoMontanteVendaDivida = 0d;
+    private Double produtoMontanteVendaVendas = 0d;
     private Double produtoMontanteCompras = 0d;
     private Double produtoMontanteCompraPagas = 0d;
     private Double produtoMontanteCompraPendentes = 0d;
@@ -94,8 +96,8 @@ public class Produto {
         return produtoDataAtualizacao;
     }
 
-    public Double getProdutoValorUnitario() {
-        return produtoValorUnitario;
+    public Preco getPreco() {
+        return preco;
     }
 
     public Double getProdutoQuantidadeProduzido() {
@@ -112,6 +114,14 @@ public class Produto {
 
     public Double getProdutoMontanteVendaPendentes() {
         return produtoMontanteVendaPendentes;
+    }
+
+    public Double getProdutoMontanteVendaDivida() {
+        return produtoMontanteVendaDivida;
+    }
+
+    public Double getProdutoMontanteVendaVendas() {
+        return produtoMontanteVendaVendas;
     }
 
     public Double getProdutoMontanteCompras() {
@@ -134,14 +144,16 @@ public class Produto {
 
     public enum ProdutoEstado implements EnumTypes < ProdutoEstado, Short > {
 
-        ATIVO( 1 ),
-        FACHADO( 0 )
+        ATIVO( 1, "Ativo" ),
+        FACHADO( 0, "Fechado" )
         ;
 
+        private final String name;
         private short estado;
 
-        ProdutoEstado( int estado ) {
+        ProdutoEstado( int estado, String name ) {
             this.estado = (short) estado;
+            this.name = name;
         }
 
         @Override
@@ -153,6 +165,13 @@ public class Produto {
         public Short value() {
             return this.estado;
         }
+
+        @Override
+        public String getNome() {
+            return this.name;
+        }
+
+
     }
 
     public static class  ProdutoBuilder{
@@ -171,42 +190,16 @@ public class Produto {
         private ProdutoEstado estado;
         private Date dataRegisto;
         private Date dataAtualizacao;
-        private Double preco = null;
+        private Preco preco = null;
         private Double producao = 0d;
         private Double montanteVendas = 0d;
+        private Double montanteVendaDividas = 0d;
+        private Double montanteVendaVendas = 0d;
         private Double montanteVendaPagas = 0d;
         private Double montanteVendaPendente = 0d;
         private Double montanteCompras = 0d;
         private Double montanteCompraPagas = 0d;
         private Double montanteCompraPendentes = 0d;
-
-        public Produto build(){
-            Produto produto = new Produto();
-            produto.produtoId = this.id;
-            produto.produtoCategoria = this.categoria;
-            produto.colaborador = this.colaborador;
-            produto.colaboradorAtualizacao = this.colaboradorAtualizacao;
-            produto.produtoCodigo = this.codigo;
-            produto.produtoNome = this.nome;
-            produto.produtoStock = SQLResource.coalesce( this.stock, 0.0 );
-            produto.produtoStockMinimo = this.stockMinimo;
-            produto.produtoServicoVenda = this.servicoVenda;
-            produto.produtoServicoCompra = this.servicoCompra;
-            produto.produtoServicoProducao = this.servicoProducao;
-            produto.produtoServicoDinamico = this.servicoStockDinamico;
-            produto.produtoEstado = this.estado;
-            produto.produtoDataRegisto = this.dataRegisto;
-            produto.produtoDataAtualizacao = this.dataAtualizacao;
-            produto.produtoValorUnitario = this.preco;
-            produto.produtoQuantidadeProduzido = SQLResource.coalesce( this.producao, 0.0 );
-            produto.produtoMontanteVendas = SQLResource.coalesce( this.montanteVendas, 0.0 );
-            produto.produtoMontanteVendaPagas = SQLResource.coalesce( this.montanteVendaPagas, 0.0 );
-            produto.produtoMontanteVendaPendentes = SQLResource.coalesce( this.montanteVendaPendente, 0.0 );
-            produto.produtoMontanteCompras = SQLResource.coalesce( this.montanteCompras, 0.0 );
-            produto.produtoMontanteCompraPagas = SQLResource.coalesce( this.montanteCompraPagas, 0.0 );
-            produto.produtoMontanteCompraPendentes = SQLResource.coalesce( this.montanteCompraPendentes, 0.0 );
-            return produto;
-        }
 
         public ProdutoBuilder setId(UUID id) {
             this.id = id;
@@ -283,7 +276,7 @@ public class Produto {
             return this;
         }
 
-        public ProdutoBuilder setPreco(Double preco) {
+        public ProdutoBuilder setPreco(Preco preco) {
             this.preco = preco;
             return this;
         }
@@ -295,6 +288,16 @@ public class Produto {
 
         public ProdutoBuilder setMontanteVendas(Double montanteVendas) {
             this.montanteVendas = montanteVendas;
+            return this;
+        }
+
+        public ProdutoBuilder setMontanteVendaDividas(Double montanteVendaDividas) {
+            this.montanteVendaDividas = montanteVendaDividas;
+            return this;
+        }
+
+        public ProdutoBuilder setMontanteVendaVendas(Double montanteVendaVendas) {
+            this.montanteVendaVendas = montanteVendaVendas;
             return this;
         }
 
@@ -323,6 +326,37 @@ public class Produto {
             return this;
         }
 
+        public Produto build(){
+            Produto produto = new Produto();
+            produto.produtoId = this.id;
+            produto.produtoCategoria = this.categoria;
+            produto.colaborador = this.colaborador;
+            produto.colaboradorAtualizacao = this.colaboradorAtualizacao;
+            produto.produtoCodigo = this.codigo;
+            produto.produtoNome = this.nome;
+            produto.produtoStock = SQLResource.coalesce( this.stock, 0.0 );
+            produto.produtoStockMinimo = this.stockMinimo;
+            produto.produtoServicoVenda = this.servicoVenda;
+            produto.produtoServicoCompra = this.servicoCompra;
+            produto.produtoServicoProducao = this.servicoProducao;
+            produto.produtoServicoDinamico = this.servicoStockDinamico;
+            produto.produtoEstado = this.estado;
+            produto.produtoDataRegisto = this.dataRegisto;
+            produto.produtoDataAtualizacao = this.dataAtualizacao;
+            produto.preco = this.preco;
+            produto.produtoQuantidadeProduzido = SQLResource.coalesce( this.producao, 0.0 );
+            produto.produtoMontanteVendas = SQLResource.coalesce( this.montanteVendas, 0.0 );
+            produto.produtoMontanteVendaDivida = SQLResource.coalesce( this.montanteVendaDividas, 0.0 );
+            produto.produtoMontanteVendaVendas = SQLResource.coalesce( this.montanteVendaVendas, 0.0 );
+            produto.produtoMontanteVendaPagas = SQLResource.coalesce( this.montanteVendaPagas, 0.0 );
+            produto.produtoMontanteVendaPendentes = SQLResource.coalesce( this.montanteVendaPendente, 0.0 );
+            produto.produtoMontanteCompras = SQLResource.coalesce( this.montanteCompras, 0.0 );
+            produto.produtoMontanteCompraPagas = SQLResource.coalesce( this.montanteCompraPagas, 0.0 );
+            produto.produtoMontanteCompraPendentes = SQLResource.coalesce( this.montanteCompraPendentes, 0.0 );
+            return produto;
+        }
+
+
         public ProdutoBuilder load(Map<String, Object > map ) {
             this.id = SQLRow.uuidOf( map.get( "produto_id"  ) );
             this.codigo = SQLRow.stringOf( map.get( "produto_codigo"  ) );
@@ -337,9 +371,10 @@ public class Produto {
             this.estado = EnumTypes.find( ProdutoEstado.values(),  SQLRow.shortOf( map.get( "produto_estado"  ) ));
             this.dataRegisto = SQLRow.dateOf( map.get( "produto_dataregisto"  ) );
             this.dataAtualizacao = SQLRow.dateOf( map.get( "produto_dataatualizacao"  ) );
-            this.preco = SQLRow.doubleOf( map.get( "produto_preco" ) );
             this.producao = SQLRow.doubleOf( map.get( "produto_producao" ) );
             this.montanteVendas = SQLRow.doubleOf( map.get( "produto_montantevendas" ) );
+            this.montanteVendaVendas = SQLRow.doubleOf( map.get( "produto_montantevendavendas" ) );
+            this.montanteVendaDividas = SQLRow.doubleOf( map.get( "produto_montantevendadividas" ) );
             this.montanteVendaPagas = SQLRow.doubleOf( map.get( "produto_montantevendapagas" ) );
             this.montanteVendaPendente = SQLRow.doubleOf( map.get( "produto_montantevendapendentes" ) );
             this.montanteCompras = SQLRow.doubleOf( map.get( "produto_montantecompras" ) );

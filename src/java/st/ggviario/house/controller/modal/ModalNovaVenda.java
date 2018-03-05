@@ -170,7 +170,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     private void createVoidItems() {
         this.produtoVasio = new Produto();
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        precoBuilder.unidade( new Unidade.UnidadeBuilder().setNome( "" ).build() );
+        precoBuilder.setUnidade( new Unidade.UnidadeBuilder().setNome( "" ).build() );
         this.precoVasio = precoBuilder.build();
     }
 
@@ -516,8 +516,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             for( Map<String, Object > map : aux ){
                 equivalenciaList.add(
                         precoBuilder.load( map )
-                        .produto( produto )
-                        .unidade( unidadeBuilder.load( map ).build() )
+                        .setProduto( produto )
+                        .setUnidade( unidadeBuilder.load( map ).build() )
                         .build()
                 );
             }

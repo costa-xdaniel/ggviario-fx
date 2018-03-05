@@ -123,8 +123,8 @@ public class PageVendaVenda extends VendaController {
                 columnVendaVendaRegisto
         );
 
-        this.columnVendaDividaFaturaNumero.setMinWidth( 110 );
-        this.columnVendaDividaFaturaNumero.setMaxWidth( 110 );
+        this.columnVendaDividaFaturaNumero.setMinWidth( 115 );
+        this.columnVendaDividaFaturaNumero.setMaxWidth( 115 );
 
 
         this.columnVendaDividaCliente.setMinWidth( 180 );

@@ -70,12 +70,14 @@ public class Categoria {
     }
 
     public enum CategoriaEstado implements EnumTypes <CategoriaEstado, Short >{
-        ATIVO( 1 ),
-        FECHADO( 0 );
+
+        ATIVO( 1, "Ativo" ),
+        FECHADO( 0, "Fechado" );
 
         private final short estado;
+        private String nome;
 
-        CategoriaEstado(int estado ){
+        CategoriaEstado(int estado, String nome ){
             this.estado  = (short) estado;
         }
 
@@ -87,6 +89,11 @@ public class Categoria {
         @Override
         public Short value() {
             return this.estado;
+        }
+
+        @Override
+        public String getNome() {
+            return nome;
         }
     }
 

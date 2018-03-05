@@ -186,7 +186,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
             this.montantePendente = new SimpleObjectProperty<>( despesa.getDespesaMontantePendente( ) );
             this.data = new SimpleObjectProperty<>( despesa.getDespesaData() );
             this.dataRegisto = new SimpleObjectProperty<>( despesa.getDespesaDataRegisto() );
-            this.estada = new SimpleStringProperty( this.despesa.getEstado().showName() );
+            this.estada = new SimpleStringProperty( this.despesa.getEstado().getNome() );
         }
     }
 

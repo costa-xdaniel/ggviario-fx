@@ -10,6 +10,8 @@ public interface EnumTypes< E extends EnumTypes,  N extends Number > {
 
      N value();
 
+     public String getNome();
+
      static < E extends EnumTypes, N extends Number> E find( E [ ] enumTypes, N value ){
          if( value == null ) return null;
          if( enumTypes == null || enumTypes.length == 0 ) return null;

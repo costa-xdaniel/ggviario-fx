@@ -58,32 +58,27 @@ public class Preco {
             return equivalencia;
         }
 
-        public PrecoBuilder id(UUID id) {
+        public PrecoBuilder setId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public PrecoBuilder produto(Produto produto) {
+        public PrecoBuilder setProduto(Produto produto) {
             this.produto = produto;
             return this;
         }
 
-        public PrecoBuilder unidade(Unidade unidade) {
+        public PrecoBuilder setUnidade(Unidade unidade) {
             this.unidade = unidade;
             return this;
         }
 
-        public PrecoBuilder quantidadeProduto(Double quantidadeProduto) {
+        public PrecoBuilder setQuantidadeProduto(Double quantidadeProduto) {
             this.quantidadeProduto = quantidadeProduto;
             return this;
         }
 
-        public PrecoBuilder load(SQLRow row ) {
-            this.load( row.toMap() );
-            return this;
-        }
-
-        public PrecoBuilder custoUnidade(Double custoUnidade) {
+        public PrecoBuilder setCustoUnidade(Double custoUnidade) {
             this.custoUnidade = custoUnidade;
             return this;
         }

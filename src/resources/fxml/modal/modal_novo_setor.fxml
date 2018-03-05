@@ -17,13 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoSetor">
+<AnchorPane fx:id="root" styleClass="modal" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.modal.ModalNovoSetor">
    <children>
       <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="anchorHeader">
                <children>
-                  <Label fx:id="modalTitle" styleClass="modal-title" text="Nova Amortizaçao" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="modalTitle" styleClass="modal-title" text="Novo setor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Separator prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <AnchorPane fx:id="iconArea" styleClass="details-header-icon-area" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>

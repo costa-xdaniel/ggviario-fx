@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTreeTableRow;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -190,6 +191,8 @@ public abstract class VendaController extends RowsController< VendaController.Ve
                 }
             }
         });
+        JFXDepthManager.pop( this.getDrawerVendaDetails() );
+
     }
 
     abstract String[] getAvalibleIcons();
