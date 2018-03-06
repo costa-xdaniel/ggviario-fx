@@ -123,18 +123,18 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
     private void onRegisterNovoProduto( ){
         ModalNovoProdutoResult res = this.chackForm();
         if (res.isSuccess()) {
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL() ;
-            Colaborador colaborador = AuthSingleton.getAuth();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance() ;
+            Colaborador colaborador = AuthSingleton.getInstance();
             Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
 
             sql.query( "ggviario.funct_reg_produto" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withUUID( res.resultValue.getProdutoCategoria().getCategoriaId() )
-                .withVarchar( res.resultValue.getProdutoNome() )
-                .withBoolean( res.resultValue.getProdutoServicoVenda() )
-                .withBoolean( res.resultValue.getProdutoServicoCompra() )
-                .withBoolean( res.resultValue.getProdutoServicoProducao() )
-                .withBoolean( res.resultValue.getProdutoServicoDinamico() )
+                .withUUID( res.value.getProdutoCategoria().getCategoriaId() )
+                .withVarchar( res.value.getProdutoNome() )
+                .withBoolean( res.value.getProdutoServicoVenda() )
+                .withBoolean( res.value.getProdutoServicoCompra() )
+                .withBoolean( res.value.getProdutoServicoProducao() )
+                .withBoolean( res.value.getProdutoServicoDinamico() )
                 .withJsonb( ( String ) null )
                 .callFunctionTable()
                     .onResultQuery(row -> {
@@ -145,7 +145,7 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             res.message = "Novo produto cadastrado com sucesso!";
                             res.terminated = true;
-                            res.resultValue = builder.load((Map<String, Object>) result.getData().get("produto")).build();
+                            res.value = builder.load((Map<String, Object>) result.getData().get("produto")).build();
                         } else {
                             res.level = SnackbarBuilder.MessageLevel.ERROR;
                             res.message = result.getMessage();
@@ -186,11 +186,11 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
                 +" & stockDInamico "+ stockDinamico
         );
 
-        result.resultValue = produtoBuilder.build();
+        result.value = produtoBuilder.build();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
-        if( result.resultValue.getProdutoNome() == null ){
+        if( result.value.getProdutoNome() == null ){
             result.message = "Informe o nome do produto!";
-        } else if( result.getResultValue().getProdutoCategoria() == null || result.getResultValue().getProdutoCategoria().getCategoriaId() == null ) {
+        } else if( result.getValue().getProdutoCategoria() == null || result.getValue().getProdutoCategoria().getCategoriaId() == null ) {
             result.message = "Informe a categoria do produto!";
         } else if ( !venda && !compra && !producao ){
             result.message = "Ative pelo menus um dos serviço entre compra, venda ou produção!";
@@ -212,7 +212,7 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         private boolean success;
         private String message;
         private boolean terminated;
-        private Produto resultValue;
+        private Produto value;
         private SnackbarBuilder.MessageLevel level;
         private Map< String, Object > map;
 
@@ -232,8 +232,8 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         }
 
         @Override
-        public Produto getResultValue() {
-            return this.resultValue;
+        public Produto getValue() {
+            return this.value;
         }
 
         @Override

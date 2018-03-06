@@ -13,7 +13,7 @@ public class PostgresSQLSingleton {
         return postgresSQL;
     }
 
-    public static PostgresSQL loadPostgresSQL() {
+    public static PostgresSQL getInstance() {
         return postgresSQL;
     }
 

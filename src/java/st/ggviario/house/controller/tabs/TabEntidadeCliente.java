@@ -136,7 +136,7 @@ public class TabEntidadeCliente extends RowsController<TabEntidadeCliente.Client
     }
 
     private void loadDataCliente() {
-        PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
         Cliente.ClienteBuilder builder = new Cliente.ClienteBuilder();
         Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
         this.listCliente.clear();

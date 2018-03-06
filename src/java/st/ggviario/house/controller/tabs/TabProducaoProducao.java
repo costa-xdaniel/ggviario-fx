@@ -106,7 +106,7 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
     }
 
     private void pushFunctLodaProducao( ){
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.producaoModelViewList.clear();
         sql.query( "funct_load_producao" )
             .withJsonb( (String ) null)
@@ -136,7 +136,7 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
     private void loadDataProduto(){
         this.produtoList.clear();
         Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         sql.query( "funct_load_produto_producao" )
             .withJsonb( ( String ) null )
             .callFunctionTable()
@@ -146,7 +146,7 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
     private void loadSetorData(){
         Setor.SetorBuilder builder = new Setor.SetorBuilder();
         Setor.SetorBuilder setorSuperBuilder = new Setor.SetorBuilder();
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.setorProducaoList.clear();
         this.setorFechadoList.clear();
         sql.query( "funct_load_setor" )

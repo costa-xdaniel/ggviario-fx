@@ -221,7 +221,7 @@ public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> 
         }
 
         @Override
-        public Destroy<T> getResultValue() {
+        public Destroy<T> getValue() {
             return resultValue;
         }
 

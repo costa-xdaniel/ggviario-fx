@@ -13,7 +13,7 @@
          <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy></JFXTreeTableView>
-      <JFXDrawer fx:id="drawerFornecedor" defaultDrawerSize="450.0" direction="RIGHT" overLayVisible="false" style="-fx-background-color: transparent;" styleClass="venda-drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <JFXDrawer fx:id="drawerFornecedor" defaultDrawerSize="450.0" direction="RIGHT" overLayVisible="false" style="-fx-background-color: transparent;" styleClass="drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="fabNewFornecedor" buttonType="RAISED" prefHeight="50.0" prefWidth="50.0" styleClass="floating-action-button" text="+" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
    </children>
    <stylesheets>

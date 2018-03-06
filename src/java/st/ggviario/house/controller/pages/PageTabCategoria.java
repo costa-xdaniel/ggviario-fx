@@ -53,7 +53,7 @@ public class PageTabCategoria implements PageTab, Initializable{
     }
 
     private void loadDataCategoria(){
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.categoriaList.clear();
         Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
         Categoria.CategoriaBuilder categoriaBuilderSuper = new Categoria.CategoriaBuilder();

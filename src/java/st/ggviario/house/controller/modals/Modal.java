@@ -56,7 +56,7 @@ public interface Modal< R > {
         boolean isTerminated();
 
         @Getter
-        T getResultValue();
+        T getValue();
 
         SnackbarBuilder.MessageLevel getLevel();
 

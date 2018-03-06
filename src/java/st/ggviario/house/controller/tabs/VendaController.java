@@ -18,7 +18,7 @@ import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.SnackbarBuilder;
 import st.ggviario.house.controller.modals.ModalDestroy;
 import st.ggviario.house.controller.modals.ModalNovaVenda;
-import st.ggviario.house.controller.pages.DrawerVendaDetalhes;
+import st.ggviario.house.controller.drawers.DrawerVenda;
 import st.ggviario.house.controller.pages.PageTab;
 import st.ggviario.house.controller.pages.RowsController;
 import st.ggviario.house.model.*;
@@ -36,7 +36,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
 
 
     private ModalNovaVenda modalNovaVenda;
-    DrawerVendaDetalhes drawerVendaDetalhes;
+    DrawerVenda drawerVendaDetalhes;
     private ModalDestroy< Venda > modalDestroyVenda;
 
 
@@ -85,7 +85,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
         Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.vendaList.clear();
 
         sql.query( this.getFunctionLoadVendaName() ).withJsonb( (String) null).callFunctionTable().onResultQuery(row -> {
@@ -156,7 +156,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
 
     void loadDrawerDetahesVenda() {
         if( this.drawerVendaDetalhes == null ){
-            this.drawerVendaDetalhes = DrawerVendaDetalhes.load( this.getDrawerVendaDetails(), this.getTipoVenda(), this.getAvalibleIcons() );
+            this.drawerVendaDetalhes = DrawerVenda.load( this.getDrawerVendaDetails(), this.getTipoVenda(), this.getAvalibleIcons() );
             if( drawerVendaDetalhes == null ) throw  new RuntimeException( "Para Qui" );
             this.drawerVendaDetalhes.setOnNewVendaForClinet( this::openModalNovaVendaForCliente);
             this.drawerVendaDetalhes.setOnDeleteVenda( this::openModalDestroyVenda);
@@ -175,12 +175,12 @@ public abstract class VendaController extends RowsController< VendaController.Ve
                 SnackbarBuilder.MessageLevel level = SnackbarBuilder.MessageLevel.WARNING;
                 SnackbarBuilder snackbak = new SnackbarBuilder( this.rootPage );
                 if( modalResult.isSuccess() ){
-                    PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-                    Colaborador colaborador = AuthSingleton.getAuth();
+                    PostgresSQL sql = PostgresSQLSingleton.getInstance();
+                    Colaborador colaborador = AuthSingleton.getInstance();
                     sql.query( "ggviario.funct_change_venda_anular" )
                         .withUUID( colaborador.getColaboradorId() )
-                        .withUUID( modalResult.getResultValue().getObject().getVendaId() )
-                        .withVarchar( modalResult.getResultValue().getText() )
+                        .withUUID( modalResult.getValue().getObject().getVendaId() )
+                        .withVarchar( modalResult.getValue().getText() )
                         .callFunctionTable()
                             .onResultQuery(row -> {
                                 SQLResult result = new SQLResult( row );

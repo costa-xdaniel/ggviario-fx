@@ -243,23 +243,23 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
         } else if( quant != null ) {
             res.message = "Informe a quantidade do produto!";
         } else if( unit == null ){
-            res.message = "Informe a unidade da despesa!";
+            res.message = "Informe a unidade da value!";
         }
 
-        res.despesa = despesaBuilder.build();
+        res.value = despesaBuilder.build();
 
         if( quant != null && unit != null ){
-            this.labelPrecoFinalPagar.setText( this.moneyFormat.format( res.despesa.getDespesaMontanteTotal() )+" STN" );
-            this.textFieldMontantePagar.setText( this.moneyFormat.format( res.despesa.getDespesaMontanteTotal() )+" STN" );
+            this.labelPrecoFinalPagar.setText( this.moneyFormat.format( res.value.getDespesaMontanteTotal() )+" STN" );
+            this.textFieldMontantePagar.setText( this.moneyFormat.format( res.value.getDespesaMontanteTotal() )+" STN" );
         } else {
             this.labelPrecoFinalPagar.setText( "0,00 STN" );
             this.textFieldMontantePagar.setText( null );
         }
 
-        if( res.despesa.getFornecedor() == null ) res.message = "Selecione um fornecedor!";
-        else if( res.despesa.getProduto() == null ) res.message = "Selecione um produto!";
-        else if( res.despesa.getUnidade() == null ) res.message = "Selecione uma uniade";
-        else if( res.despesa.getDespesaMontanteUnitario() == null ) res.message = "Informe o custo unitario";
+        if( res.value.getFornecedor() == null ) res.message = "Selecione um fornecedor!";
+        else if( res.value.getProduto() == null ) res.message = "Selecione um produto!";
+        else if( res.value.getUnidade() == null ) res.message = "Selecione uma uniade";
+        else if( res.value.getDespesaMontanteUnitario() == null ) res.message = "Informe o custo unitario";
         else if( quant == null ) res.message = "Informe a quantidade do produto!";
         else res.success = true;
 
@@ -273,7 +273,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
 
             ContaManager contaManager = new ContaManager();
             Conta conta = contaManager.getContaFor(ContaManager.ContaOperacao.PAGAMENTO_DESPESA);
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
 /*
 funct_reg_despesa(
@@ -289,17 +289,17 @@ arg_colaborador_id uuid,
          arg_despesa_paga boolean, arg_conta_id uuid)
  */
 
-            Colaborador colaborador = AuthSingleton.getAuth();
+            Colaborador colaborador = AuthSingleton.getInstance();
             sql.query( "ggviario.funct_reg_despesa" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withUUID( res.despesa.getFornecedor().getFornecedorId() )
-                .withUUID( res.despesa.getProduto().getProdutoId() )
-                .withUUID( res.despesa.getUnidade().getUnidadeId() )
-                .withNumeric( res.despesa.getDespesaQuantidade() )
-                .withNumeric( res.despesa.getDespesaMontanteUnitario() )
-                .withNumeric( res.despesa.getDespesaMontanteTotal() )
-                .withDate( res.despesa.getDespesaData() )
-                .withVarchar( res.despesa.getDespesaFaturaNumero() )
+                .withUUID( res.value.getFornecedor().getFornecedorId() )
+                .withUUID( res.value.getProduto().getProdutoId() )
+                .withUUID( res.value.getUnidade().getUnidadeId() )
+                .withNumeric( res.value.getDespesaQuantidade() )
+                .withNumeric( res.value.getDespesaMontanteUnitario() )
+                .withNumeric( res.value.getDespesaMontanteTotal() )
+                .withDate( res.value.getDespesaData() )
+                .withVarchar( res.value.getDespesaFaturaNumero() )
                 .withBoolean( this.toggleButtonPago.isSelected() )
                 .withUUID( conta ==  null? null : conta.getContaId() )
                 .callFunctionTable()
@@ -308,9 +308,9 @@ arg_colaborador_id uuid,
                         res.result = result.getData();
                         if( result.isSuccess() ){
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
-                            res.message = "Nova despesa cadastrado com sucesso";
+                            res.message = "Nova value cadastrado com sucesso";
                             res.success = true;
-                            res.despesa = builder.load((Map<String, Object>) result.getData().get("despesa") ).build();
+                            res.value = builder.load((Map<String, Object>) result.getData().get("value") ).build();
                         } else {
                             res.level = SnackbarBuilder.MessageLevel.ERROR;
                             res.message = result.getMessage();
@@ -352,7 +352,7 @@ arg_colaborador_id uuid,
 
     private void loadDataFornecedor( ){
         Fornecedor.FornecedorBuilder  fornecedorBuilder = new Fornecedor.FornecedorBuilder();
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.fornecedorList.clear();
         //Load fornecedor
         sql.query( "funct_load_fornecedor" )
@@ -368,7 +368,7 @@ arg_colaborador_id uuid,
         this.productoListMap.clear();
         this.produtoList.add( this.produtoVoid);
 
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
         Gson gson = new Gson();
@@ -414,7 +414,7 @@ arg_colaborador_id uuid,
         private boolean success;
         private boolean terminated;
         private String message;
-        private Despesa despesa;
+        private Despesa value;
         private SnackbarBuilder.MessageLevel level;
         private Map<String,Object> result;
 
@@ -434,8 +434,8 @@ arg_colaborador_id uuid,
         }
 
         @Override
-        public Despesa getResultValue() {
-            return this.despesa;
+        public Despesa getValue() {
+            return this.value;
         }
 
         @Override

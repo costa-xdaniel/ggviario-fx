@@ -101,12 +101,12 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
             /*
             funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying)
              */
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-            Colaborador colaborador = AuthSingleton.getAuth();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
             sql.query( "ggviario.funct_reg_setor" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withUUID( res.getResultValue().getSetorSuper().getSetorId() )
-                .withVarchar( res.getResultValue().getSetorNome() )
+                .withUUID( res.getValue().getSetorSuper().getSetorId() )
+                .withVarchar( res.getValue().getSetorNome() )
                 .callFunctionTable()
                     .onResultQuery(row -> {
                         SQLResult result = new SQLResult( row );
@@ -187,7 +187,7 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
         }
 
         @Override
-        public Setor getResultValue() {
+        public Setor getValue() {
             return this.resultVale;
         }
 

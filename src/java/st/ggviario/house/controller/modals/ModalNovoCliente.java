@@ -149,7 +149,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         this.listDistrito.add( distritoBuilder.id(null).nome("Não definido").build() );
         this.listTipoDocumento.add( tipoDocumentoBuilder.id(null).desc("Não definido").build() );
 
-        PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
         postgresSQL.query("ggviario.funct_load_distrito")
                 .withOther( null )
                 .callFunctionTable()
@@ -166,9 +166,9 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     private void register() {
         ReseultClient res = this.validadeForm();
         if( res.isSuccess() ){
-            PostgresSQL postgresSQL = PostgresSQLSingleton.loadPostgresSQL();
+            PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
             postgresSQL.query( "ggviario.funct_reg_cliente" )
-                    .withOther( AuthSingleton.getAuth().getColaboradorId() )
+                    .withOther( AuthSingleton.getInstance().getColaboradorId() )
                     .withSmallint( res.cliente.getSexo() == null? null : res.cliente.getSexo().getSexId() )
                     .withSmallint( res.cliente.getDistrito() == null? null : res.cliente.getDistrito().getDistritoId() )
                     .withSmallint( res.cliente.getTipoDocumento() == null? null : res.cliente.getTipoDocumento().getTipoDocumentoId() )
@@ -273,7 +273,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         }
 
         @Override
-        public Cliente getResultValue() {
+        public Cliente getValue() {
             return cliente;
         }
 

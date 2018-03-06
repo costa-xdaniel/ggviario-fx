@@ -83,7 +83,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         this.distritos.clear();
         Distrito.DistritoBuilder builder = new Distrito.DistritoBuilder();
         this.distritos.add( this.voidDistrito != null ? voidDistrito : ( this.voidDistrito =  builder.nome( "" ).build() ) );
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         sql.query( "funct_load_distrito" )
             .withJsonb( (String)  null )
             .callFunctionTable()
@@ -101,8 +101,8 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         result.level = SnackbarBuilder.MessageLevel.WARNING;
 
         if( result.isSuccess() ){
-            Colaborador colaborador = AuthSingleton.getAuth();
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+            Colaborador colaborador = AuthSingleton.getInstance();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Fornecedor fornecedor = result.fornecedor;
             sql.query( "funct_reg_fornecedor" )
                 .withUUID( colaborador.getColaboradorId() )
@@ -219,7 +219,7 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         }
 
         @Override
-        public Fornecedor getResultValue() {
+        public Fornecedor getValue() {
             return this.fornecedor;
         }
 

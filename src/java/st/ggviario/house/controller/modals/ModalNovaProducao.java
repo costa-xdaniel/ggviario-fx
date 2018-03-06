@@ -125,14 +125,14 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
             funct_reg_producao(
             arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid)
              */
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-            Colaborador colaborador = AuthSingleton.getAuth();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
             sql.query( "ggviario.funct_reg_producao" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withDate( res.getResultValue().getProducaoData() )
-                .withNumeric( res.getResultValue().getProducaoQuantidade() )
-                .withUUID( res.getResultValue().getProduto().getProdutoId() )
-                .withUUID( res.getResultValue().getSetor().getSetorId() )
+                .withDate( res.getValue().getProducaoData() )
+                .withNumeric( res.getValue().getProducaoQuantidade() )
+                .withUUID( res.getValue().getProduto().getProdutoId() )
+                .withUUID( res.getValue().getSetor().getSetorId() )
                 .callFunctionTable()
                 .onResultQuery(row -> {
                     SQLResult result = new SQLResult( row );
@@ -169,7 +169,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
             this.labelTotalSetor.setText("");
             this.labelTotalDia.setText( "" );
         } else {
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
             sql.query( "funct_load_producao_data" )
                 .withUUID( produto.getProdutoId() )
                 .withUUID( setor.getSetorId() )
@@ -200,7 +200,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         if( res.resultVale.getProduto() == null || res.resultVale.getProduto().equals( PRODUTO_VOID ) )
             res.message = "Informe o produto!";
         else if( res.resultVale.getProducaoQuantidade() == null )
-            res.message = "Informe a quantidade do " + res.getResultValue().getProduto().getProdutoNome() + "!";
+            res.message = "Informe a quantidade do " + res.getValue().getProduto().getProdutoNome() + "!";
         else if( res.resultVale.getSetor() == null || res.resultVale.getSetor().equals( SECTOR_VOID ) )
             res.message = "Informe o setor!";
         else if( res.resultVale.getProducaoData() == null )
@@ -235,7 +235,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         }
 
         @Override
-        public Producao getResultValue() {
+        public Producao getValue() {
             return this.resultVale;
         }
 

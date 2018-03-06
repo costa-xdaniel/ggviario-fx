@@ -1,7 +1,8 @@
-package st.ggviario.house.controller.pages;
+package st.ggviario.house.controller.drawers;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXRippler;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,13 +22,13 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class DrawerVendaDetalhes implements Initializable {
+public class DrawerVenda implements Initializable {
 
     private JFXRippler ripplerAdd;
 
-    public static DrawerVendaDetalhes load(JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
-        ControllerLoader< BorderPane, DrawerVendaDetalhes> loader = new ControllerLoader<>("/fxml/drawer/drawer_venda_details.fxml");
-        DrawerVendaDetalhes drawer = loader.getController();
+    public static DrawerVenda load(JFXDrawer drawerView, TipoVenda tipoVenda, String [] avalibleIcons ) {
+        ControllerLoader< BorderPane, DrawerVenda> loader = new ControllerLoader<>("/fxml/drawer/drawer_venda_details.fxml");
+        DrawerVenda drawer = loader.getController();
         drawer.avalibleIcons = avalibleIcons;
         drawer.drawer = drawerView;
         drawer.tipoVenda = tipoVenda;
@@ -81,6 +82,7 @@ public class DrawerVendaDetalhes implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.viewConfigurarion = new ViewConfigurarion();
+        JFXDepthManager.pop( this.root );
 
     }
 
@@ -148,28 +150,28 @@ public class DrawerVendaDetalhes implements Initializable {
         return false;
     }
 
-    public DrawerVendaDetalhes setOnNovoPagamento(OnNovoPagamento onNovoPagamento) {
+    public DrawerVenda setOnNovoPagamento(OnNovoPagamento onNovoPagamento) {
         this.onNovoPagamento = onNovoPagamento;
         return this;
     }
 
-    public DrawerVendaDetalhes setOnListPayment(OnListPayment onListPayment) {
+    public DrawerVenda setOnListPayment(OnListPayment onListPayment) {
         this.onListPayment = onListPayment;
         return this;
     }
 
-    public DrawerVendaDetalhes setOnNewVendaForClinet(OnNewVendaForClinet onNewVendaForClinet) {
+    public DrawerVenda setOnNewVendaForClinet(OnNewVendaForClinet onNewVendaForClinet) {
         this.onNewVendaForClinet = onNewVendaForClinet;
         return this;
     }
 
-    public DrawerVendaDetalhes setOnDeleteVenda(OnDeleteVenda onDeleteVenda) {
+    public DrawerVenda setOnDeleteVenda(OnDeleteVenda onDeleteVenda) {
         this.onDeleteVenda = onDeleteVenda;
         return this;
     }
 
 
-    public DrawerVendaDetalhes setTipoVenda(TipoVenda tipoVenda ){
+    public DrawerVenda setTipoVenda(TipoVenda tipoVenda ){
         this.tipoVenda = tipoVenda;
 
         if( this.tipoVenda == TipoVenda.DIVIDA ){

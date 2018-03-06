@@ -127,7 +127,7 @@ public class PageDespesa extends RowsController<PageDespesa.DespesaModelView> im
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
         Fornecedor.FornecedorBuilder fornecedorBuilder = new Fornecedor.FornecedorBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         sql.query( "ggviario.funct_load_despesa" )
             .withJsonb( (String)  null )
             .callFunctionTable()

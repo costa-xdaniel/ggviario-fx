@@ -8,7 +8,7 @@ public class AuthSingleton {
 
     private static Colaborador auth;
 
-    public static Colaborador getAuth() {
+    public static Colaborador getInstance() {
         return AuthSingleton.auth;
     }
 

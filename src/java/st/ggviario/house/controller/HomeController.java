@@ -60,8 +60,6 @@ public class HomeController implements Initializable {
         AnchorPane view = loader.getNodeView();
         this.drawer.setSidePane( view );
         StackPane.setAlignment( view, Pos.TOP_LEFT );
-//        JFXDepthManager.setDepth( view, 100 );
-
 
         this.root.heightProperty().addListener((observable, oldValue, newValue) -> {
             view.setPrefHeight( newValue.doubleValue() );

@@ -174,7 +174,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
         jsonObject.addProperty("venda_id", String.valueOf( venda.getVendaId() ) );
 
         List< VendaMovimento > vendaMovimentos = new LinkedList<>();
-        PostgresSQLSingleton.loadPostgresSQL().query( "funct_load_movimento_venda" )
+        PostgresSQLSingleton.getInstance().query( "funct_load_movimento_venda" )
                 .withUUID( venda.getVendaId() )
                 .callFunctionTable()
                 .onResultQuery( row -> {

@@ -12,6 +12,7 @@ public class Preco {
     private Unidade unidade;
     private Double precoQuantidadeProduto;
     private Double precoCustoUnidade;
+    private boolean precoBase;
 
     public UUID getPrecoId() {
         return precoId;
@@ -33,6 +34,10 @@ public class Preco {
         return precoCustoUnidade;
     }
 
+    public boolean isPrecoBase() {
+        return precoBase;
+    }
+
     @Override
     public String toString() {
         if( this.unidade != null ) return this.unidade.toString();
@@ -47,6 +52,7 @@ public class Preco {
         private Unidade unidade;
         private Double quantidadeProduto;
         private Double custoUnidade;
+        private boolean base;
 
         public Preco build( ){
             Preco equivalencia = new Preco();
@@ -55,6 +61,7 @@ public class Preco {
             equivalencia.unidade = this.unidade;
             equivalencia.precoQuantidadeProduto = this.quantidadeProduto;
             equivalencia.precoCustoUnidade = this.custoUnidade;
+            equivalencia.precoBase = this.base;
             return equivalencia;
         }
 
@@ -83,10 +90,16 @@ public class Preco {
             return this;
         }
 
+        public PrecoBuilder setBase(boolean base) {
+            this.base = base;
+            return this;
+        }
+
         public PrecoBuilder load(Map< String, Object > map ) {
             this.id = SQLRow.uuidOf( map.get("preco_id") );
             this.quantidadeProduto = SQLRow.doubleOf( map.get( "preco_quantidadeproduto" ) );
             this.custoUnidade = SQLRow.doubleOf( map.get( "preco_custounidade" ) );
+            this.base = SQLRow.booleanOf( map.get( "preco_base" ) );
             return this;
         }
     }

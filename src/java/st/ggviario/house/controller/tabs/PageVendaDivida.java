@@ -64,13 +64,13 @@ public class PageVendaDivida extends VendaController {
         super.structure();
 //        this.treeTableViewVendaDivida.setRowFactory( clienteTableView -> new TableRow<Venda>(){
 //            @Override
-//            protected void updateItem(Venda item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if( item == null || empty ){
-//                    setItem( item );
+//            protected void updateItem(Venda includs, boolean empty) {
+//                super.updateItem(includs, empty);
+//                if( includs == null || empty ){
+//                    setItem( includs );
 //                } else{
 //                    this.getStyleClass().add("row-normal");
-//                    setItem( item );
+//                    setItem( includs );
 //                }
 //            }
 //        });

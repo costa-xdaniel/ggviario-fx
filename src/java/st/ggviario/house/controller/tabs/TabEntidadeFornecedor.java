@@ -120,7 +120,7 @@ public class TabEntidadeFornecedor extends RowsController< TabEntidadeFornecedor
     }
 
     private void loadData( ){
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         Fornecedor.FornecedorBuilder builder = new Fornecedor.FornecedorBuilder();
         this.listForenecedor.clear();
         sql.query( "funct_load_fornecedor" )

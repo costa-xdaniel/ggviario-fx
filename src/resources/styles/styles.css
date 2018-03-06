@@ -121,15 +121,16 @@
 }
 
 
-.venda-drawer-details {
+.drawer-details {
     -fx-pref-width: 500px;
     -fx-max-width: 500px;
     -fx-min-width: 500px;
     -fx-min-height: 50px;
 
+
 }
 
-.venda-drawer-details-page {
+.drawer-details-page {
     -fx-pref-width: 500px;
     -fx-max-width: 500px;
     -fx-min-width: 500px;

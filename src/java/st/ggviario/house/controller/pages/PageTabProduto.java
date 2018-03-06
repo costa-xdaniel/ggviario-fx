@@ -2,6 +2,7 @@ package st.ggviario.house.controller.pages;
 
 import com.google.gson.JsonElement;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -15,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.drawers.DrawerProduto;
+import st.ggviario.house.controller.modals.ModalNovoPreco;
 import st.ggviario.house.controller.modals.ModalNovoProduto;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.Preco;
@@ -30,10 +33,12 @@ import java.util.ResourceBundle;
 
 public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelView > implements PageTab, Initializable{
 
+    @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< ProdutoModelView > treeTableViewUnidade;
     @FXML private AnchorPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private MaterialDesignIconView fabIcon;
+    @FXML private JFXDrawer drawerProdutoDetails;
 
     private JFXTreeTableColumn< ProdutoModelView, String > columnCodigo = new JFXTreeTableColumn<>("CODIGO");
     private JFXTreeTableColumn< ProdutoModelView, String > columnNome = new JFXTreeTableColumn<>( "NOME" );
@@ -47,9 +52,13 @@ public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelVi
     private JFXTreeTableColumn< ProdutoModelView, Number > columnCompras = new JFXTreeTableColumn<>( "DESPESA" );
 
     private ModalNovoProduto modalNovoProduto;
+    private ModalNovoPreco modalNovoPreco;
+
     private StackPane rootPage;
     private List< ProdutoModelView > produtoModelViewList = new LinkedList<>();
     private List< Categoria > categoriaList = new LinkedList<>();
+    private List< Unidade > unidadeList = new LinkedList<>();
+    private DrawerProduto drawerProduto;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -107,6 +116,7 @@ public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelVi
         this.fabArea.setOnMouseClicked(mouseEvent -> this.onOpenModalNOvoProduto()  );
         this.fabButton.setOnMouseClicked( fabArea.getOnMouseClicked() );
         this.fabIcon.setOnMouseClicked( fabArea.getOnMouseClicked() );
+        this.treeTableViewUnidade.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> onOpenDrawerProduto( newValue == null? null : newValue.getValue() ));
     }
 
     private void loadDatProduto() {
@@ -116,7 +126,7 @@ public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelVi
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         sql.query( "ggviario.funct_load_produto" )
             .withJsonb((String) null )
             .callFunctionTable()
@@ -147,8 +157,22 @@ public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelVi
     private void loadDataCategoria(){
         this.categoriaList.clear();
         Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         sql.query( "ggviario.funct_load_categoria_simple" )
+                .withJsonb( (JsonElement) null )
+                .callFunctionTable()
+                .onResultQuery( row -> {
+                    categoriaBuilder.load( row );
+                    this.categoriaList.add( categoriaBuilder.build() );
+                })
+        ;
+    }
+
+   private void loadDataUnidade(){
+        this.categoriaList.clear();
+        Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
+        sql.query( "ggviario.funct_load_unidade" )
                 .withJsonb( (JsonElement) null )
                 .callFunctionTable()
                 .onResultQuery( row -> {
@@ -172,6 +196,53 @@ public class PageTabProduto extends RowsController<PageTabProduto.ProdutoModelVi
                     this.loadDatProduto();
                     this.pushProduto();
                 }
+            });
+        }
+    }
+
+    void onOpenDrawerProduto(ProdutoModelView  newProduto ) {
+        if( newProduto != null ){
+            this.loadDrawerProduto();
+            this.drawerProdutoDetails.setSidePane( this.drawerProduto.getRoot() );
+            this.drawerProduto.setProduto( newProduto.produto  );
+
+            if( !this.root.getChildren().contains( this.drawerProdutoDetails) ){
+                int index = this.root.getChildren().indexOf( this.treeTableViewUnidade );
+                this.root.getChildren().add(index+1, this.drawerProdutoDetails );
+            }
+            this.drawerProdutoDetails.open();
+        } else {
+            this.closeDetails();
+        }
+    }
+
+    private void onOpenModalNovoPreco(Produto produto){
+        if( produto == null ){
+            this.closeDetails();
+            return;
+        }
+        this.loadModalNovoPreco();
+        this.modalNovoPreco.openModal( produto );
+    }
+
+    void closeDetails() {
+        if( this.drawerProdutoDetails.isShown() )
+            this.drawerProdutoDetails.close();
+    }
+
+    void loadDrawerProduto() {
+        if( this.drawerProduto == null ){
+            this.drawerProduto = DrawerProduto.newInstance( this.drawerProdutoDetails );
+            if( drawerProduto == null ) throw  new RuntimeException( "Para Qui" );
+            this.drawerProduto.setOnNovoPreco(this::onOpenModalNovoPreco);
+        }
+    }
+
+    private void loadModalNovoPreco( ){
+        if( this.modalNovoPreco == null ){
+            this.modalNovoPreco = ModalNovoPreco.newInstance( this.rootPage );
+            this.modalNovoPreco.setOnModalResult(modalResult -> {
+
             });
         }
     }

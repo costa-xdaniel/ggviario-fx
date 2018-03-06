@@ -84,6 +84,9 @@
 /*============================== CUSTOM TABLE STYLES ========================================*/
 
 
+.tree-table-view .tree-table-row-cell{
+    -fx-background-color: #FFFFFF;
+}
 
 /*CELL'S AND PADDING'S*/
 .tree-table-view .tree-table-cell{
@@ -127,7 +130,7 @@
 }
 
 .divida, .venda{
-    color-esyado-pendente: md-orange-500;
+    color-estado-pendente: md-orange-500;
     color-estado-pagamento: md-green-500;
     color-estado-pago: md-blue-grey-500;
     color-estado-anulado: md-grey-500;
@@ -136,7 +139,7 @@
 
 /*TABELA DIVIAD*/
 .tree-table-view .tree-table-row-cell.divida.pendente {
-    -fx-background-color: color-esyado-pendente;;
+    -fx-background-color: color-estado-pendente;;
 }
 .tree-table-view .tree-table-row-cell.divida.pagamento {
     -fx-background-color: color-estado-pagamento;

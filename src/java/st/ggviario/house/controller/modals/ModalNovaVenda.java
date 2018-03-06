@@ -406,8 +406,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
             this.modalNovoCliente.setOnModalResult(operationResult -> {
                 if( operationResult.isSuccess() ){
                     this.loadClienteDatasource();
-                    boolean res = this.findClienteSelecter( operationResult.getResultValue() );
-                    this.textFieldClienteSearch.setText( operationResult.getResultValue().getClienteCompletName() );
+                    boolean res = this.findClienteSelecter( operationResult.getValue() );
+                    this.textFieldClienteSearch.setText( operationResult.getValue().getClienteCompletName() );
                 }
             });
         }
@@ -481,7 +481,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void loadClienteDatasource(){
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.clienteList.clear();
         this.clienteListFiltred.clear();
 
@@ -501,7 +501,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
         Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
         Gson gson = new Gson();
 
         sql.query("funct_load_produto_venda") .withJsonb( (String) null ) .callFunctionTable().onResultQuery( row ->{
@@ -561,8 +561,8 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void postgresSaveAction() {
-        PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-        Colaborador colaborador = AuthSingleton.getAuth();
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
+        Colaborador colaborador = AuthSingleton.getInstance();
         this.actionRegister.put(TipoVenda.VENDA, venda -> {
             ContaManager contaManager = new ContaManager();
             Conta conta = contaManager.getContaFor(ContaManager.ContaOperacao.PAGAMENTO_VENDA );
@@ -659,7 +659,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         }
 
         @Override
-        public List< RegisterVendaResult > getResultValue() {
+        public List< RegisterVendaResult > getValue() {
             return this.vendasResult;
         }
 

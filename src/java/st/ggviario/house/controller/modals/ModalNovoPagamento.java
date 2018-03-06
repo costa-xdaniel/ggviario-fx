@@ -231,8 +231,8 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         } else if ( this.datePickerMovimentoData.getValue() == null ){
             movimentoResult.message = "Data não foi definia";
         } else {
-            PostgresSQLSingleton.loadPostgresSQL().query( "funct_reg_movimento_amortizacao_venda" )
-                .withUUID(AuthSingleton.getAuth().getColaboradorId() )
+            PostgresSQLSingleton.getInstance().query( "funct_reg_movimento_amortizacao_venda" )
+                .withUUID(AuthSingleton.getInstance().getColaboradorId() )
                 .withUUID( this.venda.getVendaId() )
                 .withUUID( movimento.getConta() == null? null : movimento.getConta().getContaId() )
                 .withNumeric( movimento.getMovimentoMontante() )
@@ -349,7 +349,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
         }
 
         @Override
-        public Movimento getResultValue() {
+        public Movimento getValue() {
 
             return movimento;
         }

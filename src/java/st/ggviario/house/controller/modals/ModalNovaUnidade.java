@@ -74,8 +74,8 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
     private void onRegister( ){
         ModalNovaUnidadeResult res = this.checkForm();
         if( res.isSuccess() ){
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-            Colaborador colaborador = AuthSingleton.getAuth();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
             sql.query( "ggviario.funct_reg_unidade" )
                 .withUUID( colaborador.getColaboradorId() )
@@ -152,7 +152,7 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
         }
 
         @Override
-        public Unidade getResultValue() {
+        public Unidade getValue() {
             return this.resultValue;
         }
 

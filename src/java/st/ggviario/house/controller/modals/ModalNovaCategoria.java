@@ -101,12 +101,12 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
             /*
             funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying)
              */
-            PostgresSQL sql = PostgresSQLSingleton.loadPostgresSQL();
-            Colaborador colaborador = AuthSingleton.getAuth();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
             sql.query( "ggviario.funct_reg_categoria" )
                 .withUUID( colaborador.getColaboradorId() )
-                .withUUID( res.getResultValue().getCategoriaSuper().getCategoriaId() )
-                .withVarchar( res.getResultValue().getCategoriaNome() )
+                .withUUID( res.getValue().getCategoriaSuper().getCategoriaId() )
+                .withVarchar( res.getValue().getCategoriaNome() )
                 .callFunctionTable()
                     .onResultQuery(row -> {
                         SQLResult result = new SQLResult( row );
@@ -187,7 +187,7 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
         }
 
         @Override
-        public Categoria getResultValue() {
+        public Categoria getValue() {
             return this.resultVale;
         }
 
