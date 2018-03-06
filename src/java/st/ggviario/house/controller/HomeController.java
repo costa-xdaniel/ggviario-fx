@@ -55,7 +55,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ControllerLoader< AnchorPane, DrawerController> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
         DrawerController controller = loader.getController();
-        controller.setOnClickMenuIcon(this::closeDrawer);
+        controller.setOnClickMenuIcon( this::closeDrawer );
         controller.setHomeController( this );
         AnchorPane view = loader.getNodeView();
         this.drawer.setSidePane( view );
@@ -92,7 +92,7 @@ public class HomeController implements Initializable {
         drawer.open();
     }
 
-    private void closeDrawer(){
+    void closeDrawer(){
         drawer.close();
     }
 

@@ -85,7 +85,7 @@ public class DrawerController implements Page,  Initializable {
         this.homeController = homeController;
     }
 
-    interface OnClickMenuIcon {
+    public interface OnClickMenuIcon {
         void onClickMenuIcon ( );
     }
 
