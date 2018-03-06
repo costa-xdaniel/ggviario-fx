@@ -8,13 +8,11 @@ import javafx.scene.control.Tab;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PageProducao extends PageTabsConttoler implements Initializable {
+public class PageRelacoes extends PageTabsConttoler implements Initializable {
 
     @FXML private JFXTabPane tabPane;
-    private Tab tabProduto = new Tab("PRODUTO" );
-    private Tab tabProducao = new Tab("PRODUÇÃO" );
-    private Tab tabUnidade = new Tab("UNIDADE" );
-    private Tab tabCategoria = new Tab("CATEGORIA" );
+    private Tab tabCliente = new Tab("CLIENTE" );
+    private Tab tabFornecedor = new Tab("FORNECEDOR" );
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -29,10 +27,8 @@ public class PageProducao extends PageTabsConttoler implements Initializable {
 
 
     private void structure(){
-        this.addTab( tabProduto, "/fxml/tabs/tab_producao_produto.fxml");
-        this.addTab( tabProducao, "/fxml/tabs/tab_producao_producao.fxml");
-        this.addTab( tabUnidade, "/fxml/tabs/tab_producao_unidade.fxml");
-        this.addTab( tabCategoria, "/fxml/tabs/tab_producao_categoria.fxml");
+        this.addTab(tabCliente, "/fxml/tabs/tab_entidade_cliente.fxml");
+        this.addTab(tabFornecedor, "/fxml/tabs/tab_entidade_fornecedor.fxml");
     }
 
     private void defineEvents(){

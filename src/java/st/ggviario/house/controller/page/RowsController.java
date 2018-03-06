@@ -29,7 +29,7 @@ public class RowsController< Type extends RecursiveTreeObject< Type> > {
     }
 
 
-    void push(List<Type> showValues, JFXTreeTableView<Type> tableView) {
+    protected void push(List<Type> showValues, JFXTreeTableView<Type> tableView) {
         ObservableList< Type > observableListVenda = FXCollections.observableList( showValues );
         final TreeItem< Type > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
         tableView.setRoot(root);
@@ -38,7 +38,7 @@ public class RowsController< Type extends RecursiveTreeObject< Type> > {
     }
 
 
-    Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > createDateFormatTableCell(DateFormat dateFormat) {
+    protected Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > createDateFormatTableCell(DateFormat dateFormat) {
         return param -> new TreeTableCell< Type , Date>(){
             @Override
             protected void updateItem(Date item, boolean empty) {
@@ -50,7 +50,7 @@ public class RowsController< Type extends RecursiveTreeObject< Type> > {
         };
     }
 
-    void columnMinWidth(TreeTableColumn column, double width ){
+    protected void columnMinWidth(TreeTableColumn column, double width){
         column.setMinWidth( width );
     }
 

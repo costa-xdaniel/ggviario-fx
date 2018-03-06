@@ -8,14 +8,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.controller.SnackbarBuilder;
 import st.jigahd.support.sql.lib.SQLText;
 
-import java.net.URL;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements Initializable{
+public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> implements Initializable{
+
+    public static <T>  ModalDestroy< T > newInstance(StackPane stackPane ){
+        ControllerLoader< AnchorPane, ModalDestroy<T> > loader = new ControllerLoader<>("/fxml/modal/modal_destroy.fxml");
+        loader.getController().createDialogModal( stackPane );
+        loader.getController().structure();
+        loader.getController().defineEvents();
+        return loader.getController();
+    }
 
     @FXML private AnchorPane root;
     @FXML private AnchorPane anchorHeader;
@@ -23,15 +31,13 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
     @FXML private AnchorPane iconAreaCloseModal;
     @FXML private Label labelMessage;
     @FXML private JFXTextField textFieldIdentifier;
-    @FXML private JFXTextArea textAreaMotivo;
+    @FXML private JFXTextArea textAreaText;
     @FXML private JFXButton buttonDestroy;
-    private Destroy destroy;
+    private Destroy< T > destroy;
+    private String messageMissingIdentifier;
+    private String messageInvalidIdentifier;
+    private String messageMissingText;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 
     @Override
     void structure() {
@@ -46,7 +52,7 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
 
     @Override
     public void clear() {
-        this.textAreaMotivo.setText( null );
+        this.textAreaText.setText( null );
         this.textFieldIdentifier.setText( null );
     }
 
@@ -54,52 +60,92 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
     @Deprecated
     public void openModal() {}
 
-    private void onDestroy(){
+    private void onDestroy() {
         ModalDestroyResult destroyResult = new ModalDestroyResult();
-
+        this.destroy.text = SQLText.normalize( this.textAreaText.getText() );
+        this.destroy.identifier = SQLText.normalize( this.textFieldIdentifier.getText() );
+        if( destroy.isRequireIdentifier() && this.destroy.getIdentifier() == null ){
+            destroyResult.message = this.messageMissingIdentifier;
+        } else if ( this.destroy.isRequireIdentifier() && !this.destroy.getIdentifier().equals( this.destroy.originalIdentifier ) ){
+            destroyResult.message = this.messageInvalidIdentifier;
+        } else if( this.destroy.isRequireText() && this.destroy.getText() == null ){
+            destroyResult.message = this.messageMissingText;
+        } else {
+            destroyResult.success = true;
+            destroyResult.terminated = true;
+        }
+        destroyResult.resultValue = this.destroy;
+        this.executeOnOperationResult( destroyResult );
+        System.out.println( "OnDestroy");
     }
 
-    public void opemModal( Destroy destroy ){
+    public void opemModal( Destroy<T> destroy ){
         this.destroy = destroy;
         this.clear();
         this.labelMessage.setText( this.destroy.getMessage() );
-        this.setTitle(SQLText.normalize( this.destroy.title) == null? "Destruir "+this.destroy.identifier : this.destroy.title );
         super.openModal();
     }
 
+    public String getMessageMissingIdentifier() {
+        return messageMissingIdentifier;
+    }
+
+    public ModalDestroy<T> setMessageMissingIdentifier(String messageMissingIdentifier) {
+        this.messageMissingIdentifier = messageMissingIdentifier;
+        return this;
+    }
+
+    public String getMessageInvalidIdentifier() {
+        return messageInvalidIdentifier;
+    }
+
+    public ModalDestroy<T> setMessageInvalidIdentifier(String messageInvalidIdentifier) {
+        this.messageInvalidIdentifier = messageInvalidIdentifier;
+        return this;
+    }
+
+    public String getMessageMissingText() {
+        return messageMissingText;
+    }
+
+    public ModalDestroy<T> setMessageMissingText(String messageMissingText) {
+        this.messageMissingText = messageMissingText;
+        return this;
+    }
 
     @Override
     Region getContentRoot() {
-        return null;
+        return this.root;
     }
 
     @Override
     Label getModalTitleView() {
-        return null;
+        return this.modalTitle;
     }
 
     @Override
     AnchorPane getIconAreaCloseModal() {
-        return null;
+        return this.iconAreaCloseModal;
     }
 
     @Override
     AnchorPane getAnchorHeader() {
-        return null;
+        return this.anchorHeader;
     }
 
-    public class Destroy {
+    public static class Destroy < T > {
         private String message;
-        private String checkCode;
+        private String originalIdentifier;
         private boolean requireText = true;
         private boolean requireIdentifier = true;
         private String identifier;
         private String text;
-        private String title;
+        private T object;
 
-        public Destroy(String message, String checkCode) {
+        public Destroy( T object, String message, String originalIdentifier) {
             this.message = message;
-            this.checkCode = checkCode;
+            this.originalIdentifier = originalIdentifier;
+            this.object = object;
         }
 
         public Destroy setMessage(String message) {
@@ -107,8 +153,8 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
             return this;
         }
 
-        public Destroy setCheckCode(String checkCode) {
-            this.checkCode = checkCode;
+        public Destroy setOriginalIdentifier(String originalIdentifier) {
+            this.originalIdentifier = originalIdentifier;
             return this;
         }
 
@@ -122,17 +168,16 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
             return this;
         }
 
-        public Destroy setTitle(String title) {
-            this.title = title;
-            return this;
+        public T getObject() {
+            return object;
         }
 
         public String getMessage() {
             return message;
         }
 
-        public String getCheckCode() {
-            return checkCode;
+        public String getOriginalIdentifier() {
+            return originalIdentifier;
         }
 
         public boolean isRequireText() {
@@ -151,16 +196,13 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
             return text;
         }
 
-        public String getTitle() {
-            return title;
-        }
     }
 
-    class ModalDestroyResult implements ModalResult<Destroy> {
+    class ModalDestroyResult implements ModalResult<Destroy < T > > {
         private boolean success;
         private boolean terminated;
         private String message;
-        private Destroy resultValue;
+        private Destroy<T> resultValue;
         private SnackbarBuilder.MessageLevel level;
 
         @Override
@@ -179,7 +221,7 @@ public class ModalDestroy extends AbstractModal<ModalDestroy.Destroy> implements
         }
 
         @Override
-        public Destroy getResultValue() {
+        public Destroy<T> getResultValue() {
             return resultValue;
         }
 

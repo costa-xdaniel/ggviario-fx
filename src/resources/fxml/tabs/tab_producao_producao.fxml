@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="387.0" prefWidth="499.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.tabs.TabProducaoProducao">
+ <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTreeTableView fx:id="treeTableProducao" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnResizePolicy>
+                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </JFXTreeTableView>
+                  <AnchorPane fx:id="fabNewProducaoArea" maxHeight="56.0" maxWidth="56.0" minHeight="56.0" minWidth="56.0" prefHeight="56.0" prefWidth="56.0" styleClass="floating-action-area" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
+                     <children>
+                        <JFXButton fx:id="fabNewProducaoButtom" buttonType="RAISED" prefHeight="50.0" prefWidth="66.0" styleClass="floating-action-button" text=" " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <MaterialDesignIconView fx:id="fabNewProducaoIcon" fill="WHITE" glyphName="BASKET_FILL" size="24" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </center>
+         <left>
+            <AnchorPane prefWidth="300.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane prefHeight="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <JFXListView fx:id="listViewSetor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
+                  <AnchorPane fx:id="fabNewSetorArea" maxHeight="56.0" maxWidth="56.0" minHeight="56.0" minWidth="56.0" prefHeight="56.0" prefWidth="56.0" styleClass="floating-action-area" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
+                     <children>
+                        <JFXButton fx:id="fabNewSetorButton" buttonType="RAISED" prefHeight="50.0" prefWidth="66.0" styleClass="floating-action-button" text=" " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <MaterialDesignIconView fx:id="fabNewSetorIcon" fill="WHITE" glyphName="PLUS" size="24" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </left>
+      </BorderPane>
+ </children>
+   <stylesheets>
+      <URL value="@../../styles/styles.css" />
+      <URL value="@../../styles/tree-table-styles.css" />
+   </stylesheets>
+</AnchorPane>

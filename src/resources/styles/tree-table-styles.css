@@ -126,21 +126,34 @@
     -fx-alignment: TOP_RIGHT;
 }
 
-
+.divida, .venda{
+    color-esyado-pendente: md-orange-500;
+    color-estado-pagamento: md-green-500;
+    color-estado-pago: md-blue-grey-500;
+    color-estado-anulado: md-grey-500;
+}
 
 
 /*TABELA DIVIAD*/
 .tree-table-view .tree-table-row-cell.divida.pendente {
-    -fx-background-color: md-orange-500;;
+    -fx-background-color: color-esyado-pendente;;
 }
 .tree-table-view .tree-table-row-cell.divida.pagamento {
-    -fx-background-color: md-green-500;
+    -fx-background-color: color-estado-pagamento;
 }
 .tree-table-view .tree-table-row-cell.divida.pago {
-    -fx-background-color: md-grey-500;
+    -fx-background-color: color-estado-pago;
 }
+
+.tree-table-view .tree-table-row-cell.divida.anulado,
+.tree-table-view .tree-table-row-cell.venda.anulado {
+    -fx-background-color: color-estado-anulado;
+}
+
 .tree-table-view .tree-table-row-cell.divida.pendente:selected,
 .tree-table-view .tree-table-row-cell.divida.pagamento:selected,
+.tree-table-view .tree-table-row-cell.divida.anulado:selected,
+.tree-table-view .tree-table-row-cell.venda.anulado:selected,
 .tree-table-view .tree-table-row-cell.divida.pago:selected{
     -fx-background-color: md-blue-500;
 }
@@ -148,6 +161,8 @@
 
 .tree-table-view .divida.pendente .tree-table-cell,
 .tree-table-view .divida.pagamento .tree-table-cell,
+.tree-table-view .divida.anulado .tree-table-cell,
+.tree-table-view .venda.anulado .tree-table-cell,
 .tree-table-view .divida.pago .tree-table-cell {
     -fx-text-fill: #ffffff;
 }

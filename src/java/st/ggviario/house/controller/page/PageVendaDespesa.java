@@ -8,13 +8,12 @@ import javafx.scene.control.Tab;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PageProducao extends PageTabsConttoler implements Initializable {
+public class PageVendaDespesa extends PageTabsConttoler implements Initializable {
 
     @FXML private JFXTabPane tabPane;
-    private Tab tabProduto = new Tab("PRODUTO" );
-    private Tab tabProducao = new Tab("PRODUÇÃO" );
-    private Tab tabUnidade = new Tab("UNIDADE" );
-    private Tab tabCategoria = new Tab("CATEGORIA" );
+    private Tab tabDivida = new Tab("DIVIDA" );
+    private Tab tabVenda = new Tab("VENDA" );
+    private Tab tabDespesa = new Tab("DESPESA" );
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -29,10 +28,9 @@ public class PageProducao extends PageTabsConttoler implements Initializable {
 
 
     private void structure(){
-        this.addTab( tabProduto, "/fxml/tabs/tab_producao_produto.fxml");
-        this.addTab( tabProducao, "/fxml/tabs/tab_producao_producao.fxml");
-        this.addTab( tabUnidade, "/fxml/tabs/tab_producao_unidade.fxml");
-        this.addTab( tabCategoria, "/fxml/tabs/tab_producao_categoria.fxml");
+        this.addTab( tabDivida, "/fxml/tabs/tab_vendadespesa_divida.fxml");
+        this.addTab( tabVenda, "/fxml/tabs/tab_vendadesvesa_venda.fxml");
+        this.addTab( tabDespesa, "/fxml/tabs/tab_vendadespesa_despesa.fxml");
     }
 
     private void defineEvents(){
