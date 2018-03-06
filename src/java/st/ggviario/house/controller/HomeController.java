@@ -13,7 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import st.ggviario.house.controller.page.Page;
+import st.ggviario.house.controller.drawers.DrawerController;
+import st.ggviario.house.controller.pages.Page;
 import st.jigahd.support.sql.lib.SQLText;
 
 import java.net.URL;
@@ -52,7 +53,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ControllerLoader< AnchorPane,  DrawerController > loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
+        ControllerLoader< AnchorPane, DrawerController> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
         DrawerController controller = loader.getController();
         controller.setOnClickMenuIcon(this::closeDrawer);
         controller.setHomeController( this );
@@ -118,7 +119,7 @@ public class HomeController implements Initializable {
     }
 
     public StackPane getRootPage() {
-        if( rootPage == null ) throw new RuntimeException( "Root page esta nullo" );
+        if( rootPage == null ) throw new RuntimeException( "Root pages esta nullo" );
         return this.rootPage;
     }
 

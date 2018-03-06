@@ -8,8 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import st.ggviario.house.controller.modal.ModalAmoratizacoesDivida;
-import st.ggviario.house.controller.modal.ModalNovoPagamento;
+import st.ggviario.house.controller.modals.ModalAmoratizacoesDivida;
+import st.ggviario.house.controller.modals.ModalNovoPagamento;
 import st.ggviario.house.model.TipoVenda;
 import st.ggviario.house.model.Venda;
 
