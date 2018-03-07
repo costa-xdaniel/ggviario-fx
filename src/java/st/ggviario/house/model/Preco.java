@@ -43,7 +43,7 @@ public class Preco {
     public String toString() {
         if( this.unidade != null ) return this.unidade.toString();
         if( this.produto != null ) return this.produto.toString();
-        return super.toString();
+        return "";
     }
 
     public static class PrecoBuilder {
@@ -95,6 +95,8 @@ public class Preco {
             this.base = base;
             return this;
         }
+
+
 
         public PrecoBuilder load(Map< String, Object > map ) {
             this.id = SQLRow.uuidOf( map.get("preco_id") );

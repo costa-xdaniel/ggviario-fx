@@ -149,7 +149,10 @@ public class PostgresSQLQueryBuilder {
             this.mapReturns = mapReturs;
             return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
         } catch (SQLException e) {
-            throw new RuntimeException( e );
+            String messag = this.postgresSQL.getQuery();
+            messag = messag+"\n";
+            messag = this.postgresSQL.getProcessedQuery();
+            throw new RuntimeException( messag,  e );
         }
     }
 

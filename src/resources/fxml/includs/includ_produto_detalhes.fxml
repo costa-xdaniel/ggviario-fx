@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
-<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -21,8 +20,6 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
@@ -69,7 +66,7 @@
                   <Insets bottom="16.0" />
                </GridPane.margin>
             </Label>
-            <Label styleClass="details-area" text="Vendas e dividas" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <Label styleClass="details-area" text="Vendas e dividas" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -82,12 +79,12 @@
                   <Insets right="16.0" />
                </GridPane.margin>
             </MaterialDesignIconView>
-            <MaterialDesignIconView glyphName="SHOPPING" size="24" style="-fx-fill: md-primary-color;" GridPane.rowIndex="7">
+            <MaterialDesignIconView glyphName="SHOPPING" size="24" style="-fx-fill: md-primary-color;" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets right="16.0" />
                </GridPane.margin>
             </MaterialDesignIconView>
-            <Label styleClass="details-area-field" text="Total venda" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <Label styleClass="details-area-field" text="Total venda" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
@@ -95,135 +92,99 @@
                   <Insets top="16.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="labelProdutoMontanteVendas" styleClass="detail-area-field-value" text="Nome do produto" GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <Label fx:id="labelProdutoMontanteVendas" styleClass="detail-area-field-value" text="Nome do produto" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Em vendas" GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <Label styleClass="details-area-field" text="Em vendas" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Em dividas" GridPane.columnIndex="2" GridPane.rowIndex="10">
+            <Label styleClass="details-area-field" text="Em dividas" GridPane.columnIndex="2" GridPane.rowIndex="8">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteVendaVendas" styleClass="detail-area-field-value" text="Valor de quantidade" GridPane.columnIndex="1" GridPane.rowIndex="11">
+            <Label fx:id="labelProdutoMontanteVendaVendas" styleClass="detail-area-field-value" text="Valor de quantidade" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteVendaDividas" styleClass="detail-area-field-value" text="Valor do custo unitario" GridPane.columnIndex="2" GridPane.rowIndex="11">
+            <Label fx:id="labelProdutoMontanteVendaDividas" styleClass="detail-area-field-value" text="Valor do custo unitario" GridPane.columnIndex="2" GridPane.rowIndex="9">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Pago" GridPane.columnIndex="1" GridPane.rowIndex="12">
+            <Label styleClass="details-area-field" text="Pago" GridPane.columnIndex="1" GridPane.rowIndex="10">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Pendente" GridPane.columnIndex="2" GridPane.rowIndex="12">
+            <Label styleClass="details-area-field" text="Pendente" GridPane.columnIndex="2" GridPane.rowIndex="10">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteVendaPagas" styleClass="detail-area-field-value" text="Valor do desconto" GridPane.columnIndex="1" GridPane.rowIndex="13">
+            <Label fx:id="labelProdutoMontanteVendaPagas" styleClass="detail-area-field-value" text="Valor do desconto" GridPane.columnIndex="1" GridPane.rowIndex="11">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteVendaPendentes" styleClass="detail-area-field-value" text="Valor de montamnte bruto" GridPane.columnIndex="2" GridPane.rowIndex="13">
+            <Label fx:id="labelProdutoMontanteVendaPendentes" styleClass="detail-area-field-value" text="Valor de montamnte bruto" GridPane.columnIndex="2" GridPane.rowIndex="11">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Compra" GridPane.columnIndex="1" GridPane.rowIndex="15">
+            <Label styleClass="details-area-field" text="Compra" GridPane.columnIndex="1" GridPane.rowIndex="13">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteCompras" styleClass="detail-area-field-value" text="Dada da data" GridPane.columnIndex="1" GridPane.rowIndex="16">
+            <Label fx:id="labelProdutoMontanteCompras" styleClass="detail-area-field-value" text="Dada da data" GridPane.columnIndex="1" GridPane.rowIndex="14">
                <padding>
                   <Insets bottom="16.0" />
                </padding>
             </Label>
-            <Label styleClass="details-area-field" text="Pagas" GridPane.columnIndex="1" GridPane.rowIndex="17">
+            <Label styleClass="details-area-field" text="Pagas" GridPane.columnIndex="1" GridPane.rowIndex="15">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteCompraPagas" styleClass="detail-area-field-value" text="Valor do montante a pagar" GridPane.columnIndex="1" GridPane.rowIndex="18" />
-            <Label styleClass="details-area-field" text="Pendentes" GridPane.columnIndex="2" GridPane.rowIndex="17">
+            <Label fx:id="labelProdutoMontanteCompraPagas" styleClass="detail-area-field-value" text="Valor do montante a pagar" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+            <Label styleClass="details-area-field" text="Pendentes" GridPane.columnIndex="2" GridPane.rowIndex="15">
                <padding>
                   <Insets bottom="4.0" />
                </padding>
             </Label>
-            <Label fx:id="labelProdutoMontanteCompraPendentes" styleClass="detail-area-field-value" text="Valor do montante pago" GridPane.columnIndex="2" GridPane.rowIndex="18" />
-            <MaterialDesignIconView glyphName="SHOPPING" size="24" style="-fx-fill: md-primary-color;" GridPane.rowIndex="14">
+            <Label fx:id="labelProdutoMontanteCompraPendentes" styleClass="detail-area-field-value" text="Valor do montante pago" GridPane.columnIndex="2" GridPane.rowIndex="16" />
+            <MaterialDesignIconView glyphName="SHOPPING" size="24" style="-fx-fill: md-primary-color;" GridPane.rowIndex="12">
                <GridPane.margin>
                   <Insets right="16.0" />
                </GridPane.margin>
             </MaterialDesignIconView>
-            <Label styleClass="details-area" text="Informaçoes da compra" GridPane.columnIndex="1" GridPane.rowIndex="14">
+            <Label styleClass="details-area" text="Informaçoes da compra" GridPane.columnIndex="1" GridPane.rowIndex="12">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Label fx:id="labelServicoVenda" prefHeight="48.0" prefWidth="318.0" text="Serviço de venda (Ativo)" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <padding>
-                  <Insets bottom="16.0" right="16.0" top="16.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="produto-servico" />
-                  <String fx:value="ativo" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelServicoCompra" prefHeight="48.0" prefWidth="310.0" text="Serviço de compra (Fechado)" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <padding>
-                  <Insets bottom="16.0" right="16.0" top="16.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="produto-servico" />
-                  <String fx:value="fechado" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelServicoProducao" prefHeight="48.0" prefWidth="282.0" text="Serviço de produçao (Fecado)" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
-               <padding>
-                  <Insets bottom="16.0" right="16.0" top="16.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="produto-servico" />
-                  <String fx:value="fechado" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelServioStockDinamico" prefHeight="48.0" prefWidth="314.0" text="Stock dinamico (Ativo)" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <padding>
-                  <Insets bottom="16.0" right="16.0" top="16.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="produto-servico" />
-                  <String fx:value="ativo" />
-               </styleClass>
-            </Label>
-            <Label styleClass="details-area-field" text="Stock atual" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <Label styleClass="details-area-field" text="Stock atual" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="4.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="tableStockAtual" text="839" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label fx:id="tableStockAtual" text="839" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets bottom="16.0" />
                </GridPane.margin>
             </Label>
-            <Label styleClass="details-area-field" text="Stock minimo" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <Label styleClass="details-area-field" text="Stock minimo" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="4.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="labelStockMinimo" text="983" GridPane.columnIndex="2" GridPane.rowIndex="6">
+            <Label fx:id="labelStockMinimo" text="983" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets bottom="16.0" />
                </GridPane.margin>

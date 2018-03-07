@@ -77,6 +77,7 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                             <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
                             <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
                               <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
@@ -84,46 +85,49 @@
                               <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <JFXComboBox fx:id="comboxProduto" labelFloat="true" promptText="Produto" styleClass="long-field" GridPane.columnSpan="2">
+                              <JFXComboBox fx:id="comboxProduto" labelFloat="true" promptText="Produto" styleClass="long-field" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets />
-                                 </GridPane.margin></JFXComboBox>
-                              <JFXComboBox fx:id="comboxPrecoUnidades" promptText="Tipo de unidade" GridPane.rowIndex="1">
+                                 </GridPane.margin>
+                                 <padding>
+                                    <Insets top="32.0" />
+                                 </padding></JFXComboBox>
+                              <JFXComboBox fx:id="comboxPrecoUnidades" promptText="Tipo de unidade" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets right="8.0" top="24.0" />
                                  </GridPane.margin>
                               </JFXComboBox>
-                              <JFXTextField fx:id="textFieldVendaMontanteUnitirio" promptText="Preço Unitario" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="textFieldVendaMontanteUnitirio" promptText="Preço Unitario" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="8.0" top="24.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField fx:id="textFieldVendaQuantidade" alignment="CENTER_RIGHT" labelFloat="true" promptText="Quantidade" styleClass="number-field" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="textFieldVendaQuantidade" alignment="CENTER_RIGHT" labelFloat="true" promptText="Quantidade" styleClass="number-field" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets right="8.0" top="32.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField fx:id="textFieldVendaMontanteBruto" editable="false" promptText="Custo sem desconto" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="textFieldVendaMontanteBruto" editable="false" promptText="Custo sem desconto" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="8.0" top="32.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField fx:id="textFieldVendaDesconto" promptText="Desconto" styleClass="money-field" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="textFieldVendaDesconto" promptText="Desconto" styleClass="money-field" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets right="8.0" top="32.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField fx:id="textFieldVendaMontantePagar" editable="false" promptText="Montante a pagar" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="textFieldVendaMontantePagar" editable="false" promptText="Montante a pagar" styleClass="money-field" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="8.0" top="32.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXDatePicker fx:id="datePickerVendaData" promptText="Data" GridPane.rowIndex="4">
+                              <JFXDatePicker fx:id="datePickerVendaData" promptText="Data">
                                  <GridPane.margin>
                                     <Insets right="8.0" top="32.0" />
                                  </GridPane.margin>
                               </JFXDatePicker>
-                              <JFXDatePicker fx:id="datePickerVendaDataFinalizar" promptText="Prazo" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <JFXDatePicker fx:id="datePickerVendaDataFinalizar" promptText="Prazo" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="8.0" top="32.0" />
                                  </GridPane.margin>

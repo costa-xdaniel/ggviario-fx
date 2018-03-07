@@ -76,7 +76,6 @@ public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> 
         }
         destroyResult.resultValue = this.destroy;
         this.executeOnOperationResult( destroyResult );
-        System.out.println( "OnDestroy");
     }
 
     public void opemModal( Destroy<T> destroy ){

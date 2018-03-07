@@ -371,7 +371,6 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
                     List< Unidade > unidades =  new LinkedList<>( );
                     unidades.add( unidadeVoid );
                     for( Object o : list ){
-                        System.out.println( String.valueOf( o ) );
                         unidades.add( unidadeBuilder.load((Map<String, Object>) o).build() );
                     }
                     this.productoListMap.put( produto.getProdutoId(), unidades );

@@ -135,9 +135,6 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
                 .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     produtoBuilder.load( row );
 
-                    System.out.println( row.asMapJsonn("unidade" ) );
-                    System.out.println( row.asMapJsonn("preco" ) );
-                    System.out.println();
                     if( row.get("preco") != null ){
                         precoBuilder.load( row.asMapJsonn( "preco" ) );
                         unidadeBuilder.load( row.asMapJsonn("unidade" ) );

@@ -179,14 +179,6 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         produtoBuilder.setServicoCompra( compra );
         produtoBuilder.setServicoProducao( producao );
         produtoBuilder.setServicoStockDinamico( stockDinamico );
-
-        System.out.println(
-                "venda "+ venda
-                +" & compra " + compra
-                +" & producao " + producao
-                +" & stockDInamico "+ stockDinamico
-        );
-
         result.value = produtoBuilder.build();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
         if( result.value.getProdutoNome() == null ){

@@ -3,6 +3,7 @@ package st.ggviario.house.controller.modals;
 import com.google.gson.Gson;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,94 +36,45 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         modal.functionLoadCliente = functionLoadCliente;
         modal.createDialogModal( stackPane );
         modal.loadClienteDatasource();
-        modal.loadProdutoDatasource();
         modal.pushToView();
         modal.setTipoVenda( tipoVenda );
 
         return modal;
     }
 
-    @FXML
-    private AnchorPane root;
-
-    @FXML
-    private Label modalTitle;
-
-    @FXML
-    private AnchorPane anchorHeader;
-
-    @FXML
-    private AnchorPane iconAreaCloseModal;
-
-    @FXML
-    private JFXTextField textFieldClienteSearch;
-
-    @FXML
-    private JFXListView< Cliente > listViewCliente;
-
-    @FXML
-    private JFXComboBox<Produto> comboxProduto;
-
-    @FXML
-    private JFXComboBox<Preco> comboxPrecoUnidades;
-
-    @FXML
-    private JFXButton fabNewCliente;
-
-    @FXML
-    private JFXButton buttonNovaVenda;
-
-    @FXML
-    private JFXTextField textFieldVendaQuantidade;
-
-    @FXML
-    private JFXTextField textFieldVendaMontanteBruto;
-
-    @FXML
-    private JFXTextField textFieldVendaMontanteUnitirio;
-
-    @FXML
-    private JFXTextField textFieldVendaDesconto;
-
-    @FXML
-    private JFXTextField textFieldVendaMontantePagar;
-
-    @FXML
-    private JFXDatePicker datePickerVendaDataFinalizar;
-
-    @FXML
-    private JFXDatePicker datePickerVendaData;
-
-    @FXML
-    private Label textFieldClienteNome;
-
-    @FXML
-    private Label textFieldClienteMorada;
-
-    @FXML
-    private Label textFieldClienteContacto;
-
-    @FXML
-    private Label textFieldClienteMontanteTotal;
-
-    @FXML
-    private Label textFieldClienteMontantePendente;
-
-    @FXML
-    private Label labelVendaMontanteFinalPagar;
-
-    @FXML
-    private JFXButton buttonVendaFeito;
+    @FXML private AnchorPane root;
+    @FXML private Label modalTitle;
+    @FXML private AnchorPane anchorHeader;
+    @FXML private AnchorPane iconAreaCloseModal;
+    @FXML private JFXTextField textFieldClienteSearch;
+    @FXML private JFXListView< Cliente > listViewCliente;
+    @FXML private JFXComboBox<Produto> comboxProduto;
+    @FXML private JFXComboBox<Preco> comboxPrecoUnidades;
+    @FXML private JFXButton fabNewCliente;
+    @FXML private JFXButton buttonNovaVenda;
+    @FXML private JFXTextField textFieldVendaQuantidade;
+    @FXML private JFXTextField textFieldVendaMontanteBruto;
+    @FXML private JFXTextField textFieldVendaMontanteUnitirio;
+    @FXML private JFXTextField textFieldVendaDesconto;
+    @FXML private JFXTextField textFieldVendaMontantePagar;
+    @FXML private JFXDatePicker datePickerVendaDataFinalizar;
+    @FXML private JFXDatePicker datePickerVendaData;
+    @FXML private Label textFieldClienteNome;
+    @FXML private Label textFieldClienteMorada;
+    @FXML private Label textFieldClienteContacto;
+    @FXML private Label textFieldClienteMontanteTotal;
+    @FXML private Label textFieldClienteMontantePendente;
+    @FXML private Label labelVendaMontanteFinalPagar;
+    @FXML private JFXButton buttonVendaFeito;
 
 
-    private Produto produtoVasio;
-    private Preco precoVasio;
+    private final  Produto PRODUTO_VASIO = new Produto();
+    private final Preco PRECO_VASIO = new Preco();
 
     private String functionLoadCliente;
 
-    private List<Produto> produtoList = new LinkedList<>();
     private List< Cliente > clienteList = new LinkedList<>();
-    private Map< UUID, List<Preco> > mapListEquivalencia = new LinkedHashMap<>();
+    private Map< UUID, List<Preco> > mapPrecos = new LinkedHashMap<>();
 
     private Map< TipoVenda, VendaRegister > actionRegister = new LinkedHashMap<>();
     private List<Cliente> clienteListFiltred = new LinkedList<>();
@@ -134,18 +86,6 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
     private ModalNovoCliente modalNovoCliente;
     private List< RegisterVendaResult > vendasResult = new LinkedList<>();
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        super.initialize( location, resources );
-        moneyFormater.setMinimumFractionDigits(2);
-        moneyFormater.setMaximumFractionDigits(2);
-        createVoidItems();
-        this.clear();
-        componentStruture();
-        defineEvents();
-        postgresSaveAction();
-    }
 
 
     @Override
@@ -168,26 +108,31 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         return this.anchorHeader;
     }
 
-    private void createVoidItems() {
-        this.produtoVasio = new Produto();
-        Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        precoBuilder.setUnidade( new Unidade.UnidadeBuilder().setNome( "" ).build() );
-        this.precoVasio = precoBuilder.build();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize( location, resources );
+        moneyFormater.setMinimumFractionDigits(2);
+        moneyFormater.setMaximumFractionDigits(2);
+        this.clear();
+        structure();
+        defineEvents();
+        postgresSaveAction();
     }
 
-    private void componentStruture() {
+    @Override
+    void structure() {
+        super.structure();
         datePickerVendaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
-
         datePickerVendaDataFinalizar.setConverter(this.datePickerVendaData.getConverter());
-
-        this.comboxPrecoUnidades.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPreco, newPreco ) -> this.onSeletedUnidade( newPreco ) );
+        this.comboxProduto.setItems( FXCollections.observableList( new LinkedList<>() ) );
+        this.comboxPrecoUnidades.setItems( FXCollections.observableList( new LinkedList<>( ) ) );
     }
-
-
 
     void defineEvents() {
 
         this.comboxProduto.getSelectionModel().selectedItemProperty().addListener((observable, oldItem, newItem) -> this.onSelectProduto( oldItem, newItem ));
+        this.comboxPrecoUnidades.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPreco, newPreco ) -> this.onSeletedUnidade( newPreco ) );
+
         this.listViewCliente.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCliente, newCliente) -> onSelectCliente(newCliente));
 
         this.textFieldVendaQuantidade.setOnKeyReleased(keyEvent -> this.onCalculateValue());
@@ -198,7 +143,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.datePickerVendaData.valueProperty().addListener((observableValue, oldDate, newDate) -> {
             if (newDate != null) this.datePickerVendaDataFinalizar.setValue(newDate.plusDays(30));
             else this.datePickerVendaDataFinalizar.setValue(null);
-
+            this.loadProdutoDatasource( newDate );
         });
 
         this.buttonNovaVenda.setOnAction(event -> this.onNovaVenda() );
@@ -219,6 +164,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 )+" STN");
         this.datePickerVendaData.setValue(LocalDate.now());
         this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
+        this.loadProdutoDatasource( LocalDate.now() );
         this.textFieldClienteSearch.setEditable( true );
         this.textFieldClienteSearch.setDisable( false );
         this.listViewCliente.setDisable( false );
@@ -288,9 +234,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.listViewCliente.setItems( FXCollections.observableList( this.clienteListFiltred) );
     }
 
-    private boolean findClienteSelecter(Cliente cliente ) {
+    private boolean findClienteSelecter( Cliente cliente  ) {
         if( cliente == null ) return  false;
-        this.loadProdutoDatasource();
+        this.loadProdutoDatasource( this.datePickerVendaData.getValue() );
         this.clienteListFiltred.clear();
         for( Cliente cli : this.clienteList ) {
             if (cliente.equals(cli)) {
@@ -378,9 +324,9 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         registerVendaResult.success = false;
         if( this.listViewCliente.getSelectionModel().getSelectedItem() == null ){
             registerVendaResult.message = "Nenum cliente seleicionado!";
-        } else if( produto  == null || produto.equals( this.produtoVasio) ){
+        } else if( produto  == null || produto.equals( this.PRODUTO_VASIO) ){
             registerVendaResult.message = "Nenhum produto selecionado!";
-        } else if( preco == null || preco.equals( this.precoVasio ) ){
+        } else if( preco == null || preco.equals( this.PRECO_VASIO) ){
             registerVendaResult.message = "Nenhuma unidade selecionada!";
         } else if ( this.getVendaQuantidade() == null ) {
             registerVendaResult.message = "Quantidade de venda não informada!";
@@ -415,15 +361,18 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void pushToView() {
-
-        this.comboxProduto.setItems( FXCollections.observableList( this.produtoList) );
         this.onSearchCliente( null );
     }
 
     private void onSelectProduto(Produto oldItem, Produto newItem ) {
-        if( newItem != null && !newItem.equals( this.produtoVasio) )
-            this.comboxPrecoUnidades.setItems( FXCollections.observableList( this.mapListEquivalencia.get( newItem.getProdutoId()) ) );
-        else this.comboxPrecoUnidades.setItems( FXCollections.observableList( Arrays.asList( this.precoVasio ) ) );
+        if( newItem != null && !newItem.equals( this.PRODUTO_VASIO) ){
+            this.comboxPrecoUnidades.getItems().clear();
+            this.comboxPrecoUnidades.getItems().addAll( this.mapPrecos.get( newItem.getProdutoId() ) );
+            if( this.comboxPrecoUnidades.getItems().size() > 1 ) this.comboxPrecoUnidades.getItems().add( 0, PRECO_VASIO );
+        } else{
+            this.comboxPrecoUnidades.getItems().clear();
+            this.comboxPrecoUnidades.getItems().add( PRECO_VASIO );
+        }
 
         this.textFieldVendaMontanteUnitirio.setText( "" );
         this.textFieldVendaMontanteBruto.setText( "" );
@@ -431,12 +380,13 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.labelVendaMontanteFinalPagar.setText( this.moneyFormater.format( 0.0 ) +" STN" );
     }
 
-    private void onSeletedUnidade(Preco newPreco) {
-        if( newPreco == null || newPreco.equals( this.precoVasio ) ){
+    private void onSeletedUnidade( Preco newPreco) {
+        if( newPreco == null || newPreco.equals( this.PRECO_VASIO) ){
             this.textFieldVendaMontanteUnitirio.setText("");
         } else {
             this.textFieldVendaMontanteUnitirio.setText( this.moneyFormater.format( newPreco.getPrecoCustoUnidade() ) );
         }
+        System.out.println("newPreco = " + newPreco);
         this.onCalculateValue();
     }
 
@@ -444,14 +394,14 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         CalcResult calcResult = new CalcResult();
 
         calcResult.preco = this.comboxPrecoUnidades.getSelectionModel().getSelectedItem();
-        if( calcResult.preco == null || calcResult.preco.equals( this.precoVasio ) ) calcResult.preco = null;
+        if( calcResult.preco == null || calcResult.preco.equals( this.PRECO_VASIO) ) calcResult.preco = null;
         else {
             calcResult.unidade = calcResult.preco.getUnidade();
             calcResult.vendaMontanteUnitario = calcResult.preco.getPrecoCustoUnidade();
         }
 
         calcResult.produto = this.comboxProduto.getSelectionModel().getSelectedItem();
-        if( calcResult.produto == null || calcResult.produto.equals( this.produtoVasio) ) calcResult.produto = null;
+        if( calcResult.produto == null || calcResult.produto.equals( this.PRODUTO_VASIO) ) calcResult.produto = null;
 
         calcResult.vendaQuantidade = this.getVendaQuantidade();
         calcResult.vendaMontanteDesconto = this.getVendaDesconto();
@@ -492,42 +442,50 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.clienteListFiltred.addAll( this.clienteList );
     }
 
-    private void loadProdutoDatasource() {
-        this.produtoList.clear();
-        this.mapListEquivalencia.clear();
+    private void loadProdutoDatasource( LocalDate date ) {
+        this.comboxProduto.getItems().clear();
+        this.comboxPrecoUnidades.getItems().clear();
+        this.mapPrecos.clear();
+        if( date  == null ) return;
 
-        this.produtoList.add( this.produtoVasio);
-
-        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
-        Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
-
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        Gson gson = new Gson();
-
-        sql.query("funct_load_produto_venda")
-            .withJsonb( (String) null )
-            .callFunctionTable()
+        Thread thread = new Thread(() -> {
+            Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
+            Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
+            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Gson gson = new Gson();
+            sql.query( "funct_load_produto_venda" )
+                .withDate( date )
+                .callFunctionTable()
                 .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                    produtoBuilder.load( row );
-                    Produto produto;
-                    produtoList.add( produto = produtoBuilder.build() );
-                    List<Preco> equivalenciaList = new LinkedList<>();
-                    equivalenciaList.add( this.precoVasio );
-                    String documentEquivalencia = String.valueOf( row.get("produto_precos"));
+                    Platform.runLater( ( ) -> {
+                        Produto produto = produtoBuilder.load( row ).build();
+                        this.comboxProduto.getItems().add( produto );
 
-                    List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
-                    for( Map<String, Object > map : aux ){
-                        equivalenciaList.add(
+                        List<Preco> precoList = new LinkedList<>();
+                        String documentEquivalencia = String.valueOf( row.get("produto_precos"));
+
+                        List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
+                        for( Map<String, Object > map : aux ){
+                            precoList.add(
                                 precoBuilder.load( map )
-                                        .setProduto( produto )
-                                        .setUnidade( unidadeBuilder.load( map ).build() )
-                                        .build()
-                        );
-                    }
-                    this.mapListEquivalencia.put( produto.getProdutoId(), equivalenciaList );
+                                    .setProduto( produto )
+                                    .setUnidade( unidadeBuilder.load( map ).build() )
+                                    .build()
+                            );
+                        }
+                        this.mapPrecos.put( produto.getProdutoId(), precoList );
+                    });
                 });
 
+                Platform.runLater( ( ) -> {
+                    if( this.comboxProduto.getItems().size() > 1 ){
+                        this.comboxProduto.getItems().add( 0 , this.PRODUTO_VASIO );
+                    }
+                });
+
+        });
+        thread.start();
     }
 
     private Double getVendaQuantidade() {

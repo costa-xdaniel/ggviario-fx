@@ -79,7 +79,6 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
 
     public void setProduto (Produto produto ){
         Thread thread = new Thread(() -> {
-            System.out.println("IncludProdutoUnidades.setProduto#Thread");
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             this.tableProdutoUnidades.getRoot().getChildren().clear();
             sql.query( "ggviario.funct_load_produto_unidades" )

@@ -1,16 +1,15 @@
 package st.ggviario.house.controller.tabs;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTreeTableRow;
-import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -40,7 +39,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
     private ModalDestroy< Venda > modalDestroyVenda;
 
 
-    private List< VendaViewModel > vendaList = new LinkedList<>();
+    private List< VendaViewModel > vendaOriginalList = new LinkedList<>();
     StackPane rootPage;
     private String oldTextFilter;
 
@@ -49,7 +48,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
         this.structure();
         defineEvents();
         this.loadData( null, true );
-        pushAll();
+        push( new LinkedList<>(), this.getTableVenda()  );
     }
 
     @Override
@@ -57,9 +56,6 @@ public abstract class VendaController extends TableClontroller< VendaController.
         this.rootPage = rootPage;
     }
 
-    private void pushAll() {
-        push( this.vendaList, this.getTableVenda()  );
-    }
 
     private void defineEvents() {
         this.getTableVenda().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVenda, newVenda) -> {
@@ -80,24 +76,32 @@ public abstract class VendaController extends TableClontroller< VendaController.
     }
 
     void loadData( String text, boolean full ) {
-        Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
-        Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
-        Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+        Thread thread = new Thread(() -> {
+            Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
+            Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
+            Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
+            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        this.vendaList.clear();
-        sql.query( this.getFunctionLoadVendaName() )
-            .withJsonb( (String) null)
-            .callFunctionTable()
-                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                    vendaBuilder.load( row );
-                    vendaBuilder.cliente( clienteBuilder.load( row ).build() );
-                    vendaBuilder.produto( produtoBuilder.load( row ).build() );
-                    vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
-                    this.vendaList.add( new VendaViewModel( vendaBuilder.build() ) );
-                });
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            this.vendaOriginalList.clear();
+            this.getTableVenda().getRoot().getChildren().clear();
 
+            sql.query( this.getFunctionLoadVendaName() )
+                    .withJsonb( (String) null)
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            vendaBuilder.load( row );
+                            vendaBuilder.cliente( clienteBuilder.load( row ).build() );
+                            vendaBuilder.produto( produtoBuilder.load( row ).build() );
+                            vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
+                            VendaViewModel item = new VendaViewModel(vendaBuilder.build());
+                            this.vendaOriginalList.add( item );
+                            this.getTableVenda().getRoot().getChildren().add( new TreeItem<>( item ) );
+                        });
+                    });
+        });
+        thread.start();
     }
 
     void openDrawer( VendaViewModel newVenda ) {
@@ -150,7 +154,6 @@ public abstract class VendaController extends TableClontroller< VendaController.
             this.modalNovaVenda = ModalNovaVenda.load( this.getTipoVenda(), this.getFunctionLoadClienteNew(), (StackPane) this.rootPage);
             this.modalNovaVenda.setOnModalResult(operationResult -> {
                 this.loadData( null, true );
-                this.pushAll();
             });
         }
     }
@@ -192,7 +195,6 @@ public abstract class VendaController extends TableClontroller< VendaController.
                                     String auxOld = oldTextFilter;
                                     this.oldTextFilter = null;
                                     this.loadData( auxOld, true );
-                                    this.pushAll();
                                 } else {
                                     snackbak.show( result.getMessage(), SnackbarBuilder.MessageLevel.ERROR );
                                 }
@@ -211,16 +213,21 @@ public abstract class VendaController extends TableClontroller< VendaController.
         boolean full = event != null && event.getCode() == KeyCode.ENTER;
         if( full ) {
             this.loadData( textFilter, true );
-            this.pushAll();
         } else if( this.oldTextFilter != null && textFilter == null ) {
-            this.pushAll();
         } else if( textFilter != null & oldTextFilter != null && ! textFilter.equals( oldTextFilter ) ){
             List< VendaViewModel > search = new LinkedList<>( );
-            for( VendaViewModel next : this.vendaList  ){
+            this.getTableVenda().getRoot().getChildren().clear();
+            boolean add;
+
+            for( VendaViewModel next : this.vendaOriginalList  ){
+                add = false;
                 Venda venda  = next.venda;
                 Cliente cliente  = next.venda.getCliente();
-                if( cliente.getClienteCompletName().toLowerCase().contains( textFilter ) ) search.add( next );
-                else if( venda.getProduto().getProdutoNome().toLowerCase().contains( textFilter ) ) search.add( next );
+                if( cliente.getClienteCompletName().toLowerCase().contains( textFilter ) )  add = true;
+                else if( venda.getProduto().getProdutoNome().toLowerCase().contains( textFilter ) )   add = true;
+
+
+                if( add ) this.getTableVenda().getRoot().getChildren().add(new TreeItem<>(next));
             }
             this.push( search, this.getTableVenda() );
         }
