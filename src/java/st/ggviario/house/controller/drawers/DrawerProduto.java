@@ -12,7 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.controller.includs.IncludProdutoInformation;
+import st.ggviario.house.controller.includs.IncludProdutoUnidades;
 import st.ggviario.house.model.Produto;
+import st.jigahd.support.sql.lib.SQLResource;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -23,11 +25,6 @@ import java.util.ResourceBundle;
 
 public class DrawerProduto implements Initializable {
 
-
-    private Produto produto;
-    private JFXRippler ripplerNewUnit;
-    private JFXRippler ripplerListUnits;
-    private JFXRippler ripplerClose;
 
     public static DrawerProduto newInstance(JFXDrawer drawerView  ) {
         ControllerLoader< BorderPane, DrawerProduto> loader = new ControllerLoader<>("/fxml/drawer/drawer_produto.fxml");
@@ -41,24 +38,38 @@ public class DrawerProduto implements Initializable {
         return drawer;
     }
 
+
     @FXML private AnchorPane root;
-    @FXML private StackPane stackPaneContent;
+    @FXML private AnchorPane headerPane;
     @FXML private HBox headerPageIcon;
     @FXML private AnchorPane panelIconClose;
     @FXML private AnchorPane panelIconInformation;
-    @FXML private AnchorPane panelIconNewPreco;
-    @FXML private AnchorPane panelIconListUnits;
+    @FXML private AnchorPane panelListUnidades;
+    @FXML private AnchorPane panelIconListaPreco;
+    @FXML private AnchorPane panelIconEdit;
+    @FXML private AnchorPane panelIconNovoPreco;
     @FXML private Label labelHeaderTitle;
+    @FXML private StackPane stackPaneContent;
 
+    private JFXRippler ripplerClose;
     private JFXRippler ripplerInformation;
+    private JFXRippler ripplerListUnidades;
+    private JFXRippler ripplerListPrecos;
+    private JFXRippler ripplerProdutoEdit;
+    private JFXRippler ripplerNovoPreco;
 
+    private Produto produto;
     private NumberFormat moneyFormatter = NumberFormat.getInstance( Locale.FRANCE );
     private NumberFormat numeberFormat = NumberFormat.getInstance( Locale.FRANCE );
     private DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
 
     private JFXDrawer drawer;
     private IncludProdutoInformation includProdutoInformation;
+    private IncludProdutoUnidades includProdutoUnidades;
+
     private OnNovoPreco onNovoPreco;
+    private OnListPrecos onListaPrecos;
+    private OnProdutoEdit onProdutoEdit;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,58 +77,116 @@ public class DrawerProduto implements Initializable {
     }
 
     private void structureLayout(){
+
         JFXDepthManager.pop( this.root );
         this.ripplerClose = new JFXRippler( panelIconClose );
         this.ripplerInformation = new JFXRippler( panelIconInformation );
-        this.ripplerNewUnit = new JFXRippler(panelIconNewPreco);
-        this.ripplerListUnits = new JFXRippler( panelIconListUnits );
+        this.ripplerListUnidades = new JFXRippler( panelListUnidades );
+        this.ripplerListPrecos = new JFXRippler( this.panelIconListaPreco );
+        this.ripplerProdutoEdit = new JFXRippler( this.panelIconEdit );
+        this.ripplerNovoPreco = new JFXRippler( panelIconNovoPreco );
+
         this.ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
         this.ripplerInformation.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerNewUnit.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerListUnits.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerListUnidades.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerListPrecos.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerProdutoEdit.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerNovoPreco.setStyle("-jfx-rippler-fill: md-primary-color");
 
         this.headerPageIcon.getChildren().addAll(
             this.ripplerClose,
             this.ripplerInformation,
-            this.ripplerNewUnit,
-            this.ripplerListUnits
+            this.ripplerListUnidades,
+            this.ripplerListPrecos,
+            this.ripplerProdutoEdit,
+            this.ripplerNovoPreco
         );
 
-        this.loadIncludsInformacao();
+        this.includProdutoInformation = IncludProdutoInformation.newInstance();
+        this.includProdutoUnidades = IncludProdutoUnidades.newInstance();
+        this.includProdutoInformation.getRoot().heightProperty().addListener((observableValue, number, t1) -> {
+            this.stackPaneContent.setMinHeight(
+                    SQLResource.max(
+                            includProdutoInformation.getRoot().getHeight(),
+                            includProdutoUnidades.getRoot().getHeight()
+                    )
+            );
+        });
+
         this.stackPaneContent.getChildren().clear();
         this.stackPaneContent.getChildren().add( this.includProdutoInformation.getRoot() );
-
-
     }
 
     private void defineEvents(){
         this.panelIconClose.setOnMouseClicked(mouseEvent -> {
             this.drawer.close();
         });
-        this.panelIconNewPreco.setOnMouseClicked(event -> { if( this.onNovoPreco != null ) onNovoPreco.onNovoPreco( this.produto ); } );
+
+        this.ripplerInformation.setOnMouseClicked(mouseEvent -> {
+            onInformation();
+        });
+
+        this.ripplerListUnidades.setOnMouseClicked(mouseEvent -> {
+            this.onListaUnidades();
+        });
+
+        this.ripplerListPrecos.setOnMouseClicked(mouseEvent -> {
+            if( this.onListaPrecos != null ) this.onListaPrecos.onListPreco( this.produto );
+        });
+
+        this.ripplerProdutoEdit.setOnMouseClicked(mouseEvent -> {
+            if (this.onProdutoEdit != null) this.onProdutoEdit.onProdutoEdit(this.produto);
+        });
+
+        this.ripplerNovoPreco.setOnMouseClicked(event -> { if( this.onNovoPreco != null ) onNovoPreco.onNovoPreco( this.produto ); } );
+    }
+
+    private void onInformation(){
+        this.stackPaneContent.getChildren().clear();
+        this.stackPaneContent.getChildren().add( this.includProdutoInformation.getRoot() );
+    }
+
+    private void onListaUnidades( ){
+        this.stackPaneContent.getChildren().clear();
+        this.stackPaneContent.getChildren().add( this.includProdutoUnidades.getRoot() );
     }
 
 
-    private void loadIncludsInformacao(){
-        if (this.includProdutoInformation == null) {
-            this.includProdutoInformation = IncludProdutoInformation.newInstance();
-        }
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+        this.includProdutoInformation.setProdudo( produto );
+        this.includProdutoUnidades.setProduto( produto );
+        this.labelHeaderTitle.setText( this.produto.getProdutoCodigo() );
+        this.onInformation();
     }
-
 
     public DrawerProduto setOnNovoPreco(OnNovoPreco onNovoPreco) {
         this.onNovoPreco = onNovoPreco;
         return this;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public DrawerProduto setOnListaPrecos(OnListPrecos onListaPrecos) {
+        this.onListaPrecos = onListaPrecos;
+        return this;
     }
 
+    public DrawerProduto setOnProdutoEdit(OnProdutoEdit onProdutoEdit) {
+        this.onProdutoEdit = onProdutoEdit;
+        return this;
+    }
+
+    public interface OnProdutoEdit {
+        void onProdutoEdit( Produto produto  );
+    }
+
+    public interface OnListPrecos{
+        void onListPreco( Produto produto );
+    }
 
     public interface OnNovoPreco{
         void onNovoPreco( Produto produto );
     }
+
 
     public AnchorPane getRoot() {
         return root;

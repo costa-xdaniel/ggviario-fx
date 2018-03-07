@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,9 +19,9 @@ import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ModalNovoPreco extends AbstractModal< Preco >{
@@ -47,7 +48,6 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
 
 
     private Produto produto;
-    private List< UnidadeProduto > unidadeProdutoList = new LinkedList<>();
 
     @Override
     Region getContentRoot() {
@@ -75,6 +75,12 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
     }
 
     @Override
+    void structure() {
+        super.structure();
+        this.comboxUnidades.setItems( FXCollections.observableList( new LinkedList<>()));
+    }
+
+    @Override
     void defineEvents() {
         super.defineEvents();
         this.buttonRegistar.setOnAction(event -> onRegisterUnidade() );
@@ -84,9 +90,8 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
     }
 
     private void onChangeUnidade( UnidadeProduto unidadeProduto ){
-        System.out.println( unidadeProduto );
         if( unidadeProduto == null || unidadeProduto.unidade == null || unidadeProduto.unidade.getUnidadeId() == null ){
-            comboxUnidades.setValue( null );
+            this.comboxUnidades.getSelectionModel().clearSelection();
             this.textFieldPrecoCusto.setText( null );
             this.textFieldPrecoQuantidade.setText( null );
             this.toggleButtonPrecoBase.setSelected( false );
@@ -101,29 +106,32 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
         super.openModal();
         this.produto = produto;
         this.loadDataUnidade( produto );
+        this.setTitle( "Unidade de "+this.produto.getProdutoNome() );
     }
 
     private void loadDataUnidade( Produto produto ){
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
-        this.unidadeProdutoList.clear();
-        sql.query( "ggviario.funct_load_unidade_simple_by_produto" )
-            .with( produto.getProdutoId() )
-            .callFunctionTable()
-                .onResultQuery(row -> {
-                    unidadeBuilder.load( row );
-                    this.unidadeProdutoList.add( new UnidadeProduto( row, unidadeBuilder.build() ) );
-                });
-        ;
-        if( this.unidadeProdutoList.size() > 1 )
-            this.unidadeProdutoList.add( 0, new UnidadeProduto( ) );
-        else if( this.unidadeProdutoList.size() == 1 )
-            this.comboxUnidades.setValue( unidadeProdutoList.get( 0 ) );
-        this.setUnidades( this.unidadeProdutoList );
-    }
+        final Thread thread =  new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Platform.runLater( ( )-> this.comboxUnidades.getItems().clear() );
 
-    private void setUnidades( List< UnidadeProduto > unidades ){
-        this.comboxUnidades.setItems( FXCollections.observableList( unidades ) );
+            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+            sql.query( "ggviario.funct_load_unidade_simple_by_produto" )
+                    .with( produto.getProdutoId() )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater(() ->{
+                        unidadeBuilder.load( row );
+                        this.comboxUnidades.getItems().add( new UnidadeProduto( row, unidadeBuilder.build() ) );
+                    }));
+
+
+            Platform.runLater( () -> {
+                if( this.comboxUnidades.getItems().size() > 1 )
+                    this.comboxUnidades.getItems().add( 0, new UnidadeProduto( ) );
+                else if( this.comboxUnidades.getItems().size() == 1 )
+                    this.comboxUnidades.getSelectionModel().select( 0 );
+            });
+        });
+        thread.start();
     }
 
     private void onRegisterUnidade(){
@@ -139,14 +147,14 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
                 .withNumeric( res.value.getPrecoQuantidadeProduto() )
                 .withBoolean( res.value.isPrecoBase() )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         SQLResult result = new SQLResult( row );
                         if( result.isSuccess() ){
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
-                            res.message = result.getMessage();
+                            res.message = "O preço de "+res.value.getUnidade()+" para "+this.produto+" foi cadatrado com sucesso!";
                             res.data = result.getData();
                             res.value = new Preco.PrecoBuilder()
-                                    .load( row )
+                                    .load((Map<String, Object>) result.getData().get( "preco" ))
                                     .setUnidade( res.value.getUnidade() )
                                     .setProduto( res.value.getProduto() )
                                     .build();
@@ -173,7 +181,7 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
         ModalNovoPrecoResult result = new ModalNovoPrecoResult();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        precoBuilder.setUnidade( this.comboxUnidades.getValue().unidade );
+        precoBuilder.setUnidade(  this.comboxUnidades.getValue() == null ? null : this.comboxUnidades.getValue().unidade );
         precoBuilder.setProduto( this.produto );
         precoBuilder.setCustoUnidade( SQLRow.doubleOf(SQLText.normalize( this.textFieldPrecoCusto.getText() ) ) );
         precoBuilder.setQuantidadeProduto( SQLRow.doubleOf( SQLText.normalize( this.textFieldPrecoQuantidade.getText() ) ) );

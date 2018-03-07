@@ -18,6 +18,7 @@ public class PageProducao extends PageTabsConttoler implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize( url, resourceBundle );
         this.init();
         this.structure();
         this.defineEvents();

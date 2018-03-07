@@ -20,6 +20,7 @@ import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.util.List;
 import java.util.Map;
@@ -137,7 +138,7 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
                 .withBoolean( res.value.getProdutoServicoDinamico() )
                 .withJsonb( ( String ) null )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         SQLResult result = new SQLResult( row );
                         res.map = result.getData();
                         if (result.isSuccess()) {

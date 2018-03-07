@@ -1,6 +1,5 @@
 package st.ggviario.house.model;
 
-import com.google.gson.JsonObject;
 import st.jigahd.support.sql.SQLRow;
 
 import java.util.Map;
@@ -11,7 +10,7 @@ public class Unidade {
     private UUID unidadeId;
     private String unidadeNome;
     private String unidadeCodigo;
-    private Short unidadeEstado;
+    private UnidadeEstado unidadeEstado;
     private String unidadeEstadoDesc;
 
     public UUID getUnidadeId() {
@@ -26,7 +25,7 @@ public class Unidade {
         return unidadeCodigo;
     }
 
-    public Short getUnidadeEstado() {
+    public UnidadeEstado getUnidadeEstado() {
         return unidadeEstado;
     }
 
@@ -40,12 +39,41 @@ public class Unidade {
         return this.unidadeNome;
     }
 
+    public enum UnidadeEstado implements EnumTypes < UnidadeEstado, Short > {
+
+        ATIVO( 1, "Ativo" ),
+        FECHADO( 0, "Fechado" ) ;
+
+        private Short estado;
+        private String name;
+
+        UnidadeEstado(Integer estado, String name) {
+            this.estado = estado.shortValue();
+            this.name = name;
+        }
+
+        @Override
+        public UnidadeEstado[] allValues() {
+            return UnidadeEstado.values();
+        }
+
+        @Override
+        public Short value() {
+            return this.estado;
+        }
+
+        @Override
+        public String getNome() {
+            return this.name;
+        }
+    }
+
     public static class UnidadeBuilder{
 
         private UUID id;
         private String nome;
         private String codigo;
-        private Short estado;
+        private UnidadeEstado estado;
         private String estadoDesc;
 
         public Unidade build() {
@@ -73,7 +101,7 @@ public class Unidade {
             return this;
         }
 
-        public UnidadeBuilder estado(Short estado) {
+        public UnidadeBuilder estado(UnidadeEstado estado) {
             this.estado = estado;
             return this;
         }
@@ -83,39 +111,13 @@ public class Unidade {
             return this;
         }
 
-        public UnidadeBuilder load( SQLRow row ){
-            this.load( row.toMap() );
-            return this;
-        }
-
         public UnidadeBuilder load( Map<String, Object > map ){
-            return loader(
-                    map.get("unidade_id"),
-                    map.get("unidade_nome"),
-                    map.get("unidade_codigo"),
-                    map.get("unidade_estado")
-            );
-        }
-
-        public UnidadeBuilder load(JsonObject element){
-            return loader(
-                    element.get("unidade_id"),
-                    element.get( "unidade_nome" ),
-                    element.get( "unidade_codigo" ),
-                    element.get(  "unidade_estado" )
-            );
-        }
-
-        private UnidadeBuilder loader(Object id, Object nome, Object codigo, Object estado ){
-            this.id = SQLRow.uuidOf(id);
-            this.nome = SQLRow.stringOf(nome);
-            this.codigo = SQLRow.stringOf(codigo);
-            this.estado = SQLRow.shortOf(estado);
+            this.id = SQLRow.uuidOf( map.get( "unidade_id" ) );
+            this.nome = SQLRow.stringOf( map.get( "unidade_nome" ) );
+            this.codigo = SQLRow.stringOf( map.get( "unidade_codigo" ) );
+            this.estado = EnumTypes.find( UnidadeEstado.values(),  SQLRow.shortOf( map.get("unidade_estado") ) );
             return this;
         }
-
-
-
 
     }
 

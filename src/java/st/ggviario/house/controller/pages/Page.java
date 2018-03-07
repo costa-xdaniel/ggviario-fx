@@ -17,13 +17,13 @@ public interface Page {
 
     default  void setRootController(HomeController rootController) {}
 
-    default void onBeforeAppend() {}
+    default void onBeforeOpen() {}
 
-    default void onAfterAppend() {}
+    default void onAfterOpen() {}
 
-    default void onBeforeRemove() {}
+    default void onBeforeClose() {}
 
-    default void onAfterRemove(){ }
+    default void onAfterClose(){ }
 
     default void accept(Stage primaryStage, Scene scene) { }
 

@@ -30,14 +30,24 @@
                            <MaterialDesignIconView glyphName="INFORMATION" layoutX="8.0" layoutY="111.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconNewPreco" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelListUnidades" styleClass="details-header-icon-area">
                         <children>
                            <MaterialDesignIconView glyphName="WEIGHT_KILOGRAM" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconListUnits" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelIconListaPreco" styleClass="details-header-icon-area">
                         <children>
                            <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="panelIconEdit" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView glyphName="BORDER_COLOR" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="panelIconNovoPreco" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView glyphName="CURRENCY_USD" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
                   </children>

@@ -15,15 +15,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import st.ggviario.house.controller.modals.ModalNovoSetor;
 import st.ggviario.house.controller.modals.ModalNovaProducao;
-import st.ggviario.house.controller.pages.PageTab;
-import st.ggviario.house.controller.pages.RowsController;
+import st.ggviario.house.controller.modals.ModalNovoSetor;
+import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.util.Date;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class TabProducaoProducao extends RowsController< TabProducaoProducao.ProducaoModelView > implements PageTab, Initializable {
+public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoProducao.ProducaoModelView > implements TabPage, Initializable {
 
     @FXML private JFXTreeTableView< ProducaoModelView > treeTableProducao;
     @FXML private AnchorPane fabNewProducaoArea;
@@ -48,7 +48,6 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
     private TreeTableColumn< ProducaoModelView, String > columnProducaoSetor = new TreeTableColumn<>("Setor");
     private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidade = new TreeTableColumn<>("Qt.");
     private TreeTableColumn< ProducaoModelView, Number > columnProducaoLancamento  = new TreeTableColumn<>("Lanc.");
-
 
     private List< ProducaoModelView > producaoModelViewList;
     private List< Setor> setorProducaoList;
@@ -111,7 +110,7 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
         sql.query( "funct_load_producao" )
             .withJsonb( (String ) null)
             .callFunctionTable()
-                .onResultQuery(row -> {
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     ProducaoModelView producao;
                     this.producaoModelViewList.add( producao =  new ProducaoModelView() );
                     producao.setProducaoData( row.asDate( "producao_data" ) );
@@ -152,7 +151,7 @@ public class TabProducaoProducao extends RowsController< TabProducaoProducao.Pro
         sql.query( "funct_load_setor" )
             .withJsonb( ( String ) null )
             .callFunctionTable()
-                .onResultQuery(row -> {
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     builder.load( row );
 
                     if( row.get( "setor_super" ) !=  null ){

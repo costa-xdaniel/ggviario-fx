@@ -360,7 +360,6 @@ public class Produto {
         public ProdutoBuilder load(Map<String, Object > map ) {
             this.id = SQLRow.uuidOf( map.get( "produto_id"  ) );
             this.codigo = SQLRow.stringOf( map.get( "produto_codigo"  ) );
-            this.id = SQLRow.uuidOf( map.get( "produto_id"  ) );
             this.nome = SQLRow.stringOf( map.get( "produto_nome"  ) );
             this.stock = SQLRow.doubleOf( map.get( "produto_stock"  ) );
             this.stockMinimo = SQLRow.doubleOf( map.get( "produto_stockminimo"  ) );
@@ -368,18 +367,18 @@ public class Produto {
             this.servicoCompra = SQLRow.booleanOf( map.get( "produto_servicocompra"  ) );
             this.servicoProducao = SQLRow.booleanOf( map.get( "produto_servicoproducao"  ) );
             this.servicoStockDinamico = SQLRow.booleanOf( map.get( "produto_servicostockdinamico"  ) );
-            this.estado = EnumTypes.find( ProdutoEstado.values(),  SQLRow.shortOf( map.get( "produto_estado"  ) ));
             this.dataRegisto = SQLRow.dateOf( map.get( "produto_dataregisto"  ) );
             this.dataAtualizacao = SQLRow.dateOf( map.get( "produto_dataatualizacao"  ) );
-            this.producao = SQLRow.doubleOf( map.get( "produto_producao" ) );
+            this.estado = EnumTypes.find( ProdutoEstado.values(),  SQLRow.shortOf( map.get( "produto_estado"  ) ));
             this.montanteVendas = SQLRow.doubleOf( map.get( "produto_montantevendas" ) );
-            this.montanteVendaVendas = SQLRow.doubleOf( map.get( "produto_montantevendavendas" ) );
             this.montanteVendaDividas = SQLRow.doubleOf( map.get( "produto_montantevendadividas" ) );
+            this.montanteVendaVendas = SQLRow.doubleOf( map.get( "produto_montantevendavendas" ) );
             this.montanteVendaPagas = SQLRow.doubleOf( map.get( "produto_montantevendapagas" ) );
             this.montanteVendaPendente = SQLRow.doubleOf( map.get( "produto_montantevendapendentes" ) );
             this.montanteCompras = SQLRow.doubleOf( map.get( "produto_montantecompras" ) );
-            this.montanteCompraPagas = SQLRow.doubleOf( map.get( "produto_montantecomprapagas" ) );
+            this.montanteCompraPagas = SQLRow.doubleOf( map.get( "produto_montantecomprapagos" ) );
             this.montanteCompraPendentes = SQLRow.doubleOf( map.get( "produto_montantecomprapendentes" ) );
+            this.producao = SQLRow.doubleOf( map.get( "produto_producao" ) );
             return this;
         }
     }

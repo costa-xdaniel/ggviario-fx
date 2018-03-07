@@ -17,6 +17,7 @@ import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -134,7 +135,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
                 .withUUID( res.getValue().getProduto().getProdutoId() )
                 .withUUID( res.getValue().getSetor().getSetorId() )
                 .callFunctionTable()
-                .onResultQuery(row -> {
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     SQLResult result = new SQLResult( row );
                     if( result.isSuccess() ){
                         res.succeed = true;
@@ -175,7 +176,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
                 .withUUID( setor.getSetorId() )
                 .withDate( date )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         this.labelTotalDia.setText( this.numberFormat.format( row.asDouble("producao_dia" ) ) );
                         this.labelTotalSetor.setText( this.numberFormat.format( row.asDouble("producao_setor" ) ) );
                     });

@@ -18,6 +18,7 @@ import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -239,7 +240,8 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
                 .withDate( movimento.getMovimentoData() )
                 .withVarchar( movimento.getMovimentoDocumento() )
                 .callFunctionTable()
-                    .onResultQuery( row -> { if( row.asBoolean("result" ) ){
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        if( row.asBoolean("result" ) ){
                             String documentRegister = String.valueOf( row.get("message") );
 
                             movimentoResult.resultData = gson.fromJson( documentRegister, Map.class );

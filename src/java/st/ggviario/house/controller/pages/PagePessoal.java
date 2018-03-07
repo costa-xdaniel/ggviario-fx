@@ -8,7 +8,7 @@ import javafx.scene.control.Tab;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PageRelacoes extends PageTabsConttoler implements Initializable {
+public class PagePessoal extends PageTabsConttoler implements Initializable {
 
     @FXML private JFXTabPane tabPane;
     private Tab tabCliente = new Tab("CLIENTE" );
@@ -16,6 +16,7 @@ public class PageRelacoes extends PageTabsConttoler implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize( url, resourceBundle );
         this.init();
         this.structure();
         this.defineEvents();
@@ -27,8 +28,8 @@ public class PageRelacoes extends PageTabsConttoler implements Initializable {
 
 
     private void structure(){
-        this.addTab(tabCliente, "/fxml/tabs/tab_entidade_cliente.fxml");
-        this.addTab(tabFornecedor, "/fxml/tabs/tab_entidade_fornecedor.fxml");
+        this.addTab(tabCliente, "/fxml/tabs/tab_pessaol_cliente.fxml");
+        this.addTab(tabFornecedor, "/fxml/tabs/tab_pessoal_fornecedor.fxml");
     }
 
     private void defineEvents(){

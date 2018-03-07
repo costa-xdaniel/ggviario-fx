@@ -26,4 +26,15 @@ public class SQLResource {
         for( T t : items ) if( t == null || !t.equals( item ) ) return false;
         return true;
     }
+
+    public static Double max( Double ... numbers) {
+        Double  max = null;
+        for( Double next: numbers ){
+            if( next == null ) continue;
+            if( max == null || ( next != null && next > max ) ){
+                max = next;
+            }
+        }
+        return max;
+    }
 }

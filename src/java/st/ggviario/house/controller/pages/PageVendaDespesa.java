@@ -16,7 +16,8 @@ public class PageVendaDespesa extends PageTabsConttoler implements Initializable
     private Tab tabDespesa = new Tab("DESPESA" );
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize( URL url, ResourceBundle resourceBundle ) {
+        super.initialize( url, resourceBundle );
         this.init();
         this.structure();
         this.defineEvents();
@@ -28,9 +29,9 @@ public class PageVendaDespesa extends PageTabsConttoler implements Initializable
 
 
     private void structure(){
-        this.addTab( tabDivida, "/fxml/tabs/tab_vendadespesa_divida.fxml");
-        this.addTab( tabVenda, "/fxml/tabs/tab_vendadesvesa_venda.fxml");
-        this.addTab( tabDespesa, "/fxml/tabs/tab_vendadespesa_despesa.fxml");
+        this.addTab( tabDivida, "/fxml/tabs/tab_vendadespesa_divida.fxml" );
+        this.addTab( tabVenda, "/fxml/tabs/tab_vendadesvesa_venda.fxml" );
+        this.addTab( tabDespesa, "/fxml/tabs/tab_vendadespesa_despesa.fxml" );
     }
 
     private void defineEvents(){

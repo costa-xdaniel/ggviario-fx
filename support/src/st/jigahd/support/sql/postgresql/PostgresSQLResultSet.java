@@ -16,11 +16,6 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
     private int currentPoint = 0;
     private PostgresSQLRow currentRow;
 
-
-    public interface OnResultQuery {
-        void accept(SQLRow row );
-    }
-
     public PostgresSQLResultSet(ResultSet resultSet) throws SQLException {
         super(resultSet);
         this.numberColumns = this.resultSet.getMetaData().getColumnCount();
@@ -91,12 +86,25 @@ public class PostgresSQLResultSet extends PostgresSQLResult {
         return this.currentRow;
     }
 
-    public void onResultQuery(OnResultQuery onResultQuery ) {
-
+    public void onResultQuery( OnResultQuery onResultQuery ) {
         SQLRow row;
         while( (row = this.nextRow() )!= null ){
-            if( onResultQuery != null ) onResultQuery.accept( row );
+            if( onResultQuery != null && onResultQuery.accept( row ) ) break;
         }
         PostgresSQL.closeResultSet( this.resultSet );
     }
+
+
+    public interface OnResultQuery {
+        boolean accept(SQLRow row );
+    }
+
+    public interface OnReadAllResultQuery extends OnResultQuery {
+        default boolean accept(SQLRow row ) {
+            onNext( row );
+            return false;
+        }
+        void onNext( SQLRow row );
+    }
+
 }

@@ -21,6 +21,7 @@ import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -256,9 +257,9 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
             this.textFieldMontantePagar.setText( null );
         }
 
-        if( res.value.getFornecedor() == null ) res.message = "Selecione um fornecedor!";
-        else if( res.value.getProduto() == null ) res.message = "Selecione um produto!";
-        else if( res.value.getUnidade() == null ) res.message = "Selecione uma uniade";
+        if( res.value.getFornecedor() == null || res.value.getFornecedor().getFornecedorId() == null ) res.message = "Selecione um fornecedor!";
+        else if( res.value.getProduto() == null  || res.value.getProduto().getProdutoId() == null ) res.message = "Selecione um produto!";
+        else if( res.value.getUnidade() == null  || res.value.getUnidade().getUnidadeId() ==null ) res.message = "Selecione uma uniade";
         else if( res.value.getDespesaMontanteUnitario() == null ) res.message = "Informe o custo unitario";
         else if( quant == null ) res.message = "Informe a quantidade do produto!";
         else res.success = true;
@@ -275,19 +276,6 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
             Conta conta = contaManager.getContaFor(ContaManager.ContaOperacao.PAGAMENTO_DESPESA);
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
-/*
-funct_reg_despesa(
-arg_colaborador_id uuid,
- arg_fornecedor_id uuid,
-  arg_produto_id uuid,
-   arg_unidade_id uuid,
-    arg_despesa_quantidade numeric,
-     arg_despesa_custounitario numeric,
-      arg_despesa_custototal numeric,
-       arg_despesa_data date,
-        arg_despesa_numerofatura date,
-         arg_despesa_paga boolean, arg_conta_id uuid)
- */
 
             Colaborador colaborador = AuthSingleton.getInstance();
             sql.query( "ggviario.funct_reg_despesa" )
@@ -303,14 +291,14 @@ arg_colaborador_id uuid,
                 .withBoolean( this.toggleButtonPago.isSelected() )
                 .withUUID( conta ==  null? null : conta.getContaId() )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         SQLResult result = new SQLResult( row );
                         res.result = result.getData();
                         if( result.isSuccess() ){
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             res.message = "Nova value cadastrado com sucesso";
                             res.success = true;
-                            res.value = builder.load((Map<String, Object>) result.getData().get("value") ).build();
+                            res.value = builder.load((Map<String, Object>) result.getData().get("despesa") ).build();
                         } else {
                             res.level = SnackbarBuilder.MessageLevel.ERROR;
                             res.message = result.getMessage();
@@ -358,9 +346,8 @@ arg_colaborador_id uuid,
         sql.query( "funct_load_fornecedor" )
                 .withJsonb( ( String ) null )
                 .callFunctionTable()
-                .onResultQuery(row -> {
-                    this.fornecedorList.add( fornecedorBuilder.load( row ).build() );
-                });
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery)
+                    row -> this.fornecedorList.add( fornecedorBuilder.load( row ).build() ));
     }
 
     private void loadDataProduto(){
@@ -376,7 +363,7 @@ arg_colaborador_id uuid,
         sql.query( "funct_load_produto_despesa" )
                 .withJsonb( ( String )null )
                 .callFunctionTable()
-                .onResultQuery(row -> {
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     Produto produto = produtoBuilder.load( row ).build();
                     String documnetUnidade = row.asString( "produto_unidades" );
                     List< Object > list = gson.fromJson( documnetUnidade, List.class );

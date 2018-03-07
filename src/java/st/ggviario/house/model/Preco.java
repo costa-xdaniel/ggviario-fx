@@ -1,6 +1,7 @@
 package st.ggviario.house.model;
 
 import st.jigahd.support.sql.SQLRow;
+import st.jigahd.support.sql.lib.SQLResource;
 
 import java.util.Map;
 import java.util.UUID;
@@ -99,7 +100,7 @@ public class Preco {
             this.id = SQLRow.uuidOf( map.get("preco_id") );
             this.quantidadeProduto = SQLRow.doubleOf( map.get( "preco_quantidadeproduto" ) );
             this.custoUnidade = SQLRow.doubleOf( map.get( "preco_custounidade" ) );
-            this.base = SQLRow.booleanOf( map.get( "preco_base" ) );
+            this.base = SQLResource.coalesce( SQLRow.booleanOf( map.get( "preco_base" ) ), Boolean.FALSE );
             return this;
         }
     }

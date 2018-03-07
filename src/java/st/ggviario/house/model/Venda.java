@@ -298,7 +298,6 @@ public class Venda {
 
             this.id = row.asUUID( "venda_id" );
             this.tipoVenda = TipoVenda.valueOf( row.asShort( "tvenda_id" ) );
-            if( tipoVenda == null ) throw  new RuntimeException("Tipo de venda esta nulo");
             this.faturaNumero = row.asString( "venda_faturanumero" );
             this.quantidade = row.asDouble( "venda_quantidade" );
             this.quantidadeProduto = row.asDouble( "venda_quantidadeproduto" );

@@ -24,6 +24,7 @@ import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.util.*;
@@ -182,7 +183,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                     .withVarchar( SQLText.normalize( res.cliente.getClienteMorada() ) )
                     .withVarchar( SQLText.normalize( res.cliente.getClienteLocalTrabalho() ) )
                     .callFunctionTable()
-                    .onResultQuery( row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         boolean result  = row.asBoolean("result" );
                         String doc = row.asString("message" );
                         res.map  = new Gson().fromJson( doc, Map.class );

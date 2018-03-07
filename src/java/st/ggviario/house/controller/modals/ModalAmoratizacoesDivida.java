@@ -22,6 +22,7 @@ import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.model.Movimento;
 import st.ggviario.house.model.Venda;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -33,7 +34,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
 
     private JFXRippler ripplerCloseModal;
 
-    public static ModalAmoratizacoesDivida load(StackPane stackPane){
+    public static ModalAmoratizacoesDivida newInstance(StackPane stackPane){
         ControllerLoader<Pane, ModalAmoratizacoesDivida> loader = new ControllerLoader<>("/fxml/modal/modal_detalhes_venda_amortizacao.fxml");
         loader.getController().createDialogModal( stackPane );
         return loader.getController();
@@ -177,7 +178,7 @@ public class ModalAmoratizacoesDivida extends AbstractModal implements  Initiali
         PostgresSQLSingleton.getInstance().query( "funct_load_movimento_venda" )
                 .withUUID( venda.getVendaId() )
                 .callFunctionTable()
-                .onResultQuery( row -> {
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                     movimentoBuilder.load( row ).setVenda( venda );
                     vendaMovimentos.add( new VendaMovimento( movimentoBuilder.build() ) );
                 });

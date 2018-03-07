@@ -18,6 +18,7 @@ import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -108,7 +109,7 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
                 .withUUID( res.getValue().getCategoriaSuper().getCategoriaId() )
                 .withVarchar( res.getValue().getCategoriaNome() )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         SQLResult result = new SQLResult( row );
                         if( result.isSuccess() ){
                             res.succeed = true;

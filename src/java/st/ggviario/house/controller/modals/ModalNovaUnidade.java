@@ -16,6 +16,7 @@ import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
                 .withVarchar( res.resultValue.getUnidadeNome() )
                 .withVarchar( res.resultValue.getUnidadeCodigo() )
                 .callFunctionTable()
-                    .onResultQuery(row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         SQLResult result = new SQLResult( row );
                         if( result.isSuccess() ){
                             res.message = "Nova unidade cadastrada com sucesso!";

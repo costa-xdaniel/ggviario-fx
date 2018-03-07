@@ -16,15 +16,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.SnackbarBuilder;
+import st.ggviario.house.controller.drawers.DrawerVenda;
 import st.ggviario.house.controller.modals.ModalDestroy;
 import st.ggviario.house.controller.modals.ModalNovaVenda;
-import st.ggviario.house.controller.drawers.DrawerVenda;
-import st.ggviario.house.controller.pages.PageTab;
-import st.ggviario.house.controller.pages.RowsController;
+import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.util.Date;
@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public abstract class VendaController extends RowsController< VendaController.VendaViewModel > implements PageTab,  Initializable {
+public abstract class VendaController extends TableClontroller< VendaController.VendaViewModel > implements TabPage,  Initializable {
 
 
     private ModalNovaVenda modalNovaVenda;
@@ -47,9 +47,9 @@ public abstract class VendaController extends RowsController< VendaController.Ve
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
+        defineEvents();
         this.loadData( null, true );
         pushAll();
-        defineEvents();
     }
 
     @Override
@@ -87,16 +87,17 @@ public abstract class VendaController extends RowsController< VendaController.Ve
 
         PostgresSQL sql = PostgresSQLSingleton.getInstance();
         this.vendaList.clear();
+        sql.query( this.getFunctionLoadVendaName() )
+            .withJsonb( (String) null)
+            .callFunctionTable()
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                    vendaBuilder.load( row );
+                    vendaBuilder.cliente( clienteBuilder.load( row ).build() );
+                    vendaBuilder.produto( produtoBuilder.load( row ).build() );
+                    vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
+                    this.vendaList.add( new VendaViewModel( vendaBuilder.build() ) );
+                });
 
-        sql.query( this.getFunctionLoadVendaName() ).withJsonb( (String) null).callFunctionTable().onResultQuery(row -> {
-            vendaBuilder.load( row );
-            vendaBuilder.cliente( clienteBuilder.load( row ).build() );
-            vendaBuilder.produto( produtoBuilder.load( row ).build() );
-            vendaBuilder.unidade( unidadeBuilder.load( row ).build() );
-            this.vendaList.add( new VendaViewModel( vendaBuilder.build() ) );
-        });
-
-        System.out.println( vendaList );
     }
 
     void openDrawer( VendaViewModel newVenda ) {
@@ -182,7 +183,7 @@ public abstract class VendaController extends RowsController< VendaController.Ve
                         .withUUID( modalResult.getValue().getObject().getVendaId() )
                         .withVarchar( modalResult.getValue().getText() )
                         .callFunctionTable()
-                            .onResultQuery(row -> {
+                            .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                                 SQLResult result = new SQLResult( row );
                                 if (result.isSuccess()) {
                                     snackbak.show( getTipoVenda().name()+" anulado com sucesso!", SnackbarBuilder.MessageLevel.SUCCESS );

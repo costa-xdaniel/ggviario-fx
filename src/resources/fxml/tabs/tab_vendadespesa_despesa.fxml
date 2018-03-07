@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="localRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.tabs.PageDespesa">
+<AnchorPane fx:id="localRootPage" prefHeight="447.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.tabs.TabPageDespesa">
    <children>
       <JFXTreeTableView fx:id="treeTableViewDespesa" layoutX="128.0" layoutY="14.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="4.0">
          <columnResizePolicy>

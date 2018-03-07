@@ -96,11 +96,11 @@ public class HomeController implements Initializable {
 
     public void setDocumentRoot( Node documentRoot, Page page ) {
 
-        if( this.currentPage != null ) this.currentPage.onBeforeRemove();
+        if( this.currentPage != null ) this.currentPage.onBeforeClose();
         this.rootPage.getChildren().clear();
-        if( this.currentPage != null ) this.currentPage.onAfterRemove();
+        if( this.currentPage != null ) this.currentPage.onAfterClose();
 
-        page.onBeforeAppend();
+        page.onBeforeOpen();
 
         AnchorPane.setTopAnchor( documentRoot, 0.0);
         AnchorPane.setLeftAnchor( documentRoot, 0.0);
@@ -108,7 +108,7 @@ public class HomeController implements Initializable {
         AnchorPane.setRightAnchor( documentRoot, 0.0);
 
         this.rootPage.getChildren().add( documentRoot );
-        page.onAfterAppend();
+        page.onAfterOpen();
 
         this.currentDocumentoPage = documentRoot;
         this.currentPage = page;

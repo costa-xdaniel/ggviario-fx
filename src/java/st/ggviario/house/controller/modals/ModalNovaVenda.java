@@ -20,6 +20,7 @@ import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLQueryBuilder;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -248,7 +249,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         RegisterVendaResult res = new RegisterVendaResult();
         res.venda = venda;
 
-        funct_reg_venda.callFunctionTable().onResultQuery( row ->{
+        funct_reg_venda.callFunctionTable().onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
             String documentRegister = row.asString("message");
 
             res.resultData = gson.fromJson( documentRegister, Map.class );
@@ -504,25 +505,28 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         PostgresSQL sql = PostgresSQLSingleton.getInstance();
         Gson gson = new Gson();
 
-        sql.query("funct_load_produto_venda") .withJsonb( (String) null ) .callFunctionTable().onResultQuery( row ->{
-            produtoBuilder.load( row );
-            Produto produto;
-            produtoList.add( produto = produtoBuilder.build() );
-            List<Preco> equivalenciaList = new LinkedList<>();
-            equivalenciaList.add( this.precoVasio );
-            String documentEquivalencia = String.valueOf( row.get("produto_precos"));
+        sql.query("funct_load_produto_venda")
+            .withJsonb( (String) null )
+            .callFunctionTable()
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                    produtoBuilder.load( row );
+                    Produto produto;
+                    produtoList.add( produto = produtoBuilder.build() );
+                    List<Preco> equivalenciaList = new LinkedList<>();
+                    equivalenciaList.add( this.precoVasio );
+                    String documentEquivalencia = String.valueOf( row.get("produto_precos"));
 
-            List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
-            for( Map<String, Object > map : aux ){
-                equivalenciaList.add(
-                        precoBuilder.load( map )
-                        .setProduto( produto )
-                        .setUnidade( unidadeBuilder.load( map ).build() )
-                        .build()
-                );
-            }
-            this.mapListEquivalencia.put( produto.getProdutoId(), equivalenciaList );
-        });
+                    List<Map<String, Object> >  aux = gson.fromJson( documentEquivalencia, List.class );
+                    for( Map<String, Object > map : aux ){
+                        equivalenciaList.add(
+                                precoBuilder.load( map )
+                                        .setProduto( produto )
+                                        .setUnidade( unidadeBuilder.load( map ).build() )
+                                        .build()
+                        );
+                    }
+                    this.mapListEquivalencia.put( produto.getProdutoId(), equivalenciaList );
+                });
 
     }
 

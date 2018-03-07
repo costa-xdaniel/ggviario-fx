@@ -432,4 +432,16 @@
     -fx-fill: md-primary-color;
 }
 
+.produto-servico{
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+.produto-servico.ativo{
+    -fx-text-fill: md-green-500;
+}.produto-servico.fechado{
+    -fx-text-fill: md-red-500;
+}
+
+
+
 /*=============== MENU >>/
