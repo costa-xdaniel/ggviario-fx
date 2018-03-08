@@ -32,10 +32,10 @@ public class IncludProdutoInformation implements Initializable {
     @FXML private Label labelProdutoMontanteCompras;
     @FXML private Label labelProdutoMontanteCompraPagas;
     @FXML private Label labelProdutoMontanteCompraPendentes;
-//    @FXML private Label labelServicoVenda;
-//    @FXML private Label labelServicoCompra;
-//    @FXML private Label labelServicoProducao;
-//    @FXML private Label labelServioStockDinamico;
+    @FXML private Label labelServicoVenda;
+    @FXML private Label labelServicoCompra;
+    @FXML private Label labelServicoProducao;
+    @FXML private Label labelServioStockDinamico;
     @FXML private Label tableStockAtual;
     @FXML private Label labelStockMinimo;
     @FXML private Label labelProdutoMontanteSaido;
@@ -74,11 +74,11 @@ public class IncludProdutoInformation implements Initializable {
             this.labelProdutoMontanteCompraPendentes.setText( this.money.format(SQLResource.coalesce( this.produdo.getProdutoMontanteCompraPendentes(), 0 ) ) );
             this.labelProdutoMontanteSaido.setText( this.money.format(SQLResource.coalesce( this.produdo.getProdutoMontanteCompraPagas(), 0 ) ) );
             this.labelProdutoMontanteEntrado.setText( this.money.format(SQLResource.coalesce( this.produdo.getProdutoMontanteVendaPagas(), 0 ) ) );
-//
-//            chose( "Serviço venda",  this.labelServicoVenda, this.produdo.getProdutoServicoVenda() );
-//            chose( "Serviço compra", this.labelServicoCompra, this.produdo.getProdutoServicoCompra() );
-//            chose( "Serviço produção", this.labelServicoProducao, this.produdo.getProdutoServicoProducao() );
-//            chose( "Stock dinamico", this.labelServioStockDinamico, this.produdo.getProdutoServicoDinamico() );
+
+            chose( "Serviço venda",  this.labelServicoVenda, this.produdo.getProdutoServicoVenda() );
+            chose( "Serviço compra", this.labelServicoCompra, this.produdo.getProdutoServicoCompra() );
+            chose( "Serviço produção", this.labelServicoProducao, this.produdo.getProdutoServicoProducao() );
+            chose( "Stock dinamico", this.labelServioStockDinamico, this.produdo.getProdutoServicoDinamico() );
 
             String unit =  this.produdo.getPreco() == null ? "" : " "+this.produdo.getPreco().getUnidade().getUnidadeCodigo();
             this.tableStockAtual.setText( number.format( SQLResource.coalesce( this.produdo.getProdutoStock(), 0 ) )+unit );
@@ -89,19 +89,13 @@ public class IncludProdutoInformation implements Initializable {
 
     private void chose( String text, Label label, Boolean ativo) {
         if( ativo ){
-            label.getStyleClass().remove( "fechado" );
             label.getStyleClass().add( "ativo" );
-            label.setText( text + " (ativo) ");
         } else {
             label.getStyleClass().remove( "ativo" );
-            label.getStyleClass().add( "fechado" );
-            label.setText( text + " (fechado) ");
         }
     }
     private void clear( String text, Label label) {
-            label.getStyleClass().remove( "fechado" );
-            label.getStyleClass().remove( "ativo" );
-            label.setText( text  );
+        label.getStyleClass().remove( "ativo" );
     }
 
     private void clear( ){
@@ -117,9 +111,9 @@ public class IncludProdutoInformation implements Initializable {
         this.labelProdutoMontanteCompraPendentes.setText( null );
         this.labelProdutoMontanteSaido.setText( null );
         this.labelProdutoMontanteEntrado.setText( null );
-//        clear( "Serviço venda",  this.labelServicoVenda );
-//        clear( "Serviço compra", this.labelServicoCompra  );
-//        clear( "Serviço produção", this.labelServicoProducao );
-//        clear( "Stock dinamico", this.labelServioStockDinamico );
+        clear( "Serviço venda",  this.labelServicoVenda );
+        clear( "Serviço compra", this.labelServicoCompra  );
+        clear( "Serviço produção", this.labelServicoProducao );
+        clear( "Stock dinamico", this.labelServioStockDinamico );
     }
 }

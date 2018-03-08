@@ -65,6 +65,25 @@ public class Categoria {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Categoria)) return false;
+
+        Categoria categoria = (Categoria) o;
+
+        if (categoriaId != null ? !categoriaId.equals(categoria.categoriaId) : categoria.categoriaId != null)
+            return false;
+        return categoriaCodigo != null ? categoriaCodigo.equals(categoria.categoriaCodigo) : categoria.categoriaCodigo == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = categoriaId != null ? categoriaId.hashCode() : 0;
+        result = 31 * result + (categoriaCodigo != null ? categoriaCodigo.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return this.categoriaNome;
     }
@@ -194,7 +213,7 @@ public class Categoria {
             this.posicao = SQLRow.shortOf( map.get( "categoria_posicao" ) );
             this.nivel = SQLRow.shortOf( map.get( "categoria_nivel" ) );
             this.estado = EnumTypes.find( CategoriaEstado.values(), SQLRow.shortOf( map.get( "categoria_estado" ) ) );
-            this.dataRegisto = SQLRow.dateOf( map.get( "catagoria_dataregisto" ) );
+            this.dataRegisto = SQLRow.dateOf( map.get( "categoria_dataregisto" ) );
             this.dataAtualizacao = SQLRow.dateOf( map.get( "categoria_dataatualizacao" ) );
             return this;
         }

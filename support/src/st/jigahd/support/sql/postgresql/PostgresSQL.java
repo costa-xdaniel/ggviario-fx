@@ -14,24 +14,19 @@ public class PostgresSQL {
     public static final String PROSTRGES_URL_MASK = "jdbc:postgresql://$host:$port/$database";
 
     private Configuration configuration;
-    private PostgresSQLQueryBuilder parameterManager;
     private String url;
     private Connection conn;
-    private Map< ResourceType, PostgresSQLExecutor > executors;
-    private String query;
-    private String processedQuery;
-
+    private Map< ResourceType, OnNextQueryBuilder  > executors;
 
     public PostgresSQL( Configuration configuration ) {
         setConfiguration(configuration);
-        this.parameterManager = new PostgresSQLQueryBuilder( this );
         this.executors = new LinkedHashMap<>();
-        this.executors.put( ResourceType.FUNCTION, new PostgresSQLExecutorFunction( this ) );
-        this.executors.put( ResourceType.FUNCTION_TABLE, new PostgresSQLExecutorFunctionTable( this ) );
-        this.executors.put( ResourceType.QUERY, new PostgresSQLExecutorQuery( this ) );
+        this.executors.put( ResourceType.FUNCTION, PostgresSQLExecutorFunction::new );
+        this.executors.put( ResourceType.FUNCTION_TABLE, PostgresSQLExecutorFunctionTable::new );
+        this.executors.put( ResourceType.QUERY, PostgresSQLExecutorQuery::new );
     }
 
-    private void setConfiguration(Configuration configuration) {
+     private void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         this.url = PROSTRGES_URL_MASK
             .replace( "$host", this.configuration.getHost() )
@@ -40,40 +35,23 @@ public class PostgresSQL {
         ;
     }
 
-    public PostgresSQLQueryBuilder query(String query ){
-        this.parameterManager.clear();
-        this.query = query;
-        return this.parameterManager;
+     public PostgresSQLQueryBuilder query(String query ){
+        return new PostgresSQLQueryBuilder(this, query );
     }
 
-    protected PostgresSQLResult processQuery(ResourceType resourceType ) throws SQLException {
-        PostgresSQLExecutor exec = this.executors.get(resourceType);
+     protected PostgresSQLResult processQuery( ResourceType resourceType, PostgresSQLQueryBuilder queryBuilder ) throws SQLException {
+        PostgresSQLExecutor exec = this.executors.get(resourceType).createPostgresSQLExecutor( queryBuilder );
         exec.run();
         return exec.getResult();
     }
 
-    public String getQuery() {
-        return query;
-    }
-
-    public int countParameters() {
-        return this.parameterManager.countParameters();
-    }
-
-    protected PostgresSQLQueryBuilder getParameterManager() {
-        return this.parameterManager;
-    }
-
-    public void processedQuery(String processedQuery) {
-        this.processedQuery = processedQuery;
-    }
-
-    protected Connection getCurrentConnection() {
-        this.createConnection();
+     protected Connection getCurrentConnection() {
+        if( this.conn == null || this.isClosed() )
+            this.createConnection();
         return this.conn;
     }
 
-    private boolean isClosed() {
+     private boolean isClosed() {
 
         try {
             return this.conn.isClosed();
@@ -83,15 +61,12 @@ public class PostgresSQL {
         return true;
     }
 
-    public String getProcessedQuery() {
-        return processedQuery;
-    }
 
-    public boolean autoCloseStatement() {
+     public boolean autoCloseStatement() {
         return true;
     }
 
-    public static void closeStatement( Statement statement) {
+     public static void closeStatement( Statement statement) {
         try {
             statement.close();
         } catch (SQLException e) {
@@ -99,7 +74,7 @@ public class PostgresSQL {
         }
     }
 
-    public static void closeResultSet(ResultSet resultSet) {
+     public static void closeResultSet(ResultSet resultSet) {
         try {
             Statement stm = null;
             stm = resultSet.getStatement();
@@ -108,15 +83,14 @@ public class PostgresSQL {
         } catch (SQLException ignored) { }
     }
 
-    public void closeCurrentConnection() {
+     public void closeCurrentConnection() {
         PostgresSQL.closeConnection( this.conn );
     }
 
-    private static void closeConnection(Connection conn) {
+     private static void closeConnection(Connection conn) {
         try{
             conn.close();
         }catch ( Exception ex ){
-
         }
     }
 
@@ -126,7 +100,7 @@ public class PostgresSQL {
         QUERY
     }
 
-    private Connection createConnection( ) {
+     private Connection createConnection( ) {
         try {
             if ( !org.postgresql.Driver.isRegistered() ){
                 org.postgresql.Driver.register();
@@ -134,6 +108,11 @@ public class PostgresSQL {
             this.conn = DriverManager.getConnection( this.url, this.configuration.getUser(), this.configuration.getPassword() );
         } catch (SQLException e) { e.printStackTrace(); }
         return conn;
+    }
+
+
+    private interface OnNextQueryBuilder{
+         PostgresSQLExecutor createPostgresSQLExecutor(PostgresSQLQueryBuilder queryBuilder );
     }
 
 

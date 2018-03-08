@@ -4,13 +4,13 @@ import java.sql.SQLException;
 
 public class PostgresSQLExecutorQuery extends PostgresSQLExecutor {
 
-    public PostgresSQLExecutorQuery(PostgresSQL postgresSQL) {
-        super(postgresSQL);
+    public PostgresSQLExecutorQuery(PostgresSQLQueryBuilder queryBuilder) {
+        super(queryBuilder);
     }
 
     @Override
     public void run() throws SQLException {
-        this.postgresSQL.processedQuery( this.postgresSQL.getQuery() );
+        this.queryBuilder.setProcessedQuery( this.queryBuilder.getQuery() );
         super.execute();
     }
 

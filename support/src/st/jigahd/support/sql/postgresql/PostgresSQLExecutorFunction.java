@@ -5,16 +5,16 @@ import java.sql.SQLException;
 public class PostgresSQLExecutorFunction extends PostgresSQLExecutor {
 
 
-    public PostgresSQLExecutorFunction(PostgresSQL postgresSQL) {
-        super(postgresSQL);
+    public PostgresSQLExecutorFunction(PostgresSQLQueryBuilder queryBuilder) {
+        super(queryBuilder);
     }
 
     @Override
     public void run() throws SQLException {
-        String functionName = this.postgresSQL.getQuery();
+        String functionName = this.queryBuilder.getQuery();
         if ( functionName == null ) throw new RuntimeException( "Nome da função não definida" );
         String query = mountQuery( functionName );
-        this.postgresSQL.processedQuery( query );
+        this.queryBuilder.setProcessedQuery( query );
         super.execute();
     }
 
@@ -25,7 +25,7 @@ public class PostgresSQLExecutorFunction extends PostgresSQLExecutor {
 
     protected String mountQuery(String functionName) {
         StringBuilder builder = new StringBuilder();
-        String params = createAbstractParameter( this.postgresSQL.getParameterManager().countParameters() );
+        String params = createAbstractParameter( this.queryBuilder.countParameters() );
         builder.append("select " ).append( functionName ).append("( ").append( params ).append( ") as result; ");
         return builder.toString();
     }

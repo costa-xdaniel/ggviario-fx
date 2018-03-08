@@ -23,7 +23,7 @@
             <children>
                 <AnchorPane fx:id="anchorHeader">
                     <children>
-                        <Label fx:id="modalTitle" styleClass="modal-title" text="Novo produto" />
+                        <Label fx:id="modalTitle" styleClass="modal-title" text="Novo produto" AnchorPane.leftAnchor="16.0" />
                         <AnchorPane fx:id="iconAnchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <MaterialDesignIconView layoutX="60.0" layoutY="105.0" styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
@@ -41,6 +41,7 @@
                         <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <JFXTextField fx:id="textFieldNome" focusColor="#ff5722" labelFloat="true" prefWidth="250.0" promptText="Nome" unFocusColor="#009688">
@@ -72,9 +73,17 @@
                      <GridPane.margin>
                         <Insets top="16.0" />
                      </GridPane.margin></JFXToggleButton>
+                  <JFXTextField fx:id="textFieldStockMinimo" alignment="TOP_RIGHT" promptText="Stock minimo" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <padding>
+                        <Insets top="32.0" />
+                     </padding>
+                     <GridPane.margin>
+                        <Insets left="8.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
                     </children>
                     <VBox.margin>
-                        <Insets left="16.0" right="16.0" />
+                        <Insets left="32.0" right="32.0" />
                     </VBox.margin>
                 </GridPane>
             <Separator prefWidth="200.0">
@@ -90,7 +99,7 @@
                         <Font name="System Bold" size="13.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="16.0" left="16.0" right="16.0" />
+                        <Insets bottom="16.0" left="16.0" right="32.0" />
                     </VBox.margin>
                     <styleClass>
                         <String fx:value="primary" />

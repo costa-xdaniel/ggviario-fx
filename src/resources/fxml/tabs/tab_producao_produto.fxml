@@ -5,16 +5,37 @@
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.tabs.TabPageProduto">
     <children>
-        <JFXTreeTableView fx:id="treeTableViewUnidade" layoutX="90.0" layoutY="-21.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="4.0">
+      <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXButton fx:id="buttomCategoria" style="-fx-background-color: md-grey-500; -fx-text-fill: #ffffff; -fx-font-size: 16px;" text="CATEGORIAS">
+               <HBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </HBox.margin>
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="BOOKMARK_PLUS" size="24" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="buttomUnidade" style="-fx-background-color: md-grey-500; -fx-text-fill: #ffffff; -fx-font-size: 16px;" text="UNIDADES">
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="WEIGHT_KILOGRAM" size="24" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+        <JFXTreeTableView fx:id="treeTableViewUnidade" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="88.0">
          <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy></JFXTreeTableView>
-      <JFXDrawer fx:id="drawerProdutoDetails" defaultDrawerSize="500.0" direction="RIGHT" layoutX="110.0" layoutY="360.0" styleClass="drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </columnResizePolicy>
+      </JFXTreeTableView>
+      <JFXDrawer fx:id="jfxDrawerItems" defaultDrawerSize="500.0" direction="RIGHT" styleClass="drawer-details-page" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="88.0" />
+      <JFXDrawer fx:id="jfxDrawerProdutoDetails" defaultDrawerSize="500.0" direction="RIGHT" layoutX="110.0" layoutY="360.0" styleClass="drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
         <AnchorPane fx:id="fabArea" maxHeight="56.0" maxWidth="56.0" minHeight="56.0" minWidth="56.0" prefHeight="56.0" prefWidth="56.0" styleClass="floating-action-area" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
             <children>
                 <JFXButton fx:id="fabButton" buttonType="RAISED" prefHeight="50.0" prefWidth="66.0" styleClass="floating-action-button" text=" " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

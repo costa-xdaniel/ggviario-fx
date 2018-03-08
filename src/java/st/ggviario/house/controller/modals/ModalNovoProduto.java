@@ -18,17 +18,19 @@ import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.SQLResult;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class ModalNovoProduto extends AbstractModal<Produto > {
 
-    public static ModalNovoProduto load(StackPane stackPane ){
-        ControllerLoader<AnchorPane, ModalNovoProduto > loader = new ControllerLoader<>("/fxml/modal/moda_novo_produto.fxml");
+    public static ModalNovoProduto newInstance(StackPane stackPane ){
+        ControllerLoader<AnchorPane, ModalNovoProduto > loader = new ControllerLoader<>("/fxml/modal/modal_novo_produto.fxml");
         loader.getController().createDialogModal( stackPane );
         loader.getController().structure();
         loader.getController().defineEvents();
@@ -48,6 +50,9 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
     @FXML private JFXToggleButton toggleServicoStockDinamico;
     @FXML private JFXToggleButton toggleServicoVenda;
     @FXML private JFXButton buttonClientRegister;
+    @FXML  private JFXTextField textFieldStockMinimo;
+
+    private Produto produto;
 
     @Override
     Region getContentRoot() {
@@ -71,6 +76,7 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
 
     @Override
     void structure() {
+        this.comboxCategoria.setItems(FXCollections.observableList( new LinkedList<>() ) );
         this.requireStockDinamico( false );
     }
 
@@ -82,6 +88,8 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         this.toggleServicoCompra.selectedProperty().setValue( false );
         this.toggleServicoProducao.selectedProperty().setValue( false );
         this.toggleServicoStockDinamico.selectedProperty().setValue( false );
+        this.textFieldStockMinimo.setText( null );
+        this.produto = null;
         this.requireStockDinamico( false );
     }
 
@@ -94,10 +102,41 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         this.toggleServicoCompra.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             this.requireStockDinamico( false );
         });
-        this.buttonClientRegister.setOnAction(actionEvent -> this.onRegisterNovoProduto());
+        this.buttonClientRegister.setOnAction(actionEvent -> {
+            if( this.produto != null && this.produto.getProdutoId() != null ) this.onEditiProduto();
+            else this.onRegisterNovoProduto();
+        });
+        this.toggleServicoStockDinamico.selectedProperty().addListener((observableValue, oldValue, newValue ) -> {
+            if( newValue ) this.textFieldStockMinimo.setDisable( false );
+            else{
+                this.textFieldStockMinimo.setDisable( true );
+                this.textFieldStockMinimo.setText( null );
+            }
+        });
 
     }
 
+
+
+    @Override
+    public void openModal() {
+        super.openModal();
+        this.clear();
+    }
+
+    public void openModal(Produto produto ) {
+        this.produto = produto;
+        if( this.produto != null && this.produto.getProdutoId() != null ){
+            this.textFieldNome.setText( this.produto.getProdutoNome() );
+            this.textFieldStockMinimo.setText( String.valueOf( this.produto.getProdutoStockMinimo() == null ? "" : this.produto.getProdutoStockMinimo() ) );
+            this.toggleServicoVenda.setSelected( this.produto.getProdutoServicoVenda() );
+            this.toggleServicoCompra.setSelected( this.produto.getProdutoServicoCompra() );
+            this.toggleServicoProducao.setSelected( this.produto.getProdutoServicoProducao() );
+            this.toggleServicoStockDinamico.setSelected( this.produto.getProdutoServicoDinamico() );
+            this.comboxCategoria.setValue( produto.getProdutoCategoria() );
+        }
+        super.openModal();
+    }
 
     private void onChangeCategoria(Categoria newCategoria){
         if (newCategoria == null || newCategoria.getCategoriaId() == null ) {
@@ -127,7 +166,6 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
             PostgresSQL sql = PostgresSQLSingleton.getInstance() ;
             Colaborador colaborador = AuthSingleton.getInstance();
             Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
-
             sql.query( "ggviario.funct_reg_produto" )
                 .withUUID( colaborador.getColaboradorId() )
                 .withUUID( res.value.getProdutoCategoria().getCategoriaId() )
@@ -136,6 +174,7 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
                 .withBoolean( res.value.getProdutoServicoCompra() )
                 .withBoolean( res.value.getProdutoServicoProducao() )
                 .withBoolean( res.value.getProdutoServicoDinamico() )
+                .withNumeric( res.value.getProdutoStockMinimo() )
                 .withJsonb( ( String ) null )
                 .callFunctionTable()
                     .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
@@ -145,6 +184,51 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
                             res.success  = true;
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             res.message = "Novo produto cadastrado com sucesso!";
+                            res.terminated = true;
+                            res.value = builder.load((Map<String, Object>) result.getData().get("produto")).build();
+                        } else {
+                            res.level = SnackbarBuilder.MessageLevel.ERROR;
+                            res.message = result.getMessage();
+                        }
+                    });
+
+            ;
+        }
+        SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
+        snackbarBuilder.show( res.message, res.level );
+        if( res.isSuccess() ){
+            this.closeModal();
+            this.clear();
+        }
+        executeOnOperationResult( res );
+    }
+
+
+     private void onEditiProduto( ){
+        ModalNovoProdutoResult res = this.chackForm();
+        if (res.isSuccess()) {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance() ;
+            Colaborador colaborador = AuthSingleton.getInstance();
+            Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
+
+            sql.query( "ggviario.funct_change_produto_data" )
+                .withUUID( colaborador.getColaboradorId() )
+                .withUUID( this.produto.getProdutoId() )
+                .withUUID( res.value.getProdutoCategoria().getCategoriaId() )
+                .withVarchar( res.value.getProdutoNome() )
+                .withBoolean( res.value.getProdutoServicoVenda() )
+                .withBoolean( res.value.getProdutoServicoCompra() )
+                .withBoolean( res.value.getProdutoServicoProducao() )
+                .withBoolean( res.value.getProdutoServicoDinamico() )
+                .withNumeric( res.value.getProdutoStockMinimo() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        SQLResult result = new SQLResult( row );
+                        res.map = result.getData();
+                        if (result.isSuccess()) {
+                            res.success  = true;
+                            res.level = SnackbarBuilder.MessageLevel.SUCCESS;
+                            res.message = "As informaçõe do produto foram atualizadas";
                             res.terminated = true;
                             res.value = builder.load((Map<String, Object>) result.getData().get("produto")).build();
                         } else {
@@ -179,13 +263,14 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
         produtoBuilder.setServicoCompra( compra );
         produtoBuilder.setServicoProducao( producao );
         produtoBuilder.setServicoStockDinamico( stockDinamico );
+        produtoBuilder.setStockMinimo( SQLRow.doubleOf( SQLText.normalize( this.textFieldStockMinimo.getText() ) ) );
         result.value = produtoBuilder.build();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
         if( result.value.getProdutoNome() == null ){
             result.message = "Informe o nome do produto!";
         } else if( result.getValue().getProdutoCategoria() == null || result.getValue().getProdutoCategoria().getCategoriaId() == null ) {
             result.message = "Informe a categoria do produto!";
-        } else if ( !venda && !compra && !producao ){
+        } else if ( !venda && !compra && !producao && this.produto == null ){
             result.message = "Ative pelo menus um dos serviço entre compra, venda ou produção!";
         } else {
             result.success = true;
@@ -194,9 +279,12 @@ public class ModalNovoProduto extends AbstractModal<Produto > {
     }
 
     public void setCategoriaList(List<Categoria > categoriaList ){
-        this.comboxCategoria.setItems( FXCollections.observableList(categoriaList) );
+        this.comboxCategoria.getItems().addAll( categoriaList );
         if( categoriaList.size() > 1 ) {
             this.comboxCategoria.getItems().add(0, this.VOID_CATEGORIA);
+        }
+        if( this.produto != null ){
+            this.comboxCategoria.setValue( this.produto.getProdutoCategoria() );
         }
     }
 

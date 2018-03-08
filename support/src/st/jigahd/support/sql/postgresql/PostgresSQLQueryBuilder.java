@@ -16,6 +16,9 @@ import java.util.Date;
 
 public class PostgresSQLQueryBuilder {
 
+    private final String query;
+    private String processedQuery;
+
     public interface Setter {
         void set(CallableStatement statement, int index, Integer type, Object value) throws SQLException;
     }
@@ -114,11 +117,29 @@ public class PostgresSQLQueryBuilder {
     private List<Pair< Integer, Object > > parameters;
 
 
-    public PostgresSQLQueryBuilder(PostgresSQL postgresSQL ) {
+    public PostgresSQLQueryBuilder(PostgresSQL postgresSQL, String query) {
+        this.query = query;
         this.parameters = new LinkedList<>();
         this.postgresSQL = postgresSQL;
     }
 
+
+    public PostgresSQL getPostgresSQL() {
+        return postgresSQL;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public String getProcessedQuery() {
+        return processedQuery;
+    }
+
+    public PostgresSQLQueryBuilder setProcessedQuery(String processedQuery) {
+        this.processedQuery = processedQuery;
+        return this;
+    }
 
     public static Map<Integer, Setter> getSetters() {
         return setters;
@@ -137,7 +158,7 @@ public class PostgresSQLQueryBuilder {
     public PostgresSQLResultSigle callFunction(){
         try {
             this.mapReturns = null;
-            return (PostgresSQLResultSigle) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION );
+            return (PostgresSQLResultSigle) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION, this );
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException( e );
@@ -147,11 +168,11 @@ public class PostgresSQLQueryBuilder {
     public PostgresSQLResultSet callFunctionTable(String ... mapReturs ){
         try {
             this.mapReturns = mapReturs;
-            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE  );
+            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.FUNCTION_TABLE, this );
         } catch (SQLException e) {
-            String messag = this.postgresSQL.getQuery();
-            messag = messag+"\n";
-            messag = this.postgresSQL.getProcessedQuery();
+            String messag = this.query;
+            messag += "\n";
+            messag += this.processedQuery;
             throw new RuntimeException( messag,  e );
         }
     }
@@ -159,7 +180,7 @@ public class PostgresSQLQueryBuilder {
     public PostgresSQLResultSet execute(){
         try {
             this.mapReturns = null;
-            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.QUERY );
+            return (PostgresSQLResultSet) this.postgresSQL.processQuery( PostgresSQL.ResourceType.QUERY, this );
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException( e );

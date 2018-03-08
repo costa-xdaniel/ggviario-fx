@@ -157,7 +157,6 @@ public class DrawerProduto implements Initializable {
         this.includProdutoInformation.setProdudo( produto );
         this.includProdutoUnidades.setProduto( produto );
         this.labelHeaderTitle.setText( this.produto.getProdutoCodigo() );
-        this.onInformation();
     }
 
     public DrawerProduto setOnNovoPreco(OnNovoPreco onNovoPreco) {

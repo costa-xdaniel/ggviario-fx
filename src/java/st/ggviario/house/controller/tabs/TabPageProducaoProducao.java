@@ -133,13 +133,19 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     }
 
     private void loadDataProduto(){
-        this.produtoList.clear();
-        Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        sql.query( "funct_load_produto_producao" )
-            .withJsonb( ( String ) null )
-            .callFunctionTable()
-                .onResultQuery(row -> produtoList.add( builder.load( row ).build() ));
+        Thread thread = new Thread(() -> {
+            this.produtoList.clear();
+            Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            sql.query( "funct_load_produto_producao" )
+                    .withJsonb( ( String ) null )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        produtoList.add( builder.load( row ).build() );
+                    });
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
     private void loadSetorData(){

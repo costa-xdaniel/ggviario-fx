@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.drawers.DrawerProduto">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.drawers.DrawerUnidadeCategoria">
    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" style="-fx-background-color: md-primary-text-color;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
          <AnchorPane fx:id="headerPane" BorderPane.alignment="CENTER">
@@ -25,19 +26,9 @@
                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                         </padding>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconInformation" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelIconPlus" styleClass="details-header-icon-area">
                         <children>
-                           <MaterialDesignIconView glyphName="INFORMATION" layoutX="8.0" layoutY="111.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelListUnidades" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="WEIGHT_KILOGRAM" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelIconListaPreco" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           <MaterialDesignIconView glyphName="PLUS" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
                      <AnchorPane fx:id="panelIconEdit" styleClass="details-header-icon-area">
@@ -45,20 +36,23 @@
                            <MaterialDesignIconView glyphName="BORDER_COLOR" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconNovoPreco" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelFullList" styleClass="details-header-icon-area">
                         <children>
-                           <MaterialDesignIconView glyphName="CURRENCY_USD" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
                   </children>
                </HBox>
-               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="V00000/18" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="UNIDADES" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
                <Separator layoutX="87.0" layoutY="108.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             </children>
          </AnchorPane>
       </top>
       <center>
-         <StackPane fx:id="stackPaneContent" BorderPane.alignment="CENTER" />
+         <JFXTreeTableView fx:id="tableUnidadeCategoria" BorderPane.alignment="CENTER">
+            <columnResizePolicy>
+               <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy></JFXTreeTableView>
       </center>
    </BorderPane>
    <stylesheets>

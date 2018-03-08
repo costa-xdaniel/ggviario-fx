@@ -2,6 +2,7 @@ package st.ggviario.house.model;
 
 import st.jigahd.support.sql.SQLRow;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,7 +12,10 @@ public class Unidade {
     private String unidadeNome;
     private String unidadeCodigo;
     private UnidadeEstado unidadeEstado;
-    private String unidadeEstadoDesc;
+    private Date unidadeDataregisto;
+    private Date unidadeDataAtualizacao;
+    private Colaborador colaborador;
+    private Colaborador colaboradorAtualizacao;
 
     public UUID getUnidadeId() {
         return unidadeId;
@@ -29,10 +33,22 @@ public class Unidade {
         return unidadeEstado;
     }
 
-    public String getUnidadeEstadoDesc() {
-        return unidadeEstadoDesc;
+
+    public Date getUnidadeDataregisto() {
+        return unidadeDataregisto;
     }
 
+    public Date getUnidadeDataAtualizacao() {
+        return unidadeDataAtualizacao;
+    }
+
+    public Colaborador getColaborador() {
+        return colaborador;
+    }
+
+    public Colaborador getColaboradorAtualizacao() {
+        return colaboradorAtualizacao;
+    }
 
     @Override
     public String toString() {
@@ -74,7 +90,10 @@ public class Unidade {
         private String nome;
         private String codigo;
         private UnidadeEstado estado;
-        private String estadoDesc;
+        private Date dataRegsito;
+        private Date dataAtualizacao;
+        private Colaborador colaborador;
+        private Colaborador colaboradorAtualizacao;
 
         public Unidade build() {
             Unidade unidade = new Unidade();
@@ -82,7 +101,10 @@ public class Unidade {
             unidade.unidadeNome = this.nome;
             unidade.unidadeCodigo = this.codigo;
             unidade.unidadeEstado = this.estado;
-            unidade.unidadeEstadoDesc = this.estadoDesc;
+            unidade.unidadeDataregisto = this.dataRegsito;
+            unidade.unidadeDataAtualizacao = this.dataAtualizacao;
+            unidade.colaborador = this.colaborador;
+            unidade.colaboradorAtualizacao = this.colaboradorAtualizacao;
             return unidade;
         }
 
@@ -106,8 +128,28 @@ public class Unidade {
             return this;
         }
 
-        public UnidadeBuilder estadoDesc( String estadoDesc) {
-            this.estadoDesc = estadoDesc;
+        public UnidadeBuilder setEstado(UnidadeEstado estado) {
+            this.estado = estado;
+            return this;
+        }
+
+        public UnidadeBuilder setDataRegsito(Date dataRegsito) {
+            this.dataRegsito = dataRegsito;
+            return this;
+        }
+
+        public UnidadeBuilder setDataAtualizacao(Date dataAtualizacao) {
+            this.dataAtualizacao = dataAtualizacao;
+            return this;
+        }
+
+        public UnidadeBuilder setColaborador(Colaborador colaborador) {
+            this.colaborador = colaborador;
+            return this;
+        }
+
+        public UnidadeBuilder setColaboradorAtualizacao(Colaborador colaboradorAtualizacao) {
+            this.colaboradorAtualizacao = colaboradorAtualizacao;
             return this;
         }
 
@@ -115,6 +157,8 @@ public class Unidade {
             this.id = SQLRow.uuidOf( map.get( "unidade_id" ) );
             this.nome = SQLRow.stringOf( map.get( "unidade_nome" ) );
             this.codigo = SQLRow.stringOf( map.get( "unidade_codigo" ) );
+            this.dataRegsito = SQLRow.dateOf( map.get( "unidade_dataregisto" ) );
+            this.dataAtualizacao = SQLRow.dateOf( map.get( "unidade_dataatualizacao" ) );
             this.estado = EnumTypes.find( UnidadeEstado.values(),  SQLRow.shortOf( map.get("unidade_estado") ) );
             return this;
         }

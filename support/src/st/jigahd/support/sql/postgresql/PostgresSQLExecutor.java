@@ -9,13 +9,12 @@ public abstract class PostgresSQLExecutor {
 
 
 
-    PostgresSQL postgresSQL;
+    PostgresSQLQueryBuilder queryBuilder;
     CallableStatement statement;
     private Connection con;
 
-
-    PostgresSQLExecutor(PostgresSQL postgresSQL) {
-        this.postgresSQL = postgresSQL;
+    PostgresSQLExecutor( PostgresSQLQueryBuilder queryBuilder) {
+        this.queryBuilder = queryBuilder;
 
     }
 
@@ -25,10 +24,10 @@ public abstract class PostgresSQLExecutor {
 
     void execute() throws SQLException {
         if( this.con == null || con.isClosed() ){
-            this.con = this.postgresSQL.getCurrentConnection();
+            this.con = this.queryBuilder.getPostgresSQL().getCurrentConnection();
         }
-        String query = this.postgresSQL.getProcessedQuery();
-        if( this.statement != null && this.postgresSQL.autoCloseStatement() ) PostgresSQL.closeStatement( statement );
+        String query = this.queryBuilder.getProcessedQuery();
+        if( this.statement != null && this.queryBuilder.getPostgresSQL().autoCloseStatement() ) PostgresSQL.closeStatement( statement );
         this.statement = this.con.prepareCall( query );
         this.setParameters();
         this.statement.execute();
@@ -37,7 +36,7 @@ public abstract class PostgresSQLExecutor {
     private void setParameters() throws SQLException {
         int count = 1;
         Map<Integer, PostgresSQLQueryBuilder.Setter> setters = PostgresSQLQueryBuilder.getSetters();
-        for (Pair< Integer, Object > p: this.postgresSQL.getParameterManager().params() ){
+        for (Pair< Integer, Object > p: this.queryBuilder.params() ){
             int key = p.getKey();
             if ( p.getValue() == null ) key = Types.NULL;
             setters.get( key ).set( this.statement, count++, p.getKey(), p.getValue() );

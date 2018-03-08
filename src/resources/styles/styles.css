@@ -1,3 +1,4 @@
+/*           top      right    bottom   left*/
 .jfx-toolbar {
     -fx-min-height:40;
     -fx-background-color: md-primary-color;
@@ -432,14 +433,16 @@
     -fx-fill: md-primary-color;
 }
 
+/*top      right    bottom   left*/
 .produto-servico{
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 24px;
+    -fx-padding: 16px 32px 16px 32px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: md-red-500;
 }
 .produto-servico.ativo{
-    -fx-text-fill: md-green-500;
-}.produto-servico.fechado{
-    -fx-text-fill: md-red-500;
+    -fx-background-color: md-green-500;
 }
 
 

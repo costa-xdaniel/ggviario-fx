@@ -4,17 +4,17 @@ import java.sql.SQLException;
 
 public class PostgresSQLExecutorFunctionTable extends PostgresSQLExecutorFunction {
 
-    public PostgresSQLExecutorFunctionTable(PostgresSQL postgresSQL) {
-        super(postgresSQL);
+    public PostgresSQLExecutorFunctionTable( PostgresSQLQueryBuilder queryBuilder ) {
+        super(queryBuilder);
     }
 
     protected String mountQuery( String functionName ) {
         StringBuilder builder = new StringBuilder();
-        String params = createAbstractParameter( this.postgresSQL.getParameterManager().countParameters() );
+        String params = createAbstractParameter( this.queryBuilder.countParameters() );
         builder.append("select * from " ).append( functionName ).append("( ").append( params ).append( ") t");
-        if ( this.postgresSQL.getParameterManager().hasMapReturns() ){
+        if ( this.queryBuilder.hasMapReturns() ){
             builder.append("(");
-            String[] columns = this.postgresSQL.getParameterManager().getMapReturns();
+            String[] columns = this.queryBuilder.getMapReturns();
 
             for( int i = 0; i< columns.length; i++ ){
                 builder.append( columns[ i ] );

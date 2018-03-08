@@ -160,8 +160,6 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                 .withOther( null )
                 .callFunctionTable()
                 .onResultQuery( row -> this.listTipoDocumento.add( tipoDocumentoBuilder.load( row ).build() ));
-
-        postgresSQL.closeCurrentConnection();
     }
 
     private void register() {
