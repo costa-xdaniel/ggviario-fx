@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modals.ModalNovaDespesa;
 import st.ggviario.house.controller.pages.TableClontroller;
@@ -47,14 +48,14 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
     private StackPane rootPage;
     private ModalNovaDespesa modalNovaDespesa;
 
-    private List<DespesaModelView> despesaModelViewList = new LinkedList<>();
+    private List<DespesaModelView> originalListView = new LinkedList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
         this.defineEvents();
+        this.push( new LinkedList<>(), this.treeTableViewDespesa );
         this.loadData();
-        this.push( this.despesaModelViewList, this.treeTableViewDespesa );
     }
 
     @Override
@@ -121,24 +122,30 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
     }
 
     private void loadDataDespesa( ){
-        this.despesaModelViewList.clear();
-        Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
-        Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
-        Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
-        Fornecedor.FornecedorBuilder fornecedorBuilder = new Fornecedor.FornecedorBuilder();
+       Thread thread = new Thread(() -> {
+           this.originalListView.clear();
+           this.treeTableViewDespesa.getRoot().getChildren().clear();
+           Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
+           Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
+           Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+           Fornecedor.FornecedorBuilder fornecedorBuilder = new Fornecedor.FornecedorBuilder();
 
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        sql.query( "ggviario.funct_load_despesa" )
-            .withJsonb( (String)  null )
-            .callFunctionTable()
-                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                    builder.load( row );
-                    builder.setProduto( produtoBuilder.load( row ).build() );
-                    builder.setFornecedor( fornecedorBuilder.load( row ).build() );
-                    builder.setUnidade( unidadeBuilder.load( row ).build() );
-                    this.despesaModelViewList.add( new DespesaModelView(  builder.build() ) );
-                });
-        ;
+           PostgresSQL sql = PostgresSQLSingleton.getInstance();
+           sql.query( "ggviario.funct_load_despesa" )
+                   .withJsonb( (String)  null )
+                   .callFunctionTable()
+                   .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                       builder.load( row );
+                       builder.setProduto( produtoBuilder.load( row ).build() );
+                       builder.setFornecedor( fornecedorBuilder.load( row ).build() );
+                       builder.setUnidade( unidadeBuilder.load( row ).build() );
+                       DespesaModelView item = new DespesaModelView( builder.build() );
+                       this.originalListView.add( item );
+                       this.treeTableViewDespesa.getRoot().getChildren().add( new TreeItem<>( item ) );
+                   });
+           ;
+       });
+       thread.start();
     }
 
 
@@ -154,7 +161,6 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
             this.modalNovaDespesa.setOnModalResult(modalResult -> {
                 if( modalResult.isSuccess() ) {
                     this.loadDataDespesa();
-                    this.push( this.despesaModelViewList, this.treeTableViewDespesa );
                 }
             });
         }

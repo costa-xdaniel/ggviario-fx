@@ -31,11 +31,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCategoria.UnidadeCategoria> implements Initializable{
+public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeCategoria> implements Initializable{
 
 
-    public static DrawerUnidadeCategoria newInstance( JFXDrawer drawer ){
-        ControllerLoader< AnchorPane, DrawerUnidadeCategoria > loader = new ControllerLoader<>("/fxml/drawer/drawer_objectitem.fxml");
+    public static DrawerObjectItem newInstance(JFXDrawer drawer ){
+        ControllerLoader< AnchorPane, DrawerObjectItem> loader = new ControllerLoader<>("/fxml/drawer/drawer_objectitem.fxml");
         loader.getController().drawer = drawer;
         return loader.getController();
     }
@@ -124,15 +124,41 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
         this.drawer.close();
     }
 
-    private void onFullList(){ }
+    private void onFullList(){
+        if( this.objectType == ObjectType.CATEGORIA && this.onFullListCategoria != null )
+            this.onFullListCategoria.onFullListCategoria( this.getCategoria() );
+        else if( this.objectType == ObjectType.UNIDADE && this.onFullListUnidade != null )
+            this.onFullListUnidade.onFulListUnidade( this.getUnidade() );
+    }
 
-    private void onAddItem(){ }
+    private void onAddItem(){
+        if( this.objectType == ObjectType.UNIDADE && this.onNovaUnidade != null ) this.onNovaUnidade.onNovaUnidade();
+        else if( this.objectType == ObjectType.CATEGORIA && this.onNovaCategoria != null ) this.onNovaCategoria.onNovaCategoria();
+    }
 
     private void onEditItem() {
 
+        if( this.objectType == ObjectType.UNIDADE && this.getUnidade() != null )
+            this.onEditarUnidade.onEditarUnidade( this.getUnidade() );
+        else if( this.objectType == ObjectType.CATEGORIA && this.getCategoria() != null )
+            this.onEditarCategoria.onEditarCategoria( this.getCategoria() );
     }
 
-    public DrawerUnidadeCategoria setObjectType(ObjectType objectType) {
+    public Categoria getCategoria( ) {
+        TreeItem<UnidadeCategoria> seleted = this.tableUnidadeCategoria.getSelectionModel().getSelectedItem();
+        if( seleted == null ) return null;
+        if( this.objectType == ObjectType.CATEGORIA ) return seleted.getValue().categoria;
+        return null;
+    }
+
+    public Unidade getUnidade( ) {
+        TreeItem<UnidadeCategoria> seleted = this.tableUnidadeCategoria.getSelectionModel().getSelectedItem();
+        if( seleted == null ) return null;
+        if( this.objectType == ObjectType.UNIDADE ) return seleted.getValue().unidade;
+        return null;
+    }
+
+    public DrawerObjectItem setObjectType(ObjectType objectType) {
         this.objectType = objectType;
         this.labelHeaderTitle.setText( objectType.showName );
         if( objectType == ObjectType.CATEGORIA ){
@@ -156,38 +182,44 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnNovaUnidade(OnNovaUnidade onNovaUnidade) {
+    public DrawerObjectItem setOnNovaUnidade(OnNovaUnidade onNovaUnidade) {
         this.onNovaUnidade = onNovaUnidade;
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnNovaCategoria(OnNovaCategoria onNovaCategoria) {
+    public DrawerObjectItem setOnNovaCategoria(OnNovaCategoria onNovaCategoria) {
         this.onNovaCategoria = onNovaCategoria;
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnEditarUnidade(OnEditarUnidade onEditarUnidade) {
+    public DrawerObjectItem setOnEditarUnidade(OnEditarUnidade onEditarUnidade) {
         this.onEditarUnidade = onEditarUnidade;
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnEditarCategoria(OnEditarCategoria onEditarCategoria) {
+    public DrawerObjectItem setOnEditarCategoria(OnEditarCategoria onEditarCategoria) {
         this.onEditarCategoria = onEditarCategoria;
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnFullListUnidade(OnFullListUnidade onFullListUnidade) {
+    public DrawerObjectItem setOnFullListUnidade(OnFullListUnidade onFullListUnidade) {
         this.onFullListUnidade = onFullListUnidade;
         return this;
     }
 
-    public DrawerUnidadeCategoria setOnFullListCategoria(OnFullListCategoria onFullListCategoria) {
+    public DrawerObjectItem setOnFullListCategoria(OnFullListCategoria onFullListCategoria) {
         this.onFullListCategoria = onFullListCategoria;
         return this;
     }
 
-    public void loadCategoria( ){
+    synchronized public void loadCategoria( ){
         Thread thread = new Thread(() -> {
+            Platform.runLater( ( ) ->{
+                if( this.objectType == ObjectType.CATEGORIA ) {
+                    this.tableUnidadeCategoria.getRoot().getChildren().clear();
+                }
+            });
+            this.categoriaList.clear();
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
             Categoria.CategoriaBuilder suberBuilder = new Categoria.CategoriaBuilder();
@@ -196,11 +228,9 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
                 .callFunctionTable()
                     .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         Platform.runLater(() -> {
-
                             categoriaBuilder.load( row );
-                            if( row.get( "categoria_super" )  != null ){
-                                categoriaBuilder.setCategoriaSuper( suberBuilder.load( row.asMapJsonn("categoria_super") ).build() );
-                            }
+                            if( row.get( "categoria_super" )  != null )
+                                categoriaBuilder.setCategoriaSuper(suberBuilder.load(row.asMapJsonn("categoria_super")).build());
                             Categoria next = categoriaBuilder.build();
                             this.categoriaList.add( next );
                             if( this.objectType == ObjectType.CATEGORIA )
@@ -210,11 +240,16 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
             ;
 
         });
-        thread.setPriority( Thread.MIN_PRIORITY );
         thread.start();
     }
-    public void loadUnidade( ){
+    synchronized public void loadUnidade( ){
         Thread thread = new Thread(() -> {
+            Platform.runLater( ( ) ->{
+                if( this.objectType == ObjectType.UNIDADE ) {
+                    this.tableUnidadeCategoria.getRoot().getChildren().clear();
+                }
+            } );
+            this.unidadeList.clear();
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
             sql.query( "ggviario.funct_load_unidade" )
@@ -231,8 +266,15 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
             ;
 
         });
-        thread.setPriority( Thread.MIN_PRIORITY );
         thread.start();
+    }
+
+    public List<Categoria> getCategoriaList() {
+        return categoriaList;
+    }
+
+    public List<Unidade> getUnidadeList() {
+        return unidadeList;
     }
 
     public enum ObjectType {
@@ -254,18 +296,22 @@ public class DrawerUnidadeCategoria extends TableClontroller<DrawerUnidadeCatego
         private StringProperty categoriaCodigo;
         private StringProperty categoriaSuper;
         private ObjectProperty< Date > categoriaDataregisto;
+        private Categoria categoria;
+        private Unidade unidade;
 
-        UnidadeCategoria(Categoria next) {
-            this.categoriaNome = new SimpleStringProperty( next.getCategoriaNome() );
-            this.categoriaCodigo = new SimpleStringProperty( next.getCategoriaCodigo() );
-            this.categoriaSuper = new SimpleStringProperty( next.getCategoriaSuper() != null ? next.getCategoriaSuper().getCategoriaNome() : null );
-            this.categoriaDataregisto = new SimpleObjectProperty<>( next.getCategoriaDataRegisto() );
+        UnidadeCategoria(Categoria categoria) {
+            this.categoriaNome = new SimpleStringProperty( categoria.getCategoriaNome() );
+            this.categoriaCodigo = new SimpleStringProperty( categoria.getCategoriaCodigo() );
+            this.categoriaSuper = new SimpleStringProperty( categoria.getCategoriaSuper() != null ? categoria.getCategoriaSuper().getCategoriaNome() : null );
+            this.categoriaDataregisto = new SimpleObjectProperty<>( categoria.getCategoriaDataRegisto() );
+            this.categoria = categoria;
         }
 
-        UnidadeCategoria(Unidade next) {
-            this.unidadeNome = new SimpleStringProperty( next.getUnidadeNome() );
-            this.unidadeCodigo = new SimpleStringProperty( next.getUnidadeCodigo() );
-            this.unidadeDataregisto = new SimpleObjectProperty<>( next.getUnidadeDataregisto() );
+        UnidadeCategoria(Unidade unidade) {
+            this.unidadeNome = new SimpleStringProperty( unidade.getUnidadeNome() );
+            this.unidadeCodigo = new SimpleStringProperty( unidade.getUnidadeCodigo() );
+            this.unidadeDataregisto = new SimpleObjectProperty<>( unidade.getUnidadeDataregisto() );
+            this.unidade = unidade;
         }
     }
 

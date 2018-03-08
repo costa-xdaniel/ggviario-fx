@@ -1,6 +1,5 @@
 package st.ggviario.house.controller.tabs;
 
-import com.google.gson.JsonElement;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -18,10 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.drawers.DrawerObjectItem;
 import st.ggviario.house.controller.drawers.DrawerProduto;
-import st.ggviario.house.controller.drawers.DrawerUnidadeCategoria;
-import st.ggviario.house.controller.modals.ModalNovoPreco;
-import st.ggviario.house.controller.modals.ModalNovoProduto;
+import st.ggviario.house.controller.modals.*;
 import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.Preco;
@@ -62,20 +60,20 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private ModalNovoProduto modalNovoProduto;
     private ModalNovoPreco modalNovoPreco;
     private DrawerProduto drawerProduto;
-    private DrawerUnidadeCategoria drawerObjectItems;
+    private DrawerObjectItem drawerObjectItems;
+    private ModalNovaCategoria modalNovaCategoria;
+    private ModalNovaUnidade modalNovaUnidade;
 
     private StackPane rootPage;
     private List< ProdutoModelView > originalProductList = new LinkedList<>();
-    private List< Categoria > categoriaList = new LinkedList<>();
-    private List< Unidade > unidadeList = new LinkedList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
         this.defineEvents();
-        this.loadDataCategoria();
-
         this.push( new LinkedList<>(), this.treeTableViewUnidade );
+        this.drawerObjectItems.loadUnidade();
+        this.drawerObjectItems.loadCategoria();
         this.loadDatProduto();
     }
 
@@ -85,6 +83,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     }
 
     private void structure(){
+        this.loadDrawerObjectType();
         this.columnCodigo.setCellValueFactory( param -> param.getValue().getValue().codigo );
         this.columnNome.setCellValueFactory( param -> param.getValue().getValue().nome );
         this.columnStock.setCellValueFactory( param -> param.getValue().getValue().stock );
@@ -129,8 +128,8 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.fabButton.setOnMouseClicked( fabArea.getOnMouseClicked() );
         this.fabIcon.setOnMouseClicked( fabArea.getOnMouseClicked() );
         this.treeTableViewUnidade.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> onOpenDrawerProduto( newValue == null? null : newValue.getValue() ));
-        this.buttomCategoria.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerUnidadeCategoria.ObjectType.CATEGORIA ));
-        this.buttomUnidade.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerUnidadeCategoria.ObjectType.UNIDADE ));
+        this.buttomCategoria.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.CATEGORIA ));
+        this.buttomUnidade.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.UNIDADE ));
         this.jfxDrawerItems.setOnDrawerClosed(jfxDrawerEvent -> this.root.getChildren().remove( this.jfxDrawerItems ));
         this.jfxDrawerProdutoDetails.setOnDrawerClosed(jfxDrawerEvent -> this.root.getChildren().remove( this.jfxDrawerProdutoDetails));
         this.jfxDrawerItems.heightProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -176,24 +175,6 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         thread.start();
     }
 
-    private void loadDataCategoria(){
-        Thread thread = new Thread(() -> {
-            this.categoriaList.clear();
-            Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
-            PostgresSQL sql = PostgresSQLSingleton.getInstance();
-            sql.query( "ggviario.funct_load_categoria_simple" )
-                    .withJsonb( (JsonElement) null )
-                    .callFunctionTable()
-                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                        categoriaBuilder.load( row );
-                        this.categoriaList.add( categoriaBuilder.build() );
-                    })
-            ;
-        });
-        thread.setPriority( 3 );
-        thread.start();
-    }
-
     void onOpenDrawerProduto(ProdutoModelView  newProduto ) {
         if( newProduto != null ){
             this.loadDrawerProduto();
@@ -216,8 +197,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.jfxDrawerItems.close();
     }
 
-    void onOpenDrawerObjectType(DrawerUnidadeCategoria.ObjectType objectType ){
-        System.out.println( "Lalala");
+    void onOpenDrawerObjectType(DrawerObjectItem.ObjectType objectType ){
         this.loadDrawerObjectType();
         this.jfxDrawerItems.setSidePane( this.drawerObjectItems.getRoot() );
         this.drawerObjectItems.setObjectType( objectType  );
@@ -233,13 +213,13 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
 
     private void onOpenModalNovoProduto(){
         this.loadModalNovoProduto();
-        this.modalNovoProduto.setCategoriaList( this.categoriaList );
+        this.modalNovoProduto.setCategoriaList( this.drawerObjectItems.getCategoriaList() );
         this.modalNovoProduto.setTitle( "Novo produto" );
         this.modalNovoProduto.openModal();
     }
     private void onOpenModalNovoProdutoEditMode( Produto produto ){
         this.loadModalNovoProduto();
-        this.modalNovoProduto.setCategoriaList( this.categoriaList );
+        this.modalNovoProduto.setCategoriaList( this.drawerObjectItems.getCategoriaList() );
         this.modalNovoProduto.setTitle( "Editar " + produto.getProdutoNome() );
         this.modalNovoProduto.openModal( produto );
     }
@@ -253,6 +233,22 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.modalNovoPreco.openModal( produto );
     }
 
+    private void onOpenModalNovaCategoria() {
+        this.loadModalNovaCategoria();
+        this.modalNovaCategoria.pushCategoriaSupers( this.drawerObjectItems.getCategoriaList() );
+        this.modalNovaCategoria.openModal();
+    }
+
+    private void onOpenModalNovaUnidade(){
+        this.loadModalNovaUnidade();
+        this.modalNovaUnidade.openModal();
+    }
+
+    private void onOpenModalNovaUnidadeEditar( Unidade unidade ){
+        this.loadModalNovaUnidade();
+        this.modalNovaUnidade.openModal( unidade );
+    }
+
     private void loadDrawerProduto() {
         if( this.drawerProduto == null ){
             this.drawerProduto = DrawerProduto.newInstance( this.jfxDrawerProdutoDetails);
@@ -264,7 +260,10 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
 
     private void loadDrawerObjectType( ){
         if( this.drawerObjectItems == null ){
-            this.drawerObjectItems = DrawerUnidadeCategoria.newInstance( this.jfxDrawerItems);
+            this.drawerObjectItems = DrawerObjectItem.newInstance( this.jfxDrawerItems);
+            this.drawerObjectItems.setOnNovaUnidade( this::onOpenModalNovaUnidade );
+            this.drawerObjectItems.setOnEditarUnidade( this::onOpenModalNovaUnidadeEditar );
+            this.drawerObjectItems.setOnNovaCategoria( this::onOpenModalNovaCategoria );
         }
     }
 
@@ -279,7 +278,29 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         }
     }
 
-    void closeDrawerDetails() {
+    private void loadModalNovaCategoria(){
+        if( this.modalNovaCategoria == null ){
+            this.modalNovaCategoria = ModalNovaCategoria.load( this.rootPage );
+            this.modalNovaCategoria.setOnModalResult(modalResult -> {
+                if( modalResult.isSuccess() ){
+                    this.drawerObjectItems.setObjectType( DrawerObjectItem.ObjectType.CATEGORIA );
+                }
+            });
+        }
+    }
+
+    private void loadModalNovaUnidade( ){
+        if( this.modalNovaUnidade == null ){
+            this.modalNovaUnidade = ModalNovaUnidade.newInstance( this.rootPage );
+            this.modalNovaUnidade.setOnModalResult(modalResult -> {
+                if( modalResult.isSuccess() ){
+                    this.drawerObjectItems.setObjectType( DrawerObjectItem.ObjectType.UNIDADE );
+                }
+            });
+        }
+    }
+
+    private void closeDrawerDetails() {
         if( this.jfxDrawerProdutoDetails.isShown() )
             this.jfxDrawerProdutoDetails.close();
     }

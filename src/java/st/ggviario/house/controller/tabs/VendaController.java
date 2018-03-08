@@ -47,8 +47,8 @@ public abstract class VendaController extends TableClontroller< VendaController.
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
         defineEvents();
-        this.loadData( null, true );
         push( new LinkedList<>(), this.getTableVenda()  );
+        this.loadData( null, true );
     }
 
     @Override
