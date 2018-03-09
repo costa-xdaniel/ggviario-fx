@@ -62,13 +62,22 @@ public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> 
 
     private void onDestroy() {
         ModalDestroyResult destroyResult = new ModalDestroyResult();
-        this.destroy.text = SQLText.normalize( this.textAreaText.getText() );
-        this.destroy.identifier = SQLText.normalize( this.textFieldIdentifier.getText() );
-        if( destroy.isRequireIdentifier() && this.destroy.getIdentifier() == null ){
+        this.destroy.capturedText = SQLText.normalize( this.textAreaText.getText() );
+        this.destroy.capturedIdentifier = SQLText.normalize( this.textFieldIdentifier.getText() );
+        boolean equals = false;
+        boolean equalsIgnore = false;
+
+        if( this.destroy.originalIdentifier  != null ){
+            equals =  this.destroy.originalIdentifier.equals( this.destroy.getCapturedIdentifier() );
+            equalsIgnore = this.destroy.ignoreCase &&  this.destroy.originalIdentifier.equalsIgnoreCase( this.destroy.getCapturedIdentifier() );
+        }
+
+        if( destroy.isRequireIdentifier() && this.destroy.getCapturedIdentifier() == null ){
             destroyResult.message = this.messageMissingIdentifier;
-        } else if ( this.destroy.isRequireIdentifier() && !this.destroy.getIdentifier().equals( this.destroy.originalIdentifier ) ){
+        } else if ( this.destroy.isRequireIdentifier() && !( equals || equalsIgnore )
+        ){
             destroyResult.message = this.messageInvalidIdentifier;
-        } else if( this.destroy.isRequireText() && this.destroy.getText() == null ){
+        } else if( this.destroy.isRequireText() && this.destroy.getCapturedText() == null ){
             destroyResult.message = this.messageMissingText;
         } else {
             destroyResult.success = true;
@@ -137,9 +146,10 @@ public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> 
         private String originalIdentifier;
         private boolean requireText = true;
         private boolean requireIdentifier = true;
-        private String identifier;
-        private String text;
+        private String capturedIdentifier;
+        private String capturedText;
         private T object;
+        private boolean ignoreCase;
 
         public Destroy( T object, String message, String originalIdentifier) {
             this.message = message;
@@ -187,14 +197,17 @@ public class ModalDestroy< T > extends AbstractModal<ModalDestroy.Destroy< T >> 
             return requireIdentifier;
         }
 
-        public String getIdentifier() {
-            return identifier;
+        public String getCapturedIdentifier() {
+            return capturedIdentifier;
         }
 
-        public String getText() {
-            return text;
+        public String getCapturedText() {
+            return capturedText;
         }
 
+        public void setIgnoreCase(boolean ignoreCase) {
+            this.ignoreCase = ignoreCase;
+        }
     }
 
     class ModalDestroyResult implements ModalResult<Destroy < T > > {

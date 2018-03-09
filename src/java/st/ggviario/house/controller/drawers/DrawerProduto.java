@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.ControllerLoader;
 import st.ggviario.house.controller.includs.IncludProdutoInformation;
 import st.ggviario.house.controller.includs.IncludProdutoUnidades;
+import st.ggviario.house.model.Preco;
 import st.ggviario.house.model.Produto;
 import st.jigahd.support.sql.lib.SQLResource;
 
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
 public class DrawerProduto implements Initializable {
 
 
-    public static DrawerProduto newInstance(JFXDrawer drawerView  ) {
+    public static DrawerProduto newInstance( JFXDrawer drawerView ) {
         ControllerLoader< BorderPane, DrawerProduto> loader = new ControllerLoader<>("/fxml/drawer/drawer_produto.fxml");
         DrawerProduto drawer = loader.getController();
         drawer.drawer = drawerView;
@@ -65,7 +66,7 @@ public class DrawerProduto implements Initializable {
 
     private JFXDrawer drawer;
     private IncludProdutoInformation includProdutoInformation;
-    private IncludProdutoUnidades includProdutoUnidades;
+    private IncludProdutoUnidades includPrecosAtivos;
 
     private OnNovoPreco onNovoPreco;
     private OnListPrecos onListaPrecos;
@@ -103,12 +104,12 @@ public class DrawerProduto implements Initializable {
         );
 
         this.includProdutoInformation = IncludProdutoInformation.newInstance();
-        this.includProdutoUnidades = IncludProdutoUnidades.newInstance();
+        this.includPrecosAtivos = IncludProdutoUnidades.newInstance();
         this.includProdutoInformation.getRoot().heightProperty().addListener((observableValue, number, t1) -> {
             this.stackPaneContent.setMinHeight(
                     SQLResource.max(
                             includProdutoInformation.getRoot().getHeight(),
-                            includProdutoUnidades.getRoot().getHeight()
+                            includPrecosAtivos.getRoot().getHeight()
                     )
             );
         });
@@ -148,14 +149,14 @@ public class DrawerProduto implements Initializable {
 
     private void onListaUnidades( ){
         this.stackPaneContent.getChildren().clear();
-        this.stackPaneContent.getChildren().add( this.includProdutoUnidades.getRoot() );
+        this.stackPaneContent.getChildren().add( this.includPrecosAtivos.getRoot() );
     }
 
 
     public void setProduto(Produto produto) {
         this.produto = produto;
         this.includProdutoInformation.setProdudo( produto );
-        this.includProdutoUnidades.setProduto( produto );
+        this.includPrecosAtivos.setProduto( produto );
         this.labelHeaderTitle.setText( this.produto.getProdutoCodigo() );
     }
 
@@ -164,14 +165,23 @@ public class DrawerProduto implements Initializable {
         return this;
     }
 
-    public DrawerProduto setOnListaPrecos(OnListPrecos onListaPrecos) {
+    public DrawerProduto setOnListaPrecos( OnListPrecos onListaPrecos ) {
         this.onListaPrecos = onListaPrecos;
+        return this;
+    }
+
+    public DrawerProduto setOnPrecoDestroy( OnPrecoDestroy onPrecoDestroy) {
+        this.includPrecosAtivos.setOnPrecoDestroy(onPrecoDestroy);
         return this;
     }
 
     public DrawerProduto setOnProdutoEdit(OnProdutoEdit onProdutoEdit) {
         this.onProdutoEdit = onProdutoEdit;
         return this;
+    }
+
+    public void notifyPrecoDestroy() {
+        this.includPrecosAtivos.setProduto( this.produto );
     }
 
     public interface OnProdutoEdit {
@@ -184,6 +194,10 @@ public class DrawerProduto implements Initializable {
 
     public interface OnNovoPreco{
         void onNovoPreco( Produto produto );
+    }
+
+    public interface OnPrecoDestroy{
+        void onPrecoDestroy( Preco produto );
     }
 
 

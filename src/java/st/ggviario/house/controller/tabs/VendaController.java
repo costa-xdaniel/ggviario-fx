@@ -184,7 +184,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
                     sql.query( "ggviario.funct_change_venda_anular" )
                         .withUUID( colaborador.getColaboradorId() )
                         .withUUID( modalResult.getValue().getObject().getVendaId() )
-                        .withVarchar( modalResult.getValue().getText() )
+                        .withVarchar( modalResult.getValue().getCapturedText() )
                         .callFunctionTable()
                             .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                                 SQLResult result = new SQLResult( row );

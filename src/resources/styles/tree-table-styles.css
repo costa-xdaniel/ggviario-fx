@@ -170,6 +170,14 @@
     -fx-text-fill: #ffffff;
 }
 
+/*TABELA PRECO ATIVO*/
+.tree-table-view.produto-precos-ativo .tree-table-row-cell.base {
+    -fx-background-color: md-blue-grey-500;
+}
+.tree-table-view.produto-precos-ativo .tree-table-row-cell:selected.base {
+    -fx-background-color: md-blue-500;
+}
+
 
 
 

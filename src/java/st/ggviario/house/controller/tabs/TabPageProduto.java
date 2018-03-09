@@ -17,14 +17,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.SnackbarBuilder;
 import st.ggviario.house.controller.drawers.DrawerObjectItem;
 import st.ggviario.house.controller.drawers.DrawerProduto;
 import st.ggviario.house.controller.modals.*;
 import st.ggviario.house.controller.pages.TableClontroller;
-import st.ggviario.house.model.Categoria;
-import st.ggviario.house.model.Preco;
-import st.ggviario.house.model.Produto;
-import st.ggviario.house.model.Unidade;
+import st.ggviario.house.model.*;
+import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
@@ -63,6 +62,9 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private DrawerObjectItem drawerObjectItems;
     private ModalNovaCategoria modalNovaCategoria;
     private ModalNovaUnidade modalNovaUnidade;
+    private ModalDestroy< Preco > modalPrecoDestry;
+    private ModalDestroy< Unidade > unidadeModalDestroy;
+    private ModalDestroy< Categoria > categoriaModalDestroy;
 
     private StackPane rootPage;
     private List< ProdutoModelView > originalProductList = new LinkedList<>();
@@ -259,12 +261,22 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.modalNovaUnidade.openModal( unidade );
     }
 
+    private void onOpenModalDestroyPreco( Preco preco ){
+        this.loadModalDestroyPreco( );
+        ModalDestroy.Destroy<Preco> destroy = new ModalDestroy.Destroy<>( preco,  "Digite o "+preco.getUnidade().getUnidadeCodigo()+" para desativar o preco", preco.getUnidade().getUnidadeCodigo() );
+        destroy.setRequireText( false );
+        destroy.setIgnoreCase( true );
+        this.modalPrecoDestry.setTitle( "Fechar "+preco.getUnidade().getUnidadeNome() );
+        this.modalPrecoDestry.opemModal( destroy );
+    }
+
     private void loadDrawerProduto() {
         if( this.drawerProduto == null ){
             this.drawerProduto = DrawerProduto.newInstance( this.jfxDrawerProdutoDetails);
             if( drawerProduto == null ) throw  new RuntimeException( "Para Qui" );
             this.drawerProduto.setOnNovoPreco(this::onOpenModalNovoPreco );
             this.drawerProduto.setOnProdutoEdit( this::onOpenModalNovoProdutoEditMode );
+            this.drawerProduto.setOnPrecoDestroy(  this::onOpenModalDestroyPreco );
         }
     }
 
@@ -311,9 +323,53 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         }
     }
 
-    private void closeDrawerDetails() {
-        if( this.jfxDrawerProdutoDetails.isShown() )
-            this.jfxDrawerProdutoDetails.close();
+    private void loadModalDestroyPreco( ){
+        if( this.modalPrecoDestry == null ){
+            this.modalPrecoDestry = ModalDestroy.newInstance( this.rootPage );
+            this.modalPrecoDestry.setMessageInvalidIdentifier( "Codigo de unidade invalido!" );
+            this.modalPrecoDestry.setMessageMissingIdentifier( "Insira o identificador!" );
+            this.modalPrecoDestry.setMessageMissingText( "Expecifique o texto de confirmação!" );
+            this.modalPrecoDestry.setOnModalResult(modalResult -> {
+                if( modalResult.isSuccess() ){
+                    Thread thread = new Thread(() -> {
+                        PostgresSQL sql = PostgresSQLSingleton.getInstance();
+                        Colaborador colaborador = AuthSingleton.getInstance();
+                        Preco preco = modalResult.getValue().getObject();
+                        sql.query( "ggviario.funct_change_preco_close" )
+                            .withUUID( colaborador.getColaboradorId() )
+                            .withUUID( preco.getPrecoId() )
+                            .withVarchar( modalResult.getValue().getCapturedText() )
+                            .callFunctionTable()
+                                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                                    Platform.runLater( ( )-> {
+                                        SQLResult result = new SQLResult( row );
+                                        String message;
+                                        SnackbarBuilder.MessageLevel level;
+                                        if( result.isSuccess() ){
+                                            message = "O preco para " + preco.getUnidade().getUnidadeNome()+" foi desativado com sucesso";
+                                            level = SnackbarBuilder.MessageLevel.SUCCESS;
+                                        } else {
+                                            message = result.getMessage();
+                                            level = SnackbarBuilder.MessageLevel.ERROR;
+                                        }
+
+                                        SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.rootPage );
+                                        snackbarBuilder.show( message, level );
+                                        if( level == SnackbarBuilder.MessageLevel.SUCCESS ){
+                                            this.modalPrecoDestry.clear();
+                                            this.modalPrecoDestry.closeModal();
+                                            this.drawerProduto.notifyPrecoDestroy();
+                                        }
+                                    });
+                                });
+                    });
+                    thread.start();
+                } else  {
+                    SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.rootPage );
+                    snackbarBuilder.show( modalResult.getMessage(), SnackbarBuilder.MessageLevel.WARNING );
+                }
+            });
+        }
     }
 
     private void loadModalNovoPreco(){
@@ -323,6 +379,11 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
                 this.loadDatProduto();
             });
         }
+    }
+
+    private void closeDrawerDetails() {
+        if( this.jfxDrawerProdutoDetails.isShown() )
+            this.jfxDrawerProdutoDetails.close();
     }
 
     class ProdutoModelView extends RecursiveTreeObject< ProdutoModelView >{

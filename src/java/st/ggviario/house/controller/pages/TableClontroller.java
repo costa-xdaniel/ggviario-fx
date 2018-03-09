@@ -124,10 +124,6 @@ public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
         tableView.refresh();
     }
 
-    class IconViewBuilder {
-
-    }
-
     protected Callback<TreeTableColumn< Type , Date>, TreeTableCell< Type , Date> > cellDateFormat(DateFormat dateFormat) {
         return param -> new TreeTableCell< Type , Date>(){
             @Override
@@ -148,6 +144,8 @@ public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
                 if( item != null && !empty ){
                     Node node = item.createIcons();
                     this.setGraphic( node );
+                } else  {
+                    this.setGraphic( null );
                 }
                 setItem( item );
             }

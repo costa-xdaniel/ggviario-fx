@@ -5,10 +5,7 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -16,10 +13,12 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import st.ggviario.house.controller.ControllerLoader;
+import st.ggviario.house.controller.drawers.DrawerProduto;
 import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.model.Preco;
 import st.ggviario.house.model.Produto;
+import st.ggviario.house.model.Unidade;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
-import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
@@ -43,6 +42,9 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
     private JFXTreeTableColumn < ProdutoUnidadeModelView, IconsActions > columnIconsAction = new JFXTreeTableColumn<>();
 
 
+    private DrawerProduto.OnPrecoDestroy onPrecoDestroy;
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
@@ -64,7 +66,7 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         this.columnIconsAction.setCellFactory( this.cellIconsView() );
         this.useAsIconsColumn( this.columnIconsAction, 1 );
 
-        this.tableProdutoUnidades.getStyleClass().add( "produto-unidade-preco" );
+        this.tableProdutoUnidades.getStyleClass().add( "produto-precos-ativo" );
 
         this.tableProdutoUnidades.getColumns().setAll(
                 this.columnUnidadeNome,
@@ -79,9 +81,9 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
             protected void updateItem(ProdutoUnidadeModelView item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null && !empty) {
-                    if (item.base && !this.getStyleClass().contains( "base" ) ) {
+                    if (item.preco.isPrecoBase() && !this.getStyleClass().contains( "base" ) ) {
                         this.getStyleClass().add("base");
-                    } else if( !item.base ){
+                    } else if( !item.preco.isPrecoBase() ){
                         this.getStyleClass().remove( "base" );
                     }
                 }
@@ -92,19 +94,33 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
     }
 
     private void onDelectePreco() {
+        ReadOnlyObjectProperty<TreeItem<ProdutoUnidadeModelView>> select = this.tableProdutoUnidades.getSelectionModel().selectedItemProperty();
+        if( select == null )return;
+        if( select.getValue() == null )return;
+        if( select.getValue().getValue() == null )return;
+        if(  this.onPrecoDestroy != null ) this.onPrecoDestroy.onPrecoDestroy( select.getValue().getValue().preco );
+    }
 
+    public IncludProdutoUnidades setOnPrecoDestroy(DrawerProduto.OnPrecoDestroy onPrecoDestroy) {
+        this.onPrecoDestroy = onPrecoDestroy;
+        return this;
     }
 
     public void setProduto (Produto produto ){
         Thread thread = new Thread(() -> {
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             this.tableProdutoUnidades.getRoot().getChildren().clear();
+            Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
+            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
             sql.query( "ggviario.funct_load_produto_unidades" )
                 .with( produto.getProdutoId() )
                 .callFunctionTable()
                     .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
                         Platform.runLater( ( ) -> {
-                            this.tableProdutoUnidades.getRoot().getChildren().add( new TreeItem<>( new ProdutoUnidadeModelView( row ) ));
+                            unidadeBuilder.load( row );
+                            precoBuilder.load( row );
+                            precoBuilder.setUnidade( unidadeBuilder.build() );
+                            this.tableProdutoUnidades.getRoot().getChildren().add( new TreeItem<>( new ProdutoUnidadeModelView( precoBuilder.build() ) ));
                         });
                     })
             ;
@@ -123,14 +139,14 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         private StringProperty unidadeCodigo;
         private ObjectProperty< Number > quantidadeProduto;
         private ObjectProperty< Number > custoUnidade;
-        private boolean base;
+        public Preco preco;
 
-        private ProdutoUnidadeModelView(SQLRow row){
-            this.unidadeNome = new SimpleStringProperty( row.asString( "unidade_nome"  ) );
-            this.unidadeCodigo = new SimpleStringProperty( row.asString( "unidade_codigo" ) );
-            this.quantidadeProduto = new SimpleObjectProperty<>( row.asDouble( "preco_quantidadeproduto" ) );
-            this.custoUnidade = new SimpleObjectProperty<>( row.asDouble( "preco_custounidade" ) );
-            this.base = row.asBoolean( "preco_base" );
+        private ProdutoUnidadeModelView( Preco preco){
+            this.unidadeNome = new SimpleStringProperty( preco.getUnidade().getUnidadeNome()  );
+            this.unidadeCodigo = new SimpleStringProperty( preco.getUnidade().getUnidadeCodigo() );
+            this.quantidadeProduto = new SimpleObjectProperty<>( preco.getPrecoQuantidadeProduto() );
+            this.custoUnidade = new SimpleObjectProperty<>( preco.getPrecoCustoUnidade() );
+            this.preco = preco;
         }
 
         @Override
@@ -140,7 +156,6 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
                     ", unidadeCodigo=" + unidadeCodigo +
                     ", quantidadeProduto=" + quantidadeProduto +
                     ", custoUnidade=" + custoUnidade +
-                    ", base=" + base +
                     '}';
         }
     }
