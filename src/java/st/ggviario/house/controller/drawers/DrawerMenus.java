@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DrawerController implements Page,  Initializable {
+public class DrawerMenus implements Page,  Initializable {
 
 
     @FXML
@@ -76,8 +76,8 @@ public class DrawerController implements Page,  Initializable {
 
     private void loadDataMenus() {
         this.menuList.add( new DrawerHeader() );
-        this.menuList.add( new MenuItem("Venda de despesa", getClass().getResource("/fxml/page/page_vendadespesa.fxml") ) );
         this.menuList.add( new MenuItem("Produto", getClass().getResource("/fxml/page/page_producao.fxml") ) );
+        this.menuList.add( new MenuItem("Venda de despesa", getClass().getResource("/fxml/page/page_vendadespesa.fxml") ) );
         this.menuList.add( new MenuItem("Pessoal", getClass().getResource("/fxml/page/page_pessoal.fxml") ) );
     }
 

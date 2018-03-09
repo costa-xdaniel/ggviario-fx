@@ -106,7 +106,7 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
         this.columnClienteMontantePendente.getStyleClass().add( "table-column-money" );
 
 
-        this.columnClienteRegisto.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
+        this.columnClienteRegisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
 
         PercentDimension.widthChangePercent( this.tableClientes, 9., (percent, percentValue) -> this.columnMinWidth( columnClienteRegisto, percentValue ) );
         PercentDimension.widthChangePercent( this.tableClientes, 8., (percent, percentValue) -> this.columnMinWidth( columnClienteCodigo, percentValue ) );

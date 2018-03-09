@@ -88,7 +88,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
         );
 
         this.columnFornecedorNIF.getStyleClass().add("nif");
-        this.columnFornecedorRegisto.setCellFactory( createDateFormatTableCell( DD_MM_YYYY ) );
+        this.columnFornecedorRegisto.setCellFactory( cellDateFormat( DD_MM_YYYY ) );
         this.columnFornecedorNome.getStyleClass().add( "table-column-left" );
         this.columnFornecedorTelemovel.getStyleClass().add( "table-column-left"  );
         this.columnFornecedorTelefone.getStyleClass().add( "table-column-left" );

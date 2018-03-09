@@ -31,7 +31,7 @@ public class ModalNovoPagamento extends AbstractModal<Movimento> implements Init
 
     private JFXRippler ripplerCloeseModal;
 
-    public static ModalNovoPagamento load(StackPane stackPane ){
+    public static ModalNovoPagamento newInstance(StackPane stackPane ){
         ControllerLoader<AnchorPane, ModalNovoPagamento > loader = new ControllerLoader<>("/fxml/modal/modal_novo_pagamento.fxml");
         loader.getController().createDialogModal( stackPane );
         return loader.getController();

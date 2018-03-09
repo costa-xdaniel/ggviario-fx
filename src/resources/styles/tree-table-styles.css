@@ -171,3 +171,92 @@
 }
 
 
+
+
+/*ICONS INTO TABLES*/
+/*           top      right    bottom   left*/
+.column-icons-area{
+    icon-normal-color : black;
+    icon-primary-color : md-primary-color;
+    icon-destroy-color : md-red-500;
+    icon-rippler-color : md-blue-500;
+    icon-selected-color: #FFFFFF;
+    icon-pane-size: 36px;
+    icon-normal-size: 16px;
+    icon-big-size: 24px;
+}
+
+/*ICONS INTO TABLES - STRUCTURE */
+.tree-table-view .tree-table-cell.column-icons-area {
+    -fx-padding : 0px;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler{
+    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-fill: icon-rippler-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane{
+    -fx-background-radius: 36px;
+    -fx-min-height:  icon-pane-size;
+    -fx-max-height:  icon-pane-size;
+    -fx-min-width:   icon-pane-size;
+    -fx-max-width:   icon-pane-size;
+    -fx-pref-width:  icon-pane-size;
+    -fx-pref-height: icon-pane-size;
+}
+
+/*ICONS INTO TABLES - COLORS*/
+.tree-table-view .tree-table-cell.column-icons-area .icon-view,
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell.column-icons-area .icon-pane .icon-view
+{
+    -fx-fill: icon-normal-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-primary .icon-view,
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell.column-icons-area .icon-primary .icon-pane .icon-view
+{
+    -fx-fill: icon-primary-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-destroy .icon-view,
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell.column-icons-area .icon-destroy .icon-pane .icon-view
+{
+    -fx-fill: icon-destroy-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane .icon-view {
+    -glyph-size: icon-normal-size;
+}
+
+/*ICONS INTO TABLES - HOVER*/
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane:hover{
+    /*-fx-padding: 0px 6px 0px 6px;*/
+    -fx-background-radius: 36px;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane:hover .icon-view {
+    -glyph-size: icon-big-size;
+    -fx-fill: #FFFFFF;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane:hover {
+    -fx-background-color: icon-normal-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler.icon-destroy .icon-pane:hover {
+    -fx-background-color: icon-destroy-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler.icon-primary .icon-pane:hover {
+    -fx-background-color: icon-primary-color;
+}
+
+.tree-table-view .tree-table-cell.column-icons-area .icon-rippler .icon-pane:hover .icon-view {
+    -glyph-size: icon-big-size;
+}
+
+/*ICONS INTO TABLES - SELECTION*/
+.tree-table-view .tree-table-row-cell:selected .tree-table-cell.column-icons-area .icon-rippler .icon-pane {
+    -fx-background-color: icon-selected-color;
+}

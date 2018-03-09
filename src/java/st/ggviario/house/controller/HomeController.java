@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import st.ggviario.house.controller.drawers.DrawerController;
+import st.ggviario.house.controller.drawers.DrawerMenus;
 import st.ggviario.house.controller.pages.Page;
 import st.jigahd.support.sql.lib.SQLText;
 
@@ -53,8 +53,8 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ControllerLoader< AnchorPane, DrawerController> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
-        DrawerController controller = loader.getController();
+        ControllerLoader< AnchorPane, DrawerMenus> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
+        DrawerMenus controller = loader.getController();
         controller.setOnClickMenuIcon( this::closeDrawer );
         controller.setHomeController( this );
         AnchorPane view = loader.getNodeView();

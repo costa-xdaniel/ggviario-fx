@@ -108,11 +108,11 @@ public class TabPageVendaDivida extends VendaController {
 
         this.columnVendaDividaData.setMaxWidth( 110 );
         this.columnVendaDividaData.setMinWidth( 110 );
-        this.columnVendaDividaData.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
+        this.columnVendaDividaData.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
 
         this.columnVendaDividaDataFinalizar.setMaxWidth( 110 );
         this.columnVendaDividaDataFinalizar.setMinWidth( 110 );
-        this.columnVendaDividaDataFinalizar.setCellFactory( this.createDateFormatTableCell( DD_MM_YYYY ) );
+        this.columnVendaDividaDataFinalizar.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
 
         this.columnVendaDividaProduto.setMinWidth( 80 );
 
@@ -170,7 +170,7 @@ public class TabPageVendaDivida extends VendaController {
 
     private void loadModalNovoPagemnto( ){
         if( this.modalNovoPagamento == null ){
-            this.modalNovoPagamento = ModalNovoPagamento.load((StackPane) rootPage);
+            this.modalNovoPagamento = ModalNovoPagamento.newInstance( rootPage );
             this.modalNovoPagamento.setOnModalResult(operationResult -> {
                 if( operationResult.isSuccess() ){
                 }

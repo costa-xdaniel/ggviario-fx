@@ -3,6 +3,7 @@ package st.ggviario.house.controller.includs;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
@@ -38,6 +40,7 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
     private JFXTreeTableColumn < ProdutoUnidadeModelView, String  > columnUnidadeCodigo = new JFXTreeTableColumn<>( "COD" );
     private JFXTreeTableColumn < ProdutoUnidadeModelView, Number  > columnPrecoQuantidade = new JFXTreeTableColumn<>( "QT." );
     private JFXTreeTableColumn < ProdutoUnidadeModelView, Number  > columnPrecoCustoUnidade = new JFXTreeTableColumn<>("PREÇO");
+    private JFXTreeTableColumn < ProdutoUnidadeModelView, IconsActions > columnIconsAction = new JFXTreeTableColumn<>();
 
 
     @Override
@@ -46,18 +49,29 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
     }
 
     private void structure(){
-
         this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
         this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
         this.columnPrecoQuantidade.setCellValueFactory( param -> param.getValue().getValue().quantidadeProduto );
         this.columnPrecoCustoUnidade.setCellValueFactory( param -> param.getValue().getValue().custoUnidade );
+
+        IconsActions iconsActionsFatory = () -> {
+            Node delete = this.newIconViewDestroy( MaterialDesignIcon.DELETE );
+            delete.setOnMouseClicked( mouseEvent -> onDelectePreco() );
+            return this.newIconCellContainer( delete );
+        };
+        ObjectProperty< IconsActions > property = new SimpleObjectProperty<>( iconsActionsFatory );
+        this.columnIconsAction.setCellValueFactory( param -> property );
+        this.columnIconsAction.setCellFactory( this.cellIconsView() );
+        this.useAsIconsColumn( this.columnIconsAction, 1 );
+
         this.tableProdutoUnidades.getStyleClass().add( "produto-unidade-preco" );
 
         this.tableProdutoUnidades.getColumns().setAll(
                 this.columnUnidadeNome,
                 this.columnUnidadeCodigo,
                 this.columnPrecoCustoUnidade,
-                this.columnPrecoQuantidade
+                this.columnPrecoQuantidade,
+                this.columnIconsAction
         );
 
         this.tableProdutoUnidades.setRowFactory(produtoUnidadeModelViewTreeTableView -> new TreeTableRow<ProdutoUnidadeModelView>() {
@@ -75,6 +89,10 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
             }
         });
         this.push( new LinkedList<>(), this.tableProdutoUnidades );
+    }
+
+    private void onDelectePreco() {
+
     }
 
     public void setProduto (Produto produto ){

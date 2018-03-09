@@ -32,8 +32,6 @@ public class PageProducao extends PageTabsConttoler implements Initializable {
     private void structure(){
         this.addTab( tabProduto, "/fxml/tabs/tab_producao_produto.fxml");
         this.addTab( tabProducao, "/fxml/tabs/tab_producao_producao.fxml");
-        this.addTab( tabUnidade, "/fxml/tabs/tab_producao_unidade.fxml");
-        this.addTab( tabCategoria, "/fxml/tabs/tab_producao_categoria.fxml");
     }
 
     private void defineEvents(){

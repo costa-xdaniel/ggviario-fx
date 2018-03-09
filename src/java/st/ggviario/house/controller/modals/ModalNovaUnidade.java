@@ -23,7 +23,7 @@ import java.util.Map;
 public class ModalNovaUnidade extends AbstractModal< Unidade > {
 
 
-    public static ModalNovaUnidade load(StackPane stackPane ){
+    public static ModalNovaUnidade newInstance(StackPane stackPane ){
         ControllerLoader < AnchorPane, ModalNovaUnidade > loader = new ControllerLoader<>("/fxml/modal/modal_nova_unidade.fxml");
         loader.getController().createDialogModal( stackPane );
         loader.getController().structure();
@@ -38,6 +38,8 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
     @FXML private JFXTextField textFieldUnidadeNome;
     @FXML private JFXTextField textFieldUnidadeCodigo;
     @FXML private JFXButton buttonRegistar;
+
+    private Unidade unidade;
 
     @Override
     Region getContentRoot() {
@@ -66,13 +68,30 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
     public void clear() {
         this.textFieldUnidadeCodigo.setText( null );
         this.textFieldUnidadeNome.setText( null );
+        this.unidade = null;
+    }
+
+    @Override
+    public void openModal() {
+        super.openModal();
+    }
+
+
+    public void openModal( Unidade unidade ) {
+        this.unidade = unidade;
+        super.openModal();
+        this.textFieldUnidadeCodigo.setText( this.unidade.getUnidadeCodigo() );
+        this.textFieldUnidadeNome.setText( this.unidade.getUnidadeNome() );
     }
 
     void defineEvents(){
-        this.buttonRegistar.setOnAction(actionEvent -> onRegister() );
+        this.buttonRegistar.setOnAction(actionEvent -> {
+            if( this.unidade != null ) this.onChangeUnidade();
+            else this.onRegisterUnidade();
+        });
     }
 
-    private void onRegister( ){
+    private void onRegisterUnidade( ){
         ModalNovaUnidadeResult res = this.checkForm();
         if( res.isSuccess() ){
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
@@ -87,6 +106,44 @@ public class ModalNovaUnidade extends AbstractModal< Unidade > {
                         SQLResult result = new SQLResult( row );
                         if( result.isSuccess() ){
                             res.message = "Nova unidade cadastrada com sucesso!";
+                            res.level = SnackbarBuilder.MessageLevel.SUCCESS;
+                            unidadeBuilder.load( row );
+                            res.resultValue = unidadeBuilder.build();
+                            res.data = result.getData();
+                        } else {
+                            res.message = result.getMessage();
+                            res.level = SnackbarBuilder.MessageLevel.ERROR;
+                            res.data = result.getData();
+                        }
+                    })
+            ;
+        }
+
+        SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
+        snackbarBuilder.show( res.getMessage(), res.getLevel() );
+        if( res.isSuccess() ){
+            this.clear();
+            this.closeModal();
+            this.executeOnOperationResult( res );
+        }
+    }
+
+    private void onChangeUnidade( ){
+        ModalNovaUnidadeResult res = this.checkForm();
+        if( res.isSuccess() ){
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
+            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+            sql.query( "ggviario.funct_change_unidade" )
+                .withUUID( colaborador.getColaboradorId() )
+                .withUUID( unidade.getUnidadeId() )
+                .withVarchar( res.resultValue.getUnidadeNome() )
+                .withVarchar( res.resultValue.getUnidadeCodigo() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        SQLResult result = new SQLResult( row );
+                        if( result.isSuccess() ){
+                            res.message = "Unidade atualizado com sucesso!";
                             res.level = SnackbarBuilder.MessageLevel.SUCCESS;
                             unidadeBuilder.load( row );
                             res.resultValue = unidadeBuilder.build();

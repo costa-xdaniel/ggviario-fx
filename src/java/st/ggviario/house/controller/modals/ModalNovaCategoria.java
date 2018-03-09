@@ -28,12 +28,12 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
 
     private static Categoria CATEGORIA_VOID = new Categoria();
 
-    public static ModalNovaCategoria load(StackPane stackPane ) {
+    public static ModalNovaCategoria newInstance(StackPane stackPane ) {
         ControllerLoader< AnchorPane, ModalNovaCategoria> loader = new ControllerLoader<>("/fxml/modal/modal_nova_categoria.fxml");
         ModalNovaCategoria novoSetor = loader.getController();
         novoSetor.createDialogModal( stackPane );
         novoSetor.structure();
-        novoSetor.defineEvent();
+        novoSetor.defineEvents();
         return novoSetor;
     }
 
@@ -48,6 +48,7 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
     @FXML private JFXButton buttonRegistar;
 
     private List< Categoria > setorList = new LinkedList<>();
+    private Categoria categoria;
 
     @Override
     Region getContentRoot() {
@@ -75,16 +76,36 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
         this.comboxCategoriaSuper.setValue( null );
         this.labelCategoriaNivel.setText( null );
         this.labelCategoriaSuper.setText( null );
+        this.comboxCategoriaSuper.setDisable( false );
+        this.categoria = null;
     }
 
+    @Override
     protected void structure(){
-
     }
 
-    void defineEvent(){
-        this.buttonRegistar.setOnAction(event -> this.onRegistarNovoSetor() );
+    @Override
+    public void openModal() {
+        this.clear();
+        super.openModal();
+    }
+
+    public void openModal( Categoria categoria ) {
+        this.categoria = categoria;
+        this.comboxCategoriaSuper.setValue( categoria.getCategoriaSuper() );
+        this.comboxCategoriaSuper.setDisable( true );
+        this.textFieldSetorNome.setText( categoria.getCategoriaNome() );
+        super.openModal();
+    }
+
+    @Override
+    protected void defineEvents(){
+        this.buttonRegistar.setOnAction(event ->{
+            if( this.categoria == null ) this.onRegistarNovoSetor();
+            else this.onChangeCategoria();
+        } );
         this.comboxCategoriaSuper.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.onChangeCategoria(newValue );
+            this.onChangeCategoriaSuper(newValue );
         });
     }
 
@@ -134,7 +155,45 @@ public class ModalNovaCategoria extends AbstractModal<Categoria> {
         }
     }
 
-    void onChangeCategoria(Categoria newSetor ){
+    private void onChangeCategoria() {
+        ModalNovaCategoriaResult res = this.validateForm();
+        if( res.isSuccess() ){
+            /*
+            funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying)
+             */
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
+            sql.query( "ggviario.funct_change_categoria" )
+                .withUUID( colaborador.getColaboradorId() )
+                .withUUID( this.categoria.getCategoriaId() )
+                .withVarchar( res.getValue().getCategoriaNome() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        SQLResult result = new SQLResult( row );
+                        if( result.isSuccess() ){
+                            res.succeed = true;
+                            res.message = "Categoria atualizada com sucesso!";
+                            res.level = SnackbarBuilder.MessageLevel.SUCCESS;
+                            res.terminated = true;
+                        } else {
+                            res.message = result.getMessage();
+                            res.map = result.getData();
+                            res.level = SnackbarBuilder.MessageLevel.ERROR;
+                            res.succeed = false;
+                        }
+                    });
+
+            SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
+            snackbarBuilder.show( res.message, res.level );
+            if( res.isSuccess() ){
+                this.clear();
+                this.closeModal();
+            }
+            executeOnOperationResult( res );
+        }
+    }
+
+    private void onChangeCategoriaSuper(Categoria newSetor){
         if(newSetor == null || newSetor.equals(CATEGORIA_VOID)){
             this.comboxCategoriaSuper.setValue( null );
             this.labelCategoriaNivel.setText("");

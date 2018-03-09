@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.drawers.DrawerUnidadeCategoria">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.drawers.DrawerObjectItem">
    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" style="-fx-background-color: md-primary-text-color;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
          <AnchorPane fx:id="headerPane" BorderPane.alignment="CENTER">
@@ -26,19 +26,24 @@
                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                         </padding>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconPlus" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelIconListaCompleta" styleClass="details-header-icon-area">
                         <children>
-                           <MaterialDesignIconView glyphName="PLUS" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           <MaterialDesignIconView glyphName="VIEW_LIST" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconEdit" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="BORDER_COLOR" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelFullList" styleClass="details-header-icon-area">
+                     <AnchorPane fx:id="panelIconListaAtivos" styleClass="details-header-icon-area">
                         <children>
                            <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="panelIconLiataRemovidos" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView glyphName="DELETE" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="panelIconAddItem" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView glyphName="PLUS" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
                   </children>
