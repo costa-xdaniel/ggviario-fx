@@ -1,0 +1,69 @@
+Autenticação
+	Formulario de autenticação
+		Users
+
+Pesquisa 
+	Geral implementar e todas as abas
+	No re-push de todas as tabelas procurar de colocar sempre o ultimo selecionado ativo novamente
+	Pensar em colocar o intervalo de pesquisa em data nos menu producao->pordução, vendas , dividas e despesa
+Producao
+	Produto
+		Formatação dos numeros e moedas
+		Tamanho das colunas
+		Rever icon de adcionar novo produto
+		Verificar como colocar o tooltip nos serviços do produto
+		Estado de alerta para stock abaixo de stock minimo
+		Drawer produto
+			Listar preço completo
+			Adicionar icon editar preço de produto
+			Rever o grafico update (Aparece preco base na linha sem preco**Produto Goiaba**)
+			Ajustar, Alinhar e formatar as colunas na tabela
+		Drawer ( Categoria & Unidade )
+			Implementar a lista completa ( Apresentar em todos os produtos que uma categoria vs unidadde esta associado )
+			Dar sumisso no icon eleminar no topo
+			Ajustar, Alinhar e formatar as colunas na tabela
+			
+	Produção
+	    Possibilidade de duas visão ( Setor e produto )
+	    Acertar o posicinamento da tabela ( pading 4(top, bottom) & 8(left, right) )
+	    Ajustar, Alinhar e formatar as colunas na tabela
+	    Visao Produto
+			Tabela primeira ( Lista diaria, mensal, anual )
+				Data,
+				**Produto**,
+				Total,
+				Defeitusas,
+				Comercial,
+				Montante previsto ( Preco base ),
+				Numero de lançamento
+			Clicar na produção do dia pra o produto abir o draer com 
+				Informação do dia da produção 
+				Lista de produção por setores do dia
+		Visao Sector
+			Tabela primeira ( Lista diaria, mensal, anual )
+				Data,
+				**Sector**,
+				Total,
+				Defeitusas,
+				Comercias,
+				Montante previsto ( Preco base ),
+				Numero de lançamento
+			Clicar na produção do dia pra o sector abir o draer com 
+				Informação do dia da produção 
+				Lista de produção por produto do dia( Duvidoso não parace relevante para o caso se setor )	
+		Sectores em drawer
+			Mostrar a lista de setores
+			Clicar e mostrar as produções naquele sector
+			
+Venda,Divida,Despesa
+	Icons para butões adicionar
+	Drawer con filtros para dividas e venda( Duvidoso )
+	Despesa
+		Ajustar, Alinhar e formatar as colunas na tabela
+		Draer para obter mais informação sobre a despesa
+		Formulario de amortização de despesa
+		Ver amortizações fietas a despesa
+		Corres para as despesa não paga
+		Destaque em posições para as despesas não pagas
+		Destruição de despesa
+		
