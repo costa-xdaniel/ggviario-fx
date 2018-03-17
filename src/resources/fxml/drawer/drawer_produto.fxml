@@ -50,6 +50,11 @@
                            <MaterialDesignIconView glyphName="CURRENCY_USD" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
+                     <AnchorPane fx:id="panelProdutoIconDelete" styleClass="details-header-icon-area">
+                        <children>
+                           <MaterialDesignIconView fx:id="iconViewProdutoDelete" glyphName="DELETE" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                     </AnchorPane>
                   </children>
                </HBox>
                <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="V00000/18" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />

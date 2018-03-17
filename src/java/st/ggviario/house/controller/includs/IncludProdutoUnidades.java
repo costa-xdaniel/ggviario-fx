@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -13,8 +14,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import st.ggviario.house.controller.ControllerLoader;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.controller.drawers.DrawerProduto;
-import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.Preco;
 import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Unidade;
@@ -43,6 +44,10 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
 
 
     private DrawerProduto.OnPrecoDestroy onPrecoDestroy;
+    private DrawerProduto.OnEditarPreco onEditarPreco;
+
+    private Produto produto;
+
 
 
     @Override
@@ -58,13 +63,15 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
 
         IconsActions iconsActionsFatory = () -> {
             Node delete = this.newIconViewDestroy( MaterialDesignIcon.DELETE );
+            Node edite = this.newIconViewPrimary( MaterialIcon.EDIT );
+            edite.setOnMouseClicked(mouseEvent -> onEditarPreco() );
             delete.setOnMouseClicked( mouseEvent -> onDelectePreco() );
-            return this.newIconCellContainer( delete );
+            return this.newIconCellContainer( edite, delete );
         };
         ObjectProperty< IconsActions > property = new SimpleObjectProperty<>( iconsActionsFatory );
         this.columnIconsAction.setCellValueFactory( param -> property );
         this.columnIconsAction.setCellFactory( this.cellIconsView() );
-        this.useAsIconsColumn( this.columnIconsAction, 1 );
+        this.useAsIconsColumn( this.columnIconsAction, 2 );
 
         this.tableProdutoUnidades.getStyleClass().add( "produto-precos-ativo" );
 
@@ -86,12 +93,16 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
                     } else if( !item.preco.isPrecoBase() ){
                         this.getStyleClass().remove( "base" );
                     }
+                } else {
+                    this.setGraphic( null );
                 }
                 this.setItem(item);
             }
         });
         this.push( new LinkedList<>(), this.tableProdutoUnidades );
     }
+
+
 
     private void onDelectePreco() {
         ReadOnlyObjectProperty<TreeItem<ProdutoUnidadeModelView>> select = this.tableProdutoUnidades.getSelectionModel().selectedItemProperty();
@@ -101,15 +112,34 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         if(  this.onPrecoDestroy != null ) this.onPrecoDestroy.onPrecoDestroy( select.getValue().getValue().preco );
     }
 
+   private void onEditarPreco() {
+        ReadOnlyObjectProperty<TreeItem<ProdutoUnidadeModelView>> select = this.tableProdutoUnidades.getSelectionModel().selectedItemProperty();
+        if( select == null )return;
+        if( select.getValue() == null )return;
+        if( select.getValue().getValue() == null )return;
+        if(  this.onEditarPreco != null ) this.onEditarPreco.onEditarPreco( select.getValue().getValue().preco );
+    }
+
     public IncludProdutoUnidades setOnPrecoDestroy(DrawerProduto.OnPrecoDestroy onPrecoDestroy) {
         this.onPrecoDestroy = onPrecoDestroy;
         return this;
     }
 
+    public IncludProdutoUnidades setOnEditarPreco(DrawerProduto.OnEditarPreco onEditarPreco) {
+        this.onEditarPreco = onEditarPreco;
+        return this;
+    }
+
+
+
     public void setProduto (Produto produto ){
+        this.produto = produto;
         Thread thread = new Thread(() -> {
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
-            this.tableProdutoUnidades.getRoot().getChildren().clear();
+            Platform.runLater(() -> {
+                this.tableProdutoUnidades.getRoot().getChildren().clear();
+                this.tableProdutoUnidades.refresh();
+            });
             Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
             sql.query( "ggviario.funct_load_produto_unidades" )
@@ -120,6 +150,7 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
                             unidadeBuilder.load( row );
                             precoBuilder.load( row );
                             precoBuilder.setUnidade( unidadeBuilder.build() );
+                            precoBuilder.setProduto( this.produto );
                             this.tableProdutoUnidades.getRoot().getChildren().add( new TreeItem<>( new ProdutoUnidadeModelView( precoBuilder.build() ) ));
                         });
                     })

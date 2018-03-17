@@ -104,13 +104,13 @@ public class TabPageVendaVenda extends VendaController {
         columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
-        columnVendaDividaData.setCellFactory( cellDateFormat( DD_MM_YYYY ));
+        columnVendaDividaData.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT));
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
         columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
 
         this.columnVendaVendaRegisto.setCellValueFactory( param -> param.getValue().getValue().vendaDataRegisto );
-        this.columnVendaVendaRegisto.setCellFactory( cellDateFormat( DD_MM_YYYY ));
+        this.columnVendaVendaRegisto.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT));
 
 
         this.tableViewVendaVenda.getColumns().setAll(

@@ -141,11 +141,26 @@ public class Produto {
         return this.produtoNome;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Produto)) return false;
+
+        Produto produto = (Produto) o;
+
+        return produtoId != null ? produtoId.equals(produto.produtoId) : produto.produtoId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return produtoId != null ? produtoId.hashCode() : 0;
+    }
 
     public enum ProdutoEstado implements EnumTypes < ProdutoEstado, Short > {
-
-        ATIVO( 1, "Ativo" ),
-        FACHADO( 0, "Fechado" )
+        STOCK_VAZIO( 3, "Stock vazio" ),
+        STOCK_MINIMO( 2, "Stock Minimo" ),
+        OK( 1, "Ativo" ),
+        FECHADO( 0, "Fechado" )
         ;
 
         private final String name;

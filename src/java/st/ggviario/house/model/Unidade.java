@@ -51,6 +51,21 @@ public class Unidade {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Unidade)) return false;
+
+        Unidade unidade = (Unidade) o;
+
+        return unidadeId != null ? unidadeId.equals(unidade.unidadeId) : unidade.unidadeId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return unidadeId != null ? unidadeId.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return this.unidadeNome;
     }

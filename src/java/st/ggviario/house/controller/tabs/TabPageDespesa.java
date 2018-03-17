@@ -13,7 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.modals.ModalNovaDespesa;
-import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.model.Despesa;
 import st.ggviario.house.model.Fornecedor;
 import st.ggviario.house.model.Produto;
@@ -107,8 +107,8 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
         this.columnEstado.setMinWidth( 135 );
         this.columnEstado.setMaxWidth( 135 );
 
-        this.columnData.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
-        this.columnRegisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
+        this.columnData.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
+        this.columnRegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
     }
 
     private void defineEvents(){

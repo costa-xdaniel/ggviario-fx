@@ -15,7 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.PercentDimension;
 import st.ggviario.house.controller.modals.ModalNovoCliente;
-import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.model.Cliente;
 import st.ggviario.house.model.Distrito;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -106,7 +106,7 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
         this.columnClienteMontantePendente.getStyleClass().add( "table-column-money" );
 
 
-        this.columnClienteRegisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
+        this.columnClienteRegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
 
         PercentDimension.widthChangePercent( this.tableClientes, 9., (percent, percentValue) -> this.columnMinWidth( columnClienteRegisto, percentValue ) );
         PercentDimension.widthChangePercent( this.tableClientes, 8., (percent, percentValue) -> this.columnMinWidth( columnClienteCodigo, percentValue ) );

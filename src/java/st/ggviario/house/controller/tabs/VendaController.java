@@ -18,7 +18,7 @@ import st.ggviario.house.controller.SnackbarBuilder;
 import st.ggviario.house.controller.drawers.DrawerVenda;
 import st.ggviario.house.controller.modals.ModalDestroy;
 import st.ggviario.house.controller.modals.ModalNovaVenda;
-import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;

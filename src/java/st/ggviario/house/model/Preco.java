@@ -46,6 +46,22 @@ public class Preco {
         return "";
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Preco)) return false;
+
+        Preco preco = (Preco) o;
+
+        return unidade != null ? unidade.equals(preco.unidade) : preco.unidade == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return unidade != null ? unidade.hashCode() : 0;
+    }
+
     public static class PrecoBuilder {
 
         private UUID id;

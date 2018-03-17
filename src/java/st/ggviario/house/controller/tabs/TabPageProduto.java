@@ -15,13 +15,14 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.controller.SnackbarBuilder;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.controller.drawers.DrawerObjectItem;
 import st.ggviario.house.controller.drawers.DrawerProduto;
 import st.ggviario.house.controller.modals.*;
-import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -55,6 +56,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private JFXTreeTableColumn< ProdutoModelView, Number > columnVendaPagas = new JFXTreeTableColumn<>( "PAGAS" );
     private JFXTreeTableColumn< ProdutoModelView, Number > columnVendaPendentes = new JFXTreeTableColumn<>( "PENDENTES" );
     private JFXTreeTableColumn< ProdutoModelView, Number > columnCompras = new JFXTreeTableColumn<>( "DESPESA" );
+    private JFXTreeTableColumn< ProdutoModelView, String > columnEstado = new JFXTreeTableColumn<>();
 
     private ModalNovoProduto modalNovoProduto;
     private ModalNovoPreco modalNovoPreco;
@@ -65,6 +67,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private ModalDestroy< Preco > modalPrecoDestry;
     private ModalDestroy< Unidade > unidadeModalDestroy;
     private ModalDestroy< Categoria > categoriaModalDestroy;
+    private ProdutoModelView lastProduto;
 
     private StackPane rootPage;
     private List< ProdutoModelView > originalProductList = new LinkedList<>();
@@ -97,6 +100,15 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.columnVendaPendentes.setCellValueFactory( param -> param.getValue().getValue().vendaPendentes );
         this.columnCompras.setCellValueFactory( param -> param.getValue().getValue().compras );
 
+        this.columnStock.setCellFactory( this.cellNumber( NUMBER_FORMAT ) );
+        this.columnVendas.setCellFactory( this.cellMoney( MONEY_FORMAT, "" ) );
+        this.columnVendaVendas.setCellFactory( this.cellMoney( MONEY_FORMAT, "" ) );
+        this.columnVendaDividas.setCellFactory( this.cellMoney( MONEY_FORMAT, "" ) );
+        this.columnVendaPagas.setCellFactory( this.cellMoney( MONEY_FORMAT, "" ) );
+        this.columnVendaPendentes.setCellFactory( this.cellMoney( MONEY_FORMAT, "" ) );
+        this.columnCompras.setCellFactory( this.cellMoney( MONEY_FORMAT, "STN" ) );
+
+
         this.treeTableViewUnidade.getColumns().setAll(
                 this.columnCodigo,
                 this.columnNome,
@@ -109,6 +121,19 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
                 this.columnVendaPendentes,
                 this.columnCompras
         );
+
+        this.treeTableViewUnidade.getStyleClass().add( "produto" );
+        this.treeTableViewUnidade.setRowFactory(produtoModelViewTreeTableView -> new TreeTableRow<TabPageProduto.ProdutoModelView>(){
+            @Override
+            protected void updateItem(ProdutoModelView item, boolean empty) {
+                super.updateItem(item, empty);
+                if( item != null && !empty ){
+                    item.produto.getProdutoEstado().others().forEach( ( next ) -> this.getStyleClass().remove( next.name() ));
+                    this.getStyleClass().add( item.produto.getProdutoEstado().name().toLowerCase() );
+                } else setGraphic( null );
+                setItem( item );
+            }
+        });
 
         this.columnNome.getStyleClass().add( "table-column-left" );
         this.columnStock.getStyleClass().add( "table-column-number" );
@@ -142,14 +167,16 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private void loadDatProduto() {
         Thread thread = new Thread(() -> {
             this.originalProductList.clear();
-            Platform.runLater(() -> this.treeTableViewUnidade.getRoot().getChildren().clear());
+            Platform.runLater(() ->{
+                this.treeTableViewUnidade.getRoot().getChildren().clear();
+                this.treeTableViewUnidade.refresh();
+            });
 
             Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
             Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
             Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
-
             sql.query( "ggviario.funct_load_produto" )
                     .withJsonb((String) null )
                     .callFunctionTable()
@@ -170,6 +197,11 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
                             ProdutoModelView item = new ProdutoModelView(produto);
                             this.treeTableViewUnidade.getRoot().getChildren().add( new TreeItem<>( item ) );
                             this.originalProductList.add( item );
+
+
+                            if( this.lastProduto != null &&  this.lastProduto.equals( item ) ) {
+                                this.treeTableViewUnidade.getSelectionModel().select( this.originalProductList.size() -1 );
+                            }
                         });
                     });
         });
@@ -190,6 +222,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
 
             this.jfxDrawerProdutoDetails.open();
             this.closeDrawerItem();
+            this.lastProduto = newProduto;
         } else {
             this.closeDrawerDetails();
         }
@@ -232,6 +265,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
             return;
         }
         this.loadModalNovoPreco();
+        this.modalNovoPreco.setTitle( "Unidade de "+produto.getProdutoNome() );
         this.modalNovoPreco.openModal( produto );
     }
 
@@ -270,6 +304,36 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.modalPrecoDestry.opemModal( destroy );
     }
 
+    private void onOpenEditarPreco(Preco preco ){
+        this.loadModalNovoPreco( );
+        this.modalNovoPreco.setTitle( "Editar "+preco.getUnidade().getUnidadeNome() );
+        this.modalNovoPreco.openModalEditarPreco( preco );
+    }
+
+    private void onChangeProdutoEstado( Produto produto ){
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
+            Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();
+            sql.query( "funct_change_produto_estado" )
+                .withUUID( colaborador.getColaboradorId() )
+                .withUUID( produto.getProdutoId() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        SQLResult result = new SQLResult( row );
+                        if( result.isSuccess() ){
+                            Platform.runLater(() -> this.loadDatProduto());
+                        } else {
+                            SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.rootPage );
+                            snackbarBuilder.showError( result.getMessage() );
+                        }
+                    });
+            ;
+
+        });
+        thread.start();
+    }
+
     private void loadDrawerProduto() {
         if( this.drawerProduto == null ){
             this.drawerProduto = DrawerProduto.newInstance( this.jfxDrawerProdutoDetails);
@@ -277,6 +341,8 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
             this.drawerProduto.setOnNovoPreco(this::onOpenModalNovoPreco );
             this.drawerProduto.setOnProdutoEdit( this::onOpenModalNovoProdutoEditMode );
             this.drawerProduto.setOnPrecoDestroy(  this::onOpenModalDestroyPreco );
+            this.drawerProduto.setOnEditarPreco( this::onOpenEditarPreco );
+            this.drawerProduto.setOnChangeProdutoEstado( this::onChangeProdutoEstado );
         }
     }
 
@@ -414,6 +480,21 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
                     produto.getPreco() == null ? null
                             : produto.getPreco().getPrecoCustoUnidade() + "/" + produto.getPreco().getUnidade().getUnidadeCodigo()
             );
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ProdutoModelView)) return false;
+
+            ProdutoModelView that = (ProdutoModelView) o;
+
+            return produto.equals(that.produto);
+        }
+
+        @Override
+        public int hashCode() {
+            return produto.hashCode();
         }
     }
 }

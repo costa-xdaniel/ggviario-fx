@@ -129,6 +129,7 @@
     -fx-alignment: TOP_RIGHT;
 }
 
+/*TABELA DIVIAD*/
 .divida, .venda{
     color-estado-pendente: md-orange-500;
     color-estado-pagamento: md-green-500;
@@ -137,7 +138,6 @@
 }
 
 
-/*TABELA DIVIAD*/
 .tree-table-view .tree-table-row-cell.divida.pendente {
     -fx-background-color: color-estado-pendente;;
 }
@@ -173,6 +173,9 @@
 /*TABELA PRECO ATIVO*/
 .tree-table-view.produto-precos-ativo .tree-table-row-cell.base {
     -fx-background-color: md-blue-grey-500;
+}
+.tree-table-view.produto-precos-ativo .tree-table-row-cell.base .tree-table-cell {
+    -fx-text-fill: #ffffff;
 }
 .tree-table-view.produto-precos-ativo .tree-table-row-cell:selected.base {
     -fx-background-color: md-blue-500;
@@ -268,3 +271,46 @@
 .tree-table-view .tree-table-row-cell:selected .tree-table-cell.column-icons-area .icon-rippler .icon-pane {
     -fx-background-color: icon-selected-color;
 }
+
+
+
+
+
+
+/*TABELA DIVIAD*/
+.produto{
+    color-estado-stock-vazio: md-red-500;
+    color-estado-stock-minimo: md-orange-500;
+    color-estado-fechado: md-blue-grey-500;
+    color-estado-ok: md-green-500;
+}
+.tree-table-view.produto .tree-table-row-cell.stock_vazio {
+    -fx-background-color: color-estado-stock-vazio;
+}
+.tree-table-view.produto .tree-table-row-cell.stock_minimo {
+    -fx-background-color: color-estado-stock-minimo;
+}
+.tree-table-view.produto .tree-table-row-cell.fechado {
+    -fx-background-color: color-estado-fechado;
+}
+.tree-table-view.produto .tree-table-row-cell.ok {
+    -fx-background-color: color-estado-ok;
+}
+
+.tree-table-view.produto .tree-table-row-cell.stock_vazio:selected,
+.tree-table-view.produto .tree-table-row-cell.stock_minimo:selected,
+.tree-table-view.produto .tree-table-row-cell.fechado:selected,
+.tree-table-view.produto .tree-table-row-cell.ok:selected,
+.tree-table-view .tree-table-row-cell.divida.pago:selected{
+    -fx-background-color: md-blue-500;
+}
+
+
+.tree-table-view.produto .tree-table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+.tree-table-view.produto .tree-table-row-cell.divida:selected{
+    -fx-font-size: bold;
+}
+

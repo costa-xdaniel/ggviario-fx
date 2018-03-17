@@ -108,11 +108,11 @@ public class TabPageVendaDivida extends VendaController {
 
         this.columnVendaDividaData.setMaxWidth( 110 );
         this.columnVendaDividaData.setMinWidth( 110 );
-        this.columnVendaDividaData.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
+        this.columnVendaDividaData.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
 
         this.columnVendaDividaDataFinalizar.setMaxWidth( 110 );
         this.columnVendaDividaDataFinalizar.setMinWidth( 110 );
-        this.columnVendaDividaDataFinalizar.setCellFactory( this.cellDateFormat( DD_MM_YYYY ) );
+        this.columnVendaDividaDataFinalizar.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
 
         this.columnVendaDividaProduto.setMinWidth( 80 );
 

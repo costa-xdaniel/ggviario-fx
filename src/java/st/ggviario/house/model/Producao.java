@@ -14,7 +14,11 @@ public class Producao {
     private Setor setor;
     private Colaborador colaborador;
     private Colaborador colaboradorAtualizacao;
-    private Double producaoQuantidade;
+    private Double producaoQuantidadeTotal;
+    private Double producaoQuantidadeComercial;
+    private Double producaoQuantidadeDefeituosa;
+    private Double producaoMontantePrevisto;
+    private Integer producaoLancamento;
     private Date producaoData;
     private ProducaoEstado producaoEstado;
     private Date producaoDataRegisto;
@@ -44,8 +48,24 @@ public class Producao {
         return colaboradorAtualizacao;
     }
 
-    public Double getProducaoQuantidade() {
-        return producaoQuantidade;
+    public Double getProducaoQuantidadeTotal() {
+        return producaoQuantidadeTotal;
+    }
+
+    public Double getProducaoQuantidadeComercial() {
+        return producaoQuantidadeComercial;
+    }
+
+    public Double getProducaoQuantidadeDefeituosa() {
+        return producaoQuantidadeDefeituosa;
+    }
+
+    public Double getProducaoMontantePrevisto() {
+        return producaoMontantePrevisto;
+    }
+
+    public Integer getProducaoLancamento() {
+        return producaoLancamento;
     }
 
     public Date getProducaoData() {
@@ -101,7 +121,11 @@ public class Producao {
         private Setor setor;
         private Colaborador colaborador;
         private Colaborador colaboradorAtualizacao;
-        private Double quantidade;
+        private Double quantidadeTotal;
+        private Double quantidadeComericial;
+        private Double quantidadeDefeituosa;
+        private Double montantePrevisto;
+        private Integer lancamento;
         private Date data;
         private ProducaoEstado estado;
         private Date dataRegisto;
@@ -116,7 +140,11 @@ public class Producao {
             producao.colaborador = this.colaborador;
             producao.colaboradorAtualizacao = this.colaboradorAtualizacao;
             producao.producaoData = this.data;
-            producao.producaoQuantidade = this.quantidade;
+            producao.producaoQuantidadeTotal = this.quantidadeTotal;
+            producao.producaoQuantidadeComercial = this.quantidadeComericial;
+            producao.producaoQuantidadeDefeituosa = this.quantidadeDefeituosa;
+            producao.producaoMontantePrevisto = this.montantePrevisto;
+            producao.producaoLancamento = this.lancamento;
             producao.producaoEstado = this.estado;
             producao.producaoDataRegisto = this.dataRegisto;
             producao.producaoDataAtualizacao = this.dataAtualizacao;
@@ -153,8 +181,28 @@ public class Producao {
             return this;
         }
 
-        public ProducaoBuilder setQuantidade(Double quantidade) {
-            this.quantidade = quantidade;
+        public ProducaoBuilder setQuantidadeTotal(Double quantidadeTotal) {
+            this.quantidadeTotal = quantidadeTotal;
+            return this;
+        }
+
+        public ProducaoBuilder setQuantidadeComericial(Double quantidadeComericial) {
+            this.quantidadeComericial = quantidadeComericial;
+            return this;
+        }
+
+        public ProducaoBuilder setQuantidadeDefeituosa(Double quantidadeDefeituosa) {
+            this.quantidadeDefeituosa = quantidadeDefeituosa;
+            return this;
+        }
+
+        public ProducaoBuilder setMontantePrevisto(Double montantePrevisto) {
+            this.montantePrevisto = montantePrevisto;
+            return this;
+        }
+
+        public ProducaoBuilder setLancamento(Integer lancamento) {
+            this.lancamento = lancamento;
             return this;
         }
 
@@ -181,7 +229,11 @@ public class Producao {
         public ProducaoBuilder load(Map< String, Object > map ){
             this.id = SQLRow.uuidOf( map.get( "producao_id" ) );
             this.codigo = SQLRow.stringOf( map.get( "producao_codigo" ) );
-            this.quantidade = SQLRow.doubleOf( map.get( "producao_quantidade" ) );
+            this.quantidadeTotal = SQLRow.doubleOf( map.get( "producao_quantidadetotla" ) );
+            this.quantidadeComericial = SQLRow.doubleOf( map.get( "producao_quantidadecomercial" ) );
+            this.quantidadeDefeituosa = SQLRow.doubleOf( map.get( "producao_quantidadedefeituosa" ) );
+            this.montantePrevisto = SQLRow.doubleOf( map.get( "producao_montanteprevisto" ) );
+            this.lancamento = SQLRow.integerOf( map.get( "producao_lancamento" ) );
             this.data = SQLRow.dateOf( map.get( "producao_data" ) );
             this.estado = EnumTypes.find( ProducaoEstado.values(), SQLRow.shortOf( map.get( "producao_estado" ) ) );
             this.dataRegisto = SQLRow.dateOf( map.get( "producao_dataregisto" ) );

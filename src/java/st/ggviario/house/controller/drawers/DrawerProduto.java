@@ -3,6 +3,8 @@ package st.ggviario.house.controller.drawers;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.effects.JFXDepthManager;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -49,6 +51,8 @@ public class DrawerProduto implements Initializable {
     @FXML private AnchorPane panelIconListaPreco;
     @FXML private AnchorPane panelIconEdit;
     @FXML private AnchorPane panelIconNovoPreco;
+    @FXML private AnchorPane panelProdutoIconDelete;
+    @FXML private MaterialDesignIconView iconViewProdutoDelete;
     @FXML private Label labelHeaderTitle;
     @FXML private StackPane stackPaneContent;
 
@@ -58,6 +62,7 @@ public class DrawerProduto implements Initializable {
     private JFXRippler ripplerListPrecos;
     private JFXRippler ripplerProdutoEdit;
     private JFXRippler ripplerNovoPreco;
+    private JFXRippler ripplerProdutoDelete;
 
     private Produto produto;
     private NumberFormat moneyFormatter = NumberFormat.getInstance( Locale.FRANCE );
@@ -67,6 +72,7 @@ public class DrawerProduto implements Initializable {
     private JFXDrawer drawer;
     private IncludProdutoInformation includProdutoInformation;
     private IncludProdutoUnidades includPrecosAtivos;
+    private OnChangeProdutoEstado onChangeProdutoEstado;
 
     private OnNovoPreco onNovoPreco;
     private OnListPrecos onListaPrecos;
@@ -86,6 +92,7 @@ public class DrawerProduto implements Initializable {
         this.ripplerListPrecos = new JFXRippler( this.panelIconListaPreco );
         this.ripplerProdutoEdit = new JFXRippler( this.panelIconEdit );
         this.ripplerNovoPreco = new JFXRippler( panelIconNovoPreco );
+        this.ripplerProdutoDelete = new JFXRippler( this.panelProdutoIconDelete);
 
         this.ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
         this.ripplerInformation.setStyle("-jfx-rippler-fill: md-primary-color");
@@ -100,7 +107,8 @@ public class DrawerProduto implements Initializable {
             this.ripplerListUnidades,
             this.ripplerListPrecos,
             this.ripplerProdutoEdit,
-            this.ripplerNovoPreco
+            this.ripplerNovoPreco,
+            this.ripplerProdutoDelete
         );
 
         this.includProdutoInformation = IncludProdutoInformation.newInstance();
@@ -140,6 +148,10 @@ public class DrawerProduto implements Initializable {
         });
 
         this.ripplerNovoPreco.setOnMouseClicked(event -> { if( this.onNovoPreco != null ) onNovoPreco.onNovoPreco( this.produto ); } );
+
+        this.ripplerProdutoDelete.setOnMouseClicked( mouseEvent -> {
+            if( this.onChangeProdutoEstado != null ) this.onChangeProdutoEstado.onChangeProdutoEstado( this.produto );
+        });
     }
 
     private void onInformation(){
@@ -158,6 +170,11 @@ public class DrawerProduto implements Initializable {
         this.includProdutoInformation.setProdudo( produto );
         this.includPrecosAtivos.setProduto( produto );
         this.labelHeaderTitle.setText( this.produto.getProdutoCodigo() );
+        if( this.produto.getProdutoEstado() == Produto.ProdutoEstado.FECHADO ){
+            this.iconViewProdutoDelete.setIcon( MaterialDesignIcon.BACKUP_RESTORE);
+        } else {
+            this.iconViewProdutoDelete.setIcon( MaterialDesignIcon.DELETE );
+        }
     }
 
     public DrawerProduto setOnNovoPreco(OnNovoPreco onNovoPreco) {
@@ -175,10 +192,21 @@ public class DrawerProduto implements Initializable {
         return this;
     }
 
+    public IncludProdutoUnidades setOnEditarPreco(OnEditarPreco onEditarPreco) {
+        return includPrecosAtivos.setOnEditarPreco(onEditarPreco);
+    }
+
+    public DrawerProduto setOnChangeProdutoEstado(OnChangeProdutoEstado onChangeProdutoEstado) {
+        this.onChangeProdutoEstado = onChangeProdutoEstado;
+        return this;
+    }
+
     public DrawerProduto setOnProdutoEdit(OnProdutoEdit onProdutoEdit) {
         this.onProdutoEdit = onProdutoEdit;
         return this;
     }
+
+
 
     public void notifyPrecoDestroy() {
         this.includPrecosAtivos.setProduto( this.produto );
@@ -198,6 +226,14 @@ public class DrawerProduto implements Initializable {
 
     public interface OnPrecoDestroy{
         void onPrecoDestroy( Preco produto );
+    }
+
+    public interface OnEditarPreco{
+        void onEditarPreco( Preco produto );
+    }
+
+    public interface OnChangeProdutoEstado{
+        void onChangeProdutoEstado( Produto produto );
     }
 
 

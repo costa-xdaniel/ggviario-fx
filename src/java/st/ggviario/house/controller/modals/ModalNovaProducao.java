@@ -16,6 +16,7 @@ import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.SQLRow;
+import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
@@ -44,7 +45,9 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
     @FXML private AnchorPane anchorHeader;
     @FXML private Label modalTitle;
     @FXML private AnchorPane iconArea;
-    @FXML private JFXTextField textFieldProducaoQuantidade;
+    @FXML private JFXTextField textFieldProducaoTotal;
+    @FXML private JFXTextField textFieldProducaoDefeituosos;
+    @FXML private JFXTextField textFieldProducaoComercial;
     @FXML private JFXComboBox< Setor > comboxSector;
     @FXML private JFXComboBox< Produto > comboxProduto;
     @FXML private JFXDatePicker datePickeProducaoData;
@@ -78,7 +81,9 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
 
     @Override
     public void clear() {
-        this.textFieldProducaoQuantidade.setText(null);
+        this.textFieldProducaoTotal.setText( null );
+        this.textFieldProducaoDefeituosos.setText( null );
+        this.textFieldProducaoComercial.setText( null );
         this.comboxSector.setValue( null );
         this.comboxProduto.setValue(  null );
         this.labelTotalDia.setText( null );
@@ -103,6 +108,15 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         this.datePickeProducaoData.valueProperty().addListener((observable, oldValue, newValue) -> {
             this.onChangeDateReload();
         });
+
+        this.textFieldProducaoTotal.setOnKeyReleased(keyEvent ->{
+            this.textFieldProducaoComercial.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
+        });
+
+        this.textFieldProducaoDefeituosos.setOnKeyReleased(keyEvent -> {
+            this.textFieldProducaoComercial.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
+        });
+
     }
 
     public void pushSetor( List<Setor> setorList ){
@@ -119,19 +133,29 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         this.comboxProduto.setItems( FXCollections.observableList( this.produtoList) );
     }
 
+    private Double onChangeQuantidade( ){
+        Double total = SQLRow.doubleOf( this.textFieldProducaoTotal.getText() );
+        Double defeituosos = SQLResource.coalesce(SQLRow.doubleOf( textFieldProducaoDefeituosos.getText() ), 0d );
+        Double comerciavel = null;
+        if( total != null && defeituosos != null ){
+            comerciavel = total - defeituosos;
+            if( comerciavel < 0 ) comerciavel = null;
+        }
+        return comerciavel;
+    }
+
     private void onRegistarNovoSetor() {
         ModalNovaProducaoResult res = this.validateForm();
         if( res.isSuccess() ){
-            /*
-            funct_reg_producao(
-            arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid)
-             */
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Colaborador colaborador = AuthSingleton.getInstance();
+
             sql.query( "ggviario.funct_reg_producao" )
                 .withUUID( colaborador.getColaboradorId() )
                 .withDate( res.getValue().getProducaoData() )
-                .withNumeric( res.getValue().getProducaoQuantidade() )
+                .withNumeric( res.getValue().getProducaoQuantidadeTotal() )
+                .withNumeric( res.getValue().getProducaoQuantidadeComercial() )
+                .withNumeric( res.getValue().getProducaoQuantidadeDefeituosa() )
                 .withUUID( res.getValue().getProduto().getProdutoId() )
                 .withUUID( res.getValue().getSetor().getSetorId() )
                 .callFunctionTable()
@@ -150,15 +174,15 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
                     }
                 })
             ;
-
-            SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
-            snackbarBuilder.show( res.message, res.level );
-            if( res.isSuccess() ){
-                this.clear();
-                this.closeModal();
-            }
-            executeOnOperationResult( res );
         }
+
+        SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.getStakePane() );
+        snackbarBuilder.show( res.message, res.level );
+        if( res.isSuccess() ){
+            this.clear();
+            this.closeModal();
+        }
+        executeOnOperationResult( res );
     }
 
     private void onChangeDateReload( ){
@@ -188,20 +212,23 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
     }
 
     private ModalNovaProducaoResult validateForm(){
+
         ModalNovaProducaoResult res = new ModalNovaProducaoResult();
         Producao.ProducaoBuilder producaoBuilder = new Producao.ProducaoBuilder();
         producaoBuilder.setProduto( this.comboxProduto.getValue() );
         producaoBuilder.setSetor( this.comboxSector.getValue() );
         producaoBuilder.setData( this.datePickeProducaoData.getValue() == null? null : java.sql.Date.valueOf( this.datePickeProducaoData.getValue() ) );
-        producaoBuilder.setQuantidade(SQLRow.doubleOf( this.textFieldProducaoQuantidade.getText() ) );
+        producaoBuilder.setQuantidadeTotal(SQLRow.doubleOf( this.textFieldProducaoTotal.getText() ) );
+        producaoBuilder.setQuantidadeComericial( SQLRow.doubleOf( this.textFieldProducaoComercial.getText() ) );
+        producaoBuilder.setQuantidadeDefeituosa( SQLResource.coalesce( SQLRow.doubleOf( this.textFieldProducaoDefeituosos.getText() ) , 0d ));
 
         res.resultVale = producaoBuilder.build();
         res.level = SnackbarBuilder.MessageLevel.WARNING;
 
         if( res.resultVale.getProduto() == null || res.resultVale.getProduto().equals( PRODUTO_VOID ) )
             res.message = "Informe o produto!";
-        else if( res.resultVale.getProducaoQuantidade() == null )
-            res.message = "Informe a quantidade do " + res.getValue().getProduto().getProdutoNome() + "!";
+        else if( res.resultVale.getProducaoQuantidadeTotal() == null )
+            res.message = "Informe a quantidade valida do " + res.getValue().getProduto().getProdutoNome() + "!";
         else if( res.resultVale.getSetor() == null || res.resultVale.getSetor().equals( SECTOR_VOID ) )
             res.message = "Informe o setor!";
         else if( res.resultVale.getProducaoData() == null )

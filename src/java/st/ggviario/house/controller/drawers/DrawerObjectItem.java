@@ -20,7 +20,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import st.ggviario.house.controller.ControllerLoader;
-import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.Unidade;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -32,8 +32,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static st.ggviario.house.controller.StyleClass.CLASS_COLUMN_ICONS_AREA;
 
 public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeCategoria> implements Initializable{
 
@@ -134,8 +132,8 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
         this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
         this.columnUnidadeDataRegegisto.setCellValueFactory( param -> param.getValue().getValue().unidadeDataregisto );
-        this.columnCategoriaDataregisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY ));
-        this.columnUnidadeDataRegegisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY ));
+        this.columnCategoriaDataregisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
+        this.columnUnidadeDataRegegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
         this.columnActionAtives.setCellFactory( cellIconsView() );
         this.useAsIconsColumn( this.columnActionAtives, 2 );
 

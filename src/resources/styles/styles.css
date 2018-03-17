@@ -249,9 +249,19 @@
     -jfx-button-type: RAISED;
 }
 
+.button.top-button{
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: md-grey-500
+}
+
+.button.top-button MaterialDesignIconView{
+    -fx-fill: #ffffff;
+}
+
 
 /**Modal Styles**/
 .modal{
+    -fx-background-color: #FFFFFF;
 }
 
 .modal-title{

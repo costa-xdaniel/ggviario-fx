@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TreeTableView?>
@@ -14,18 +15,26 @@
     <children>
       <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton fx:id="buttomCategoria" style="-fx-background-color: md-grey-500; -fx-text-fill: #ffffff; -fx-font-size: 16px;" text="CATEGORIAS">
+            <JFXButton fx:id="buttomCategoria" text="CATEGORIAS">
                <HBox.margin>
                   <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                </HBox.margin>
                <graphic>
                   <MaterialDesignIconView fill="WHITE" glyphName="BOOKMARK_PLUS" size="24" />
                </graphic>
+               <styleClass>
+                  <String fx:value="top-button" />
+                  <String fx:value="button" />
+               </styleClass>
             </JFXButton>
-            <JFXButton fx:id="buttomUnidade" style="-fx-background-color: md-grey-500; -fx-text-fill: #ffffff; -fx-font-size: 16px;" text="UNIDADES">
+            <JFXButton fx:id="buttomUnidade" text="UNIDADES">
                <graphic>
                   <MaterialDesignIconView fill="WHITE" glyphName="WEIGHT_KILOGRAM" size="24" />
                </graphic>
+               <styleClass>
+                  <String fx:value="top-button" />
+                  <String fx:value="button" />
+               </styleClass>
             </JFXButton>
          </children>
       </HBox>

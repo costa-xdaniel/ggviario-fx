@@ -1,23 +1,23 @@
 package st.ggviario.house.controller.tabs;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.controller.modals.ModalNovaProducao;
 import st.ggviario.house.controller.modals.ModalNovoSetor;
-import st.ggviario.house.controller.pages.TableClontroller;
 import st.ggviario.house.model.Produto;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -36,20 +36,19 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     @FXML private JFXTreeTableView< ProducaoModelView > treeTableProducao;
     @FXML private AnchorPane fabNewProducaoArea;
-    @FXML  private JFXButton fabNewProducaoButtom;
-    @FXML  private MaterialDesignIconView fabNewProducaoIcon;
-    @FXML  private JFXListView< Setor > listViewSetor;
-    @FXML private AnchorPane fabNewSetorArea;
-    @FXML  private JFXButton fabNewSetorButton;
-    @FXML private MaterialDesignIconView fabNewSetorIcon;
+    @FXML private JFXButton fabNewProducaoButtom;
+    @FXML private MaterialDesignIconView fabNewProducaoIcon;
 
     private TreeTableColumn< ProducaoModelView, Date > columnPoducaoData = new TreeTableColumn<>( "Data" );
     private TreeTableColumn< ProducaoModelView, String > columnProducaoProduto = new TreeTableColumn<>("Produto" );
     private TreeTableColumn< ProducaoModelView, String > columnProducaoSetor = new TreeTableColumn<>("Setor");
-    private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidade = new TreeTableColumn<>("Qt.");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidadeTotal = new TreeTableColumn<>("Qt.");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidadeComercial = new TreeTableColumn<>("Qt. Com");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoQuantidadeDefeituosa = new TreeTableColumn<>("Qt. Def.");
+    private TreeTableColumn< ProducaoModelView, Number > columnProducaoMontantePrevisto = new TreeTableColumn<>("Mont. Prev.");
     private TreeTableColumn< ProducaoModelView, Number > columnProducaoLancamento  = new TreeTableColumn<>("Lanc.");
 
-    private List< ProducaoModelView > producaoModelViewList;
+    private List< ProducaoModelView > originalProducaoModelView;
     private List< Setor> setorProducaoList;
     private List< Setor> sectorAtivosList;
     private List< Setor> setorFechadoList;
@@ -66,8 +65,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.structure();
         this.defineEvents();
         this.loadData();
-        this.pushSetor( this.setorProducaoList );
-        pushFunctLodaProducao();
+        loadProducaoVistaProduto();
 
     }
 
@@ -80,7 +78,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.sectorAtivosList = new LinkedList<>();
         this.setorProducaoList = new LinkedList<>();
         this.setorFechadoList = new LinkedList<>();
-        this.producaoModelViewList = new LinkedList<>();
+        this.originalProducaoModelView = new LinkedList<>();
         this.produtoList = new LinkedList<>();
     }
 
@@ -88,12 +86,15 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.columnPoducaoData.setCellValueFactory( param -> param.getValue().getValue().producaoData );
         this.columnProducaoProduto.setCellValueFactory( param -> param.getValue().getValue().producaoProduto );
         this.columnProducaoSetor.setCellValueFactory( param -> param.getValue().getValue().producaoSector );
-        this.columnProducaoQuantidade.setCellValueFactory( param -> param.getValue().getValue().producaoQuantidade );
-        this.columnProducaoLancamento.setCellValueFactory( param -> param.getValue().getValue().producaoLancamento );
+        this.columnProducaoQuantidadeTotal.setCellValueFactory(param -> param.getValue().getValue().producaoQuantidadeTotal);
+        this.columnProducaoQuantidadeComercial.setCellValueFactory( param -> param.getValue().getValue().producaoQuantidadeComercial );
+        this.columnProducaoQuantidadeDefeituosa.setCellValueFactory( param -> param.getValue().getValue().producaoQuantidadeDefeituosa );
+        this.columnProducaoMontantePrevisto.setCellValueFactory( param -> param.getValue().getValue().producaoMontantePrevisto );
+        this.columnProducaoLancamento.setCellValueFactory( param -> param.getValue().getValue().producaoQuantidadeLancamento);
+        this.push( new LinkedList<>(), this.treeTableProducao );
     }
 
     private void defineEvents(){
-        this.fabNewSetorArea.setOnMouseClicked(event -> onOpenModalNovoSetor());
         this.fabNewProducaoArea.setOnMouseClicked(event -> onOpemModalNovaProducao() );
         this.fabNewProducaoButtom.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
         this.fabNewProducaoIcon.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
@@ -104,32 +105,49 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.loadDataProduto();
     }
 
-    private void pushFunctLodaProducao( ){
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        this.producaoModelViewList.clear();
-        sql.query( "funct_load_producao" )
-            .withJsonb( (String ) null)
-            .callFunctionTable()
-                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                    ProducaoModelView producao;
-                    this.producaoModelViewList.add( producao =  new ProducaoModelView() );
-                    producao.setProducaoData( row.asDate( "producao_data" ) );
-                    producao.setProducaoLancamento( row.asDouble( "producao_lancamento" ) );
-                    producao.setProducaoProduto( row.asString( "produto_nome" ) );
-                    producao.setProducaoSector( row.asString( "setor_nome" ) );
-                    producao.setProducaoQuantidade( row.asDouble( "producao_quantidade" ) );
-                })
-        ;
+    private void loadProducaoVistaProduto( ){
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
+            Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
+            this.originalProducaoModelView.clear();
+            Platform.runLater( ( ) ->{
+                this.treeTableProducao.getRoot().getChildren().clear();
+                this.treeTableProducao.getColumns().setAll(
+                        this.columnPoducaoData,
+                        this.columnProducaoProduto,
+                        this.columnProducaoQuantidadeTotal,
+                        this.columnProducaoQuantidadeComercial,
+                        this.columnProducaoQuantidadeDefeituosa,
+                        this.columnProducaoMontantePrevisto,
+                        this.columnProducaoLancamento
+                );
+            });
 
-        this.treeTableProducao.getColumns().setAll(
-                this.columnPoducaoData,
-                this.columnProducaoProduto,
-                this.columnProducaoSetor,
-                this.columnProducaoQuantidade,
-                this.columnProducaoLancamento
-        );
+            sql.query( "funct_load_producao_vista_produto" )
+                    .withJsonb( (String ) null)
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater( () -> {
+                            Produto prduto = produtoBuilder.load(row.asMapJsonn("produto")).build();
+                            ProducaoModelView producao;
+                            this.originalProducaoModelView.add( producao =  new ProducaoModelView() );
+                            producao.setProducaoData( row.asDate( "producao_data" ) );
+                            producao.setProducaoProduto( prduto.getProdutoNome() );
+                            producao.setProducaoQuantidadeTotal( row.asDouble( "producao_quantidadetotal" ) );
+                            producao.setProducaoQuantidadeDefeituosa( row.asDouble( "producao_quantidadedefeituosa" ) );
+                            producao.setProducaoQuantidadeComercial( row.asDouble( "producao_quantidadecomercial" ) );
+                            producao.setProducaoMontantePrevisto( row.asDouble( "producao_montanteprevisto" ) );
+                            producao.setProducaoQuantidadeLancamento( row.asDouble( "producao_quantidadelancamento" ) );
+                            this.treeTableProducao.getRoot().getChildren().add( new TreeItem<>( producao ) );
+                        });
+                    })
+            ;
 
-        this.push( this.producaoModelViewList, this.treeTableProducao );
+        });
+
+        thread.start();
+
     }
 
     private void loadDataProduto(){
@@ -175,11 +193,6 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         ;
     }
 
-    private void pushSetor(List<Setor> setorList ){
-        this.listViewSetor.setItems(FXCollections.observableList( setorList ) );
-        this.listViewSetor.refresh();
-
-    }
 
 
     private void onOpenModalNovoSetor( ){
@@ -202,7 +215,6 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
             this.modalNovoSetor.setOnModalResult(modalResult -> {
                 if( modalResult.isSuccess() ){
                     this.loadSetorData();
-                    this.pushSetor( this.setorProducaoList);
                 }
             });
         }
@@ -213,8 +225,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
             this.modalNovaProducao = ModalNovaProducao.load( this.rootPage );
             this.modalNovaProducao.setOnModalResult(modalResult -> {
                 if( modalResult.isSuccess() ){
-                    this.pushFunctLodaProducao();
-                    this.push( this.producaoModelViewList, this.treeTableProducao );
+                    this.loadProducaoVistaProduto();
                 }
             });
         }
@@ -223,18 +234,33 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     class ProducaoModelView extends RecursiveTreeObject< ProducaoModelView >{
 
+        /*
+        	Data,
+				**Produto**,
+				Total,
+				Defeitusas,
+				Comercial,
+				Montante previsto ( Preco base ),
+				Numero de lançamento
+         */
         private ObjectProperty<Date> producaoData;
         private StringProperty producaoProduto;
         private StringProperty producaoSector;
-        private ObjectProperty< Number > producaoQuantidade;
-        private ObjectProperty< Number > producaoLancamento;
+        private ObjectProperty< Number > producaoQuantidadeTotal;
+        private ObjectProperty< Number > producaoQuantidadeDefeituosa;
+        private ObjectProperty< Number > producaoQuantidadeComercial;
+        private ObjectProperty< Number > producaoMontantePrevisto;
+        private ObjectProperty< Number > producaoQuantidadeLancamento;
 
         public ProducaoModelView() {
             this.producaoData = new SimpleObjectProperty<>();
             this.producaoProduto = new SimpleStringProperty();
             this.producaoSector = new SimpleStringProperty();
-            this.producaoQuantidade = new SimpleObjectProperty<>();
-            this.producaoLancamento = new SimpleObjectProperty<>();
+            this.producaoQuantidadeTotal = new SimpleObjectProperty<>();
+            this.producaoQuantidadeDefeituosa = new SimpleObjectProperty<>();
+            this.producaoQuantidadeComercial = new SimpleObjectProperty<>();
+            this.producaoMontantePrevisto = new SimpleObjectProperty<>();
+            this.producaoQuantidadeLancamento = new SimpleObjectProperty<>();
         }
 
         public void setProducaoData(Date producaoData) {
@@ -249,12 +275,24 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
             this.producaoSector.set(producaoSector);
         }
 
-        public void setProducaoQuantidade(Number producaoQuantidade) {
-            this.producaoQuantidade.set(producaoQuantidade);
+        public void setProducaoQuantidadeTotal(Number producaoQuantidadeTotal) {
+            this.producaoQuantidadeTotal.set(producaoQuantidadeTotal);
         }
 
-        public void setProducaoLancamento(Number producaoLancamento) {
-            this.producaoLancamento.set(producaoLancamento);
+        public void setProducaoQuantidadeLancamento(Number producaoQuantidadeLancamento) {
+            this.producaoQuantidadeLancamento.set(producaoQuantidadeLancamento);
+        }
+
+        public void setProducaoQuantidadeDefeituosa(Number producaoQuantidadeDefeituosa) {
+            this.producaoQuantidadeDefeituosa.set(producaoQuantidadeDefeituosa);
+        }
+
+        public void setProducaoQuantidadeComercial(Number producaoQuantidadeComercial) {
+            this.producaoQuantidadeComercial.set(producaoQuantidadeComercial);
+        }
+
+        public void setProducaoMontantePrevisto(Number producaoMontantePrevisto) {
+            this.producaoMontantePrevisto.set(producaoMontantePrevisto);
         }
     }
 }

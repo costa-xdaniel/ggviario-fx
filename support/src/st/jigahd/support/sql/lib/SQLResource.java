@@ -9,6 +9,13 @@ public class SQLResource {
         return null;
     }
 
+    public static <T> String coalesceText( T ... objects) {
+        for( T item : objects ){
+            if( item != null ) return String.valueOf( item );
+        }
+        return null;
+    }
+
     public static <T> boolean existIn( T item, T ... items  ){
         if( item == null ) return false;
         if( items == null || items.length == 0 ) return false;

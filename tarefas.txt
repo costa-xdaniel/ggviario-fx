@@ -8,15 +8,11 @@ Pesquisa
 	Pensar em colocar o intervalo de pesquisa em data nos menu producao->pordução, vendas , dividas e despesa
 Producao
 	Produto
-		Formatação dos numeros e moedas
 		Tamanho das colunas
 		Rever icon de adcionar novo produto
 		Verificar como colocar o tooltip nos serviços do produto
-		Estado de alerta para stock abaixo de stock minimo
 		Drawer produto
 			Listar preço completo
-			Adicionar icon editar preço de produto
-			Rever o grafico update (Aparece preco base na linha sem preco**Produto Goiaba**)
 			Ajustar, Alinhar e formatar as colunas na tabela
 		Drawer ( Categoria & Unidade )
 			Implementar a lista completa ( Apresentar em todos os produtos que uma categoria vs unidadde esta associado )

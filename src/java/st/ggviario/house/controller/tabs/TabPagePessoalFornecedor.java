@@ -17,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import st.ggviario.house.controller.modals.ModalNovoFornecedor;
-import st.ggviario.house.controller.pages.TableClontroller;
+import st.ggviario.house.controller.TableClontroller;
 import st.ggviario.house.model.Fornecedor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
@@ -88,7 +88,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
         );
 
         this.columnFornecedorNIF.getStyleClass().add("nif");
-        this.columnFornecedorRegisto.setCellFactory( cellDateFormat( DD_MM_YYYY ) );
+        this.columnFornecedorRegisto.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT) );
         this.columnFornecedorNome.getStyleClass().add( "table-column-left" );
         this.columnFornecedorTelemovel.getStyleClass().add( "table-column-left"  );
         this.columnFornecedorTelefone.getStyleClass().add( "table-column-left" );

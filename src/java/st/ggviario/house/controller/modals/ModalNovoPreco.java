@@ -26,6 +26,8 @@ import java.util.Map;
 
 public class ModalNovoPreco extends AbstractModal< Preco >{
 
+    private Preco preco;
+
     public static ModalNovoPreco newInstance(StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovoPreco>loader = new ControllerLoader<>("/fxml/modal/modal_novo_preco.fxml");
         loader.getController().createDialogModal( stackPane );
@@ -40,7 +42,7 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
     @FXML private AnchorPane iconAreaCloseModal;
     @FXML private Label modalTitle;
     @FXML private JFXTextField textFieldPrecoCusto;
-    @FXML private JFXComboBox< UnidadeProduto > comboxUnidades;
+    @FXML private JFXComboBox< Preco > comboxUnidades;
     @FXML private JFXTextField textFieldPrecoQuantidade;
     @FXML private JFXButton buttonRegistar;
     @FXML private JFXToggleButton toggleButtonPrecoBase;
@@ -71,8 +73,7 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
 
     @Override
     @Deprecated
-    public void openModal() {
-    }
+    public void openModal() { }
 
     @Override
     void structure() {
@@ -89,47 +90,74 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
         });
     }
 
-    private void onChangeUnidade( UnidadeProduto unidadeProduto ){
-        if( unidadeProduto == null || unidadeProduto.unidade == null || unidadeProduto.unidade.getUnidadeId() == null ){
+    private void onChangeUnidade( Preco unidadeProduto ){
+        if( unidadeProduto == null || unidadeProduto.getUnidade() == null || unidadeProduto.getUnidade().getUnidadeId() == null ){
             this.comboxUnidades.getSelectionModel().clearSelection();
             this.textFieldPrecoCusto.setText( null );
             this.textFieldPrecoQuantidade.setText( null );
             this.toggleButtonPrecoBase.setSelected( false );
         } else {
-            this.textFieldPrecoCusto.setText( unidadeProduto.precoCustoUnidade == null? null : String.valueOf(  unidadeProduto.precoCustoUnidade) );
-            this.textFieldPrecoQuantidade.setText( unidadeProduto.precoQuantidade == null ? null : String.valueOf(  unidadeProduto.precoQuantidade ) );
-            this.toggleButtonPrecoBase.setSelected( unidadeProduto.base );
+            this.textFieldPrecoCusto.setText( unidadeProduto.getPrecoCustoUnidade() == null? null : String.valueOf(  unidadeProduto.getPrecoCustoUnidade()) );
+            this.textFieldPrecoQuantidade.setText( unidadeProduto.getPrecoQuantidadeProduto() == null ? null : String.valueOf(  unidadeProduto.getPrecoQuantidadeProduto() ) );
+            this.toggleButtonPrecoBase.setSelected( unidadeProduto.isPrecoBase() );
         }
     }
 
     public void openModal(Produto produto ){
-        super.openModal();
         this.produto = produto;
         this.loadDataUnidade( produto );
-        this.setTitle( "Unidade de "+this.produto.getProdutoNome() );
+        super.openModal();
     }
 
-    private void loadDataUnidade( Produto produto ){
+    public void openModalEditarPreco(Preco preco ){
+        this.produto = preco.getProduto();
+        this.loadDataUnidade( this.produto );
+        this.comboxUnidades.setDisable( true );
+
+        this.preco = preco;
+        super.openModal();
+        this.getDialogModal().setOnDialogOpened(jfxDialogEvent -> {
+            this.textFieldPrecoCusto.requestFocus();
+        });
+    }
+
+    @Override
+    public void clear() {
+        this.comboxUnidades.setDisable( false );
+        this.textFieldPrecoCusto.setText( null );
+        this.textFieldPrecoQuantidade.setText( null );
+        this.toggleButtonPrecoBase.setSelected( false );
+        this.preco = null;
+    }
+
+    private void loadDataUnidade(Produto produto ){
         final Thread thread =  new Thread(() -> {
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Platform.runLater( ( )-> this.comboxUnidades.getItems().clear() );
 
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
+            Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
             sql.query( "ggviario.funct_load_unidade_simple_by_produto" )
-                    .with( produto.getProdutoId() )
-                    .callFunctionTable()
-                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater(() ->{
-                        unidadeBuilder.load( row );
-                        this.comboxUnidades.getItems().add( new UnidadeProduto( row, unidadeBuilder.build() ) );
-                    }));
+                .with( produto.getProdutoId() )
+                .callFunctionTable()
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater(() ->{
+                    precoBuilder.load( row );
+                    unidadeBuilder.load( row );
+                    precoBuilder.setUnidade( unidadeBuilder.build() );
+                    this.comboxUnidades.getItems().add( precoBuilder.build() );
+                }));
 
-
-            Platform.runLater( () -> {
+            Platform.runLater(() -> {
                 if( this.comboxUnidades.getItems().size() > 1 )
-                    this.comboxUnidades.getItems().add( 0, new UnidadeProduto( ) );
+                    this.comboxUnidades.getItems().add( 0, new Preco() );
+
+                if( this.preco != null ){
+                    this.comboxUnidades.getSelectionModel().select( this.preco );
+                }
                 else if( this.comboxUnidades.getItems().size() == 1 )
                     this.comboxUnidades.getSelectionModel().select( 0 );
             });
+
         });
         thread.start();
     }
@@ -181,7 +209,7 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
         ModalNovoPrecoResult result = new ModalNovoPrecoResult();
         result.level = SnackbarBuilder.MessageLevel.WARNING;
         Preco.PrecoBuilder precoBuilder = new Preco.PrecoBuilder();
-        precoBuilder.setUnidade(  this.comboxUnidades.getValue() == null ? null : this.comboxUnidades.getValue().unidade );
+        precoBuilder.setUnidade(  this.comboxUnidades.getValue() == null ? null : this.comboxUnidades.getValue().getUnidade() );
         precoBuilder.setProduto( this.produto );
         precoBuilder.setCustoUnidade( SQLRow.doubleOf(SQLText.normalize( this.textFieldPrecoCusto.getText() ) ) );
         precoBuilder.setQuantidadeProduto( SQLRow.doubleOf( SQLText.normalize( this.textFieldPrecoQuantidade.getText() ) ) );
@@ -212,6 +240,19 @@ public class ModalNovoPreco extends AbstractModal< Preco >{
             this.base = row.asBoolean( "preco_base" );
             if (this.base == null) this.base = false;
             this.unidade = unidade;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof UnidadeProduto)) return false;
+            UnidadeProduto that = (UnidadeProduto) o;
+            return unidade.equals(that.unidade);
+        }
+
+        @Override
+        public int hashCode() {
+            return unidade.hashCode();
         }
 
         @Override

@@ -232,6 +232,10 @@ public class SQLRow implements Serializable, Map< String, Object >{
 
     }
 
+    public static Map< String, Object > move( Map< String, Object > map, String key ){
+        return (Map<String, Object>) map.get( key );
+    }
+
     @Override
     public int size() {
         return this.values.length;
