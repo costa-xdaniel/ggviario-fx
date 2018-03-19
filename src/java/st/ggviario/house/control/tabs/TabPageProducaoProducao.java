@@ -194,13 +194,13 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     private void loadDrawerProducaoSetor(){
         if( this.drawerProducaoSetor == null ){
-            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance();
+            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.jfxDrawerItems );
         }
     }
 
     private void loadDrawerProcucaoProduto(){
         if( this.drawerProducaoProduto == null ){
-            this.drawerProducaoProduto = DrawerProducaoProduto.newInstance();
+            this.drawerProducaoProduto = DrawerProducaoProduto.newInstance( this.jfxDrawerItems );
         }
     }
 
