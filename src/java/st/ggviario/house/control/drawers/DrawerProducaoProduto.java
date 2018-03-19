@@ -15,7 +15,7 @@ public class DrawerProducaoProduto extends DrawerProducao {
     }
 
     @Override
-    public void onOpen() {
+    public void onSelect() {
 
     }
 }

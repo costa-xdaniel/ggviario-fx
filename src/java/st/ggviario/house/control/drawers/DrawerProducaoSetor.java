@@ -7,13 +7,17 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.ControllerLoader;
@@ -30,7 +34,7 @@ import java.util.ResourceBundle;
 
 public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.SetorModelView> {
 
-    private IconsActionsFactory<Setor> fatory;
+    private IconsActionsFactory<Setor> iconsFatory;
 
     public static DrawerProducaoSetor newInstance(JFXDrawer drawer, StackPane rootPageStackPane ) {
         ControllerLoader<AnchorPane, DrawerProducaoSetor > loader;
@@ -61,6 +65,13 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         super.initialize(location, resources);
         this.structure();
         this.defineEvents();
+
+    }
+    @Override
+    public void onSelect(){
+        if( this.setorModelViewList.isEmpty() ){
+            this.loadSetorData();
+        }
     }
 
     private void structure(){
@@ -71,6 +82,16 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         this.columnSetorNivel.setCellValueFactory( param -> param.getValue().getValue().setorNivel );
         this.columnSetorEstado.setCellValueFactory( param -> param.getValue().getValue().setorEstado );
         this.columnSetorIcons.setCellValueFactory( param -> param.getValue().getValue().icons );
+        this.columnSetorIcons.setCellFactory( this.cellIconsView() );
+        this.useAsIconsColumn( this.columnSetorIcons, 1 );
+        this.iconsFatory = object ->{
+            Node delete = this.newIconViewDestroy(MaterialDesignIcon.DELETE);
+            delete.setOnMouseClicked(event -> this.onDeleteSetor( object ) );
+            return this.newIconCellContainer(
+                   delete
+            );
+        };
+
 
         this.tableSetores.getColumns().setAll(
             this.columnSetorCodigo,
@@ -87,14 +108,13 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         this.fabButton.setOnAction( event -> onOpenModalNovoSetor() );
     }
 
+
     private void onOpenModalNovoSetor( ) {
         this.loadModalNovoSeto();
         this.modalNovoSetor.openModal();
     }
 
-    @Override
-    public void onOpen(){
-        this.loadSetorData();
+    private void onDeleteSetor( Setor setor ){
     }
 
     private void loadSetorData(){
@@ -110,18 +130,17 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
             sql.query( "ggviario.funct_load_setor" )
                 .withJsonb( new JsonObject() )
                 .callFunctionTable()
-                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                        Platform.runLater( ( ) -> {
-                            setorBuilder.load( row );
-                            if( row.get( "setor_super") != null ){
-                                superSetorBuilder.load( row.asMapJsonn( "setor_super" ) );
-                                setorBuilder.setSetorSuper( superSetorBuilder.build() );
-                            }
-                            SetorModelView setorModelView = new SetorModelView(  setorBuilder.build(), this.fatory );
-                            this.setorModelViewList.add( setorModelView );
-                            this.tableSetores.getRoot().getChildren().add( new TreeItem<>( setorModelView ) );
-                        });
-                    });
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater( ( ) -> {
+                        setorBuilder.load( row );
+                        if( row.get( "setor_super") != null ){
+                            superSetorBuilder.load( row.asMapJsonn( "setor_super" ) );
+                            setorBuilder.setSetorSuper( superSetorBuilder.build() );
+                        }
+                        SetorModelView setorModelView = new SetorModelView(  setorBuilder.build(), this.iconsFatory);
+                        this.setorModelViewList.add( setorModelView );
+                        this.tableSetores.getRoot().getChildren().add( new TreeItem<>( setorModelView ) );
+                        System.out.println("setorModelView = " +setorModelView.setor );
+                    }));
 
         });
         thread.setPriority( Thread.MIN_PRIORITY );
@@ -134,7 +153,7 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
             this.modalNovoSetor = ModalNovoSetor.newInstance( this.rootPageStackPane );
             this.modalNovoSetor.setOnModalResult(modalResult -> {
                 if( modalResult.isSuccess() ){
-
+                    this.loadSetorData();
                 }
             });
         }

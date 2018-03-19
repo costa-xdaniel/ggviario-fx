@@ -209,15 +209,17 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     }
 
     private void setProductoContent() {
+        System.out.println("TabPageProducaoProducao.setProductoContent");
         this.loadDrawerProcucaoProduto();
         this.itemsDrawer.setSidePane( this.drawerProducaoProduto.getRoot() );
-        this.drawerProducaoProduto.onOpen();
+        this.drawerProducaoProduto.onSelect();
     }
 
     private void setSetorContent() {
+        System.out.println("TabPageProducaoProducao.setSetorContent");
         this.loadDrawerProducaoSetor();
         this.itemsDrawer.setSidePane( this.drawerProducaoSetor.getRoot() );
-        this.drawerProducaoProduto.onOpen();
+        this.drawerProducaoSetor.onSelect();
     }
 
     private void loadDrawerProducaoSetor(){

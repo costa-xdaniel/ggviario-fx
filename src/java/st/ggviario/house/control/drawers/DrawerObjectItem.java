@@ -353,7 +353,7 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         private ObjectProperty< Date > categoriaDataregisto;
         private Categoria categoria;
         private Unidade unidade;
-        public ObjectProperty<IconsActionsObject<UnidadeCategoria>> iconsObject;
+        private ObjectProperty<IconsActionsObject<UnidadeCategoria>> iconsObject;
 
         UnidadeCategoria(Categoria categoria, IconsActionsFactory< UnidadeCategoria > fatory ) {
             this.categoriaNome = new SimpleStringProperty( categoria.getCategoriaNome() );

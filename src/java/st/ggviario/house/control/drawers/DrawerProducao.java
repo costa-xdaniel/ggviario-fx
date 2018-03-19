@@ -19,7 +19,7 @@ public abstract class DrawerProducao < Type extends RecursiveTreeObject< Type> >
     @FXML private AnchorPane panelIconClose;
 
 
-    private JFXDrawer drawer;
+    protected JFXDrawer drawer;
 
     public DrawerProducao setDrawer(JFXDrawer drawer) {
         this.drawer = drawer;
@@ -50,5 +50,5 @@ public abstract class DrawerProducao < Type extends RecursiveTreeObject< Type> >
         return root;
     }
 
-    public abstract void onOpen();
+    public abstract void onSelect();
 }
