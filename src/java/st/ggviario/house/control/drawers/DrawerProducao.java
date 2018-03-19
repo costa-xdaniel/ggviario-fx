@@ -15,7 +15,8 @@ import java.util.ResourceBundle;
 public abstract class DrawerProducao < Type extends RecursiveTreeObject< Type> > extends TableClontroller < Type > implements Initializable {
 
     @FXML private AnchorPane root;
-    @FXML private HBox headerPageIcon;
+    @FXML
+    protected HBox headerPageIcon;
     @FXML private AnchorPane panelIconClose;
 
 

@@ -1,10 +1,7 @@
 package st.ggviario.house.control.drawers;
 
 import com.google.gson.JsonObject;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
@@ -19,11 +16,17 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.ControllerLoader;
+import st.ggviario.house.control.SnackbarBuilder;
 import st.ggviario.house.control.modals.ModalNovoSetor;
+import st.ggviario.house.model.Colaborador;
+import st.ggviario.house.model.SQLResult;
 import st.ggviario.house.model.Setor;
+import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.lib.SQLResource;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
@@ -31,6 +34,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.SetorModelView> {
 
@@ -41,13 +45,19 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         loader = new ControllerLoader<>("/fxml/drawer/drawer_producao_setor.fxml");
         DrawerProducaoSetor controller = loader.getController();
         controller.setDrawer( drawer );
-        controller.rootPageStackPane = rootPageStackPane;
+        controller.stackPane = rootPageStackPane;
         return controller;
     }
 
     @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private JFXTreeTableView< SetorModelView > tableSetores;
+    @FXML private AnchorPane panelIconSetorOn;
+    @FXML private AnchorPane panelIconSetorOff;
+    private ShowMode showMode = ShowMode.ACTIVE;
+
+    private JFXRippler ripplerSetorOn;
+    private JFXRippler ripplerSetorOff;
 
     private JFXTreeTableColumn< SetorModelView, String > columnSetorCodigo = new JFXTreeTableColumn<>( "COD" );
     private JFXTreeTableColumn< SetorModelView, String > columnSetorNome = new JFXTreeTableColumn<>( "NOME" );
@@ -56,7 +66,7 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
     private JFXTreeTableColumn< SetorModelView, String > columnSetorEstado = new JFXTreeTableColumn<>( "ESTADO" );
     private JFXTreeTableColumn< SetorModelView, IconsActionsObject< Setor > > columnSetorIcons = new JFXTreeTableColumn<>( );
 
-    private StackPane rootPageStackPane;
+    private StackPane stackPane;
     private ModalNovoSetor modalNovoSetor;
     private List< SetorModelView > setorModelViewList = new LinkedList<>();
 
@@ -76,6 +86,16 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
 
     private void structure(){
         JFXDepthManager.setDepth( this.fabArea, 4 );
+        this.ripplerSetorOn = new JFXRippler( this.panelIconSetorOn );
+        this.ripplerSetorOff = new JFXRippler( this.panelIconSetorOff );
+        this.ripplerSetorOn.getStyleClass().add( "rippler" );
+        this.ripplerSetorOn.getStyleClass().add( "primary" );
+        this.ripplerSetorOff.getStyleClass().add( "rippler" );
+        this.ripplerSetorOff.getStyleClass().add( "primary" );
+        this.headerPageIcon.getChildren().add( ripplerSetorOn );
+        this.headerPageIcon.getChildren().add( ripplerSetorOff );
+
+
         this.columnSetorCodigo.setCellValueFactory( param -> param.getValue().getValue().setorCodigo );
         this.columnSetorNome.setCellValueFactory( param -> param.getValue().getValue().setorNome );
         this.columnSetorSuper.setCellValueFactory( param -> param.getValue().getValue().setorSuper );
@@ -84,14 +104,25 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         this.columnSetorIcons.setCellValueFactory( param -> param.getValue().getValue().icons );
         this.columnSetorIcons.setCellFactory( this.cellIconsView() );
         this.useAsIconsColumn( this.columnSetorIcons, 1 );
-        this.iconsFatory = object ->{
-            Node delete = this.newIconViewDestroy(MaterialDesignIcon.DELETE);
-            delete.setOnMouseClicked(event -> this.onDeleteSetor( object ) );
-            return this.newIconCellContainer(
-                   delete
-            );
-        };
+        this.iconsFatory = setor ->{
+            if( setor.getSetorId().equals( new UUID(0, 1) ) ) return null;
+            HBox icons = null;
+            if( SQLResource.existIn( setor.getSetorEstado(), Setor.SetorEstado.ATIVO, Setor.SetorEstado.PROTEGIDO ) ){
+                Node delete = this.newIconViewDestroy(MaterialDesignIcon.DELETE);
+                delete.setOnMouseClicked(event -> this.onDeleteSetor( setor ) );
+                icons = this.newIconCellContainer(
+                        delete
+                );
+            } else if( SQLResource.existIn( setor.getSetorEstado(), Setor.SetorEstado.FECHADO ) ){
+                Node restore = this.newIconViewPrimary( MaterialDesignIcon.BACKUP_RESTORE );
+                restore.setOnMouseClicked(event -> this.onRestore( setor ) );
+                icons = this.newIconCellContainer(
+                        restore
+                );
+            }
 
+            return icons;
+        };
 
         this.tableSetores.getColumns().setAll(
             this.columnSetorCodigo,
@@ -106,15 +137,42 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
 
     private void defineEvents(){
         this.fabButton.setOnAction( event -> onOpenModalNovoSetor() );
+        this.ripplerSetorOn.setOnMouseClicked(event -> this.pushSetorByMode( ShowMode.ACTIVE ));
+        this.ripplerSetorOff.setOnMouseClicked(event -> this.pushSetorByMode( ShowMode.CLOSED ));
     }
 
 
     private void onOpenModalNovoSetor( ) {
-        this.loadModalNovoSeto();
+        this.loadModalNovoSetor();
         this.modalNovoSetor.openModal();
     }
 
     private void onDeleteSetor( Setor setor ){
+        this.funct_change_setor_estado_mode( setor, false );
+    }
+
+    private void onRestore( Setor setor ){
+        this.funct_change_setor_estado_mode( setor, true );
+    }
+
+    private void funct_change_setor_estado_mode( Setor setor, boolean estado ){
+        PostgresSQL sql = PostgresSQLSingleton.getInstance();
+        Colaborador colaborador = AuthSingleton.getInstance();
+        sql.query( "ggviario.funct_change_setor_estado_mode")
+            .withUUID( colaborador.getColaboradorId() )
+            .withUUID( setor.getSetorId() )
+            .withBoolean( estado )
+            .callFunctionTable()
+                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                    SQLResult result = new SQLResult( row );
+                    SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.stackPane );
+                    if( result.isSuccess() ){
+                        snackbarBuilder.showSucess( "Setor " + setor.getSetorNome()+" desativado com sucesso!" );
+                        this.loadSetorData();
+                    } else {
+                        snackbarBuilder.showError( result.getMessage() );
+                    }
+                });
     }
 
     private void loadSetorData(){
@@ -127,7 +185,7 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
             Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
             Setor.SetorBuilder superSetorBuilder = new Setor.SetorBuilder();
-            sql.query( "ggviario.funct_load_setor" )
+            sql.query( "ggviario.funct_load_setor_all" )
                 .withJsonb( new JsonObject() )
                 .callFunctionTable()
                     .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater( ( ) -> {
@@ -138,8 +196,7 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
                         }
                         SetorModelView setorModelView = new SetorModelView(  setorBuilder.build(), this.iconsFatory);
                         this.setorModelViewList.add( setorModelView );
-                        this.tableSetores.getRoot().getChildren().add( new TreeItem<>( setorModelView ) );
-                        System.out.println("setorModelView = " +setorModelView.setor );
+                        appendSetor( setorModelView );
                     }));
 
         });
@@ -147,16 +204,37 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         thread.start();
     }
 
+    private void appendSetor(SetorModelView setorModelView) {
+        if( this.showMode == ShowMode.ACTIVE && SQLResource.existIn(  setorModelView.setor.getSetorEstado(), Setor.SetorEstado.ATIVO, Setor.SetorEstado.PROTEGIDO ) )
+            this.tableSetores.getRoot().getChildren().add( new TreeItem<>( setorModelView ) );
+        else if( this.showMode == ShowMode.CLOSED && setorModelView.setor.getSetorEstado() == Setor.SetorEstado.FECHADO ) {
+            this.tableSetores.getRoot().getChildren().add( new TreeItem<>( setorModelView ) );
+        }
+    }
 
-    private void loadModalNovoSeto(){
+    private void pushSetorByMode( ShowMode showMode ){
+        this.showMode = showMode;
+        this.tableSetores.getRoot().getChildren().clear();
+        for( SetorModelView setorModelView : this.setorModelViewList ){
+            appendSetor(setorModelView);
+        }
+    }
+
+
+    private void loadModalNovoSetor(){
         if( this.modalNovoSetor == null ){
-            this.modalNovoSetor = ModalNovoSetor.newInstance( this.rootPageStackPane );
+            this.modalNovoSetor = ModalNovoSetor.newInstance( this.stackPane);
             this.modalNovoSetor.setOnModalResult(modalResult -> {
                 if( modalResult.isSuccess() ){
                     this.loadSetorData();
                 }
             });
         }
+    }
+
+    private enum ShowMode{
+        ACTIVE,
+        CLOSED
     }
 
     public class SetorModelView extends RecursiveTreeObject< SetorModelView >{

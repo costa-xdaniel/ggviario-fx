@@ -462,3 +462,6 @@
 .rippler.close{
     -jfx-rippler-fill: md-red-500
 }
+.rippler.primary{
+    -jfx-rippler-fill: md-primary-color
+}
