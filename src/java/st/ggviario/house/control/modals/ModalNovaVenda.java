@@ -3,6 +3,7 @@ package st.ggviario.house.control.modals;
 import com.google.gson.Gson;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -50,6 +51,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     @FXML private JFXListView< Cliente > listViewCliente;
     @FXML private JFXComboBox<Produto> comboxProduto;
     @FXML private JFXComboBox<Preco> comboxPrecoUnidades;
+    @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private JFXButton buttonNovaVenda;
     @FXML private JFXTextField textFieldVendaQuantidade;
@@ -122,6 +124,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     @Override
     void structure() {
         super.structure();
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         datePickerVendaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
         datePickerVendaDataFinalizar.setConverter(this.datePickerVendaData.getConverter());
         this.comboxProduto.setItems( FXCollections.observableList( new LinkedList<>() ) );
@@ -386,7 +389,6 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         } else {
             this.textFieldVendaMontanteUnitirio.setText( this.moneyFormater.format( newPreco.getPrecoCustoUnidade() ) );
         }
-        System.out.println("newPreco = " + newPreco);
         this.onCalculateValue();
     }
 

@@ -95,7 +95,6 @@ public class ChoseControl {
         reState();
 
         if( this.itemList.size() == 1 || ( itemList.size() == 2 && !( this.itemList.get( 0 ) instanceof Item ) ) ) {
-            System.out.println("ChoseControl.append item: " +item.text);
             this.onChose( rippler, label, item );
         }
     }

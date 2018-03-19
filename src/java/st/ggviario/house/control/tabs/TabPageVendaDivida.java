@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -18,11 +19,13 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class TabPageVendaDivida extends VendaController {
-    @FXML
-    private AnchorPane localRootPage;
 
-    @FXML
-    private JFXTreeTableView<VendaViewModel> treeTableViewVendaDivida;
+
+    @FXML private AnchorPane localRootPage;
+    @FXML private JFXTreeTableView<VendaViewModel> treeTableViewVendaDivida;
+    @FXML private StackPane fabArea;
+    @FXML private JFXButton fabButton;
+    @FXML private JFXDrawer drawerVendaDetails;
 
 
     //Inicaliz columns manuale
@@ -36,11 +39,7 @@ public class TabPageVendaDivida extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, Number > columnVendaDividaMontanteAmortizado =  new JFXTreeTableColumn<>( "AMORTIZADO" );
     private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaEstado = new JFXTreeTableColumn<>( "ESTADO" );
 
-    @FXML
-    private JFXButton fabButton;
 
-    @FXML
-    private JFXDrawer drawerVendaDetails;
 
 
     //Modal Novo agamento
@@ -62,7 +61,7 @@ public class TabPageVendaDivida extends VendaController {
 
     protected void structure() {
         super.structure();
-
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
         columnVendaDividaCliente.getStyleClass().add( "table-column-left" );

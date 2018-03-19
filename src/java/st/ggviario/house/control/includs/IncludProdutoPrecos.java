@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
@@ -16,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.ControllerLoader;
 import st.ggviario.house.control.TableClontroller;
 import st.ggviario.house.control.drawers.DrawerProduto;
@@ -39,6 +41,7 @@ public class IncludProdutoPrecos extends TableClontroller<IncludProdutoPrecos.Pr
 
 
     @FXML private AnchorPane root;
+    @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private MaterialDesignIconView fabIcon;
 
@@ -67,6 +70,7 @@ public class IncludProdutoPrecos extends TableClontroller<IncludProdutoPrecos.Pr
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
         this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
         this.columnPrecoQuantidade.setCellValueFactory( param -> param.getValue().getValue().quantidadeProduto );

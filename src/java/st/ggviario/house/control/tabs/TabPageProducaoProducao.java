@@ -6,11 +6,14 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.controls.events.JFXDrawerEvent;
+import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -50,11 +53,11 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     @FXML  private StackPane fabArea;
     @FXML  private JFXListView< Setor > listViewSetor;
 
-    private String ITEM_PRODUTO = "produto";
-    private String ITEM_SETOR = "setor";
-    private String ITEM_DAY = "day";
-    private String ITEM_MONTH = "month";
-    private String ITEM_YEAR = "year";
+    private final String ITEM_PRODUTO = "produto";
+    private final String ITEM_SETOR = "setor";
+    private final String ITEM_DAY = "day";
+    private final String ITEM_MONTH = "month";
+    private final String ITEM_YEAR = "year";
 
 
     private TreeTableColumn< ProducaoModelView, Date > columnPoducaoData = new TreeTableColumn<>( "DATA" );
@@ -104,6 +107,8 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
+        JFXDepthManager.pop( this.itemsDrawer );
         this.columnPoducaoData.setCellValueFactory( param -> param.getValue().getValue().producaoData );
         this.columnProducaoProduto.setCellValueFactory( param -> param.getValue().getValue().producaoProduto );
         this.columnProducaoSetor.setCellValueFactory( param -> param.getValue().getValue().producaoSector );
@@ -167,6 +172,10 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
             drawerProducaoSetor.getRoot().setPrefHeight( newValue.doubleValue() );
             drawerProducaoProduto.getRoot().setPrefHeight( newValue.doubleValue() );
         });
+
+        this.itemsDrawer.setOnDrawerClosed(event -> {
+            this.root.getChildren().remove( this.itemsDrawer );
+        });
     }
 
     private void loadData(){
@@ -184,7 +193,10 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     private void onOpenDrawerCategoriaProduto(){
         if( this.itemChoseControl.getChosenItem() == null ) return;
-
+        if( this.itemsDrawer.isShown() ) {
+            this.itemsDrawer.close();
+            return;
+        }
 
         if( this.itemChoseControl.getChosenItem().getKey().equals( ITEM_SETOR ) )
             setSetorContent();

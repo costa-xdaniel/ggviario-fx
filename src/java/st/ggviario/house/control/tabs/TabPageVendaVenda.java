@@ -4,9 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import st.ggviario.house.model.TipoVenda;
 
 import java.net.URL;
@@ -16,11 +18,11 @@ import java.util.ResourceBundle;
 public class TabPageVendaVenda extends VendaController {
 
 
-    @FXML
-    private AnchorPane getLocalRootPage;
+    @FXML private AnchorPane getLocalRootPage;
+    @FXML private JFXTreeTableView< VendaViewModel > tableViewVendaVenda;
+    @FXML private StackPane fabArea;
+    @FXML private JFXButton fabButton;
 
-    @FXML
-    private JFXTreeTableView< VendaViewModel > tableViewVendaVenda;
 
 
     //Inicaliz columns manuale
@@ -32,8 +34,6 @@ public class TabPageVendaVenda extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, Number > columnVendaDividaMontantePagar = new JFXTreeTableColumn<>( "MONTANTE" );
     private JFXTreeTableColumn<VendaViewModel, Date > columnVendaVendaRegisto = new JFXTreeTableColumn<>( "REGISTO" );
 
-    @FXML
-    private JFXButton fabButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -90,7 +90,7 @@ public class TabPageVendaVenda extends VendaController {
     @Override
     protected void structure() {
         super.structure();
-
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
@@ -114,13 +114,13 @@ public class TabPageVendaVenda extends VendaController {
 
 
         this.tableViewVendaVenda.getColumns().setAll(
-                columnVendaDividaFaturaNumero,
-                columnVendaDividaCliente,
-                columnVendaDividaProduto,
-                columnVendaDividaQuantidade,
-                columnVendaDividaData,
-                columnVendaDividaMontantePagar,
-                columnVendaVendaRegisto
+                this.columnVendaDividaFaturaNumero,
+                this.columnVendaDividaCliente,
+                this.columnVendaDividaProduto,
+                this.columnVendaDividaQuantidade,
+                this.columnVendaDividaData,
+                this.columnVendaDividaMontantePagar,
+                this.columnVendaVendaRegisto
         );
 
         this.columnVendaDividaFaturaNumero.setMinWidth( 115 );

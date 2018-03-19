@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -31,6 +32,7 @@ import java.util.ResourceBundle;
 public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModelView> implements TabPage, Initializable {
 
     @FXML private JFXButton fabButton;
+    @FXML private StackPane fabArea;
     @FXML private JFXTreeTableView <DespesaModelView> treeTableViewDespesa;
 
     private JFXTreeTableColumn <DespesaModelView, String > columnCodigo = new JFXTreeTableColumn<>("Codigo");
@@ -64,6 +66,7 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnCodigo.setCellValueFactory( paramn -> paramn.getValue().getValue().codigo );
         this.columnFornecedor.setCellValueFactory( param -> param.getValue().getValue().fornecedor );
         this.columnProduto.setCellValueFactory( param -> param.getValue().getValue().produto );

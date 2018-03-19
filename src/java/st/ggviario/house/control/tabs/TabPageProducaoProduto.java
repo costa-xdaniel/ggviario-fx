@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModelView > implements TabPage, Initializable{
+public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProduto.ProdutoModelView > implements TabPage, Initializable{
 
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< ProdutoModelView > treeTableViewUnidade;
@@ -89,6 +89,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         this.loadDrawerObjectType();
         this.columnCodigo.setCellValueFactory( param -> param.getValue().getValue().codigo );
         this.columnNome.setCellValueFactory( param -> param.getValue().getValue().nome );
@@ -124,7 +125,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         );
 
         this.treeTableViewUnidade.getStyleClass().add( "produto" );
-        this.treeTableViewUnidade.setRowFactory(produtoModelViewTreeTableView -> new TreeTableRow<TabPageProduto.ProdutoModelView>(){
+        this.treeTableViewUnidade.setRowFactory(produtoModelViewTreeTableView -> new TreeTableRow<TabPageProducaoProduto.ProdutoModelView>(){
             @Override
             protected void updateItem(ProdutoModelView item, boolean empty) {
                 super.updateItem(item, empty);

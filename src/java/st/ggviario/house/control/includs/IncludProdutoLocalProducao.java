@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.application.Platform;
@@ -66,6 +67,7 @@ public class IncludProdutoLocalProducao extends TableClontroller<IncludProdutoLo
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnSetorCodigo.setCellValueFactory(param -> param.getValue().getValue().setorCodigo);
         this.columnSetor.setCellValueFactory(param -> param.getValue().getValue().setorNome);
         this.columnSetorSuper.setCellValueFactory(param -> param.getValue().getValue().setorSuper);

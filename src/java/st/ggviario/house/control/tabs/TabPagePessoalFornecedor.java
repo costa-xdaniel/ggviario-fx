@@ -2,6 +2,7 @@ package st.ggviario.house.control.tabs;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +34,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< FornecedorViewModel > tableViewFornecedor;
     @FXML private JFXDrawer drawerFornecedor;
+    @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
 
     private List< FornecedorViewModel > listForenecedor = new LinkedList<>();
@@ -64,6 +66,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
     }
 
     private void structure(){
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         Text text = new Text( "Nenhum fornecedor encontrado!" );
         text.getStyleClass().add( "table-no-data-found" );
 

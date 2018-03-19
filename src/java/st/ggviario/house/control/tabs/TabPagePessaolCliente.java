@@ -3,6 +3,7 @@ package st.ggviario.house.control.tabs;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -31,7 +32,7 @@ import java.util.ResourceBundle;
 public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolCliente.ClienteViewModel> implements TabPage, Initializable {
 
 
-    @FXML private Pane fabArea;
+    @FXML private StackPane fabArea;
     @FXML private MaterialDesignIconView fabIcon;
     @FXML private Button fabButton;
     @FXML private JFXTreeTableView< ClienteViewModel > tableClientes;
@@ -73,6 +74,7 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
     }
 
     private void structure() {
+        JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnClienteCodigo.setCellValueFactory( param -> param.getValue().getValue().codigo );
         this.columnClienteNome.setCellValueFactory( param -> param.getValue().getValue().nome );
         this.columnClienteContacto.setCellValueFactory( param -> param.getValue().getValue().contacto );
