@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.Icon?>
 <?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
@@ -8,34 +7,30 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.tabs.TabPageProducaoProducao">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.control.tabs.TabPageProducaoProducao">
     <children>
       <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ToggleButtonGroup selectionType="SINGLE">
-                <toggles>
-                    <ToggleButton>
-                        <graphic>
-                            <Icon content="FORMAT_ALIGN_LEFT" />
-                        </graphic>
-                    </ToggleButton>
-                    <ToggleButton selected="true">
-                        <graphic>
-                            <Icon content="FORMAT_ALIGN_CENTER" />
-                        </graphic>
-                    </ToggleButton>
-                    <ToggleButton>
-                        <graphic>
-                            <Icon content="FORMAT_ALIGN_RIGHT" />
-                        </graphic>
-                    </ToggleButton>
-                </toggles>
-            </ToggleButtonGroup>
+            <ToggleButtonGroup selectionType="SINGLE" />
+            <HBox fx:id="choseArea">
+               <children>
+                  <Label fx:id="labelProduto" text="Produto">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="VIEW_LIST" />
+                     </graphic>
+                  </Label>
+                  <Label fx:id="labelSetor" text="Setor">
+                     <graphic>
+                        <MaterialDesignIconView glyphStyle="VIEW_LIST" />
+                     </graphic>
+                  </Label>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -46,7 +41,6 @@
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </JFXTreeTableView>
-      <JFXDrawer fx:id="jfxDrawerItems" defaultDrawerSize="500.0" direction="RIGHT" styleClass="drawer-details-page" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="88.0" />
       <JFXDrawer fx:id="jfxDrawerProdutoDetails" defaultDrawerSize="500.0" direction="RIGHT" layoutX="110.0" layoutY="360.0" styleClass="drawer-details" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
         <AnchorPane fx:id="fabNewProducaoArea" maxHeight="56.0" maxWidth="56.0" minHeight="56.0" minWidth="56.0" prefHeight="56.0" prefWidth="56.0" styleClass="floating-action-area" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0">
             <children>
@@ -59,5 +53,6 @@
         <URL value="@../../styles/material-design.css" />
         <URL value="@../../styles/styles.css" />
       <URL value="@../../styles/tree-table-styles.css" />
+      <URL value="@../../styles/components.css" />
     </stylesheets>
 </AnchorPane>

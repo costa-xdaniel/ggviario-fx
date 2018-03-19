@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.controller.drawers.DrawerProduto">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.control.drawers.DrawerProduto">
    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" style="-fx-background-color: md-primary-text-color;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
          <AnchorPane fx:id="headerPane" BorderPane.alignment="CENTER">

@@ -98,7 +98,7 @@
                               <Insets />
                            </VBox.margin>
                         </Separator>
-                        <Label prefWidth="169.0" styleClass="card-subtitle" text="Radio buttons" />
+                        <Label prefWidth="169.0" styleClass="card-subtitle" text="Radio buttonList" />
                         <Label alignment="TOP_CENTER" prefHeight="89.0" prefWidth="314.0" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" wrapText="true">
                            <padding>
                               <Insets bottom="15.0" />

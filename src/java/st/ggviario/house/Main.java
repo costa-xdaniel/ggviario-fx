@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import st.ggviario.house.controller.HomeController;
+import st.ggviario.house.control.HomeController;
 import st.ggviario.house.singleton.AuthSingleton;
 
 public class Main extends Application {
