@@ -26,26 +26,6 @@
                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                         </padding>
                      </AnchorPane>
-                     <AnchorPane fx:id="panelIconListaCompleta" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="VIEW_LIST" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelIconListaAtivos" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelIconLiataRemovidos" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="DELETE" layoutX="10.0" layoutY="78.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane fx:id="panelIconAddItem" styleClass="details-header-icon-area">
-                        <children>
-                           <MaterialDesignIconView glyphName="PLUS" layoutX="9.0" layoutY="87.0" size="24" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
                   </children>
                </HBox>
                <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="PRODUTOS" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />

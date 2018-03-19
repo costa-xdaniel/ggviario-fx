@@ -20,17 +20,17 @@
    <children>
       <VBox alignment="CENTER_RIGHT">
          <children>
-            <AnchorPane fx:id="anchorHeader">
-               <children>
-                  <Label fx:id="modalTitle" styleClass="modal-title" text="Novo fornecedor" />
-                  <AnchorPane fx:id="iconAnchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <MaterialDesignIconView layoutX="60.0" layoutY="105.0" styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
-                     </children>
-                  </AnchorPane>
-                  <Separator layoutX="50.0" layoutY="25.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-               </children>
-            </AnchorPane>
+             <AnchorPane fx:id="anchorHeader">
+                 <children>
+                     <Label fx:id="modalTitle" styleClass="modal-title" text="Novo fornecedor" />
+                     <AnchorPane fx:id="iconAnchorCloseArea" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                         <children>
+                             <MaterialDesignIconView layoutX="60.0" layoutY="105.0" styleClass="icon-close" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+                         </children>
+                     </AnchorPane>
+                     <Separator layoutX="50.0" layoutY="25.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                 </children>
+             </AnchorPane>
             <GridPane styleClass="form">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

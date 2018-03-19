@@ -8,7 +8,7 @@ public class DrawerProducaoProduto extends DrawerProducao {
 
     public static DrawerProducaoProduto newInstance(JFXDrawer drawer ) {
         ControllerLoader<AnchorPane, DrawerProducaoProduto > loader;
-        loader = new ControllerLoader<>("/fxml/drawer/drawer_producao_produto.fxml");
+        loader = new ControllerLoader<>("/fxml/drawer/drawer_producao_produto.fxml" );
         DrawerProducaoProduto controller = loader.getController();
         controller.setDrawer( drawer );
         return controller;

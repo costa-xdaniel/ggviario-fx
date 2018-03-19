@@ -1,8 +1,10 @@
 package st.ggviario.house.control.modals;
 
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import st.ggviario.house.model.SQLResult;
 import st.ggviario.house.model.Setor;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
@@ -28,7 +31,7 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
 
     private static Setor SECTOR_VOID = new Setor();
 
-    public static ModalNovoSetor load(StackPane stackPane ) {
+    public static ModalNovoSetor newInstance(StackPane stackPane ) {
         ControllerLoader< AnchorPane, ModalNovoSetor> loader = new ControllerLoader<>("/fxml/modal/modal_novo_setor.fxml");
         ModalNovoSetor novoSetor = loader.getController();
         novoSetor.createDialogModal( stackPane );
@@ -46,8 +49,6 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
     @FXML private Label labelCategoriaNivel;
     @FXML private Label labelCategoriaSuper;
     @FXML private JFXButton buttonRegistar;
-
-    private List<Setor> setorList = new LinkedList<>();
 
     @Override
     Region getContentRoot() {
@@ -77,8 +78,15 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
         this.labelCategoriaSuper.setText( null );
     }
 
-    protected void structure(){
+    @Override
+    public void openModal() {
+        this.loadSetorSuper();
+        super.openModal();
+    }
 
+    protected void structure(){
+        super.structure();
+        this.comboxCategoriaSuper.getItems().clear();
     }
 
     void defineEvent(){
@@ -86,13 +94,6 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
         this.comboxCategoriaSuper.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.onChangeSetor(newValue );
         });
-    }
-
-    public void pushSetorSupers(List<Setor> setorList){
-        this.setorList.clear();
-        this.setorList.add( SECTOR_VOID );
-        this.setorList.addAll( setorList );
-        this.comboxCategoriaSuper.setItems( FXCollections.observableList( this.setorList) );
     }
 
 
@@ -143,6 +144,37 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
             this.labelCategoriaNivel.setText( String.valueOf(  newSetor.getSetorNivel() ) );
             this.labelCategoriaSuper.setText( newSetor.getSetorSuper() == null ? null : newSetor.getSetorSuper().getSetorNome() );
         }
+    }
+
+    private void loadSetorSuper(){
+        this.comboxCategoriaSuper.getItems().clear();
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+
+            Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
+            Setor.SetorBuilder superSetorBuilder = new Setor.SetorBuilder();
+            sql.query( "ggviario.funct_load_setor")
+                .withJsonb( new JsonObject() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        setorBuilder.load( row );
+                        if( row.get( "setor_super" ) != null ){
+                            superSetorBuilder.load( row.asMapJsonn( "setor_super" ) );
+                            setorBuilder.setSetorSuper( superSetorBuilder.build() );
+                        }
+                        this.comboxCategoriaSuper.getItems().add( setorBuilder.build() );
+                    });
+
+            Platform.runLater(() -> {
+                if( this.comboxCategoriaSuper.getItems().size() == 1 ){
+                    this.comboxCategoriaSuper.getSelectionModel().select( 0 );
+                } else if( this.comboxCategoriaSuper.getItems().size() == 2 ){
+                    this.comboxCategoriaSuper.getItems().add( SECTOR_VOID );
+                }
+            });
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
     private ModalNovoSetorResult validateForm(){

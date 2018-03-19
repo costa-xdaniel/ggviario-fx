@@ -457,4 +457,8 @@
 
 
 
-/*=============== MENU >>/
+/*=============== MENU >>*/
+
+.rippler.close{
+    -jfx-rippler-fill: md-red-500
+}

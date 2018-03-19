@@ -68,11 +68,11 @@ public class IncludProdutoLocalProducao extends TableClontroller<IncludProdutoLo
 
     private void structure(){
         JFXDepthManager.setDepth( this.fabArea, 4 );
-        this.columnSetorCodigo.setCellValueFactory(param -> param.getValue().getValue().setorCodigo);
-        this.columnSetor.setCellValueFactory(param -> param.getValue().getValue().setorNome);
-        this.columnSetorSuper.setCellValueFactory(param -> param.getValue().getValue().setorSuper);
-        this.columnSetorQuantidade.setCellValueFactory(param -> param.getValue().getValue().setorQuantidade );
-        this.columnSetorEstado.setCellValueFactory(param -> param.getValue().getValue().setorEstado );
+        this.columnSetorCodigo.setCellValueFactory( param -> param.getValue().getValue().setorCodigo );
+        this.columnSetor.setCellValueFactory( param -> param.getValue().getValue().setorNome );
+        this.columnSetorSuper.setCellValueFactory( param -> param.getValue().getValue().setorSuper );
+        this.columnSetorQuantidade.setCellValueFactory( param -> param.getValue().getValue().setorQuantidade );
+        this.columnSetorEstado.setCellValueFactory( param -> param.getValue().getValue().setorEstado );
 
         this.iconsActionsFactory = ( localProducao ) -> {
             if( localProducao.getLocalProducaoEstado() == LocalProducao.LocalProducaoEstado.ATIVO ){

@@ -36,7 +36,8 @@ public abstract class AbstractModal< R > implements Modal<R>, Initializable {
         this.getAnchorHeader().getChildren().add( this.ripplerCloseModal );
         AnchorPane.setTopAnchor( this.ripplerCloseModal, 0.0 );
         AnchorPane.setRightAnchor( this.ripplerCloseModal, 0.0 );
-        this.ripplerCloseModal.setStyle( "-jfx-rippler-fill: md-red-500" );
+        this.ripplerCloseModal.getStyleClass().add( "rippler" );
+        this.ripplerCloseModal.getStyleClass().add( "close" );
     }
 
     void defineEventClickCloseButton(){

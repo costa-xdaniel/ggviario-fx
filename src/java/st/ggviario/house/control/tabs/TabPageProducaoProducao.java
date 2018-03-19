@@ -6,14 +6,12 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.jfoenix.controls.events.JFXDrawerEvent;
 import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -222,7 +220,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     private void loadDrawerProducaoSetor(){
         if( this.drawerProducaoSetor == null ){
-            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.itemsDrawer);
+            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.itemsDrawer, this.rootPage);
 
         }
     }
@@ -349,12 +347,6 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         thread.start();
     }
 
-    private void onOpenModalNovoSetor( ){
-        loadModalNovoSetor();
-        this.modalNovoSetor.pushSetorSupers( this.setorProducaoList);
-        this.modalNovoSetor.openModal();
-    }
-
     private void onOpemModalNovaProducao(){
         this.loadModalNovaProducao();
         this.modalNovaProducao.pushSetor( this.sectorAtivosList );
@@ -362,16 +354,6 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.modalNovaProducao.openModal();
     }
 
-
-    private void loadModalNovoSetor(){
-        if( this.modalNovoSetor == null ){
-            this.modalNovoSetor = ModalNovoSetor.load( this.rootPage );
-            this.modalNovoSetor.setOnModalResult(modalResult -> {
-                if( modalResult.isSuccess() ){
-                }
-            });
-        }
-    }
 
     private void loadModalNovaProducao(){
         if( this.modalNovaProducao == null ){
