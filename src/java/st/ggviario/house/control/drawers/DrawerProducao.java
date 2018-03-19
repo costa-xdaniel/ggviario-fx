@@ -2,19 +2,17 @@ package st.ggviario.house.control.drawers;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXRippler;
-import com.jfoenix.effects.JFXDepthManager;
-import javafx.event.EventHandler;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import st.ggviario.house.control.TableClontroller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DrawerProducao implements Initializable {
+public class DrawerProducao < Type extends RecursiveTreeObject< Type> > extends TableClontroller < Type > implements Initializable {
 
     @FXML private AnchorPane root;
     @FXML private HBox headerPageIcon;
@@ -31,7 +29,7 @@ public class DrawerProducao implements Initializable {
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize( URL location, ResourceBundle resources ) {
         this.defineEvents();
         this.structure();
     }

@@ -175,7 +175,7 @@ public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
         column.setMinWidth( width );
     }
 
-    public class IconsActionsObject<T> {
+    public class IconsActionsObject< T > {
         private T object;
         private IconsActionsFactory< T > factory;
 
