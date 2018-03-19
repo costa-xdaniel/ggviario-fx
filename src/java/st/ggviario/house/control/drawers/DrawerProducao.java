@@ -12,7 +12,7 @@ import st.ggviario.house.control.TableClontroller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DrawerProducao < Type extends RecursiveTreeObject< Type> > extends TableClontroller < Type > implements Initializable {
+public abstract class DrawerProducao < Type extends RecursiveTreeObject< Type> > extends TableClontroller < Type > implements Initializable {
 
     @FXML private AnchorPane root;
     @FXML private HBox headerPageIcon;
@@ -49,4 +49,6 @@ public class DrawerProducao < Type extends RecursiveTreeObject< Type> > extends 
     public AnchorPane getRoot() {
         return root;
     }
+
+    public abstract void onOpen();
 }

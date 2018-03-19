@@ -13,4 +13,9 @@ public class DrawerProducaoProduto extends DrawerProducao {
         controller.setDrawer( drawer );
         return controller;
     }
+
+    @Override
+    public void onOpen() {
+
+    }
 }

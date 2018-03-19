@@ -211,11 +211,13 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     private void setProductoContent() {
         this.loadDrawerProcucaoProduto();
         this.itemsDrawer.setSidePane( this.drawerProducaoProduto.getRoot() );
+        this.drawerProducaoProduto.onOpen();
     }
 
     private void setSetorContent() {
         this.loadDrawerProducaoSetor();
         this.itemsDrawer.setSidePane( this.drawerProducaoSetor.getRoot() );
+        this.drawerProducaoProduto.onOpen();
     }
 
     private void loadDrawerProducaoSetor(){
