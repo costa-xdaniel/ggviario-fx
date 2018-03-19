@@ -168,8 +168,8 @@ public class ModalNovoSetor extends AbstractModal< Setor > {
             Platform.runLater(() -> {
                 if( this.comboxCategoriaSuper.getItems().size() == 1 ){
                     this.comboxCategoriaSuper.getSelectionModel().select( 0 );
-                } else if( this.comboxCategoriaSuper.getItems().size() == 2 ){
-                    this.comboxCategoriaSuper.getItems().add( SECTOR_VOID );
+                } else if( this.comboxCategoriaSuper.getItems().size() > 1 ){
+                    this.comboxCategoriaSuper.getItems().add( 0, SECTOR_VOID );
                 }
             });
         });

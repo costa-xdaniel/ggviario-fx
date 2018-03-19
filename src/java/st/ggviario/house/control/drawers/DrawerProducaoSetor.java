@@ -52,6 +52,13 @@ public class DrawerProducaoSetor extends DrawerProducao {
         this.modalNovoSetor.openModal();
     }
 
+    private void loadSetorData(){
+        Thread thread = new Thread(() -> {
+
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+    }
+
 
     private void loadModalNovoSeto(){
         if( this.modalNovoSetor == null ){
