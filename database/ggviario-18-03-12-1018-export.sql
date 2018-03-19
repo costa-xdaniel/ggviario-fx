@@ -2948,7 +2948,7 @@ CREATE FUNCTION funct_load_producao(filter jsonb) RETURNS TABLE(producao_data da
     AS $$
 select
   pro.producao_data,
-  sum( pro.producao_quantidadecomercial ),
+  sum( pro.producao_quantidadetotal ),
   count( * ),
   prod.produto_id,
   prod.produto_nome,
@@ -2973,8 +2973,8 @@ CREATE FUNCTION funct_load_producao_data(arg_produto_id uuid, arg_setor_id uuid,
     LANGUAGE sql
     AS $$
 select 
-     coalesce(  sum( pr.producao_quantidadecomercial ) filter ( where pr.producao_produto_id = arg_produto_id ), 0 ),
-     coalesce( sum( pr.producao_quantidadecomercial ) filter ( where pr.producao_produto_id = arg_produto_id  and pr.producao_setor_id = arg_setor_id ), 0 )
+     coalesce(  sum( pr.producao_quantidadetotal ) filter ( where pr.producao_produto_id = arg_produto_id ), 0 ),
+     coalesce( sum( pr.producao_quantidadetotal ) filter ( where pr.producao_produto_id = arg_produto_id  and pr.producao_setor_id = arg_setor_id ), 0 )
     from ggviario.producao pr 
     where pr.producao_data = arg_producao_data;
 $$;
@@ -4017,7 +4017,7 @@ begin
     producao_colaborador_id,
     producao_produto_id,
     producao_setor_id,
-    producao_quantidadecomercial,
+    producao_quantidadetotal,
     producao_data,
     producao_codigo,
     producao_quantidadedefeituosa

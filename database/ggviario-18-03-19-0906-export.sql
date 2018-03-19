@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.1
--- Dumped by pg_dump version 10.1
+-- Dumped from database version 10.2
+-- Dumped by pg_dump version 10.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -44,6 +44,10 @@ ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS fk_movim
 ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS fk_movimento_to_conta;
 ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS fk_movimento_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS fk_movimento_to_colaborador;
+ALTER TABLE IF EXISTS ONLY ggviario.localproducao DROP CONSTRAINT IF EXISTS fk_localproducao_to_setor;
+ALTER TABLE IF EXISTS ONLY ggviario.localproducao DROP CONSTRAINT IF EXISTS fk_localproducao_to_produto;
+ALTER TABLE IF EXISTS ONLY ggviario.localproducao DROP CONSTRAINT IF EXISTS fk_localproducao_to_colaborador_atualizacao;
+ALTER TABLE IF EXISTS ONLY ggviario.localproducao DROP CONSTRAINT IF EXISTS fk_localproducao_to_colaborador;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_distrito;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS fk_fornecedor_to_colaborador;
@@ -94,6 +98,12 @@ DROP TRIGGER IF EXISTS tg_movimento_after_insert_update_conta ON ggviario.movime
 DROP TRIGGER IF EXISTS tg_despesa_after_insert_update_stock ON ggviario.despesa;
 DROP INDEX IF EXISTS ggviario.setor_setor_codigo_uindex;
 DROP INDEX IF EXISTS ggviario.producao_producao_codigo_uindex;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_setor_id;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_produto_id;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_estado;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_dataregisto;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_colaborador_id;
+DROP INDEX IF EXISTS ggviario.idx_localproducao_colaborador_atualizacao;
 DROP INDEX IF EXISTS ggviario.despesa_despesa_codigo_uindex;
 DROP INDEX IF EXISTS ggviario.cliente_cliente_codigo_uindex;
 DROP INDEX IF EXISTS ggviario.categoria_categorai_codigo_uindex;
@@ -150,6 +160,7 @@ ALTER TABLE IF EXISTS ONLY ggviario.produto DROP CONSTRAINT IF EXISTS pk_produto
 ALTER TABLE IF EXISTS ONLY ggviario.producao DROP CONSTRAINT IF EXISTS pk_produca_id;
 ALTER TABLE IF EXISTS ONLY ggviario.preco DROP CONSTRAINT IF EXISTS pk_preco_id;
 ALTER TABLE IF EXISTS ONLY ggviario.movimento DROP CONSTRAINT IF EXISTS pk_movimento_id;
+ALTER TABLE IF EXISTS ONLY ggviario.localproducao DROP CONSTRAINT IF EXISTS pk_localproducao_id;
 ALTER TABLE IF EXISTS ONLY ggviario.fornecedor DROP CONSTRAINT IF EXISTS pk_fornecedor_id;
 ALTER TABLE IF EXISTS ONLY ggviario.distrito DROP CONSTRAINT IF EXISTS pk_distrito_id;
 ALTER TABLE IF EXISTS ONLY ggviario.despesa DROP CONSTRAINT IF EXISTS pk_despesa_id;
@@ -183,6 +194,7 @@ DROP TABLE IF EXISTS ggviario.tipodocumento;
 DROP TABLE IF EXISTS ggviario.tipoconta;
 DROP TABLE IF EXISTS ggviario.sexo;
 DROP TABLE IF EXISTS ggviario.producao;
+DROP TABLE IF EXISTS ggviario.localproducao;
 DROP TABLE IF EXISTS ggviario.distrito;
 DROP TABLE IF EXISTS ggviario.codigo;
 SET search_path = colaborador, pg_catalog;
@@ -225,13 +237,16 @@ DROP FUNCTION IF EXISTS rule.venda_insert(arg_colaborador_id uuid, arg_produto_i
 DROP FUNCTION IF EXISTS rule.venda_fatura_generatenext(_tipocompra ggviario.tipovenda);
 DROP FUNCTION IF EXISTS rule.venda_estado_desc(_venda ggviario.venda, _const constant);
 DROP FUNCTION IF EXISTS rule.setor_estado_desc(_setor ggviario.setor, _const constant);
+DROP FUNCTION IF EXISTS rule.select_setor_cascade_witch_raiz(arg_setor_id uuid, part_lenght integer);
+DROP FUNCTION IF EXISTS rule.select_setor_cascade(arg_setor_id uuid);
 DROP FUNCTION IF EXISTS rule.produto_estado_desc(_produto ggviario.produto, _const constant);
+DROP FUNCTION IF EXISTS rule.produto_estado(_produto ggviario.produto, _const constant);
 DROP FUNCTION IF EXISTS rule.movimento_insert(arg_colaborador_id uuid, arg_conta_id uuid, arg_tmovimento_id smallint, arg_movimento_documento character varying, arg_movimento_data date, arg_movimento_montante numeric, arg_movimento_libele character varying, arg_venda_id uuid, arg_despesa_id uuid, arg_movimento_id uuid, arg_movimento_devolucao boolean, arg_movimento_transferencianumero integer);
 DROP FUNCTION IF EXISTS rule.movimento_estado_desc(_movimento ggviario.movimento, _const constant);
 DROP FUNCTION IF EXISTS rule.movimento_check_source(_movimento ggviario.movimento);
 DROP FUNCTION IF EXISTS rule.functg_venda_intert_update_produto_stock();
 DROP FUNCTION IF EXISTS rule.functg_setor_after_insert_protect_parent();
-DROP FUNCTION IF EXISTS rule.functg_producao_after_insert_movement_sector_and_product();
+DROP FUNCTION IF EXISTS rule.functg_producao_after_insert_movement_produto();
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_venda();
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_movimento_devolucao();
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_despesa();
@@ -344,11 +359,12 @@ DROP FUNCTION IF EXISTS ggviario.funct_reg_venda_venda(arg_colaborador_id uuid, 
 DROP FUNCTION IF EXISTS ggviario.funct_reg_venda_divida(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_unidade(arg_colaborador_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, options jsonb);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid);
-DROP FUNCTION IF EXISTS ggviario.funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_precos jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric, options jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidadetotal numeric, arg_producao_quantidadecomerciavel numeric, arg_producao_quantidadedefeituosa numeric, arg_produto_id uuid, arg_setor_id uuid);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_preco_custounidade numeric, arg_preco_quantiadeproduto numeric, arg_preco_base boolean);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_movimento_amortizacao_venda(arg_colaborador_id uuid, arg_venda_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_movimento_amortizacao_despesa(arg_colaborador_id uuid, arg_despesa_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying);
+DROP FUNCTION IF EXISTS ggviario.funct_reg_localproducao(arg_colaborador_id uuid, arg_produto_id uuid, arg_setor_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_fornecedor(arg_colaborador_id uuid, arg_fornecedor_nome character varying, arg_fornecedor_nif character varying, arg_fornecedor_telefone character varying, arg_fornecedor_telemovel character varying, arg_fornecedor_mail character varying, arg_fornecedor_local character varying, arg_distrito_id smallint);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_equivalencia(arg_colaborador_id uuid, arg_produto_id uuid, arg_equivalencias jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_reg_despesa(arg_colaborador_id uuid, arg_fornecedor_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_despesa_quantidade numeric, arg_despesa_custounitario numeric, arg_despesa_custototal numeric, arg_despesa_data date, arg_despesa_numerofatura character varying, arg_despesa_paga boolean, arg_conta_id uuid);
@@ -356,16 +372,23 @@ DROP FUNCTION IF EXISTS ggviario.funct_reg_cliente(arg_colaborador_id uuid, arg_
 DROP FUNCTION IF EXISTS ggviario.funct_reg_categoria(arg_colaborador_id uuid, arg_categoria_super uuid, arg_categoria_nome character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_load_venda_venda(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_venda_divida(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_unidade_simple_by_produto(arg_produto_id uuid);
+DROP FUNCTION IF EXISTS ggviario.funct_load_unidade(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_tipodocumento(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_setor_by_localproducao_to_producao(arg_produto_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_load_setor(filter jsonb);
-DROP FUNCTION IF EXISTS ggviario.funct_load_produto_venda(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_produto_venda(arg_data date);
+DROP FUNCTION IF EXISTS ggviario.funct_load_produto_unidades(arg_produto_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_load_produto_producao(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_produto_despesa(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_produto(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_producao_vista_setor(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_producao_vista_produto(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_producao_data(arg_produto_id uuid, arg_setor_id uuid, arg_producao_data date);
 DROP FUNCTION IF EXISTS ggviario.funct_load_producao(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_movimento_venda(arg_venda_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_load_movimento_venda(filter jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_load_localproducao(arg_produto_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_load_fornecedor(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_distrito(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_despesa(filter jsonb);
@@ -375,11 +398,16 @@ DROP FUNCTION IF EXISTS ggviario.funct_load_cliente(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_categoria_simple(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_load_categoria(filter jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_change_venda_anular(arg_colaborador_id uuid, arg_venda_id uuid, arg_textoconfirmacao text);
+DROP FUNCTION IF EXISTS ggviario.funct_change_unidade(arg_colaborador_id uuid, arg_unidade_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying);
 DROP FUNCTION IF EXISTS ggviario.funct_change_setor_estado_mode(arg_colaborador_id uuid, arg_setor_id uuid, arg_estado_modo boolean);
 DROP FUNCTION IF EXISTS ggviario.funct_change_setor(arg_colaborador_id uuid, arg_setor_id uuid, arg_setor_data jsonb);
 DROP FUNCTION IF EXISTS ggviario.funct_change_sector_structure();
 DROP TABLE IF EXISTS ggviario.setor;
 DROP FUNCTION IF EXISTS ggviario.funct_change_produto_setoptions(arg_colaborador_id uuid, arg_produto_id uuid, arg_produto_servicovenda boolean, arg_produto_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockdinamico boolean, options jsonb);
+DROP FUNCTION IF EXISTS ggviario.funct_change_produto_estado(arg_colaborador_id uuid, arg_produto_id uuid);
+DROP FUNCTION IF EXISTS ggviario.funct_change_produto_data(arg_colaborador_id uuid, arg_produto_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric);
+DROP FUNCTION IF EXISTS ggviario.funct_change_preco_close(arg_colaborador_id uuid, arg_preco_id uuid, arg_conformacao_mensage character varying);
+DROP FUNCTION IF EXISTS ggviario.funct_change_locaoproducao_disable(arg_colaborador_id uuid, arg_localproducao_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_change_categoria_structure();
 DROP TABLE IF EXISTS ggviario.categoria;
 SET search_path = lib, pg_catalog;
@@ -387,6 +415,7 @@ SET search_path = lib, pg_catalog;
 DROP FUNCTION IF EXISTS lib.is_normalized(text);
 SET search_path = ggviario, pg_catalog;
 
+DROP FUNCTION IF EXISTS ggviario.funct_change_categoria(arg_colaborador_id uuid, arg_categoria_id uuid, arg_categoria_nome character varying);
 DROP FUNCTION IF EXISTS ggviario.compra_estado_desc(_compra venda, _const rule.constant);
 DROP TABLE IF EXISTS ggviario.venda;
 SET search_path = rule, pg_catalog;
@@ -588,7 +617,14 @@ CREATE TYPE constant AS (
 	codigo_producao_letra character(1),
 	codigo_producao_digitos smallint,
 	codigo_produto_digitos smallint,
-	codigo_produto_letra character(1)
+	codigo_produto_letra character(1),
+	produto_estado_stock_minimo smallint,
+	produto_estado_stock_vazio smallint,
+	produto_estado_stock_ok smallint,
+	produto_estado_ok smallint,
+	localproducao_estado_ativo smallint,
+	localproducao_estado_fechado smallint,
+	localproducao_estado_herdado smallint
 );
 
 
@@ -1886,6 +1922,9 @@ begin
   _const.setor_estado_fechado := 0;
 
   --//Estado de produto
+  _const.produto_estado_stock_vazio := 3;
+  _const.produto_estado_stock_minimo := 2;
+  _const.produto_estado_ok := 1;
   _const.produto_estado_ativo := 1;
   _const.produto_estado_fechado := 0;
 
@@ -1943,6 +1982,11 @@ begin
   _const.codigo_setor_digitos := 2;
   _const.codigo_producao_digitos := 5;
   _const.codigo_produto_digitos := 2;
+
+  _const.localproducao_estado_ativo := 1;
+  _const.localproducao_estado_fechado := 0;
+  _const.localproducao_estado_herdado := 2;
+
 
 
 
@@ -2012,6 +2056,35 @@ end;
 $$;
 
 
+--
+-- Name: funct_change_categoria(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_categoria(arg_colaborador_id uuid, arg_categoria_id uuid, arg_categoria_nome character varying) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+  _categoria ggviario.categoria;
+begin
+  _const := rule.constant_init();
+
+  update ggviario.categoria
+    set categoria_nome = arg_categoria_nome,
+        categoria_colaborador_atualizacao = arg_colaborador_id,
+        categoria_dataatualizacao = current_timestamp
+    where categoria_id = arg_categoria_id
+    returning * into _categoria;
+
+  return lib.result_true(
+    jsonb_build_object(
+      'categoria', _categoria
+    )
+  );
+end;
+$$;
+
+
 SET search_path = lib, pg_catalog;
 
 --
@@ -2043,7 +2116,7 @@ CREATE TABLE categoria (
     categoria_posisao smallint,
     categoria_nivel smallint DEFAULT 0 NOT NULL,
     categoria_estado smallint DEFAULT 1 NOT NULL,
-    categoria_dataregito timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    categoria_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     categoria_dataatualizacao timestamp without time zone,
     CONSTRAINT ck_categoria_nome_is_normalized CHECK (lib.is_normalized((categoria_nome)::text))
 );
@@ -2084,6 +2157,173 @@ begin
     return next _categoria;
   end loop;
 end;
+$$;
+
+
+--
+-- Name: funct_change_locaoproducao_disable(uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_locaoproducao_disable(arg_colaborador_id uuid, arg_localproducao_id uuid) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+  declare 
+    _const rule.constant;
+    _localproducao ggviario.localproducao;
+  begin 
+    _const := rule.constant_init();
+    update ggviario.localproducao
+      set localproducao_estado = _const.localproducao_estado_fechado,
+          localproducao_dataatualizacao = current_timestamp,
+          localproducao_colaborador_atualizacao = arg_colaborador_id
+      where localproducao_id = arg_localproducao_id
+        and localproducao_estado = _const.localproducao_estado_ativo
+      returning * into _localproducao 
+    ;
+    
+    if _localproducao.localproducao_id is null then
+      return lib.result_false(
+        'Não pode desitivar esse local de produção!'
+      );
+    end if;
+    
+    return lib.result_true(
+      jsonb_build_object(
+        'localproducao', _localproducao
+      )
+    );
+  end;
+$$;
+
+
+--
+-- Name: funct_change_preco_close(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_preco_close(arg_colaborador_id uuid, arg_preco_id uuid, arg_conformacao_mensage character varying) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _preco ggviario.preco;
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  _preco := ggviario.get_preco( arg_preco_id );
+  arg_conformacao_mensage := lib.normalize( arg_conformacao_mensage );
+  if _preco.preco_estado = _const.preco_estado_fechado then
+    return lib.result_false ( 'Não pode mais fechar esse preco!' );
+  end if;
+
+  update ggviario.preco
+    set preco_estado = _const.preco_estado_fechado,
+      preco_colaborador_atualizacao = arg_colaborador_id,
+      preco_dataatualizacao =  current_timestamp
+    where preco_id = arg_preco_id
+    returning * into _preco
+  ;
+
+  if arg_conformacao_mensage is not null then
+    perform rule.audit_insert( 
+        arg_colaborador_id,
+        'ggviario.preco.disable',
+        'Fecho do preco',
+        jsonb_build_object(
+          'preco_id', _preco.preco_id
+        ),
+        arg_conformacao_mensage
+    );
+  end if;
+
+  return lib.result_true(
+    jsonb_build_object(
+      'preco', _preco
+    )
+  );
+end;
+$$;
+
+
+--
+-- Name: funct_change_produto_data(uuid, uuid, uuid, character varying, boolean, boolean, boolean, boolean, numeric); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_produto_data(arg_colaborador_id uuid, arg_produto_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _produto ggviario.produto;
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  if (
+       select count( * )
+        from ggviario.produto pro
+        where lower( pro.produto_nome ) = lower( arg_produto_nome )
+          and pro.produto_id != arg_produto_id
+     ) > 0  then
+    return lib.result_false(
+        'Existe outro produto com esse nome!'
+    );
+  end if;
+
+  update produto
+    set produto_nome = arg_produto_nome,
+        produto_categoria_id = arg_categoria_id,
+        produto_stockminimo = arg_produto_stockminimo,
+        produto_servicovenda = arg_produto_servicovenda,
+        produto_servicocompra = arg_produdo_servicocompra,
+        produto_servicoproducao = arg_produto_servicoproducao,
+        produto_servicostockdinamico = arg_produto_servicostockminimo,
+        produto_colaborador_atualizacao = arg_colaborador_id,
+        produto_dataatualizacao = current_timestamp
+    where produto_id = arg_produto_id
+    returning * into _produto;
+
+  return lib.result_true(
+      jsonb_build_object(
+          'produto', _produto
+      )
+  );
+end;
+$$;
+
+
+--
+-- Name: funct_change_produto_estado(uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_produto_estado(arg_colaborador_id uuid, arg_produto_id uuid) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+    _produto ggviario.produto;
+    _const rule.constant;
+  begin
+    _produto := ggviario.get_produto( arg_produto_id );
+    _const := rule.constant_init();
+
+    if _produto.produto_estado = _const.produto_estado_ativo then
+      _produto.produto_estado = _const.produto_estado_fechado;
+    elsif _produto.produto_estado = _const.produto_estado_fechado then
+      _produto.produto_estado = _const.produto_estado_ativo;
+    END IF;
+
+    update ggviario.produto
+      set produto_estado = _produto.produto_estado,
+          produto_colaborador_atualizacao = arg_colaborador_id,
+          produto_dataatualizacao = current_timestamp
+      where produto_id = _produto.produto_id
+      returning * into _produto;
+
+    _produto.produto_estado = rule.produto_estado( _produto, _const );
+    
+
+    return lib.result_true(
+      jsonb_build_object(
+        'produto', _produto
+      )
+    );
+  end;
 $$;
 
 
@@ -2285,6 +2525,37 @@ $$;
 
 
 --
+-- Name: funct_change_unidade(uuid, uuid, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_change_unidade(arg_colaborador_id uuid, arg_unidade_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+  _unidade ggviario.unidade;
+begin
+  _const := rule.constant_init();
+
+  update ggviario.unidade
+    set unidade_nome = arg_unidade_nome,
+        unidade_codigo = arg_unidade_codigo,
+        unidade_colaborador_atualizacao = arg_colaborador_id,
+        unidade_dataatualizacao = current_timestamp
+    where unidade_id = arg_unidade_id
+    returning * into _unidade;
+
+  return lib.result_true(
+    jsonb_build_object(
+      'unidade', _unidade
+    )
+  );
+end;
+
+$$;
+
+
+--
 -- Name: funct_change_venda_anular(uuid, uuid, text); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
@@ -2355,7 +2626,7 @@ begin
     cat.categoria_codigo,
     cat.categoria_nome,
     cat.categoria_nivel,
-    cat.categoria_dataregito,
+    cat.categoria_dataregisto,
     cat.categoria_dataatualizacao,
     cat.categoria_estado,
     rule.categoria_estado_desc( cat, _const ),
@@ -2676,6 +2947,55 @@ $$;
 
 
 --
+-- Name: funct_load_localproducao(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_localproducao(arg_produto_id uuid) RETURNS TABLE(localproducao_id uuid, localproducao_estado smallint, localproducao_dataregisto timestamp without time zone, localproducao_dataatualizacao timestamp without time zone, setor_id uuid, localproducao_quantidade numeric, setor jsonb, setor_super jsonb, colaborador jsonb, colaborador_atualizacao jsonb)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  return query
+  select
+    loc.localproducao_id,
+    case
+    when loc.localproducao_setor_id = se.setor_id then 1
+    else 2
+    end::int2 as estado,
+    loc.localproducao_dataregisto,
+    loc.localproducao_dataatualizacao,
+    loc.localproducao_setor_id,
+    sum( porc.producao_quantidadetotal ),
+    to_jsonb( se ),
+    to_jsonb( sesudo ),
+    to_jsonb( col ),
+    to_jsonb( coluop )
+  from ggviario.localproducao loc
+    inner join rule.select_setor_cascade( loc.localproducao_setor_id ) se on true
+    inner join ggviario.colaborador.colaborador col on loc.localproducao_colaborador_id = col.colaborador_id
+    left join ggviario.colaborador.colaborador coluop on loc.localproducao_colaborador_atualizacao = coluop.colaborador_id
+    left join ggviario.setor sesudo on se.setor_setor_id = sesudo.setor_id
+    left join ggviario.producao porc on se.setor_id = porc.producao_setor_id
+  where loc.localproducao_produto_id = arg_produto_id
+        and loc.localproducao_estado = _const.localproducao_estado_ativo
+  group by
+    loc.localproducao_id,
+    sesudo.setor_id,
+    se.setor_id,
+    se.setor_posicao,
+    to_jsonb( se ),
+    col.colaborador_id,
+    coluop.colaborador_id
+  order by estado asc,
+    se.setor_posicao asc
+  ;
+end;
+$$;
+
+
+--
 -- Name: funct_load_movimento_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
@@ -2766,10 +3086,87 @@ CREATE FUNCTION funct_load_producao_data(arg_produto_id uuid, arg_setor_id uuid,
     LANGUAGE sql
     AS $$
 select 
-     coalesce(  sum( pr.producao_quantidade ) filter ( where pr.producao_produto_id = arg_produto_id ), 0 ),
-     coalesce( sum( pr.producao_quantidade ) filter ( where pr.producao_produto_id = arg_produto_id  and pr.producao_setor_id = arg_setor_id ), 0 )
+     coalesce(  sum( pr.producao_quantidadetotal ) filter ( where pr.producao_produto_id = arg_produto_id ), 0 ),
+     coalesce( sum( pr.producao_quantidadetotal ) filter ( where pr.producao_produto_id = arg_produto_id  and pr.producao_setor_id = arg_setor_id ), 0 )
     from ggviario.producao pr 
     where pr.producao_data = arg_producao_data;
+$$;
+
+
+--
+-- Name: funct_load_producao_vista_produto(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_producao_vista_produto(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, produto jsonb, categoria jsonb)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  DATE_FORMAT_DAY character varying default 'day';
+  DATE_FORMAT_MONTH character varying default 'month';
+  DATE_FORMAT_YEAR character varying default 'year';
+  arg_format character varying;
+  arg_format_use character varying default filter->>'format_type';
+begin
+  if arg_format_use = DATE_FORMAT_DAY then arg_format := 'yyyy-mm-dd'; end if;
+  if arg_format_use = DATE_FORMAT_MONTH then arg_format := 'yyyy-mm'; end if;
+  if arg_format_use = DATE_FORMAT_YEAR then arg_format := 'yyyy'; end if;
+
+  return query
+    select
+        to_date( to_char( prodc.producao_data, arg_format ), arg_format ) date,
+        sum( prodc.producao_quantidadetotal ),
+        sum( prodc.producao_quantidadecomerciavel ),
+        sum( prodc.producao_quantidadedefeituosa ),
+        sum( prodc.producao_montanteprevisto ),
+        count( prodc.producao_id ),
+        to_jsonb( pro ),
+        to_jsonb( cat )
+      from ggviario.producao prodc
+        inner join ggviario.produto pro on prodc.producao_produto_id = pro.produto_id
+        inner join ggviario.categoria cat on pro.produto_categoria_id = cat.categoria_id
+      group by to_date( to_char( prodc.producao_data, arg_format ), arg_format ),
+        pro.produto_id,
+        cat.categoria_id
+      order by date desc;
+end;
+$$;
+
+
+--
+-- Name: funct_load_producao_vista_setor(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_producao_vista_setor(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, setor jsonb, setor_super jsonb)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  DATE_FORMAT_DAY character varying default 'day';
+  DATE_FORMAT_MONTH character varying default 'month';
+  DATE_FORMAT_YEAR character varying default 'year';
+  arg_format character varying;
+  arg_format_use character varying default filter->>'format_type';
+begin
+  if arg_format_use = DATE_FORMAT_DAY then arg_format := 'yyyy-mm-dd'; end if;
+  if arg_format_use = DATE_FORMAT_MONTH then arg_format := 'yyyy-mm'; end if;
+  if arg_format_use = DATE_FORMAT_YEAR then arg_format := 'yyyy'; end if;
+  return query
+    select
+        to_date( to_char( prodc.producao_data, arg_format ), arg_format ) date,
+        sum( prodc.producao_quantidadetotal ),
+        sum( prodc.producao_quantidadecomerciavel ),
+        sum( prodc.producao_quantidadedefeituosa ),
+        sum( prodc.producao_montanteprevisto ),
+        count( prodc.producao_id ),
+        to_jsonb( se ),
+        to_jsonb( sesudu )
+      from ggviario.producao prodc
+        inner join ggviario.setor se on prodc.producao_setor_id = se.setor_id
+        left join ggviario.setor sesudu on se.setor_setor_id = sesudu.setor_id
+      group by to_date( to_char( prodc.producao_data, arg_format ), arg_format ),
+        se.setor_id,
+        sesudu.setor_id
+      order by date desc;
+end;
 $$;
 
 
@@ -2777,18 +3174,26 @@ $$;
 -- Name: funct_load_produto(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_dataregisto timestamp without time zone, produto_dataatualizacao timestamp without time zone, produto_estado smallint, produto_estadodesc character varying, produto_montantevendas numeric, produto_montantevendadividas numeric, produto_montantevendavendas numeric, produto_montantevendapagas numeric, produto_montantevendapendentes numeric, categoria jsonb, preco jsonb, unidade jsonb, colaborador jsonb, colaboradoratualizacao jsonb)
+CREATE FUNCTION funct_load_produto(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_dataregisto timestamp without time zone, produto_dataatualizacao timestamp without time zone, produto_estado smallint, produto_estadodesc character varying, produto_montantevendas numeric, produto_montantevendadividas numeric, produto_montantevendavendas numeric, produto_montantevendapagas numeric, produto_montantevendapendentes numeric, produto_montantecompras numeric, produto_montantecomprapagos numeric, produto_montantecomprapendentes numeric, categoria jsonb, preco jsonb, unidade jsonb, colaborador jsonb, colaboradoratualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
   _const rule.constant;
+  arg_ovo_id uuid default lib.to_uuid( 1 );
 begin
   _const := rule.constant_init();
-
-
   return query
-  with vendapruduto as (
-      select
+    with vendapruduto as (
+        select
+          ve.venda_produto_id,
+          sum( coalesce( ve.venda_montantepagar, 0 ) ) produto_montantevendas,
+          sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_tvenda_id = _const.tipovenda_divida ) produto_montantevendadividas,
+          sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_tvenda_id = _const.tipovenda_venda ) produto_montantevendavendas,
+          sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_estado = _const.venda_estado_pago ) produto_montantevendapagas,
+          sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_estado in ( _const.venda_estado_pendente, _const.venda_estado_empagamento ) ) produto_montantevendapendentes
+        from ggviario.venda ve
+        group by ve.venda_produto_id
+    ) select
         pro.produto_id,
         pro.produto_codigo,
         pro.produto_nome,
@@ -2800,35 +3205,46 @@ begin
         pro.produto_servicostockdinamico,
         pro.produto_dataregisto,
         pro.produto_dataatualizacao,
-        pro.produto_estado,
+        rule.produto_estado( pro, _const ) esatdo,
         rule.produto_estado_desc( pro, _const ) as produto_estadodesc,
-        sum( coalesce( ve.venda_montantepagar, 0 ) ),
-        sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_tvenda_id = _const.tipovenda_divida ),
-        sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_tvenda_id = _const.tipovenda_venda ),
-        sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_estado = _const.venda_estado_pago ),
-        sum( coalesce( ve.venda_montantepagar, 0 ) ) filter ( where ve.venda_estado in ( _const.venda_estado_pendente, _const.venda_estado_empagamento ) ),
+        v.produto_montantevendas,
+        v.produto_montantevendadividas,
+        v.produto_montantevendavendas,
+        v.produto_montantevendapagas,
+        v.produto_montantevendapendentes,
+        sum( de.despesa_montantetotal ),
+        sum( de.despesa_montanteamortizado ),
+        coalesce( sum( de.despesa_montantetotal ), 0 ) - coalesce( sum( de.despesa_montanteamortizado ), 0 ),
         to_jsonb( cat ),
         to_jsonb( p ),
         to_jsonb( u ),
         to_jsonb( col ),
         to_jsonb( colup )
-      from ggviario.produto pro
+      from  ggviario.produto pro
         inner join ggviario.categoria cat on pro.produto_categoria_id = cat.categoria_id
         inner join colaborador.colaborador col on pro.produto_colaborador_id = col.colaborador_id
         left join colaborador.colaborador colup on pro.produto_colaborador_atualizacao = colup.colaborador_id
         left join preco p ON pro.produto_id = p.preco_produto_id
-                             and p.preco_estado = 1
-                             and p.preco_base
+          and p.preco_estado = 1
+          and p.preco_base
         left join unidade u ON p.preco_unidade_id = u.unidade_id
-        left join ggviario.venda ve on pro.produto_id = ve.venda_produto_id
+        left join vendapruduto v on pro.produto_id = v.venda_produto_id
+        left join ggviario.despesa de on pro.produto_id = de.despesa_produto_id
       group by pro.produto_id,
         cat.categoria_id,
         col.colaborador_id,
         colup.colaborador_id,
         p.preco_id,
-        u.unidade_id
-  ) select ve.*
-    from vendapruduto ve ;
+        u.unidade_id,
+        v.produto_montantevendas,
+        v.produto_montantevendadividas,
+        v.produto_montantevendavendas,
+        v.produto_montantevendapagas,
+        v.produto_montantevendapendentes
+      order by pro.produto_id = arg_ovo_id desc,
+            esatdo desc,
+        pro.produto_nome asc
+  ;
 end;
 $$;
 
@@ -2837,7 +3253,7 @@ $$;
 -- Name: funct_load_produto_despesa(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_despesa(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicocliente boolean, produto_servicofornecedor boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_servicostockdinamiconegativo boolean, produto_estado smallint, produto_estadodesc character varying, produto_dataregisto timestamp without time zone, produto_unidades jsonb)
+CREATE FUNCTION funct_load_produto_despesa(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_estado smallint, produto_estadodesc character varying, produto_dataregisto timestamp without time zone, produto_unidades jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2845,32 +3261,31 @@ declare
 begin
   _const := rule.constant_init();
   return query
-    select
-        prod.produto_id,
-        prod.produto_codigo,
-        prod.produto_nome,
-        prod.produto_stock,
-        prod.produto_stockminimo,
-        prod.produto_servicocliente,
-        prod.produto_servicofornecedor,
-        prod.produto_servicoproducao,
-        prod.produto_servicostockdinamico,
-        prod.produto_servicostockdinamiconegativo,
-        prod.produto_estado,
-        rule.produto_estado_desc( prod, _const ),
-        prod.produto_dataregisto,
-        lib.agg_jsonb_collect(
-          to_jsonb( pre )||to_jsonb( un )
-        )
-      from ggviario.produto prod
-        inner join ggviario.preco pre on prod.produto_id = pre.preco_produto_id
-        inner join ggviario.unidade un on pre.preco_unidade_id = un.unidade_id
-      where pre.preco_estado = _const.preco_estado_ativo
+  select
+    prod.produto_id,
+    prod.produto_codigo,
+    prod.produto_nome,
+    prod.produto_stock,
+    prod.produto_stockminimo,
+    prod.produto_servicovenda,
+    prod.produto_servicocompra,
+    prod.produto_servicoproducao,
+    prod.produto_servicostockdinamico,
+    prod.produto_estado,
+    rule.produto_estado_desc( prod, _const ),
+    prod.produto_dataregisto,
+    lib.agg_jsonb_collect(
+        to_jsonb( pre )||to_jsonb( un )
+    )
+  from ggviario.produto prod
+    inner join ggviario.preco pre on prod.produto_id = pre.preco_produto_id
+    inner join ggviario.unidade un on pre.preco_unidade_id = un.unidade_id
+  where pre.preco_estado = _const.preco_estado_ativo
         and pre.preco_quantidadeproduto is not null
         and prod.produto_estado = _const.produto_estado_ativo
-        and prod.produto_servicofornecedor
-      group by prod.produto_id
-    ;
+        and prod.produto_servicocompra
+  group by prod.produto_id
+  ;
 end;
 $$;
 
@@ -2900,10 +3315,40 @@ $$;
 
 
 --
--- Name: funct_load_produto_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_load_produto_unidades(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_venda(filter jsonb) RETURNS TABLE(produto_id uuid, produto_nome character varying, produto_codigo character varying, produto_stock numeric, produto_precos jsonb, categoria_id uuid, categoria_nome character varying)
+CREATE FUNCTION funct_load_produto_unidades(arg_produto_id uuid) RETURNS TABLE(preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying)
+    LANGUAGE plpgsql
+    AS $$
+declare 
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  
+  return query 
+    select
+        pre.preco_id,
+        pre.preco_custounidade,
+        pre.preco_quantidadeproduto,
+        pre.preco_base,
+        u.unidade_id,
+        u.unidade_nome,
+        u.unidade_codigo
+      from ggviario.preco pre
+        inner join unidade u ON pre.preco_unidade_id = u.unidade_id
+      where pre.preco_produto_id = arg_produto_id
+        and pre.preco_estado = _const.preco_estado_ativo
+    ;
+end;
+$$;
+
+
+--
+-- Name: funct_load_produto_venda(date); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_produto_venda(arg_data date) RETURNS TABLE(produto_id uuid, produto_nome character varying, produto_codigo character varying, produto_stock numeric, produto_precos jsonb, categoria_id uuid, categoria_nome character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2912,22 +3357,30 @@ begin
   _const := rule.constant_init();
 
   return query
-    select
-        pro.produto_id,
-        pro.produto_nome,
-        pro.produto_codigo,
-        pro.produto_stock,
-        lib.agg_jsonb_collect(  to_jsonb( prec )|| to_jsonb( u ) ),
-        cat.categoria_id,
-        cat.categoria_nome
-      from ggviario.produto pro
-        inner join ggviario.categoria cat on pro.produto_categoria_id = cat.categoria_id
-        inner join preco prec on pro.produto_id = prec.preco_produto_id
-          and prec.preco_estado = _const.preco_estado_ativo
-        inner join unidade u on prec.preco_unidade_id = u.unidade_id
-      group by pro.produto_id,
-        cat.categoria_id
-    ;
+    with precodata as (
+        select
+          pre.*,
+          rank() over ( partition by pre.preco_produto_id, pre.preco_unidade_id order by pre.preco_dataregisto desc ) as rank
+        from ggviario.preco pre
+        where ( arg_data = current_date and pre.preco_estado = _const.preco_estado_ativo )
+              or  pre.preco_dataregisto::date <= arg_data
+    )
+  select
+    pro.produto_id,
+    pro.produto_nome,
+    pro.produto_codigo,
+    pro.produto_stock,
+    lib.agg_jsonb_collect(  to_jsonb( prec )|| to_jsonb( u ) ),
+    cat.categoria_id,
+    cat.categoria_nome
+  from ggviario.produto pro
+    inner join ggviario.categoria cat on pro.produto_categoria_id = cat.categoria_id
+    inner join precodata prec on pro.produto_id = prec.preco_produto_id
+    inner join unidade u on prec.preco_unidade_id = u.unidade_id
+  where prec.rank = 1
+  group by pro.produto_id,
+    cat.categoria_id
+  ;
 end;
 $$;
 
@@ -2968,6 +3421,37 @@ $$;
 
 
 --
+-- Name: funct_load_setor_by_localproducao_to_producao(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_setor_by_localproducao_to_producao(arg_produto_id uuid) RETURNS TABLE(setor_id uuid, setor_nome character varying, setor_codigo character varying, setor_estado smallint, setor_nivel smallint, setor_dataregisto timestamp without time zone, setor_super jsonb)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  return query 
+    select 
+        se.setor_id,
+        se.setor_nome,
+        se.setor_codigo,
+        se.setor_estado,
+        se.setor_nivel,
+        se.setor_dataregisto,
+        to_jsonb( sesup )
+      from ggviario.localproducao loc 
+        inner join rule.select_setor_cascade_witch_raiz( loc.localproducao_setor_id ) se on se.setor_estado = _const.setor_estado_ativo
+        left join ggviario.setor sesup on se.setor_setor_id =sesup.setor_id
+      where loc.localproducao_estado = _const.localproducao_estado_ativo
+        and loc.localproducao_produto_id = arg_produto_id
+      order by se.setor_posicao asc
+  ;
+end;
+$$;
+
+
+--
 -- Name: funct_load_tipodocumento(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
@@ -2975,6 +3459,57 @@ CREATE FUNCTION funct_load_tipodocumento(filter jsonb) RETURNS TABLE(tdocumento_
     LANGUAGE sql
     AS $$
   select tdoc.tdocumento_id, tdoc.tdocumento_desc from ggviario.tipodocumento tdoc;
+$$;
+
+
+--
+-- Name: funct_load_unidade(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_unidade(filter jsonb) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, unidade_dataregisto timestamp without time zone, unidade_dataatualizacao timestamp without time zone, unidade_estado smallint, colaborador jsonb, colaborador_atualizacao jsonb)
+    LANGUAGE sql
+    AS $$
+  select un.unidade_id,
+      un.unidade_nome,
+      un.unidade_codigo,
+      un.unidade_dataregisto,
+      un.unidade_dataatualizacao,
+      un.unidade_estado,
+      to_jsonb( col ),
+      to_jsonb( colup )
+    from unidade un
+      inner join colaborador.colaborador col on un.unidade_colaborador_id = col.colaborador_id
+      left join colaborador.colaborador colup on un.unidade_colaborador_atualizacao = colup.colaborador_id
+$$;
+
+
+--
+-- Name: funct_load_unidade_simple_by_produto(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_load_unidade_simple_by_produto(arg_produto_id uuid) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, preco_estado smallint)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _const rule.constant;
+begin
+  _const := rule.constant_init();
+  return query
+  select
+    un.unidade_id,
+    un.unidade_nome,
+    un.unidade_codigo,
+    pre.preco_id,
+    pre.preco_custounidade,
+    pre.preco_quantidadeproduto,
+    pre.preco_base,
+    pre.preco_estado
+  from ggviario.unidade un
+    left join ggviario.preco pre on un.unidade_id = pre.preco_unidade_id
+      and pre.preco_estado = _const.preco_estado_ativo
+      and pre.preco_produto_id = arg_produto_id
+  ;
+end;
 $$;
 
 
@@ -3134,12 +3669,14 @@ begin
     categoria_colaborador_id,
     categoria_categoria_id,
     categoria_nome,
-    categoria_nivel
+    categoria_nivel,
+    categoria_codigo
   ) values (
     arg_colaborador_id,
     _categoria_super.categoria_id,
     arg_categoria_nome,
-    _categoria_super.categoria_nivel +1
+    _categoria_super.categoria_nivel +1,
+    rule.codigo_next( 'A', 2::int2  )
   ) returning * into _categoria;
 
   perform ggviario.funct_change_categoria_structure();
@@ -3484,6 +4021,66 @@ $$;
 
 
 --
+-- Name: funct_reg_localproducao(uuid, uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+--
+
+CREATE FUNCTION funct_reg_localproducao(arg_colaborador_id uuid, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
+    LANGUAGE plpgsql
+    AS $$
+declare
+  _localproducao ggviario.localproducao;
+  _const rule.constant;
+  _setor ggviario.setor;
+begin
+  _const := rule.constant_init();
+  if(
+    select count( * )
+      from ggviario.localproducao loc
+        inner join rule.select_setor_cascade( loc.localproducao_setor_id ) se on true
+      where loc.localproducao_produto_id = arg_produto_id
+        and loc.localproducao_estado = _const.localproducao_estado_ativo
+        and se.setor_id = arg_setor_id
+  ) > 0 then 
+    return lib.result_false( 'Setor em utilização pelo produto!' ); 
+  end if;
+
+  -- Fechaor o local de producao filho desse novo setor
+  for _setor in (
+    select *
+    from rule.select_setor_cascade( arg_setor_id )
+  ) loop
+    update ggviario.localproducao loc
+      set localproducao_estado = _const.localproducao_estado_fechado,
+          localproducao_dataatualizacao = current_timestamp,
+          localproducao_colaborador_atualizacao = arg_colaborador_id
+      where localproducao_produto_id = arg_produto_id
+        and localproducao_setor_id = _setor.setor_id
+        and localproducao_estado = _const.localproducao_estado_ativo
+    ;
+  end loop;
+  
+  insert into ggviario.localproducao(
+    localproducao_produto_id,
+    localproducao_setor_id,
+    localproducao_colaborador_id
+  ) values (
+    arg_produto_id,
+    arg_setor_id,
+    arg_colaborador_id
+  ) returning * into _localproducao;
+
+
+
+  return lib.result_true(
+    jsonb_build_object(
+      'localproducao', _localproducao
+    )
+  );
+end;
+$$;
+
+
+--
 -- Name: funct_reg_movimento_amortizacao_despesa(uuid, uuid, uuid, numeric, date, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
@@ -3608,105 +4205,71 @@ $$;
 
 
 --
--- Name: funct_reg_preco(uuid, uuid, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_reg_preco(uuid, uuid, uuid, numeric, numeric, boolean); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_precos jsonb) RETURNS lib.result
+CREATE FUNCTION funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_preco_custounidade numeric, arg_preco_quantiadeproduto numeric, arg_preco_base boolean) RETURNS lib.result
     LANGUAGE plpgsql
-    AS $_$
+    AS $$
 declare
-  KEY_UNIDADE_ID character varying default 'unidade_id';
-  KEY_PRECO_VALORUNIDADE character varying default 'preco_custounidade';
-  KEY_PRECO_QUANTIDADEPRODUTO character varying default 'preco_quantidadeproduto';
-  KEY_PRECO_BASE character varying default 'preco_base';
 
-  /**
-    [
-      {
-        "unidade_id"::UUID,
-        "preco_custounidade":PRECO
-        "preco_quantidadeproduto":QUANTIDADE
-      }
-    ]
-  */
-  arg_next jsonb;
-  arg_next_unidade_id uuid;
-  arg_next_preco_valorunidade numeric;
-  arg_next_preco_quantidadeproduto numeric;
-  arg_next_preco_base boolean;
-
-  list_precos uuid [] default '{}'::uuid[];
   _preco ggviario.preco;
+  _preco_old ggviario.preco;
   _const rule.constant;
-  jPrecos jsonb default '[]';
 begin
   _const := rule.constant_init();
-
-  for iterator in 0 .. jsonb_array_length( arg_precos ) -1 loop
-    arg_next := arg_precos -> iterator;
-    arg_next_unidade_id := arg_next ->> KEY_UNIDADE_ID;
-    arg_next_preco_valorunidade := arg_next -># KEY_PRECO_VALORUNIDADE;
-    arg_next_preco_quantidadeproduto := arg_next -># KEY_PRECO_QUANTIDADEPRODUTO;
-    arg_next_preco_base := arg_next ->? KEY_PRECO_BASE;
-
-    select * into _preco
-      from ggviario.preco
-      where preco_unidade_id = arg_next_unidade_id
-            and preco_produto_id = arg_produto_id
-            and preco_estado = _const.preco_estado_ativo
-    ;
-
-    if _preco.preco_id is null
-       or _preco.preco_custounidade !=== arg_next_preco_valorunidade
-       or _preco.preco_quantidadeproduto !=== arg_next_preco_quantidadeproduto
-       or _preco.preco_base !=== arg_next_preco_base
-    then
-      insert into ggviario.preco(
-        preco_colaborador_id,
-        preco_produto_id,
-        preco_unidade_id,
-        preco_custounidade,
-        preco_quantidadeproduto,
-        preco_base
-      ) values (
-        arg_colaborador_id,
-        arg_produto_id,
-        arg_next_unidade_id,
-        arg_next_preco_valorunidade,
-        arg_next_preco_quantidadeproduto,
-        arg_next_preco_base
-      ) returning * into _preco;
-      jPrecos := jPrecos || ( to_jsonb( _preco ) || $${"preco_registro":true}$$::jsonb );
-    else
-      jPrecos := jPrecos || ( to_jsonb( _preco ) || $${"preco_registro":false}$$::jsonb );
-    end if;
-
-    list_precos := list_precos || _preco.preco_id;
-  end loop;
-
   update ggviario.preco
     set preco_estado = _const.preco_estado_fechado,
-      preco_colaborador_atualizacao = arg_colaborador_id,
-      preco_dataatualizacao = current_timestamp
-    where preco_produto_id = arg_produto_id
-          and preco_estado = _const.preco_estado_ativo
-          and not preco_id = any( list_precos )
+        preco_colaborador_atualizacao = arg_colaborador_id,
+        preco_dataatualizacao = current_timestamp
+    where preco_unidade_id = arg_unidade_id
+      and preco_produto_id = arg_produto_id
+      and preco_estado = _const.preco_estado_ativo
+    returning * into _preco_old
+  ;
+
+  if arg_preco_base then
+    update preco
+      set preco_base = false,
+          preco_colaborador_atualizacao = arg_colaborador_id,
+          preco_dataatualizacao = current_timestamp
+      where preco_base
+        and preco_produto_id = arg_produto_id
+        and preco_estado = _const.preco_estado_ativo
     ;
+  end if;
+
+  insert into ggviario.preco(
+    preco_colaborador_id,
+    preco_produto_id,
+    preco_unidade_id,
+    preco_custounidade,
+    preco_quantidadeproduto,
+    preco_base
+  ) values (
+    arg_colaborador_id,
+    arg_produto_id,
+    arg_unidade_id,
+    arg_preco_custounidade,
+    arg_preco_quantiadeproduto,
+    arg_preco_base
+  ) returning * into _preco;
 
   return lib.result_true(
       jsonb_build_object(
-          'precos', jPrecos
+          'preco', _preco,
+          'preco_old', _preco_old
       )
   );
 end;
-$_$;
+$$;
 
 
 --
--- Name: funct_reg_producao(uuid, date, numeric, uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_reg_producao(uuid, date, numeric, numeric, numeric, uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidade numeric, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
+CREATE FUNCTION funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidadetotal numeric, arg_producao_quantidadecomerciavel numeric, arg_producao_quantidadedefeituosa numeric, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3714,6 +4277,8 @@ declare
   _setor ggviario.setor;
   _produto ggviario.produto;
   _const rule.constant;
+  _preco ggviario.preco;
+  arg_producao_montanteprevisto numeric;
 begin
   _const := rule.constant_init();
   _setor := ggviario.get_setor( arg_setor_id );
@@ -3731,36 +4296,52 @@ begin
     return lib.result_false( 'Não pode cadastrar nenhuma produção para produtos que não são para o servico de produção!' );
   end if;
 
+  select * into _preco
+    from ggviario.preco pre
+    where pre.preco_estado = _const.preco_estado_ativo
+      and pre.preco_produto_id = arg_produto_id
+    order by pre.preco_base desc
+    limit 1
+  ;
+
+  arg_producao_montanteprevisto := arg_producao_quantidadecomerciavel * coalesce(  _preco.preco_custounidade, 0 ) / _preco.preco_quantidadeproduto;
+
   insert into ggviario.producao (
     producao_colaborador_id,
     producao_produto_id,
     producao_setor_id,
-    producao_quantidade,
+    producao_quantidadetotal,
+    producao_quantidadecomerciavel,
+    producao_quantidadedefeituosa,
+    producao_montanteprevisto,
     producao_data,
     producao_codigo
   ) values(
     arg_colaborador_id,
     arg_produto_id,
     arg_setor_id,
-    arg_producao_quantidade,
+    arg_producao_quantidadetotal,
+    arg_producao_quantidadecomerciavel,
+    arg_producao_quantidadedefeituosa,
+    arg_producao_montanteprevisto,
     arg_producao_data,
     rule.codigo_next( _const.codigo_producao_letra, _const.codigo_producao_digitos )
   ) returning * into _producao;
-  
+
   return lib.result_true(
-    jsonb_build_object(
-      'producao', _producao
-    )
+      jsonb_build_object(
+          'producao', _producao
+      )
   );
 end;
 $$;
 
 
 --
--- Name: funct_reg_produto(uuid, uuid, character varying, boolean, boolean, boolean, boolean, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: funct_reg_produto(uuid, uuid, character varying, boolean, boolean, boolean, boolean, numeric, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, options jsonb) RETURNS lib.result
+CREATE FUNCTION funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric, options jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3786,7 +4367,8 @@ begin
     produto_servicovenda,
     produto_servicocompra,
     produto_servicoproducao,
-    produto_servicostockdinamico
+    produto_servicostockdinamico,
+    produto_stockminimo
   ) values (
     arg_categoria_id,
     arg_colaborador_id,
@@ -3795,7 +4377,8 @@ begin
     arg_produto_servicovenda,
     arg_produdo_servicocompra,
     arg_produto_servicoproducao,
-    arg_produto_servicostockminimo
+    arg_produto_servicostockminimo,
+    arg_produto_stockminimo
   ) returning * into _produto;
 
   return lib.result_true(
@@ -5958,10 +6541,10 @@ $$;
 
 
 --
--- Name: functg_producao_after_insert_movement_sector_and_product(); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: functg_producao_after_insert_movement_produto(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_producao_after_insert_movement_sector_and_product() RETURNS trigger
+CREATE FUNCTION functg_producao_after_insert_movement_produto() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5974,7 +6557,7 @@ declare
     -- Para os produtos com stock dinimico aumentar o stock do produto
     if _produto.produto_servicostockdinamico then
       update ggviario.produto
-        set produto_stock = produto_stock + _new.producao_quantidade,
+        set produto_stock = produto_stock + _new.producao_quantidadecomerciavel,
             produto_colaborador_atualizacao = _new.producao_colaborador_id,
             produto_dataatualizacao = _new.producao_dataregisto
         where produto_id = _new.producao_produto_id
@@ -6128,6 +6711,27 @@ $$;
 
 
 --
+-- Name: produto_estado(ggviario.produto, constant); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION produto_estado(_produto ggviario.produto, _const constant) RETURNS smallint
+    LANGUAGE sql
+    AS $$
+select case
+      when _produto.produto_estado = _const.produto_estado_fechado then _const.produto_estado_fechado
+
+      when _produto.produto_estado = _const.produto_estado_ativo and _produto.produto_servicostockdinamico
+            and _produto.produto_stock < 1 then _const.produto_estado_stock_vazio
+
+      when _produto.produto_estado = _const.produto_estado_ativo and _produto.produto_servicostockdinamico
+        and coalesce( _produto.produto_stockminimo, 0 ) > _produto.produto_stock then _const.produto_estado_stock_minimo
+  
+      when _produto.produto_estado = _const.produto_estado_ativo then _const.produto_estado_ok
+    end;
+$$;
+
+
+--
 -- Name: produto_estado_desc(ggviario.produto, constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
@@ -6138,6 +6742,50 @@ CREATE FUNCTION produto_estado_desc(_produto ggviario.produto, _const constant) 
       when _produto.produto_estado = _const.produto_estado_ativo then 'Ativo' 
       when _produto.produto_estado = _const.produto_estado_fechado then 'Fechado' 
     end
+$$;
+
+
+--
+-- Name: select_setor_cascade(uuid); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION select_setor_cascade(arg_setor_id uuid) RETURNS SETOF ggviario.setor
+    LANGUAGE sql
+    AS $$
+    with recursive rel_tree as (
+        select se.*
+          from setor se
+          where se.setor_id = arg_setor_id
+      union all
+        select  child.*
+        from setor child
+          join rel_tree parent on parent.setor_id = child.setor_setor_id
+    )
+    select *
+      from rel_tree tree
+      order by tree.setor_posicao;
+$$;
+
+
+--
+-- Name: select_setor_cascade_witch_raiz(uuid, integer); Type: FUNCTION; Schema: rule; Owner: -
+--
+
+CREATE FUNCTION select_setor_cascade_witch_raiz(arg_setor_id uuid, part_lenght integer DEFAULT 3) RETURNS TABLE(setor_id uuid, setor_setor_id uuid, setor_colaborador_id uuid, setor_colaborador_atualizacao uuid, setor_codigo character varying, setor_nome character varying, setor_posicao smallint, setor_nivel smallint, setor_totalsubsetores smallint, setor_estado smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_raiz character varying)
+    LANGUAGE sql
+    AS $$
+with recursive rel_tree as (
+    select se.*, lpad( se.setor_posicao::character varying, part_lenght, '0' ) as setor_raiz
+      from setor se
+      where se.setor_id = arg_setor_id
+  union all
+    select  child.*, parent.setor_raiz||'.'||lpad( child.setor_posicao::character varying, part_lenght, '0')
+                                                   from setor child
+      join rel_tree parent on parent.setor_id = child.setor_setor_id
+)
+  select *
+    from rel_tree tree
+    order by tree.setor_posicao;
 $$;
 
 
@@ -6204,9 +6852,11 @@ declare
   _const rule.constant;
   _preco ggviario.preco;
   _tipovenda ggviario.tipovenda;
+  _produto ggviario.produto;
 begin
   _const := rule.constant_init();
   _tipovenda := ggviario.get_tipovenda( arg_tvenda_id );
+  _produto := ggviario.get_produto( arg_produto_id );
 
   if arg_venda_montanteunitario is null then raise notice 'Para Aqui arg_venda_montanteunitario esta null';  end if;
 
@@ -6233,6 +6883,11 @@ begin
 
 
   arg_venda_quantidadeproduto := arg_venda_quantidade * _preco.preco_quantidadeproduto;
+  if coalesce( _produto.produto_stock, 0 ) < arg_venda_quantidadeproduto then
+    return lib.result_false(
+      'Não existe produto disponivel no stock para essa operação!'
+    );
+  end if;
 
   insert into ggviario.venda(
     venda_produto_id,
@@ -6700,7 +7355,7 @@ CREATE TABLE previlegio (
     previlegio_tipo boolean DEFAULT true,
     previlegio_estado smallint DEFAULT 1 NOT NULL,
     previlegio_dataregisto timestamp without time zone DEFAULT now() NOT NULL,
-    previlegio_dataatualuzacao timestamp without time zone
+    previlegio_dataatualizacao timestamp without time zone
 );
 
 
@@ -6740,6 +7395,22 @@ CREATE TABLE distrito (
 
 
 --
+-- Name: localproducao; Type: TABLE; Schema: ggviario; Owner: -
+--
+
+CREATE TABLE localproducao (
+    localproducao_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    localproducao_produto_id uuid NOT NULL,
+    localproducao_setor_id uuid NOT NULL,
+    localproducao_colaborador_id uuid NOT NULL,
+    localproducao_colaborador_atualizacao uuid,
+    localproducao_estado smallint DEFAULT 1 NOT NULL,
+    localproducao_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    localproducao_dataatualizacao timestamp without time zone
+);
+
+
+--
 -- Name: producao; Type: TABLE; Schema: ggviario; Owner: -
 --
 
@@ -6750,8 +7421,11 @@ CREATE TABLE producao (
     producao_colaborador_id uuid NOT NULL,
     producao_colaborador_atualizacao uuid,
     producao_codigo character varying(9) NOT NULL,
-    producao_quantidade numeric,
     producao_data date,
+    producao_quantidadetotal numeric NOT NULL,
+    producao_quantidadecomerciavel numeric DEFAULT 0 NOT NULL,
+    producao_quantidadedefeituosa numeric DEFAULT 0 NOT NULL,
+    producao_montanteprevisto numeric DEFAULT 0 NOT NULL,
     producao_estado smallint DEFAULT 1 NOT NULL,
     producao_dataregisto timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     producao_dataatualizacao timestamp without time zone
@@ -6846,7 +7520,7 @@ COPY perfil (perfil_id, perfil_perfil_id, perfil_colaborador_id, perfil_colabora
 -- Data for Name: previlegio; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY previlegio (previlegio_id, previlegio_perfil_id, previlegio_menu_id, previlegio_colaborador_id, previlegio_colaborador_atualizacao, previlegio_tipo, previlegio_estado, previlegio_dataregisto, previlegio_dataatualuzacao) FROM stdin;
+COPY previlegio (previlegio_id, previlegio_perfil_id, previlegio_menu_id, previlegio_colaborador_id, previlegio_colaborador_atualizacao, previlegio_tipo, previlegio_estado, previlegio_dataregisto, previlegio_dataatualizacao) FROM stdin;
 \.
 
 
@@ -6866,9 +7540,10 @@ SET search_path = ggviario, pg_catalog;
 -- Data for Name: audit; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY audit (audit_id, audit_colaborador_id, audit_title, audit_message, audid_dataregisto, audit_key, audit_object) FROM stdin;
-aa054387-d671-452b-8e00-365b320aeb1f	00000000-0000-0000-0000-000000000001	Anulação de Divida	swo wwd kwndkw	2018-03-06 00:14:24.345316	ggviario.venda.anular	{"venda_id": "53dd9be1-c757-45c6-85d8-1a2be6dbed3e"}
-2a860627-5e22-447d-9ea0-f68ac7834f54	00000000-0000-0000-0000-000000000001	Anulação de Venda	Teste	2018-03-06 00:37:55.602429	ggviario.venda.anular	{"venda_id": "8d20bad7-c99f-4815-91a7-829be236b3fd"}
+COPY audit (audit_id, audit_colaborador_id, audit_key, audit_title, audit_message, audit_object, audid_dataregisto) FROM stdin;
+aa054387-d671-452b-8e00-365b320aeb1f	00000000-0000-0000-0000-000000000001	ggviario.venda.anular	Anulação de Divida	swo wwd kwndkw	{"venda_id": "53dd9be1-c757-45c6-85d8-1a2be6dbed3e"}	2018-03-06 00:14:24.345316
+2a860627-5e22-447d-9ea0-f68ac7834f54	00000000-0000-0000-0000-000000000001	ggviario.venda.anular	Anulação de Venda	Teste	{"venda_id": "8d20bad7-c99f-4815-91a7-829be236b3fd"}	2018-03-06 00:37:55.602429
+8a495930-f21c-475e-b1b6-ca38c7760774	00000000-0000-0000-0000-000000000001	ggviario.preco.disable	Fecho do preco	efec	{"preco_id": "eceda4a5-6f9f-4d2e-94ad-1fece0c4f03c"}	2018-03-09 19:57:04.403985
 \.
 
 
@@ -6876,11 +7551,13 @@ aa054387-d671-452b-8e00-365b320aeb1f	00000000-0000-0000-0000-000000000001	Anula�
 -- Data for Name: categoria; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_atualizacao, categoria_categoria_id, categoria_codigo, categoria_nome, categoria_posisao, categoria_nivel, categoria_estado, categoria_dataregito, categoria_dataatualizacao) FROM stdin;
-00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	\N	\N	GERAL	0	0	1	2018-02-09 18:46:15.84334	\N
-5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	\N	Aviario	1	1	1	2018-03-04 19:08:12.562172	\N
-7deb03e4-a25a-47ed-b0ae-c21892aadf60	00000000-0000-0000-0000-000000000001	\N	5b64a898-7b6c-4085-94cc-8686f1c648b1	\N	Ração	2	2	1	2018-03-05 01:37:21.151192	\N
-938f32a2-81a6-4e20-ae53-736699e14581	00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	\N	Outras	3	1	1	2018-03-04 19:08:44.828803	\N
+COPY categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_atualizacao, categoria_categoria_id, categoria_codigo, categoria_nome, categoria_posisao, categoria_nivel, categoria_estado, categoria_dataregisto, categoria_dataatualizacao) FROM stdin;
+00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	\N	A01/18	GERAL	0	0	1	2018-02-09 18:46:15.84334	\N
+5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	A02/18	Aviario	1	1	1	2018-03-04 19:08:12.562172	\N
+7deb03e4-a25a-47ed-b0ae-c21892aadf60	00000000-0000-0000-0000-000000000001	\N	5b64a898-7b6c-4085-94cc-8686f1c648b1	A04/18	Ração	2	2	1	2018-03-05 01:37:21.151192	\N
+0fe61e6c-6105-4555-9baf-b77cbdc18ebb	00000000-0000-0000-0000-000000000001	\N	5b64a898-7b6c-4085-94cc-8686f1c648b1	A15/18	Teste	3	2	1	2018-03-09 03:15:55.427953	\N
+d664a20f-461a-40ce-a5b1-37ab4d51499d	00000000-0000-0000-0000-000000000001	\N	5b64a898-7b6c-4085-94cc-8686f1c648b1	A17/18	Teste 100	4	2	1	2018-03-09 03:17:41.34081	\N
+ae9c6bce-ba6b-49c8-a5d2-ee2abeb10f35	00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	A16/18	Test 40	5	1	1	2018-03-09 03:17:26.130455	\N
 \.
 
 
@@ -6905,13 +7582,15 @@ f81f843a-07df-4c28-83b9-b73b17c93897	2	6	2	00000000-0000-0000-0000-000000000001	
 
 COPY codigo (codigo_letra, codigo_digitos, codigo_ano, codigo_numero) FROM stdin;
 V	5	18	16
-G	5	18	4
 S	2	18	28
-E	5	18	6
 C	4	18	7
-D	5	18	30
 P	6	18	27
-P	2	18	8
+P	2	18	11
+G	5	18	7
+A	6	18	3
+D	5	18	38
+A	2	18	17
+E	5	18	12
 \.
 
 
@@ -6935,6 +7614,9 @@ cb2e6d37-ac73-4892-ad09-b4639d2fc6a6	9875c79e-d638-4125-aeee-bcd61629a73f	000000
 0198c0df-37c3-485b-8d79-40c3011310bd	5bde9bae-eae1-47b4-9d08-26a310e62fd2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	G00002/18	2018-03-01		12.0	12.0	177.0	2124.0	2124.0	2018-03-01	2018-03-01 15:13:51.833686	0	2018-03-01 15:13:51.833686	2018-03-01 15:13:51.833686
 bf2cc0ea-d0f6-4e58-8b8e-50934f8b1d22	5bde9bae-eae1-47b4-9d08-26a310e62fd2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	G00003/18	2018-03-01		12.0	12.0	12.0	144.0	144.0	2018-03-01	2018-03-01 15:15:27.51062	0	2018-03-01 15:15:27.51062	2018-03-01 15:15:27.51062
 e9babeee-54e4-45f3-abe6-f86c89e063eb	df286cb9-b8e7-4701-86b3-1da6948d9ad9	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	G00004/18	2018-03-01	9399	234.0	234.0	939.0	219726.0	0	\N	\N	1	2018-03-01 15:16:39.788221	\N
+e190d2e1-e0d3-46b1-8c34-ebed2d6ca4b1	5bde9bae-eae1-47b4-9d08-26a310e62fd2	29019032-e53a-4861-986a-4487fb4b2333	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	G00005/18	2018-03-07		1.0	1.00	10.0	10.0	10.0	2018-03-07	2018-03-07 01:40:10.06915	0	2018-03-07 01:40:10.06915	2018-03-07 01:40:10.06915
+f52dc046-eebb-46c4-ad59-d4efb070d11f	5bde9bae-eae1-47b4-9d08-26a310e62fd2	29019032-e53a-4861-986a-4487fb4b2333	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	G00006/18	2018-03-07		1.0	1.00	10.0	10.0	10.0	2018-03-07	2018-03-07 01:40:18.845504	0	2018-03-07 01:40:18.845504	2018-03-07 01:40:18.845504
+137037c4-5402-44cb-b223-61aa905a0e70	5bde9bae-eae1-47b4-9d08-26a310e62fd2	e525e6d4-33cc-4ac7-bd9f-0e9ef53f4567	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	G00007/18	2018-03-07		1.0	1.0	5.0	5.0	5.0	2018-03-07	2018-03-07 01:44:07.987194	0	2018-03-07 01:44:07.987194	2018-03-07 01:44:07.987194
 \.
 
 
@@ -6967,6 +7649,18 @@ df286cb9-b8e7-4701-86b3-1da6948d9ad9	\N	00000000-0000-0000-0000-000000000001	\N	
 
 
 --
+-- Data for Name: localproducao; Type: TABLE DATA; Schema: ggviario; Owner: -
+--
+
+COPY localproducao (localproducao_id, localproducao_produto_id, localproducao_setor_id, localproducao_colaborador_id, localproducao_colaborador_atualizacao, localproducao_estado, localproducao_dataregisto, localproducao_dataatualizacao) FROM stdin;
+6ad8a223-07db-45ac-8fb4-f0565bed5e79	00000000-0000-0000-0000-000000000001	18e8f27b-1b3d-4139-bfb6-b30e68f101ac	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	0	2018-03-18 18:20:47.843652	2018-03-18 18:21:08.638316
+d673ac2c-cb2d-4dd5-9d8b-dc58d175e241	00000000-0000-0000-0000-000000000001	6e38d408-ec9a-409c-8754-251395039163	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	0	2018-03-18 18:20:42.538731	2018-03-18 18:21:08.638316
+a7ad8479-5dcc-4fc3-82f1-df0b67bc4a84	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	0	2018-03-18 18:21:08.638316	2018-03-18 20:02:48.900142
+6ebd2aa2-d7e8-4ff6-98ac-b7e142cae662	00000000-0000-0000-0000-000000000001	18e8f27b-1b3d-4139-bfb6-b30e68f101ac	00000000-0000-0000-0000-000000000001	\N	1	2018-03-18 20:03:15.196928	\N
+\.
+
+
+--
 -- Data for Name: movimento; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
@@ -6980,6 +7674,9 @@ fdc4efad-ac4d-45ee-aa23-0c8a12b4214b	\N	1	00000000-0000-0000-0000-000000000001	\
 2668b2a5-82e2-4aea-9e0c-71112712c07b	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	e27a0674-0dce-4162-ad7c-5f9d0df53ff5	\N	P000025/18	2018-03-23	D00024/18	10.0	Amortizacao da Divida numero D00024/18	\N	f	\N	0	0	2018-03-03 12:31:59.815016	2018-03-03 12:31:59.815016
 cd25f4e0-0416-448d-9c14-69558275b972	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	4a2d9254-9c3e-403c-8c63-9650eb164d59	\N	P000026/18	2018-02-01	D00029/18	100.0	Amortizacao da Divida numero D00029/18	\N	f	\N	0	0	2018-03-04 17:20:58.983634	2018-03-04 17:20:58.983634
 60b7964e-b7cd-4d62-ab43-98ae891862ef	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	4a2d9254-9c3e-403c-8c63-9650eb164d59	\N	P000027/18	2018-03-04	D00029/18	160.0	Amortizacao da Divida numero D00029/18	\N	f	\N	0	0	2018-03-04 17:21:37.539576	2018-03-04 17:21:37.539576
+a7e59d73-85db-4218-8c48-e5af81ebe65b	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	\N	e190d2e1-e0d3-46b1-8c34-ebed2d6ca4b1	A000001/18	2018-03-07	G00005/18	10.0	Amortizacao da despesa numero G00005/18 da fatura 	\N	f	\N	0	0	2018-03-07 01:40:10.06915	2018-03-07 01:40:10.06915
+161ee24d-1d6d-459e-aad5-9be6d8117af5	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	\N	f52dc046-eebb-46c4-ad59-d4efb070d11f	A000002/18	2018-03-07	G00006/18	10.0	Amortizacao da despesa numero G00006/18 da fatura 	\N	f	\N	0	0	2018-03-07 01:40:18.845504	2018-03-07 01:40:18.845504
+348c9d1f-108b-4dd3-8523-19014459d193	\N	1	00000000-0000-0000-0000-000000000001	\N	\N	\N	137037c4-5402-44cb-b223-61aa905a0e70	A000003/18	2018-03-07	G00007/18	5.0	Amortizacao da despesa numero G00007/18 da fatura 	\N	f	\N	0	0	2018-03-07 01:44:07.987194	2018-03-07 01:44:07.987194
 \.
 
 
@@ -6988,11 +7685,21 @@ cd25f4e0-0416-448d-9c14-69558275b972	\N	1	00000000-0000-0000-0000-000000000001	\
 --
 
 COPY preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, preco_colaborador_atualizacao, preco_custounidade, preco_quantidadeproduto, preco_base, preco_estado, preco_dataregisto, preco_dataatualizacao) FROM stdin;
-09d331e2-d859-4373-988d-8343e1c320cd	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	33d630b0-bb83-46f2-85d7-ab87a9699e36	00000000-0000-0000-0000-000000000001	\N	13	1	t	1	2018-02-21 23:46:48.732194	\N
-48d8fa85-2d2a-4576-83a8-bb5b167e4eac	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	658031bf-435b-4aec-8b20-4fe56456ab5e	00000000-0000-0000-0000-000000000001	\N	0.013	0.001	f	1	2018-02-21 23:46:48.732194	\N
-c67b747f-d309-4340-b209-23aac1f3fac8	0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	541f68a7-cdb2-4cde-803e-63efc71760c6	00000000-0000-0000-0000-000000000001	\N	100	30	f	1	2018-02-21 23:46:48.732194	\N
-10b5953d-a8d5-481a-8587-f07f1ed67300	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	5	1	t	1	2018-02-21 15:53:47.338879	\N
-e8936437-2088-4d01-82bb-1fd6ed30c6ba	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	\N	130	30	f	1	2018-02-21 15:53:47.338879	\N
+b089112e-3b84-47b1-b2f3-87cec7b1eb8e	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4	1.0	f	0	2018-03-06 10:47:49.244	2018-03-07 10:48:05.029807
+493e2907-2a01-4a95-9bfa-1e5d565c0b68	00000000-0000-0000-0000-000000000001	eded7182-b596-4f4c-90fa-6cb5b7790257	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	60.0	15.0	f	0	2018-03-08 19:16:07.097489	2018-03-09 19:55:20.029498
+eceda4a5-6f9f-4d2e-94ad-1fece0c4f03c	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	f	0	2018-03-07 14:03:14.078855	2018-03-09 19:57:04.403985
+ce254746-0c52-4825-b0cd-adfa786d314d	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	f	0	2018-03-09 19:59:25.100052	2018-03-09 19:59:36.043129
+673d3fb1-fe84-4ff0-b492-8e7f99022f9f	00000000-0000-0000-0000-000000000001	eded7182-b596-4f4c-90fa-6cb5b7790257	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	60.0	15.0	f	0	2018-03-09 20:02:10.75663	2018-03-09 20:02:23.240486
+e8509f8d-c6ac-4240-93b0-ff7ef7ac153a	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	f	0	2018-03-09 20:02:01.625812	2018-03-09 20:04:12.930804
+3fa57f91-f409-4ca1-91f9-c6453dc76f2e	00000000-0000-0000-0000-000000000001	eded7182-b596-4f4c-90fa-6cb5b7790257	00000000-0000-0000-0000-000000000001	\N	60.0	15.0	f	1	2018-03-09 20:09:23.449924	\N
+8d9d6b4a-1ae1-4e1d-ad2c-019d20f9f283	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	f	0	2018-03-09 20:09:08.531716	2018-03-09 20:09:48.521686
+6dd08b41-83b9-4d57-9cf3-9af761eb0780	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	t	0	2018-03-09 20:09:48.521686	2018-03-11 15:38:25.238402
+3d191b66-5c1a-4642-a980-ff16bcc05499	e97f018e-732d-4f34-8453-ce57419c3064	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	5.0	1.0	f	0	2018-03-11 18:13:07.712104	2018-03-11 18:13:24.497928
+49d7f8da-4810-489e-9f5a-2e28aa38aa35	e97f018e-732d-4f34-8453-ce57419c3064	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	5.0	1.0	t	1	2018-03-11 18:13:24.497928	\N
+78c3ebcf-ae99-4f18-b597-f41b7350f4a0	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	5.0	1.0	f	0	2018-03-07 10:48:05.029807	2018-03-18 18:47:48.827533
+80e0c6fb-924d-4036-a266-76cd596e45db	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	6.0	1.0	f	0	2018-03-18 18:47:48.827533	2018-03-18 18:48:06.398958
+73a275eb-2a15-41fd-8185-40aec55fe2cc	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	130.0	30.0	f	1	2018-03-11 15:38:25.238402	2018-03-18 18:48:06.398958
+62cec515-8b09-4958-a430-6df4488bfc16	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	5.0	1.0	t	1	2018-03-18 18:48:06.398958	\N
 \.
 
 
@@ -7000,13 +7707,10 @@ e8936437-2088-4d01-82bb-1fd6ed30c6ba	00000000-0000-0000-0000-000000000001	2da10b
 -- Data for Name: producao; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY producao (producao_id, producao_produto_id, producao_setor_id, producao_colaborador_id, producao_colaborador_atualizacao, producao_codigo, producao_quantidade, producao_data, producao_estado, producao_dataregisto, producao_dataatualizacao) FROM stdin;
-5debc210-57ea-461f-847b-c149135419cd	00000000-0000-0000-0000-000000000001	fa1419fd-dba0-4616-a632-1d3e198e0073	00000000-0000-0000-0000-000000000001	\N	E00001/18	41.0	2018-03-16	1	2018-03-03 19:30:17.483649	\N
-9e40eacd-2261-4e78-a11f-a810dc6ec5d9	00000000-0000-0000-0000-000000000001	fa1419fd-dba0-4616-a632-1d3e198e0073	00000000-0000-0000-0000-000000000001	\N	E00002/18	12.0	2018-03-03	1	2018-03-03 19:34:53.470209	\N
-eb76a5af-20b2-43dd-8c0b-2a3f63be424c	00000000-0000-0000-0000-000000000001	5f7588b6-260d-466c-99e8-2cb1b20108c5	00000000-0000-0000-0000-000000000001	\N	E00003/18	12.0	2018-03-03	1	2018-03-03 19:35:06.748015	\N
-a7e05b99-393e-45df-a9a0-e090c5a609fe	00000000-0000-0000-0000-000000000001	5f7588b6-260d-466c-99e8-2cb1b20108c5	00000000-0000-0000-0000-000000000001	\N	E00004/18	14.0	2018-03-03	1	2018-03-03 19:35:16.539896	\N
-cf5c93b2-9745-45e1-b9d3-d666f86c32af	00000000-0000-0000-0000-000000000001	8bdc7099-ce7a-45cc-94bc-292a022d1049	00000000-0000-0000-0000-000000000001	\N	E00005/18	10.0	2018-03-30	1	2018-03-03 20:13:10.288734	\N
-4ae207ee-61c6-4d27-b8f5-26ef49ec109c	00000000-0000-0000-0000-000000000001	8bdc7099-ce7a-45cc-94bc-292a022d1049	00000000-0000-0000-0000-000000000001	\N	E00006/18	10.0	2018-03-03	1	2018-03-03 20:19:57.299301	\N
+COPY producao (producao_id, producao_produto_id, producao_setor_id, producao_colaborador_id, producao_colaborador_atualizacao, producao_codigo, producao_quantidadetotal, producao_data, producao_estado, producao_dataregisto, producao_dataatualizacao, producao_quantidadedefeituosa, producao_quantidadecomerciavel, producao_montanteprevisto) FROM stdin;
+16f400a2-67f9-4e64-b61c-61f8fe1adbc4	e97f018e-732d-4f34-8453-ce57419c3064	8bdc7099-ce7a-45cc-94bc-292a022d1049	00000000-0000-0000-0000-000000000001	\N	E00010/18	12.0	2018-03-17	1	2018-03-17 21:15:38.008875	\N	2.0	10.0	50.0000000000000000
+c6cd3ad2-f700-4d68-8b55-16e571cf2b8d	00000000-0000-0000-0000-000000000001	8bdc7099-ce7a-45cc-94bc-292a022d1049	00000000-0000-0000-0000-000000000001	\N	E00011/18	16.0	2018-03-17	1	2018-03-17 21:18:57.416271	\N	1.0	15.0	65.0000000000000000
+f6edf838-7c3e-4b8d-99fc-c287aa0f135a	00000000-0000-0000-0000-000000000001	fa1419fd-dba0-4616-a632-1d3e198e0073	00000000-0000-0000-0000-000000000001	\N	E00012/18	12.0	2018-03-18	1	2018-03-18 21:33:27.921518	\N	2.0	10.0	50.0000000000000000
 \.
 
 
@@ -7015,7 +7719,6 @@ cf5c93b2-9745-45e1-b9d3-d666f86c32af	00000000-0000-0000-0000-000000000001	8bdc70
 --
 
 COPY produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_colaborador_atualizacao, produto_codigo, produto_nome, produto_stock, produto_stockminimo, produto_servicovenda, produto_servicocompra, produto_servicoproducao, produto_servicostockdinamico, produto_estado, produto_dataregisto, produto_dataatualizacao) FROM stdin;
-00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P01/18	Ovos	-150060.0	0	t	t	t	t	1	2018-02-09 18:48:34.984037	2018-03-04 17:20:10.524409
 0ec7be7f-a27d-41c7-b9cf-b0122a6eaaf3	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P02/18	Aroz	-237375.5450	0	f	f	f	f	1	2018-02-21 23:32:18.08354	2018-02-24 15:05:29.360907
 7dd42c32-bfe3-440e-be47-8ede3380e334	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	P03/18	Platico	0	0	f	t	f	f	1	2018-03-05 01:36:02.086054	\N
 58187ad2-0373-48fc-a444-a330b64defd6	7deb03e4-a25a-47ed-b0ae-c21892aadf60	00000000-0000-0000-0000-000000000001	\N	P04/18	Ração 111	0	0	f	t	f	f	1	2018-03-05 01:37:49.771505	\N
@@ -7023,6 +7726,10 @@ d4ed38aa-dd65-4cfb-879b-87d167174b53	7deb03e4-a25a-47ed-b0ae-c21892aadf60	000000
 24602236-6ed3-4ee2-89ba-60c5ba56cc33	7deb03e4-a25a-47ed-b0ae-c21892aadf60	00000000-0000-0000-0000-000000000001	\N	P06/18	Ração 115	0	0	f	t	f	f	1	2018-03-05 16:51:46.825568	\N
 e2353d53-477a-4257-b869-5c33d5bf02f9	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	P07/18	Transporte	0	0	f	t	f	f	1	2018-03-05 18:06:55.348771	\N
 4b4932ba-2611-4879-a792-6ebd00aaa6ec	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	P08/18	Motoqueiro	0	0	f	t	f	f	1	2018-03-05 18:07:26.833454	\N
+e525e6d4-33cc-4ac7-bd9f-0e9ef53f4567	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	P10/18	Cartão de ovos	0	0	f	t	f	f	1	2018-03-07 01:34:50.936334	\N
+29019032-e53a-4861-986a-4487fb4b2333	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P11/18	Desparazitante	2.00	0	t	t	t	t	1	2018-03-07 01:37:44.56688	2018-03-11 20:48:39.98586
+e97f018e-732d-4f34-8453-ce57419c3064	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P09/18	Goiba	-3.00	0	f	f	t	t	1	2018-03-06 20:42:51.740234	2018-03-17 21:15:38.008875
+00000000-0000-0000-0000-000000000001	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P01/18	Ovos	28688454.00	12.0	t	t	t	t	1	2018-02-09 18:48:34.984037	2018-03-18 21:33:27.921518
 \.
 
 
@@ -7100,10 +7807,7 @@ COPY tipovenda (tvenda_id, tvenda_desc, tvenda_letra, tvenda_ditigos) FROM stdin
 COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizacao, unidade_nome, unidade_codigo, unidade_estado, unidade_dataregisto, unidade_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	Unidade	Unit	1	2018-02-09 19:19:02.755139	\N
 2da10bc7-53c5-4912-b06e-2b407e350eff	00000000-0000-0000-0000-000000000001	\N	Cartão	CT	1	2018-02-21 15:52:25.166851	\N
-33d630b0-bb83-46f2-85d7-ab87a9699e36	00000000-0000-0000-0000-000000000001	\N	Kilogramas	Kg	1	2018-02-21 23:33:16.438593	\N
-658031bf-435b-4aec-8b20-4fe56456ab5e	00000000-0000-0000-0000-000000000001	\N	Gramas	g	1	2018-02-21 23:33:27.484936	\N
-541f68a7-cdb2-4cde-803e-63efc71760c6	00000000-0000-0000-0000-000000000001	\N	Saco	SC	1	2018-02-21 23:33:49.062312	\N
-2f0c52d5-8b8a-4881-9e79-64dccb330917	00000000-0000-0000-0000-000000000001	\N	Peças	PC	1	2018-03-04 21:12:09.708626	\N
+eded7182-b596-4f4c-90fa-6cb5b7790257	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	Meiu Cartão	CT/2	1	2018-03-08 19:15:42.520066	2018-03-08 19:39:00.668761
 \.
 
 
@@ -7111,16 +7815,21 @@ COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizaca
 -- Data for Name: venda; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY venda (venda_id, venda_produto_id, venda_unidade_id, venda_cliente_id, venda_tvenda_id, venda_colaborador_id, venda_colaborador_atualizacao, venda_faturanumero, venda_quantidade, venda_quantidadeproduto, venda_montanteunitario, venda_montantebruto, venda_montantedesconto, venda_montantepagar, venda_montanteamortizado, venda_data, venda_datafinalizar, venda_datafim, venda_dataultimamovimentacao, venda_estado, venda_dataregisto, venda_dataatualizacao, venda_observacao) FROM stdin;
-51101041-fc0a-4b4c-8443-c1f002131d58	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	0c5a08f7-49eb-44c6-97b3-4990660a0e0c	2	00000000-0000-0000-0000-000000000001	\N	D00025/18	1.0	30.0	130.0	130.0	0.0	130.0	0	2018-02-01	2018-03-03	\N	\N	2	2018-02-28 22:11:41.905332	\N	\N
-454e7be0-12d9-4a1e-8f97-56c7dc8f82fb	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00026/18	4.0	4.0	5.0	20.0	0.0	20.0	0	2018-02-03	2018-03-05	\N	\N	2	2018-02-28 22:12:33.180604	\N	\N
-8e865fab-bbb9-493f-814a-bd4c1f94b2f3	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	42aa1779-0a40-4885-ba3e-b672a7340a3b	1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	V00016/18	12.0	12.0	5.0	60.0	0.0	60.0	60.0	2018-03-01	2018-03-01	2018-03-01 10:25:28.339335	2018-03-01	0	2018-03-01 10:25:28.339335	2018-03-01 10:25:28.339335	\N
-5b7d91b2-f4ce-4eed-917f-899e22ff371e	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	fff0e9e9-b1bb-4b83-9deb-90b4af1256a2	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00027/18	1.0	30.0	130.0	130.0	0.0	130.0	130.0	2018-02-03	2018-03-05	2018-03-03 12:28:27.56005	2018-03-15	0	2018-02-28 22:13:31.480585	2018-03-03 12:28:27.56005	\N
-e27a0674-0dce-4162-ad7c-5f9d0df53ff5	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	8dd0c554-5cb8-4f8c-ae79-273155991110	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00024/18	3.0	3.0	5.0	15.0	0.0	15.0	10.0	2018-02-01	2018-03-03	\N	2018-03-23	1	2018-02-28 22:11:03.435652	2018-03-03 12:31:59.815016	\N
-7bda0e9d-cabd-49f5-a3e8-f70fca95a2e4	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	4fca9c2d-c129-4b9e-bd9d-f071f64f83ce	2	00000000-0000-0000-0000-000000000001	\N	D00030/18	3.0	90.0	130.0	390.0	130.0	260.0	0	2018-03-04	2018-04-03	\N	\N	2	2018-03-04 17:20:10.524409	\N	\N
-4a2d9254-9c3e-403c-8c63-9650eb164d59	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	4fca9c2d-c129-4b9e-bd9d-f071f64f83ce	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00029/18	2.0	60.0	130.0	260.0	0.0	260.0	260.0	2018-03-04	2018-04-03	2018-03-04 17:21:37.539576	2018-03-04	0	2018-03-04 17:18:55.594651	2018-03-04 17:21:37.539576	\N
-53dd9be1-c757-45c6-85d8-1a2be6dbed3e	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	42aa1779-0a40-4885-ba3e-b672a7340a3b	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00028/18	10.0	10.0	5.0	50.0	1.0	49.0	0	2018-03-03	2018-04-02	\N	\N	-1	2018-03-03 12:28:17.220326	2018-03-06 00:14:24.345316	swo wwd kwndkw
-8d20bad7-c99f-4815-91a7-829be236b3fd	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	8dd0c554-5cb8-4f8c-ae79-273155991110	1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	V00015/18	1.0	1.0	5.0	5.0	0.0	5.0	5.0	2018-03-01	2018-03-01	2018-03-01 10:24:11.02618	2018-03-01	-1	2018-03-01 10:24:11.02618	2018-03-06 00:37:55.602429	Teste
+COPY venda (venda_id, venda_produto_id, venda_unidade_id, venda_cliente_id, venda_tvenda_id, venda_colaborador_id, venda_colaborador_atualizacao, venda_faturanumero, venda_quantidade, venda_quantidadeproduto, venda_montanteunitario, venda_montantebruto, venda_montantedesconto, venda_montantepagar, venda_montanteamortizado, venda_data, venda_datafinalizar, venda_datafim, venda_dataultimamovimentacao, venda_observacao, venda_estado, venda_dataregisto, venda_dataatualizacao) FROM stdin;
+51101041-fc0a-4b4c-8443-c1f002131d58	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	0c5a08f7-49eb-44c6-97b3-4990660a0e0c	2	00000000-0000-0000-0000-000000000001	\N	D00025/18	1.0	30.0	130.0	130.0	0.0	130.0	0	2018-02-01	2018-03-03	\N	\N	\N	2	2018-02-28 22:11:41.905332	\N
+454e7be0-12d9-4a1e-8f97-56c7dc8f82fb	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00026/18	4.0	4.0	5.0	20.0	0.0	20.0	0	2018-02-03	2018-03-05	\N	\N	\N	2	2018-02-28 22:12:33.180604	\N
+8e865fab-bbb9-493f-814a-bd4c1f94b2f3	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	42aa1779-0a40-4885-ba3e-b672a7340a3b	1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	V00016/18	12.0	12.0	5.0	60.0	0.0	60.0	60.0	2018-03-01	2018-03-01	2018-03-01 10:25:28.339335	2018-03-01	\N	0	2018-03-01 10:25:28.339335	2018-03-01 10:25:28.339335
+5b7d91b2-f4ce-4eed-917f-899e22ff371e	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	fff0e9e9-b1bb-4b83-9deb-90b4af1256a2	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00027/18	1.0	30.0	130.0	130.0	0.0	130.0	130.0	2018-02-03	2018-03-05	2018-03-03 12:28:27.56005	2018-03-15	\N	0	2018-02-28 22:13:31.480585	2018-03-03 12:28:27.56005
+e27a0674-0dce-4162-ad7c-5f9d0df53ff5	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	8dd0c554-5cb8-4f8c-ae79-273155991110	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00024/18	3.0	3.0	5.0	15.0	0.0	15.0	10.0	2018-02-01	2018-03-03	\N	2018-03-23	\N	1	2018-02-28 22:11:03.435652	2018-03-03 12:31:59.815016
+7bda0e9d-cabd-49f5-a3e8-f70fca95a2e4	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	4fca9c2d-c129-4b9e-bd9d-f071f64f83ce	2	00000000-0000-0000-0000-000000000001	\N	D00030/18	3.0	90.0	130.0	390.0	130.0	260.0	0	2018-03-04	2018-04-03	\N	\N	\N	2	2018-03-04 17:20:10.524409	\N
+4a2d9254-9c3e-403c-8c63-9650eb164d59	00000000-0000-0000-0000-000000000001	2da10bc7-53c5-4912-b06e-2b407e350eff	4fca9c2d-c129-4b9e-bd9d-f071f64f83ce	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00029/18	2.0	60.0	130.0	260.0	0.0	260.0	260.0	2018-03-04	2018-04-03	2018-03-04 17:21:37.539576	2018-03-04	\N	0	2018-03-04 17:18:55.594651	2018-03-04 17:21:37.539576
+53dd9be1-c757-45c6-85d8-1a2be6dbed3e	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	42aa1779-0a40-4885-ba3e-b672a7340a3b	2	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	D00028/18	10.0	10.0	5.0	50.0	1.0	49.0	0	2018-03-03	2018-04-02	\N	\N	swo wwd kwndkw	-1	2018-03-03 12:28:17.220326	2018-03-06 00:14:24.345316
+8d20bad7-c99f-4815-91a7-829be236b3fd	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	8dd0c554-5cb8-4f8c-ae79-273155991110	1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	V00015/18	1.0	1.0	5.0	5.0	0.0	5.0	5.0	2018-03-01	2018-03-01	2018-03-01 10:24:11.02618	2018-03-01	Teste	-1	2018-03-01 10:24:11.02618	2018-03-06 00:37:55.602429
+bb5e8cb5-95af-425e-9162-f6a1a4b5578e	e97f018e-732d-4f34-8453-ce57419c3064	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00031/18	12.0	12.00	5.0	60.0	0.0	60.0	0	2018-03-07	2018-04-06	\N	\N	\N	2	2018-03-07 14:47:51.018638	\N
+e7f9c4ba-15a0-48fb-be2b-32c501e71291	e97f018e-732d-4f34-8453-ce57419c3064	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00032/18	1.0	1.00	5.0	5.0	1.0	4.0	0	2018-03-07	2018-04-06	\N	\N	\N	2	2018-03-07 19:52:17.829622	\N
+e03ee1f0-6bd9-44f2-9fdb-7631d33d6b53	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00033/18	10.0	10.00	5.0	50.0	0.0	50.0	0	2018-03-07	2018-04-06	\N	\N	\N	2	2018-03-07 19:53:42.196325	\N
+442f1989-c5aa-4d38-8231-76f039d6797b	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00034/18	10.0	10.00	5.0	50.0	0.0	50.0	0	2018-03-07	2018-04-06	\N	\N	\N	2	2018-03-07 19:58:08.058767	\N
+6156898a-def4-4eec-a571-5efec2c748f8	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	4084e56e-7cde-4d21-bdc0-731161065864	2	00000000-0000-0000-0000-000000000001	\N	D00035/18	10.0	10.00	5.0	50.0	0.0	50.0	0	2018-03-07	2018-04-06	\N	\N	\N	2	2018-03-07 22:04:56.560534	\N
 \.
 
 
@@ -7286,6 +7995,14 @@ ALTER TABLE ONLY distrito
 
 ALTER TABLE ONLY fornecedor
     ADD CONSTRAINT pk_fornecedor_id PRIMARY KEY (fornecedor_id);
+
+
+--
+-- Name: localproducao pk_localproducao_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY localproducao
+    ADD CONSTRAINT pk_localproducao_id PRIMARY KEY (localproducao_id);
 
 
 --
@@ -7685,6 +8402,48 @@ CREATE UNIQUE INDEX despesa_despesa_codigo_uindex ON despesa USING btree (despes
 
 
 --
+-- Name: idx_localproducao_colaborador_atualizacao; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_colaborador_atualizacao ON localproducao USING btree (localproducao_colaborador_atualizacao);
+
+
+--
+-- Name: idx_localproducao_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_colaborador_id ON localproducao USING btree (localproducao_colaborador_id);
+
+
+--
+-- Name: idx_localproducao_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_dataregisto ON localproducao USING btree (localproducao_dataregisto);
+
+
+--
+-- Name: idx_localproducao_estado; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_estado ON localproducao USING btree (localproducao_estado);
+
+
+--
+-- Name: idx_localproducao_produto_id; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_produto_id ON localproducao USING btree (localproducao_produto_id);
+
+
+--
+-- Name: idx_localproducao_setor_id; Type: INDEX; Schema: ggviario; Owner: -
+--
+
+CREATE INDEX idx_localproducao_setor_id ON localproducao USING btree (localproducao_setor_id);
+
+
+--
 -- Name: producao_producao_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
@@ -7737,7 +8496,7 @@ CREATE TRIGGER tg_movimento_after_insert_update_movimento_devolucao AFTER INSERT
 -- Name: producao tg_producao_after_insert_movement_sector_and_product; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_producao_after_insert_movement_sector_and_product AFTER INSERT ON producao FOR EACH ROW EXECUTE PROCEDURE rule.functg_producao_after_insert_movement_sector_and_product();
+CREATE TRIGGER tg_producao_after_insert_movement_sector_and_product AFTER INSERT ON producao FOR EACH ROW EXECUTE PROCEDURE rule.functg_producao_after_insert_movement_produto();
 
 
 --
@@ -8047,6 +8806,38 @@ ALTER TABLE ONLY fornecedor
 
 
 --
+-- Name: localproducao fk_localproducao_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY localproducao
+    ADD CONSTRAINT fk_localproducao_to_colaborador FOREIGN KEY (localproducao_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
+
+
+--
+-- Name: localproducao fk_localproducao_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY localproducao
+    ADD CONSTRAINT fk_localproducao_to_colaborador_atualizacao FOREIGN KEY (localproducao_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
+
+
+--
+-- Name: localproducao fk_localproducao_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY localproducao
+    ADD CONSTRAINT fk_localproducao_to_produto FOREIGN KEY (localproducao_produto_id) REFERENCES produto(produto_id);
+
+
+--
+-- Name: localproducao fk_localproducao_to_setor; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
+--
+
+ALTER TABLE ONLY localproducao
+    ADD CONSTRAINT fk_localproducao_to_setor FOREIGN KEY (localproducao_setor_id) REFERENCES setor(setor_id);
+
+
+--
 -- Name: movimento fk_movimento_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
@@ -8271,7 +9062,7 @@ ALTER TABLE ONLY venda
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: -
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
 --
 
 GRANT ALL ON SCHEMA public TO PUBLIC;
