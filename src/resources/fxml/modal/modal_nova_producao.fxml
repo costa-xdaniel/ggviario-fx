@@ -69,7 +69,7 @@
                         <Insets left="8.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXTextField fx:id="textFieldProducaoComercial" alignment="TOP_RIGHT" promptText="Comerciavel" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <JFXTextField fx:id="textFieldProducaoComerciavel" alignment="TOP_RIGHT" editable="false" promptText="Comerciavel" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="8.0" />
                      </GridPane.margin>

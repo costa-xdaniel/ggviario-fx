@@ -123,18 +123,18 @@
 
 
 .drawer-details {
-    -fx-pref-width: 500px;
-    -fx-max-width: 500px;
-    -fx-min-width: 500px;
+    -fx-pref-width: 600px;
+    -fx-max-width: 600px;
+    -fx-min-width: 600px;
     -fx-min-height: 50px;
 
 
 }
 
 .drawer-details-page {
-    -fx-pref-width: 500px;
-    -fx-max-width: 500px;
-    -fx-min-width: 500px;
+    -fx-pref-width: 600px;
+    -fx-max-width: 600px;
+    -fx-min-width: 600px;
 }
 
 

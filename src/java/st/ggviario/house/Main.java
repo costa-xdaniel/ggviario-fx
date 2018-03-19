@@ -11,18 +11,16 @@ import st.ggviario.house.singleton.AuthSingleton;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        Thread.currentThread().setPriority( Thread.MAX_PRIORITY );
         launch( args );
     }
 
-
-
-
+    @Override
     public void start(Stage primaryStage) throws Exception{
 
         //From preview layout
         AuthSingleton.login( null, null );
 
-        setUserAgentStylesheet( STYLESHEET_MODENA );
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation( getClass().getResource("/fxml/page/page_home.fxml") );
         Parent parent  = loader.load();

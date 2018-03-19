@@ -1,12 +1,15 @@
 package st.ggviario.house.control.includs;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -27,24 +30,31 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
-public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidades.ProdutoUnidadeModelView > implements Initializable {
+public class IncludProdutoPrecos extends TableClontroller<IncludProdutoPrecos.ProdutoUnidadeModelView > implements Initializable {
 
-    public static IncludProdutoUnidades newInstance( ){
-        ControllerLoader< AnchorPane, IncludProdutoUnidades > loader = new ControllerLoader<>("/fxml/includs/includ_produto_unidades.fxml" );
+    public static IncludProdutoPrecos newInstance( ){
+        ControllerLoader< AnchorPane, IncludProdutoPrecos> loader = new ControllerLoader<>("/fxml/includs/includ_produto_precos.fxml");
         return loader.getController();
     }
 
+
     @FXML private AnchorPane root;
+    @FXML private JFXButton fabButton;
+    @FXML private MaterialDesignIconView fabIcon;
+
     @FXML private JFXTreeTableView< ProdutoUnidadeModelView > tableProdutoUnidades;
+
     private JFXTreeTableColumn < ProdutoUnidadeModelView, String  > columnUnidadeNome = new JFXTreeTableColumn<>( "UNIDADE" );
     private JFXTreeTableColumn < ProdutoUnidadeModelView, String  > columnUnidadeCodigo = new JFXTreeTableColumn<>( "COD" );
     private JFXTreeTableColumn < ProdutoUnidadeModelView, Number  > columnPrecoQuantidade = new JFXTreeTableColumn<>( "QT." );
     private JFXTreeTableColumn < ProdutoUnidadeModelView, Number  > columnPrecoCustoUnidade = new JFXTreeTableColumn<>("PREÇO");
-    private JFXTreeTableColumn < ProdutoUnidadeModelView, IconsActions > columnIconsAction = new JFXTreeTableColumn<>();
+    private JFXTreeTableColumn < ProdutoUnidadeModelView, IconsActionsObject< Preco > > columnIconsAction = new JFXTreeTableColumn<>();
 
 
     private DrawerProduto.OnPrecoDestroy onPrecoDestroy;
     private DrawerProduto.OnEditarPreco onEditarPreco;
+    private DrawerProduto.OnNovoPreco onNovoPreco;
+    private IconsActionsFactory< Preco > iconsActionsFactoryFatory;
 
     private Produto produto;
 
@@ -53,6 +63,7 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
+        this.defineEvents();
     }
 
     private void structure(){
@@ -61,15 +72,15 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         this.columnPrecoQuantidade.setCellValueFactory( param -> param.getValue().getValue().quantidadeProduto );
         this.columnPrecoCustoUnidade.setCellValueFactory( param -> param.getValue().getValue().custoUnidade );
 
-        IconsActions iconsActionsFatory = () -> {
+        this.iconsActionsFactoryFatory = ( preco ) -> {
             Node delete = this.newIconViewDestroy( MaterialDesignIcon.DELETE );
             Node edite = this.newIconViewPrimary( MaterialIcon.EDIT );
             edite.setOnMouseClicked(mouseEvent -> onEditarPreco() );
             delete.setOnMouseClicked( mouseEvent -> onDelectePreco() );
             return this.newIconCellContainer( edite, delete );
         };
-        ObjectProperty< IconsActions > property = new SimpleObjectProperty<>( iconsActionsFatory );
-        this.columnIconsAction.setCellValueFactory( param -> property );
+
+        this.columnIconsAction.setCellValueFactory( param -> param.getValue().getValue().iconsObject );
         this.columnIconsAction.setCellFactory( this.cellIconsView() );
         this.useAsIconsColumn( this.columnIconsAction, 2 );
 
@@ -102,6 +113,13 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         this.push( new LinkedList<>(), this.tableProdutoUnidades );
     }
 
+    private void defineEvents(){
+        this.fabButton.setOnMouseClicked(actionEvent -> {
+           if( this.onNovoPreco != null ) this.onNovoPreco.onNovoPreco( this.produto );
+        });
+        this.fabIcon.setOnMouseClicked(mouseEvent -> fabButton.getOnMouseClicked().handle( mouseEvent));
+    }
+
 
 
     private void onDelectePreco() {
@@ -120,12 +138,17 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         if(  this.onEditarPreco != null ) this.onEditarPreco.onEditarPreco( select.getValue().getValue().preco );
     }
 
-    public IncludProdutoUnidades setOnPrecoDestroy(DrawerProduto.OnPrecoDestroy onPrecoDestroy) {
+    public IncludProdutoPrecos setOnNovoPreco(DrawerProduto.OnNovoPreco onNovoPreco) {
+        this.onNovoPreco = onNovoPreco;
+        return this;
+    }
+
+    public IncludProdutoPrecos setOnPrecoDestroy(DrawerProduto.OnPrecoDestroy onPrecoDestroy) {
         this.onPrecoDestroy = onPrecoDestroy;
         return this;
     }
 
-    public IncludProdutoUnidades setOnEditarPreco(DrawerProduto.OnEditarPreco onEditarPreco) {
+    public IncludProdutoPrecos setOnEditarPreco(DrawerProduto.OnEditarPreco onEditarPreco) {
         this.onEditarPreco = onEditarPreco;
         return this;
     }
@@ -151,7 +174,7 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
                             precoBuilder.load( row );
                             precoBuilder.setUnidade( unidadeBuilder.build() );
                             precoBuilder.setProduto( this.produto );
-                            this.tableProdutoUnidades.getRoot().getChildren().add( new TreeItem<>( new ProdutoUnidadeModelView( precoBuilder.build() ) ));
+                            this.tableProdutoUnidades.getRoot().getChildren().add( new TreeItem<>( new ProdutoUnidadeModelView( precoBuilder.build(), this.iconsActionsFactoryFatory) ));
                         });
                     })
             ;
@@ -171,18 +194,21 @@ public class IncludProdutoUnidades extends TableClontroller<IncludProdutoUnidade
         private ObjectProperty< Number > quantidadeProduto;
         private ObjectProperty< Number > custoUnidade;
         public Preco preco;
+        public ObservableValue<IconsActionsObject<Preco>> iconsObject;
 
-        private ProdutoUnidadeModelView( Preco preco){
+        private ProdutoUnidadeModelView( Preco preco, IconsActionsFactory<Preco> fatory ){
             this.unidadeNome = new SimpleStringProperty( preco.getUnidade().getUnidadeNome()  );
             this.unidadeCodigo = new SimpleStringProperty( preco.getUnidade().getUnidadeCodigo() );
             this.quantidadeProduto = new SimpleObjectProperty<>( preco.getPrecoQuantidadeProduto() );
             this.custoUnidade = new SimpleObjectProperty<>( preco.getPrecoCustoUnidade() );
+
+            this.iconsObject = new SimpleObjectProperty<>( new IconsActionsObject< Preco >( preco, fatory ));
             this.preco = preco;
         }
 
         @Override
         public String toString() {
-            return "ProdutoUnidadeModelView{" +
+            return "LocalProducaoModelView{" +
                     "unidadeNome=" + unidadeNome +
                     ", unidadeCodigo=" + unidadeCodigo +
                     ", quantidadeProduto=" + quantidadeProduto +

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -47,7 +48,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
     @FXML private AnchorPane iconArea;
     @FXML private JFXTextField textFieldProducaoTotal;
     @FXML private JFXTextField textFieldProducaoDefeituosos;
-    @FXML private JFXTextField textFieldProducaoComercial;
+    @FXML private JFXTextField textFieldProducaoComerciavel;
     @FXML private JFXComboBox< Setor > comboxSector;
     @FXML private JFXComboBox< Produto > comboxProduto;
     @FXML private JFXDatePicker datePickeProducaoData;
@@ -83,7 +84,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
     public void clear() {
         this.textFieldProducaoTotal.setText( null );
         this.textFieldProducaoDefeituosos.setText( null );
-        this.textFieldProducaoComercial.setText( null );
+        this.textFieldProducaoComerciavel.setText( null );
         this.comboxSector.setValue( null );
         this.comboxProduto.setValue(  null );
         this.labelTotalDia.setText( null );
@@ -97,8 +98,8 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
 
     void defineEvents(){
         this.buttonRegistar.setOnAction(event -> this.onRegistarNovoSetor() );
-        this.comboxSector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.onChangeDateReload();
+        this.comboxProduto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.onChangeProduto( oldValue, newValue );
         });
 
         this.comboxSector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -110,11 +111,11 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         });
 
         this.textFieldProducaoTotal.setOnKeyReleased(keyEvent ->{
-            this.textFieldProducaoComercial.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
+            this.textFieldProducaoComerciavel.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
         });
 
         this.textFieldProducaoDefeituosos.setOnKeyReleased(keyEvent -> {
-            this.textFieldProducaoComercial.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
+            this.textFieldProducaoComerciavel.setText( SQLResource.coalesceText( this.onChangeQuantidade(), "" ) );
         });
 
     }
@@ -154,7 +155,7 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
                 .withUUID( colaborador.getColaboradorId() )
                 .withDate( res.getValue().getProducaoData() )
                 .withNumeric( res.getValue().getProducaoQuantidadeTotal() )
-                .withNumeric( res.getValue().getProducaoQuantidadeComercial() )
+                .withNumeric( res.getValue().getProducaoQuantidadeComerciavel() )
                 .withNumeric( res.getValue().getProducaoQuantidadeDefeituosa() )
                 .withUUID( res.getValue().getProduto().getProdutoId() )
                 .withUUID( res.getValue().getSetor().getSetorId() )
@@ -185,41 +186,84 @@ public class ModalNovaProducao extends AbstractModal< Producao > {
         executeOnOperationResult( res );
     }
 
-    private void onChangeDateReload( ){
-        Produto produto = this.comboxProduto.getValue();
-        Setor setor = this.comboxSector.getValue();
-        LocalDate date = datePickeProducaoData.getValue();
-
-        if( produto == null || setor == null || date == null ){
-            this.labelTotalSetor.setText("");
-            this.labelTotalDia.setText( "" );
-        } else {
-            PostgresSQL sql = PostgresSQLSingleton.getInstance();
-            sql.query( "funct_load_producao_data" )
-                .withUUID( produto.getProdutoId() )
-                .withUUID( setor.getSetorId() )
-                .withDate( date )
-                .callFunctionTable()
-                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                        this.labelTotalDia.setText( this.numberFormat.format( row.asDouble("producao_dia" ) ) );
-                        this.labelTotalSetor.setText( this.numberFormat.format( row.asDouble("producao_setor" ) ) );
-                    });
-            ;
-
+    private void onChangeProduto( Produto oldProduto, Produto newProduto ){
+        if( newProduto == null || newProduto.getProdutoId() == null ) {
+            this.comboxSector.getItems().clear();
+            return;
         }
 
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Setor.SetorBuilder setorBuilder = new Setor.SetorBuilder();
+            Setor.SetorBuilder superSetorBuilder = new Setor.SetorBuilder();
+            Platform.runLater( ( ) -> this.comboxSector.getItems().clear());
+            sql.query( "ggviario.funct_load_setor_by_localproducao_to_producao")
+                .withUUID( newProduto.getProdutoId() )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            setorBuilder.load( row );
+                            if( row.asMapJsonn("setor_super" ) != null  ){
+                                superSetorBuilder.load( row.asMapJsonn("setor_super" ) );
+                                setorBuilder.setSetorSuper( superSetorBuilder.build() );
+                            }
+                            this.comboxSector.getItems().add( setorBuilder.build() );
+                        });
+                    });
+
+            Platform.runLater(() -> {
+                if( this.comboxSector.getItems().size() > 1 ){
+                    this.comboxSector.getItems().add( 0 , SECTOR_VOID );
+                } else if( this.comboxSector.getItems().size() == 1 ){
+                    this.comboxSector.getSelectionModel().select( 0 );
+                }
+            });
+        });
+
+
+        thread.start();
 
     }
 
-    private ModalNovaProducaoResult validateForm(){
+    private void onChangeDateReload( ){
+        Thread thread = new Thread(() -> {
+            Produto produto = this.comboxProduto.getValue();
+            Setor setor = this.comboxSector.getValue();
+            LocalDate date = datePickeProducaoData.getValue();
 
+            if( produto == null || setor == null || date == null ){
+                Platform.runLater( () -> {
+                    this.labelTotalSetor.setText( "" );
+                    this.labelTotalDia.setText( "" );
+                });
+            } else {
+                PostgresSQL sql = PostgresSQLSingleton.getInstance();
+                sql.query( "funct_load_producao_data" )
+                        .withUUID( produto.getProdutoId() )
+                        .withUUID( setor.getSetorId() )
+                        .withDate( date )
+                        .callFunctionTable()
+                        .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                            Platform.runLater(() -> {
+                                this.labelTotalDia.setText( this.numberFormat.format( row.asDouble("producao_dia" ) ) );
+                                this.labelTotalSetor.setText( this.numberFormat.format( row.asDouble("producao_setor" ) ) );
+                            });
+                        });
+                ;
+
+            }
+        });
+        thread.start();
+    }
+
+    private ModalNovaProducaoResult validateForm(){
         ModalNovaProducaoResult res = new ModalNovaProducaoResult();
         Producao.ProducaoBuilder producaoBuilder = new Producao.ProducaoBuilder();
         producaoBuilder.setProduto( this.comboxProduto.getValue() );
         producaoBuilder.setSetor( this.comboxSector.getValue() );
         producaoBuilder.setData( this.datePickeProducaoData.getValue() == null? null : java.sql.Date.valueOf( this.datePickeProducaoData.getValue() ) );
         producaoBuilder.setQuantidadeTotal(SQLRow.doubleOf( this.textFieldProducaoTotal.getText() ) );
-        producaoBuilder.setQuantidadeComericial( SQLRow.doubleOf( this.textFieldProducaoComercial.getText() ) );
+        producaoBuilder.setQuantidadeComerciavel(SQLRow.doubleOf( this.textFieldProducaoComerciavel.getText() ) );
         producaoBuilder.setQuantidadeDefeituosa( SQLResource.coalesce( SQLRow.doubleOf( this.textFieldProducaoDefeituosos.getText() ) , 0d ));
 
         res.resultVale = producaoBuilder.build();

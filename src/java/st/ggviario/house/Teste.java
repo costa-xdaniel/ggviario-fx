@@ -1,8 +1,13 @@
 package st.ggviario.house;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Teste {
     public static void main(String[] args) {
-        double i = 1|4;
-        System.out.println( i );
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMMMM 'de' yyyy", Locale.forLanguageTag("pt") );
+        System.out.println("simpleDateFormat = " + simpleDateFormat.format( date ));
     }
 }

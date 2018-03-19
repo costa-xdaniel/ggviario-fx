@@ -64,6 +64,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
     private DrawerObjectItem drawerObjectItems;
     private ModalNovaCategoria modalNovaCategoria;
     private ModalNovaUnidade modalNovaUnidade;
+    private ModalNovoLocalProducao modalNovoLocalProducao;
     private ModalDestroy< Preco > modalPrecoDestry;
     private ModalDestroy< Unidade > unidadeModalDestroy;
     private ModalDestroy< Categoria > categoriaModalDestroy;
@@ -216,7 +217,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
             this.drawerProduto.setProduto( newProduto.produto  );
 
             if( !this.root.getChildren().contains( this.jfxDrawerProdutoDetails) ){
-                int index = this.root.getChildren().indexOf( this.treeTableViewUnidade );
+                int index = this.root.getChildren().indexOf( this.fabArea );
                 this.root.getChildren().add(index+1, this.jfxDrawerProdutoDetails);
             }
 
@@ -238,7 +239,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.drawerObjectItems.setObjectType( objectType  );
 
         if( !this.root.getChildren().contains( this.jfxDrawerItems) ){
-            int index = this.root.getChildren().indexOf( this.treeTableViewUnidade );
+            int index = this.root.getChildren().indexOf(  this.fabArea );
             this.root.getChildren().add(index+1, this.jfxDrawerItems);
         }
         this.jfxDrawerItems.open();
@@ -310,6 +311,11 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         this.modalNovoPreco.openModalEditarPreco( preco );
     }
 
+    private void onOpenModalNovoLocalProducao(Produto produto ){
+        this.loadModalNovoLocalProducao();
+        this.modalNovoLocalProducao.openModal( produto );
+    }
+
     private void onChangeProdutoEstado( Produto produto ){
         Thread thread = new Thread(() -> {
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
@@ -334,6 +340,31 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
         thread.start();
     }
 
+    private void onChangeLocalProducaoDisable( LocalProducao localProducao ) {
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Colaborador colaborador = AuthSingleton.getInstance();
+            sql.query( "ggviario.funct_change_locaoproducao_disable" )
+                    .withUUID( colaborador.getColaboradorId() )
+                    .withUUID( localProducao.getLocalProducaoId() )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            SQLResult result = new SQLResult( row );
+                            SnackbarBuilder snackbarBuilder = new SnackbarBuilder( this.rootPage );
+                            if( result.isSuccess() ){
+                                snackbarBuilder.show( "Local de produção fechado com sucesso!", SnackbarBuilder.MessageLevel.SUCCESS );
+                                this.drawerProduto.notifyLocalProducao();
+                            } else {
+                                snackbarBuilder.show( result.getMessage(), SnackbarBuilder.MessageLevel.ERROR );
+                            }
+                        });
+                    })
+            ;
+        });
+        thread.start();
+    }
+
     private void loadDrawerProduto() {
         if( this.drawerProduto == null ){
             this.drawerProduto = DrawerProduto.newInstance( this.jfxDrawerProdutoDetails);
@@ -343,6 +374,8 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
             this.drawerProduto.setOnPrecoDestroy(  this::onOpenModalDestroyPreco );
             this.drawerProduto.setOnEditarPreco( this::onOpenEditarPreco );
             this.drawerProduto.setOnChangeProdutoEstado( this::onChangeProdutoEstado );
+            this.drawerProduto.setOnNovoLocalProducao( this::onOpenModalNovoLocalProducao );
+            this.drawerProduto.onChangeLocalProducaoDisable( this::onChangeLocalProducaoDisable );
         }
     }
 
@@ -443,6 +476,17 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
             this.modalNovoPreco = ModalNovoPreco.newInstance( this.rootPage );
             this.modalNovoPreco.setOnModalResult( modalResult -> {
                 this.loadDatProduto();
+            });
+        }
+    }
+
+    private void loadModalNovoLocalProducao(){
+        if( this.modalNovoLocalProducao == null ){
+            this.modalNovoLocalProducao = ModalNovoLocalProducao.newInstance( this.rootPage );
+            this.modalNovoLocalProducao.setOnModalResult( modalResult -> {
+                if( modalResult.isSuccess() ){
+                    this.drawerProduto.notifyLocalProducao();
+                }
             });
         }
     }

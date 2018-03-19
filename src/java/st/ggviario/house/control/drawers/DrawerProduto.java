@@ -14,7 +14,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.ControllerLoader;
 import st.ggviario.house.control.includs.IncludProdutoInformation;
-import st.ggviario.house.control.includs.IncludProdutoUnidades;
+import st.ggviario.house.control.includs.IncludProdutoLocalProducao;
+import st.ggviario.house.control.includs.IncludProdutoPrecos;
+import st.ggviario.house.model.LocalProducao;
 import st.ggviario.house.model.Preco;
 import st.ggviario.house.model.Produto;
 import st.jigahd.support.sql.lib.SQLResource;
@@ -47,10 +49,9 @@ public class DrawerProduto implements Initializable {
     @FXML private HBox headerPageIcon;
     @FXML private AnchorPane panelIconClose;
     @FXML private AnchorPane panelIconInformation;
-    @FXML private AnchorPane panelListUnidades;
-    @FXML private AnchorPane panelIconListaPreco;
+    @FXML private AnchorPane panelListPrecos;
+    @FXML private AnchorPane panelIconLocalProducao;
     @FXML private AnchorPane panelIconEdit;
-    @FXML private AnchorPane panelIconNovoPreco;
     @FXML private AnchorPane panelProdutoIconDelete;
     @FXML private MaterialDesignIconView iconViewProdutoDelete;
     @FXML private Label labelHeaderTitle;
@@ -58,10 +59,9 @@ public class DrawerProduto implements Initializable {
 
     private JFXRippler ripplerClose;
     private JFXRippler ripplerInformation;
-    private JFXRippler ripplerListUnidades;
-    private JFXRippler ripplerListPrecos;
+    private JFXRippler ripplerListaPrecos;
+    private JFXRippler ripplerLocalProducao;
     private JFXRippler ripplerProdutoEdit;
-    private JFXRippler ripplerNovoPreco;
     private JFXRippler ripplerProdutoDelete;
 
     private Produto produto;
@@ -71,11 +71,10 @@ public class DrawerProduto implements Initializable {
 
     private JFXDrawer drawer;
     private IncludProdutoInformation includProdutoInformation;
-    private IncludProdutoUnidades includPrecosAtivos;
+    private IncludProdutoPrecos includProdutoPrecos;
+    private IncludProdutoLocalProducao includProdutoLocalProducao;
     private OnChangeProdutoEstado onChangeProdutoEstado;
 
-    private OnNovoPreco onNovoPreco;
-    private OnListPrecos onListaPrecos;
     private OnProdutoEdit onProdutoEdit;
 
     @Override
@@ -88,37 +87,37 @@ public class DrawerProduto implements Initializable {
         JFXDepthManager.pop( this.root );
         this.ripplerClose = new JFXRippler( panelIconClose );
         this.ripplerInformation = new JFXRippler( panelIconInformation );
-        this.ripplerListUnidades = new JFXRippler( panelListUnidades );
-        this.ripplerListPrecos = new JFXRippler( this.panelIconListaPreco );
+        this.ripplerListaPrecos = new JFXRippler(panelListPrecos);
+        this.ripplerLocalProducao = new JFXRippler( this.panelIconLocalProducao );
         this.ripplerProdutoEdit = new JFXRippler( this.panelIconEdit );
-        this.ripplerNovoPreco = new JFXRippler( panelIconNovoPreco );
         this.ripplerProdutoDelete = new JFXRippler( this.panelProdutoIconDelete);
 
         this.ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
         this.ripplerInformation.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerListUnidades.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerListPrecos.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerListaPrecos.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerLocalProducao.setStyle("-jfx-rippler-fill: md-primary-color");
         this.ripplerProdutoEdit.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerNovoPreco.setStyle("-jfx-rippler-fill: md-primary-color");
 
         this.headerPageIcon.getChildren().addAll(
             this.ripplerClose,
             this.ripplerInformation,
-            this.ripplerListUnidades,
-            this.ripplerListPrecos,
+            this.ripplerListaPrecos,
+            this.ripplerLocalProducao,
             this.ripplerProdutoEdit,
-            this.ripplerNovoPreco,
             this.ripplerProdutoDelete
         );
 
         this.includProdutoInformation = IncludProdutoInformation.newInstance();
-        this.includPrecosAtivos = IncludProdutoUnidades.newInstance();
+        this.includProdutoPrecos = IncludProdutoPrecos.newInstance();
+        this.includProdutoLocalProducao = IncludProdutoLocalProducao.newInstance();
+
         this.includProdutoInformation.getRoot().heightProperty().addListener((observableValue, number, t1) -> {
             this.stackPaneContent.setMinHeight(
-                    SQLResource.max(
-                            includProdutoInformation.getRoot().getHeight(),
-                            includPrecosAtivos.getRoot().getHeight()
-                    )
+                SQLResource.max(
+                    includProdutoInformation.getRoot().getHeight(),
+                    includProdutoPrecos.getRoot().getHeight(),
+                    includProdutoLocalProducao.getRoot().getHeight()
+                )
             );
         });
 
@@ -135,19 +134,17 @@ public class DrawerProduto implements Initializable {
             onInformation();
         });
 
-        this.ripplerListUnidades.setOnMouseClicked(mouseEvent -> {
-            this.onListaUnidades();
+        this.ripplerListaPrecos.setOnMouseClicked(mouseEvent -> {
+            this.onListaPrecos();
         });
 
-        this.ripplerListPrecos.setOnMouseClicked(mouseEvent -> {
-            if( this.onListaPrecos != null ) this.onListaPrecos.onListPreco( this.produto );
+        this.ripplerLocalProducao.setOnMouseClicked(mouseEvent -> {
+            this.onListaLocalProducao();
         });
 
         this.ripplerProdutoEdit.setOnMouseClicked(mouseEvent -> {
             if (this.onProdutoEdit != null) this.onProdutoEdit.onProdutoEdit(this.produto);
         });
-
-        this.ripplerNovoPreco.setOnMouseClicked(event -> { if( this.onNovoPreco != null ) onNovoPreco.onNovoPreco( this.produto ); } );
 
         this.ripplerProdutoDelete.setOnMouseClicked( mouseEvent -> {
             if( this.onChangeProdutoEstado != null ) this.onChangeProdutoEstado.onChangeProdutoEstado( this.produto );
@@ -159,16 +156,22 @@ public class DrawerProduto implements Initializable {
         this.stackPaneContent.getChildren().add( this.includProdutoInformation.getRoot() );
     }
 
-    private void onListaUnidades( ){
+    private void onListaPrecos( ){
         this.stackPaneContent.getChildren().clear();
-        this.stackPaneContent.getChildren().add( this.includPrecosAtivos.getRoot() );
+        this.stackPaneContent.getChildren().add( this.includProdutoPrecos.getRoot() );
+    }
+
+    private void onListaLocalProducao( ){
+        this.stackPaneContent.getChildren().clear();
+        this.stackPaneContent.getChildren().add( this.includProdutoLocalProducao.getRoot() );
     }
 
 
     public void setProduto(Produto produto) {
         this.produto = produto;
         this.includProdutoInformation.setProdudo( produto );
-        this.includPrecosAtivos.setProduto( produto );
+        this.includProdutoPrecos.setProduto( produto );
+        this.includProdutoLocalProducao.setProduto( produto );
         this.labelHeaderTitle.setText( this.produto.getProdutoCodigo() );
         if( this.produto.getProdutoEstado() == Produto.ProdutoEstado.FECHADO ){
             this.iconViewProdutoDelete.setIcon( MaterialDesignIcon.BACKUP_RESTORE);
@@ -178,22 +181,20 @@ public class DrawerProduto implements Initializable {
     }
 
     public DrawerProduto setOnNovoPreco(OnNovoPreco onNovoPreco) {
-        this.onNovoPreco = onNovoPreco;
+        this.includProdutoPrecos.setOnNovoPreco( onNovoPreco );
         return this;
     }
 
-    public DrawerProduto setOnListaPrecos( OnListPrecos onListaPrecos ) {
-        this.onListaPrecos = onListaPrecos;
-        return this;
-    }
+
+
 
     public DrawerProduto setOnPrecoDestroy( OnPrecoDestroy onPrecoDestroy) {
-        this.includPrecosAtivos.setOnPrecoDestroy(onPrecoDestroy);
+        this.includProdutoPrecos.setOnPrecoDestroy(onPrecoDestroy);
         return this;
     }
 
-    public IncludProdutoUnidades setOnEditarPreco(OnEditarPreco onEditarPreco) {
-        return includPrecosAtivos.setOnEditarPreco(onEditarPreco);
+    public IncludProdutoPrecos setOnEditarPreco(OnEditarPreco onEditarPreco) {
+        return includProdutoPrecos.setOnEditarPreco(onEditarPreco);
     }
 
     public DrawerProduto setOnChangeProdutoEstado(OnChangeProdutoEstado onChangeProdutoEstado) {
@@ -206,18 +207,26 @@ public class DrawerProduto implements Initializable {
         return this;
     }
 
+    public DrawerProduto setOnNovoLocalProducao(OnNovoLocalProducao onNovoLocalProducao) {
+        this.includProdutoLocalProducao.setOnNovoLocalProducao(onNovoLocalProducao);
+        return this;
+    }
 
+    public DrawerProduto onChangeLocalProducaoDisable(OnChangeLocalProducaoDisable onChangeLocalProducaoDisable) {
+        this.includProdutoLocalProducao.onChangeLocalProducaoDisable(onChangeLocalProducaoDisable);
+        return this;
+    }
 
     public void notifyPrecoDestroy() {
-        this.includPrecosAtivos.setProduto( this.produto );
+        this.includProdutoPrecos.setProduto( this.produto );
+    }
+
+    public void notifyLocalProducao() {
+        this.includProdutoLocalProducao.setProduto( this.produto );
     }
 
     public interface OnProdutoEdit {
         void onProdutoEdit( Produto produto  );
-    }
-
-    public interface OnListPrecos{
-        void onListPreco( Produto produto );
     }
 
     public interface OnNovoPreco{
@@ -232,8 +241,16 @@ public class DrawerProduto implements Initializable {
         void onEditarPreco( Preco produto );
     }
 
+    public interface OnNovoLocalProducao{
+        void onNovoLocalProducao( Produto produto );
+    }
+
     public interface OnChangeProdutoEstado{
         void onChangeProdutoEstado( Produto produto );
+    }
+
+    public interface OnChangeLocalProducaoDisable {
+        void onChangeLocalProducaoDisable(LocalProducao localProducao );
     }
 
 

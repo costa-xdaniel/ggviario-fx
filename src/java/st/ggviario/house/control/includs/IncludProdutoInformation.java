@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class IncludProdutoInformation implements Initializable {
 
     public static IncludProdutoInformation newInstance( ){
-        ControllerLoader< VBox, IncludProdutoInformation > loader = new ControllerLoader<VBox, IncludProdutoInformation>( "/fxml/includs/includ_produto_detalhes.fxml" );
+        ControllerLoader< VBox, IncludProdutoInformation > loader = new ControllerLoader<VBox, IncludProdutoInformation>("/fxml/includs/includ_produto_information.fxml");
         return loader.getController();
     }
 

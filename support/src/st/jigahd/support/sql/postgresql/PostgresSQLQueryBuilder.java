@@ -392,11 +392,6 @@ public class PostgresSQLQueryBuilder {
         return this;
     }
 
-    public PostgresSQLQueryBuilder withJson(Object doublePrecision ){
-        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
-        return this;
-    }
-
     public PostgresSQLQueryBuilder withJsonb( JsonElement jsonb ){
         return this.withJsonb( jsonb == null? null : jsonb.toString() );
     }
@@ -404,22 +399,12 @@ public class PostgresSQLQueryBuilder {
     public PostgresSQLQueryBuilder withJsonb( String jsonb ){
         try {
             PGobject jsonObject = new PGobject();
-            jsonObject.setType("::jsonb");
+            jsonObject.setType("jsonb");
             jsonObject.setValue( jsonb );
-            parameters.add( new Pair<>( Types.OTHER, jsonb ) );
+            parameters.add( new Pair<>( Types.OTHER, jsonObject ) );
         } catch ( Exception ex  ) {
             throw new RuntimeException( ex );
         }
-        return this;
-    }
-
-//    public PostgresSQLQueryBuilder withJsonb( String jsonb ){
-//        parameters.add( new Pair<>( Oid.JSON, jsonb ) );
-//        return this;
-//    }
-
-    public PostgresSQLQueryBuilder withJson(String doublePrecision ){
-        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
         return this;
     }
 

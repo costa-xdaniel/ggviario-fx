@@ -1,0 +1,39 @@
+/*top      right    bottom   left*/
+/*top-left      top-right    bottom-right   bottom-left*/
+.chose-control{
+    rippler-color: md-grey-500;
+    chosen-color: md-grey-500;
+    chosen-text-color: #ffffff;
+    un-chosen-color: #ffffff;
+    un-chosen-text-color: md-grey-500;
+}
+
+.chose-control .chose-item {
+    -jfx-rippler-fill: rippler-color;
+}
+.chose-control .chose-item:chosen .chose-item-label{
+    -fx-background-color: chosen-color;
+    -fx-text-fill: chosen-text-color;
+}
+.chose-control .chose-item .chose-item-label{
+    -fx-font-weight: bold;
+    -fx-padding: 16px;
+    -fx-background-color: un-chosen-color;
+    -fx-text-fill: un-chosen-text-color;
+}
+.chose-control .chose-item:chosen .chose-item-icon{
+    -fx-fill: chosen-text-color;
+}
+.chose-control .chose-item .chose-item-icon{
+    -fx-fill: un-chosen-text-color;
+    -glyph-size: 16px;
+}
+.chose-control .chose-item:first-item .chose-item-label{
+    -fx-background-radius: 4px 0px 0px 4px;
+}
+.chose-control .chose-item:last-item .chose-item-label{
+    -fx-background-radius: 0px 4px 4px 0px;
+}
+
+
+

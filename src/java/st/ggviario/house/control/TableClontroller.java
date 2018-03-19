@@ -88,13 +88,17 @@ public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
         };
     }
 
-    protected Callback<TreeTableColumn< Type , IconsActions>, TreeTableCell< Type , IconsActions> > cellIconsView() {
-        return param -> new TreeTableCell< Type , IconsActions>(){
+    /*
+
+     */
+
+    protected <T>  Callback<TreeTableColumn< Type , IconsActionsObject< T > >, TreeTableCell< Type , IconsActionsObject< T >> > cellIconsView() {
+        return param -> new TreeTableCell<  Type , IconsActionsObject< T > > (){
             @Override
-            protected void updateItem(IconsActions item, boolean empty) {
+            protected void updateItem(  IconsActionsObject< T > item, boolean empty) {
                 super.updateItem(item, empty);
                 if( item != null && !empty ){
-                    Node node = item.createIcons();
+                    Node node = item.factory.createIcons( item.object );
                     this.setGraphic( node );
                 } else  {
                     this.setGraphic( null );
@@ -171,8 +175,23 @@ public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
         column.setMinWidth( width );
     }
 
-    public interface IconsActions {
-         Node createIcons();
+    public class IconsActionsObject<T> {
+        private T object;
+        private IconsActionsFactory< T > factory;
+
+        public IconsActionsObject(T object, IconsActionsFactory<T> factory) {
+            this.object = object;
+            this.factory = factory;
+        }
+
+        public T getObject() {
+            return object;
+        }
+    }
+
+    public interface IconsActionsFactory< T > {
+        Node createIcons( T object);
+
     }
 
 }

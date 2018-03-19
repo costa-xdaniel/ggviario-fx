@@ -12,6 +12,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -42,6 +43,7 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         return loader.getController();
     }
 
+
     @FXML private AnchorPane root;
     @FXML private AnchorPane headerPane;
     @FXML private HBox headerPageIcon;
@@ -62,13 +64,14 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
     private JFXTreeTableColumn< UnidadeCategoria, String > columnUnidadeCodigo = new JFXTreeTableColumn<>( "COD" );
     private JFXTreeTableColumn< UnidadeCategoria, String> columnUnidadeNome = new JFXTreeTableColumn<>( "NOME" );
     private JFXTreeTableColumn< UnidadeCategoria, Date> columnUnidadeDataRegegisto = new JFXTreeTableColumn<>( "DATA" );
-    private JFXTreeTableColumn< UnidadeCategoria, IconsActions> columnActionAtives = new JFXTreeTableColumn<>( null );
+    private JFXTreeTableColumn< UnidadeCategoria, IconsActionsObject< UnidadeCategoria >> columnActionAtives = new JFXTreeTableColumn<>( null );
 
     private JFXRippler ripplerClose;
     private JFXRippler ripplerListaCompleta;
     private JFXRippler ripplerListaAtivos;
     private JFXRippler ripplerListaRemovidos;
     private JFXRippler ripplerAddItem;
+    private IconsActionsFactory<UnidadeCategoria> iconsActionsFactory;
 
 
     private List< Unidade > unidadeList = new LinkedList<>();
@@ -118,16 +121,17 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         this.columnCategoriaSuper.setCellValueFactory( param -> param.getValue().getValue().categoriaSuper );
         this.columnCategoriaDataregisto.setCellValueFactory( param -> param.getValue().getValue().categoriaDataregisto );
 
-        ObjectProperty<IconsActions> cellIconsValue = new SimpleObjectProperty<>(() -> {
+        this.iconsActionsFactory = ( uc ) -> {
             Node edite =  newIconViewPrimary( MaterialDesignIcon.BORDER_COLOR );
             Node delete = newIconViewDestroy( MaterialDesignIcon.DELETE );
             edite.setOnMouseClicked( mouseEvent ->  this.onEditItem() );
             delete.setOnMouseClicked( mouseEvent ->  this.onEditDelete() );
             return newIconCellContainer( edite, delete );
-        });
+        };
 
 
-        this.columnActionAtives.setCellValueFactory(param -> cellIconsValue);
+
+        this.columnActionAtives.setCellValueFactory(param -> param.getValue().getValue().iconsObject );
 
         this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
         this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
@@ -285,7 +289,7 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
                             Categoria next = categoriaBuilder.build();
                             this.categoriaList.add( next );
                             if( this.objectType == ObjectType.CATEGORIA )
-                                this.tableUnidadeCategoria.getRoot().getChildren().add( new TreeItem<>( new UnidadeCategoria( next ) ) );
+                                this.tableUnidadeCategoria.getRoot().getChildren().add( new TreeItem<>( new UnidadeCategoria( next, this.iconsActionsFactory) ) );
                         });
                     })
             ;
@@ -311,7 +315,7 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
                             Unidade next = unidadeBuilder.load(row).build();
                             this.unidadeList.add( next );
                             if( this.objectType == ObjectType.UNIDADE )
-                                this.tableUnidadeCategoria.getRoot().getChildren().add( new TreeItem<>( new UnidadeCategoria( next ) ) );
+                                this.tableUnidadeCategoria.getRoot().getChildren().add( new TreeItem<>( new UnidadeCategoria( next, this.iconsActionsFactory) ) );
                         });
                     })
             ;
@@ -349,19 +353,23 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         private ObjectProperty< Date > categoriaDataregisto;
         private Categoria categoria;
         private Unidade unidade;
+        public ObservableValue<IconsActionsObject<UnidadeCategoria>> iconsObject;
 
-        UnidadeCategoria(Categoria categoria) {
+        UnidadeCategoria(Categoria categoria, IconsActionsFactory< UnidadeCategoria > fatory ) {
             this.categoriaNome = new SimpleStringProperty( categoria.getCategoriaNome() );
             this.categoriaCodigo = new SimpleStringProperty( categoria.getCategoriaCodigo() );
             this.categoriaSuper = new SimpleStringProperty( categoria.getCategoriaSuper() != null ? categoria.getCategoriaSuper().getCategoriaNome() : null );
             this.categoriaDataregisto = new SimpleObjectProperty<>( categoria.getCategoriaDataRegisto() );
             this.categoria = categoria;
+            this.iconsObject = new SimpleObjectProperty<>( new IconsActionsObject< UnidadeCategoria >( this, fatory )) ;
+
         }
 
-        UnidadeCategoria(Unidade unidade) {
+        UnidadeCategoria(Unidade unidade, IconsActionsFactory< UnidadeCategoria > fatory) {
             this.unidadeNome = new SimpleStringProperty( unidade.getUnidadeNome() );
             this.unidadeCodigo = new SimpleStringProperty( unidade.getUnidadeCodigo() );
             this.unidadeDataregisto = new SimpleObjectProperty<>( unidade.getUnidadeDataregisto() );
+            this.iconsObject = new SimpleObjectProperty<>( new IconsActionsObject< UnidadeCategoria >( this, fatory )) ;
             this.unidade = unidade;
         }
     }
