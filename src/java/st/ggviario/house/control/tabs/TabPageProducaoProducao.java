@@ -42,13 +42,12 @@ import java.util.*;
 public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoProducao.ProducaoModelView > implements TabPage, Initializable {
 
     @FXML private AnchorPane root;
-    @FXML private JFXDrawer jfxDrawerItems;
+    @FXML private JFXDrawer itemsDrawer;
     @FXML private HBox topArea;
 
     @FXML private JFXTreeTableView< ProducaoModelView > treeTableProducao;
-    @FXML private AnchorPane fabNewProducaoArea;
-    @FXML  private JFXButton fabNewProducaoButtom;
-    @FXML  private MaterialDesignIconView fabNewProducaoIcon;
+    @FXML  private JFXButton fabButton;
+    @FXML  private StackPane fabArea;
     @FXML  private JFXListView< Setor > listViewSetor;
 
     private String ITEM_PRODUTO = "produto";
@@ -116,16 +115,22 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.push( new LinkedList<>(), this.treeTableProducao );
 
         this.itemChoseControl
-        .setIcon(new MaterialDesignIconView(MaterialDesignIcon.VIEW_LIST), this::onClickIconItems)
+        .setIcon(new MaterialDesignIconView(MaterialDesignIcon.VIEW_LIST), this::onOpenDrawerCategoriaProduto)
         .newItem()
             .setText( "PRODUTO" )
             .setKey( ITEM_PRODUTO )
-            .setOnChose(item -> this.loadProducaoVistaProduto())
+            .setOnChose( item -> {
+                this.loadProducaoVistaProduto();
+                this.setProductoContent();
+            })
             .append()
         .newItem()
             .setText( "SECTOR" )
             .setKey( ITEM_SETOR )
-            .setOnChose( item -> this.loadProducaoVistaSector() )
+            .setOnChose( item ->{
+                this.loadProducaoVistaSector();
+                this.setSetorContent();
+            })
             .append();
 
         Pane pane = itemChoseControl.getRoot();
@@ -150,13 +155,18 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         pane = dateFormatChoseControl.getRoot();
         this.topArea.getChildren().add( pane );
         HBox.setMargin( pane, new Insets( 0, 0, 0, 16));
-        this.root.getChildren().remove( this.jfxDrawerItems );
+        this.root.getChildren().remove( this.itemsDrawer);
     }
 
     private void defineEvents(){
-        this.fabNewProducaoArea.setOnMouseClicked(event -> onOpemModalNovaProducao() );
-        this.fabNewProducaoButtom.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
-        this.fabNewProducaoIcon.setOnMouseClicked( this.fabNewProducaoArea.getOnMouseClicked() );
+        this.fabButton.setOnMouseClicked(event -> onOpemModalNovaProducao() );
+
+        this.itemsDrawer.heightProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.loadDrawerProcucaoProduto();
+            this.loadDrawerProducaoSetor();
+            drawerProducaoSetor.getRoot().setPrefHeight( newValue.doubleValue() );
+            drawerProducaoProduto.getRoot().setPrefHeight( newValue.doubleValue() );
+        });
     }
 
     private void loadData(){
@@ -172,35 +182,42 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         }
     }
 
-    private void onClickIconItems(){
+    private void onOpenDrawerCategoriaProduto(){
         if( this.itemChoseControl.getChosenItem() == null ) return;
 
 
-        if( this.itemChoseControl.getChosenItem().getKey().equals( ITEM_SETOR ) ){
-            this.loadDrawerProducaoSetor();
-            this.jfxDrawerItems.setSidePane( this.drawerProducaoSetor.getRoot() );
+        if( this.itemChoseControl.getChosenItem().getKey().equals( ITEM_SETOR ) )
+            setSetorContent();
+        else if( this.itemChoseControl.getChosenItem().getKey().equals( ITEM_PRODUTO ) )
+            setProductoContent();
 
-        } else if( this.itemChoseControl.getChosenItem().getKey().equals( ITEM_PRODUTO ) ){
-            this.loadDrawerProcucaoProduto();
-            this.jfxDrawerItems.setSidePane( this.drawerProducaoProduto.getRoot() );
+        if( !this.root.getChildren().contains( this.itemsDrawer) ){
+            int index = this.root.getChildren().indexOf(  this.fabArea );
+            this.root.getChildren().add(index+1, this.itemsDrawer);
         }
+        this.itemsDrawer.open();
+    }
 
-        if( !this.root.getChildren().contains( this.jfxDrawerItems) ){
-            int index = this.root.getChildren().indexOf(  this.fabNewProducaoArea );
-            this.root.getChildren().add(index+1, this.jfxDrawerItems);
-        }
-        this.jfxDrawerItems.open();
+    private void setProductoContent() {
+        this.loadDrawerProcucaoProduto();
+        this.itemsDrawer.setSidePane( this.drawerProducaoProduto.getRoot() );
+    }
+
+    private void setSetorContent() {
+        this.loadDrawerProducaoSetor();
+        this.itemsDrawer.setSidePane( this.drawerProducaoSetor.getRoot() );
     }
 
     private void loadDrawerProducaoSetor(){
         if( this.drawerProducaoSetor == null ){
-            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.jfxDrawerItems );
+            this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.itemsDrawer);
+
         }
     }
 
     private void loadDrawerProcucaoProduto(){
         if( this.drawerProducaoProduto == null ){
-            this.drawerProducaoProduto = DrawerProducaoProduto.newInstance( this.jfxDrawerItems );
+            this.drawerProducaoProduto = DrawerProducaoProduto.newInstance( this.itemsDrawer);
         }
     }
 

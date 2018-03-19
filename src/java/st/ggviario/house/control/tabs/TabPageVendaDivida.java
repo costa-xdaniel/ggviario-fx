@@ -37,7 +37,7 @@ public class TabPageVendaDivida extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, String > columnVendaDividaEstado = new JFXTreeTableColumn<>( "ESTADO" );
 
     @FXML
-    private JFXButton buttonVendaDividaNew;
+    private JFXButton fabButton;
 
     @FXML
     private JFXDrawer drawerVendaDetails;
@@ -197,7 +197,7 @@ public class TabPageVendaDivida extends VendaController {
 
     @Override
     public JFXButton getButonNew() {
-        return this.buttonVendaDividaNew;
+        return this.fabButton;
     }
 
     @Override

@@ -38,7 +38,7 @@ public class TabPageProduto extends TableClontroller<TabPageProduto.ProdutoModel
 
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< ProdutoModelView > treeTableViewUnidade;
-    @FXML private AnchorPane fabArea;
+    @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private MaterialDesignIconView fabIcon;
     @FXML private JFXDrawer jfxDrawerProdutoDetails;

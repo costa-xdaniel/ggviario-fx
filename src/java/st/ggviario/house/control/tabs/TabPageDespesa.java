@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 
 public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModelView> implements TabPage, Initializable {
 
-    @FXML private JFXButton fabNovaDespesa;
+    @FXML private JFXButton fabButton;
     @FXML private JFXTreeTableView <DespesaModelView> treeTableViewDespesa;
 
     private JFXTreeTableColumn <DespesaModelView, String > columnCodigo = new JFXTreeTableColumn<>("Codigo");
@@ -112,7 +112,7 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
     }
 
     private void defineEvents(){
-        fabNovaDespesa.setOnAction(actionEvent -> {
+        fabButton.setOnAction(actionEvent -> {
             onOpenModalNovaDespesa();
         });
     }

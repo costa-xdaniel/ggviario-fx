@@ -33,7 +33,7 @@ public class TabPageVendaVenda extends VendaController {
     private JFXTreeTableColumn<VendaViewModel, Date > columnVendaVendaRegisto = new JFXTreeTableColumn<>( "REGISTO" );
 
     @FXML
-    private JFXButton buttonVendaVendaNew;
+    private JFXButton fabButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,7 +64,7 @@ public class TabPageVendaVenda extends VendaController {
 
     @Override
     public JFXButton getButonNew() {
-        return this.buttonVendaVendaNew;
+        return this.fabButton;
     }
 
     @Override

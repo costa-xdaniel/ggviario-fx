@@ -48,13 +48,13 @@
                      </AnchorPane>
                   </children>
                </HBox>
-               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="UNIDADES" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+               <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="PRODUTOS" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
                <Separator layoutX="87.0" layoutY="108.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             </children>
          </AnchorPane>
       </top>
       <center>
-         <JFXTreeTableView fx:id="tableUnidadeCategoria" BorderPane.alignment="CENTER">
+         <JFXTreeTableView fx:id="tableProdutos" BorderPane.alignment="CENTER">
             <columnResizePolicy>
                <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy></JFXTreeTableView>

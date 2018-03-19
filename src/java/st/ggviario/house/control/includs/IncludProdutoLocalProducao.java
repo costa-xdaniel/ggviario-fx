@@ -39,7 +39,7 @@ public class IncludProdutoLocalProducao extends TableClontroller<IncludProdutoLo
     }
 
     @FXML private AnchorPane root;
-    @FXML private AnchorPane fabArea;
+    @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private MaterialDesignIconView fabIcon;
     @FXML private JFXTreeTableView<LocalProducaoModelView> tableProdutoSector;

@@ -31,19 +31,19 @@
 }
 
 .floating-action-area {
-    -fx-pref-height : 56px;
-    -fx-pref-width  : 56px;
-    -fx-min-height  : 56px;
-    -fx-min-width   : 56px;
-    -fx-max-height  : 56px;
-    -fx-max-width   : 56px;
+    -fx-pref-height : 50px;
+    -fx-pref-width  : 50px;
+    -fx-min-height  : 50px;
+    -fx-min-width   : 50px;
+    -fx-max-height  : 50px;
+    -fx-max-width   : 50px;
+    -fx-background-color: #FF5722;
+    -fx-background-radius: 50px;
 }
-.floating-action-button {
-    -fx-background-color: #FF5722 ;
-    -fx-text-fill: #FFFFFF;
-    -fx-border-color: #FFFFFF;
 
-    -fx-border-width: 4px;
+.floating-action-button {
+    -fx-background-color: transparent ;
+    -fx-text-fill: #ffffff;
     -fx-background-radius: 50px;
     -fx-pref-height:       50px;
     -fx-pref-widtht:       50px;

@@ -50,7 +50,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     @FXML private JFXListView< Cliente > listViewCliente;
     @FXML private JFXComboBox<Produto> comboxProduto;
     @FXML private JFXComboBox<Preco> comboxPrecoUnidades;
-    @FXML private JFXButton fabNewCliente;
+    @FXML private JFXButton fabButton;
     @FXML private JFXButton buttonNovaVenda;
     @FXML private JFXTextField textFieldVendaQuantidade;
     @FXML private JFXTextField textFieldVendaMontanteBruto;
@@ -138,7 +138,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.textFieldVendaQuantidade.setOnKeyReleased(keyEvent -> this.onCalculateValue());
         this.textFieldVendaDesconto.setOnKeyReleased(keyEvent -> this.onCalculateValue());
         this.textFieldClienteSearch.setOnKeyReleased(this::onSearchCliente);
-        this.fabNewCliente.setOnAction(actionEvent -> this.onNewCliente());
+        this.fabButton.setOnAction(actionEvent -> this.onNewCliente());
 
         this.datePickerVendaData.valueProperty().addListener((observableValue, oldDate, newDate) -> {
             if (newDate != null) this.datePickerVendaDataFinalizar.setValue(newDate.plusDays(30));

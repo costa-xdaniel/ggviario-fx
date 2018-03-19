@@ -33,7 +33,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
     @FXML private AnchorPane root;
     @FXML private JFXTreeTableView< FornecedorViewModel > tableViewFornecedor;
     @FXML private JFXDrawer drawerFornecedor;
-    @FXML private JFXButton fabNewFornecedor;
+    @FXML private JFXButton fabButton;
 
     private List< FornecedorViewModel > listForenecedor = new LinkedList<>();
 
@@ -100,7 +100,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
 
 
     private void defineEvents(){
-        this.fabNewFornecedor.setOnAction(actionEvent -> this.onOpenModalNovoFornecedor() );
+        this.fabButton.setOnAction(actionEvent -> this.onOpenModalNovoFornecedor() );
     }
 
     private void onOpenModalNovoFornecedor(){

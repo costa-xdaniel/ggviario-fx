@@ -311,6 +311,6 @@
 }
 
 .tree-table-view.produto .tree-table-row-cell.divida:selected{
-    -fx-font-size: bold;
+    -fx-font-weight: bold;
 }
 
