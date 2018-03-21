@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class PostgresSQLSingleton {
 
-    public static void loadConfiguration() {
+    static{
         File file = new File("conf/database.conf.json" );
         File dir = new File("conf/" );
 
@@ -34,17 +34,9 @@ public class PostgresSQLSingleton {
         }
     }
 
-
-
     private static PostgresSQL postgresSQL;
-
-    public PostgresSQL getPostgresSQL() {
-        return postgresSQL;
-    }
 
     public static PostgresSQL getInstance() {
         return postgresSQL;
     }
-
-
 }

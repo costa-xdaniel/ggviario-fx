@@ -17,7 +17,6 @@ import st.ggviario.house.singleton.AuthSingleton;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        st.ggviario.house.singleton.PostgresSQLSingleton.loadConfiguration();
         Thread.currentThread().setPriority( Thread.MAX_PRIORITY );
         launch( args );
     }
