@@ -1,13 +1,42 @@
 package st.ggviario.house.singleton;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import st.jigahd.support.sql.Configuration;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class PostgresSQLSingleton {
 
-    private static Configuration configuration = new Configuration( "localhost", 5432, "ggviario", "ggviario_developer", "1234" );
+    public static void loadConfiguration() {
+        File file = new File("conf/database.conf.json" );
+        File dir = new File("conf/" );
 
-    private static PostgresSQL postgresSQL = new PostgresSQL( configuration );
+        Gson gson = new Gson();
+        if( !file.exists() ){
+            System.out.println("dir.mkdirs() = " + dir.mkdirs());
+            try (FileWriter writer = new FileWriter( file )) {
+                gson.toJson( new Configuration("host", 5432, "user", "database", "password" ), writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try(JsonReader reader = new JsonReader( new FileReader( file ) )) {
+            Configuration conf = gson.fromJson(reader, Configuration.class);
+            PostgresSQLSingleton.postgresSQL = new PostgresSQL( conf );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private static PostgresSQL postgresSQL;
 
     public PostgresSQL getPostgresSQL() {
         return postgresSQL;

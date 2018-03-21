@@ -1,0 +1,7 @@
+{
+  "host": "localhost",
+  "port": 5432,
+  "user": "ggviario",
+  "database": "ggviario",
+  "password": "1234"
+}
