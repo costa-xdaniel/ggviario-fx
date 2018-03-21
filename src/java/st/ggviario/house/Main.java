@@ -15,12 +15,6 @@ import st.ggviario.house.singleton.AuthSingleton;
 
 
 public class Main extends Application {
-
-    public static void main(String[] args) {
-        Thread.currentThread().setPriority( Thread.MAX_PRIORITY );
-        launch( args );
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
