@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,7 +58,6 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
         this.structure();
         this.defineEvents();
         this.push( new LinkedList<>(), this.treeTableViewDespesa );
-        this.loadData();
     }
 
     @Override
@@ -65,18 +65,37 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
         this.rootPage = rootPage;
     }
 
+    @Override
+    public void onAfterOpen() {
+        this.loadDataDespesa();
+    }
+
     private void structure(){
         JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnCodigo.setCellValueFactory( paramn -> paramn.getValue().getValue().codigo );
+
         this.columnFornecedor.setCellValueFactory( param -> param.getValue().getValue().fornecedor );
+        this.columnFornecedor.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnProduto.setCellValueFactory( param -> param.getValue().getValue().produto );
+        this.columnProduto.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnQuantidade.setCellValueFactory( param -> param.getValue().getValue().quantiade );
+        this.columnQuantidade.getStyleClass().add( CLASS_COLUMN_MONEY );
+
         this.columnTotal.setCellValueFactory( param -> param.getValue().getValue().montanteTotal );
+        this.columnTotal.getStyleClass().add( CLASS_COLUMN_MONEY );
+
         this.columnAmortizadao.setCellValueFactory( param -> param.getValue().getValue().montanteAmortizado );
+        this.columnAmortizadao.getStyleClass().add( CLASS_COLUMN_MONEY );
+
         this.columnPendente.setCellValueFactory( param->param.getValue().getValue().montantePendente );
+        this.columnPendente.getStyleClass().add( CLASS_COLUMN_MONEY );
+
         this.columnData.setCellValueFactory( param -> param.getValue().getValue().data );
         this.columnRegisto.setCellValueFactory( param -> param.getValue().getValue().dataRegisto );
         this.columnEstado.setCellValueFactory( param -> param.getValue().getValue().estada );
+        this.columnEstado.getStyleClass().add( CLASS_COLUMN_LEFT );
 
         this.treeTableViewDespesa.getColumns().setAll(
                 this.columnCodigo,
@@ -120,14 +139,14 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
         });
     }
 
-    private void loadData( ){
-        this.loadDataDespesa();
-    }
-
     private void loadDataDespesa( ){
        Thread thread = new Thread(() -> {
-           this.originalListView.clear();
-           this.treeTableViewDespesa.getRoot().getChildren().clear();
+           Platform.runLater(() -> {
+               this.originalListView.clear();
+               this.treeTableViewDespesa.getRoot().getChildren().clear();
+               this.treeTableViewDespesa.refresh();
+           });
+
            Despesa.DespesaBuilder builder = new Despesa.DespesaBuilder();
            Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
            Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
@@ -138,16 +157,18 @@ public class TabPageDespesa extends TableClontroller<TabPageDespesa.DespesaModel
                    .withJsonb( (String)  null )
                    .callFunctionTable()
                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                       builder.load( row );
-                       builder.setProduto( produtoBuilder.load( row ).build() );
-                       builder.setFornecedor( fornecedorBuilder.load( row ).build() );
-                       builder.setUnidade( unidadeBuilder.load( row ).build() );
-                       DespesaModelView item = new DespesaModelView( builder.build() );
-                       this.originalListView.add( item );
-                       this.treeTableViewDespesa.getRoot().getChildren().add( new TreeItem<>( item ) );
+                      Platform.runLater(() -> {
+                          builder.load( row );
+                          builder.setProduto( produtoBuilder.load( row ).build() );
+                          builder.setFornecedor( fornecedorBuilder.load( row ).build() );
+                          builder.setUnidade( unidadeBuilder.load( row ).build() );
+                          DespesaModelView item = new DespesaModelView( builder.build() );
+                          this.originalListView.add( item );
+                          this.treeTableViewDespesa.getRoot().getChildren().add( new TreeItem<>( item ) );
+                      });
                    });
-           ;
        });
+       thread.setPriority( Thread.MIN_PRIORITY );
        thread.start();
     }
 

@@ -277,12 +277,12 @@
 
 
 
-/*TABELA DIVIAD*/
+/*TABELA PODUTO*/
 .produto{
     color-estado-stock-vazio: md-red-500;
     color-estado-stock-minimo: md-orange-500;
     color-estado-fechado: md-blue-grey-500;
-    color-estado-ok: md-green-500;
+    color-estado-ok: #FFFFFF;
 }
 .tree-table-view.produto .tree-table-row-cell.stock_vazio {
     -fx-background-color: color-estado-stock-vazio;
@@ -293,9 +293,6 @@
 .tree-table-view.produto .tree-table-row-cell.fechado {
     -fx-background-color: color-estado-fechado;
 }
-.tree-table-view.produto .tree-table-row-cell.ok {
-    -fx-background-color: color-estado-ok;
-}
 
 .tree-table-view.produto .tree-table-row-cell.stock_vazio:selected,
 .tree-table-view.produto .tree-table-row-cell.stock_minimo:selected,
@@ -305,8 +302,10 @@
     -fx-background-color: md-blue-500;
 }
 
-
-.tree-table-view.produto .tree-table-cell {
+.tree-table-view.produto .tree-table-row-cell.stock_vazio .tree-table-cell,
+.tree-table-view.produto .tree-table-row-cell.stock_minimo .tree-table-cell,
+.tree-table-view.produto .tree-table-row-cell.fechado .tree-table-cell
+{
     -fx-text-fill: #ffffff;
 }
 

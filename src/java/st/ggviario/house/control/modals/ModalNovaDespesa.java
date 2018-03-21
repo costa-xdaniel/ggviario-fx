@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.StringConverter;
 import st.ggviario.house.control.ControllerLoader;
 import st.ggviario.house.control.SnackbarBuilder;
+import st.ggviario.house.control.component.DatePickerRange;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -66,7 +67,6 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
 
 
 
-    private JFXRippler ripllerCloseModa;
     private List< Fornecedor > fornecedorList;
     private List<Produto> produtoList;
     private Map< UUID, List< Unidade > > productoListMap;
@@ -98,6 +98,7 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize( url, resourceBundle );
         this.fornecedorList = new LinkedList<>();
         this.productoListMap = new LinkedHashMap<>();
         this.produtoList = new LinkedList<>();
@@ -111,46 +112,19 @@ public class ModalNovaDespesa  extends AbstractModal <Despesa > implements Initi
     }
 
     void structure() {
+        super.structure();
+        this.datePickeDespesaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
+        this.datePickeDespesaData.setDayCellFactory( DatePickerRange.getDayCellFactory( null, LocalDate.now() ) );
+    }
 
-        //Striucture rippler
-        this.ripllerCloseModa = new JFXRippler( this.iconAreaCloseModal );
-        this.ripllerCloseModa.setStyle( "-jfx-rippler-fill: md-red-500" );
-        this.anchorHeader.getChildren().add( this.ripllerCloseModa );
-        AnchorPane.setRightAnchor( this.ripllerCloseModa, 0x0.0p0 );
-        AnchorPane.setTopAnchor( this.ripllerCloseModa, 0x0.0p0 );
-
-        this.datePickeDespesaData.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        });
-
+    @Override
+    public void closeModal() {
+        super.closeModal();
+        this.clear();
     }
 
     private void difineEvents( ){
-
-        this.ripllerCloseModa.setOnMouseClicked(mouseEvent -> {
-            this.clear();
-            this.closeModal();
-        });
-
-        this.textFieldFornecedorSearch.setOnKeyReleased(keyEvent -> {
-            this.onSearchFornecedor( keyEvent, SQLText.normalize( this.textFieldFornecedorSearch.getText().toLowerCase()));
-        });
+        this.textFieldFornecedorSearch.setOnKeyReleased(keyEvent -> this.onSearchFornecedor( keyEvent, SQLText.normalize( this.textFieldFornecedorSearch.getText().toLowerCase())));
 
         this.listViewFornecedor.getSelectionModel().selectedItemProperty().addListener((observableValue, oldFornecedor, newFornecedor) -> {
             this.onSelectFornecedor( oldFornecedor, newFornecedor );

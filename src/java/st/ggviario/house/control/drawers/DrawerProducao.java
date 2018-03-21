@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.TableClontroller;
 
 import java.net.URL;
@@ -17,7 +18,7 @@ public abstract class DrawerProducao < Type extends RecursiveTreeObject< Type> >
     @FXML private AnchorPane root;
     @FXML
     protected HBox headerPageIcon;
-    @FXML private AnchorPane panelIconClose;
+    @FXML private StackPane panelIconClose;
 
 
     protected JFXDrawer drawer;

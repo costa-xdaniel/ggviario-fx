@@ -5,17 +5,23 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
 import com.jfoenix.effects.JFXDepthManager;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import st.ggviario.house.control.ControllerLoader;
 import st.ggviario.house.control.SnackbarBuilder;
+import st.ggviario.house.control.component.DatePickerRange;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
@@ -124,9 +130,16 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     @Override
     void structure() {
         super.structure();
+
         JFXDepthManager.setDepth( this.fabArea, 4 );
-        datePickerVendaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
-        datePickerVendaDataFinalizar.setConverter(this.datePickerVendaData.getConverter());
+
+        this.datePickerVendaData.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
+        this.datePickerVendaDataFinalizar.setConverter( createDateConverter( FORMAT_DD_MM_YYYY ) );
+
+        this.datePickerVendaData.setDayCellFactory( DatePickerRange.getDayCellFactory( null, LocalDate.now() ) );
+        this.datePickerVendaDataFinalizar.setDayCellFactory( DatePickerRange.getDayCellFactory( LocalDate.now(), null ) );
+        this.datePickerVendaDataFinalizar.setValue( LocalDate.now().plusDays( 30 ) );
+
         this.comboxProduto.setItems( FXCollections.observableList( new LinkedList<>() ) );
         this.comboxPrecoUnidades.setItems( FXCollections.observableList( new LinkedList<>( ) ) );
     }
@@ -144,7 +157,10 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
         this.fabButton.setOnAction(actionEvent -> this.onNewCliente());
 
         this.datePickerVendaData.valueProperty().addListener((observableValue, oldDate, newDate) -> {
-            if (newDate != null) this.datePickerVendaDataFinalizar.setValue(newDate.plusDays(30));
+            if (newDate != null) {
+                this.datePickerVendaDataFinalizar.setValue(newDate.plusDays(30));
+                this.datePickerVendaDataFinalizar.setDayCellFactory( DatePickerRange.getDayCellFactory( newDate, null ) );
+            }
             else this.datePickerVendaDataFinalizar.setValue(null);
             this.loadProdutoDatasource( newDate );
         });

@@ -33,6 +33,12 @@ import static st.ggviario.house.control.StyleClass.*;
 
 public class TableClontroller< Type extends RecursiveTreeObject< Type> > {
 
+    protected static final String CLASS_COLUMN_CENTER = "table-column-center";
+    protected static final String CLASS_COLUMN_MONEY = "table-column-money";
+    protected static final String CLASS_COLUMN_NIF = "nif";
+    protected static final String CLASS_COLUMN_NUMBER = "table-column-number";
+    protected static final String CLASS_COLUMN_LEFT = "table-column-left";
+
     public static final NumberFormat MONEY_FORMAT = NumberFormat.getInstance( Locale.FRANCE );
     public static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance( Locale.FRANCE );
     public static final DateFormat DD_MM_YYYY_FORMAT = new SimpleDateFormat( "dd-MM-yyyy" );

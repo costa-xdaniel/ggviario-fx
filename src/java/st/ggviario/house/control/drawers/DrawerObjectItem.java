@@ -102,24 +102,54 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
         this.ripplerListaRemovidos = new JFXRippler( this.panelIconLiataRemovidos);
         this.ripplerAddItem = new JFXRippler( this.panelIconAddItem );
 
-        this.ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
-        this.ripplerListaCompleta.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerListaAtivos.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerListaRemovidos.setStyle("-jfx-rippler-fill: md-primary-color");
-        this.ripplerAddItem.setStyle("-jfx-rippler-fill: md-primary-color");
+        this.ripplerClose.getStyleClass().add( "rippler" );
+        this.ripplerClose.getStyleClass().add( "close" );
+
+        this.ripplerListaCompleta.getStyleClass().add( "rippler" );
+        this.ripplerListaCompleta.getStyleClass().add( "primary" );
+        this.ripplerListaAtivos.getStyleClass().add( "rippler" );
+        this.ripplerListaAtivos.getStyleClass().add( "primary" );
+        this.ripplerListaRemovidos.getStyleClass().add( "rippler" );
+        this.ripplerListaRemovidos.getStyleClass().add( "primary" );
+        this.ripplerAddItem.getStyleClass().add( "rippler" );
+        this.ripplerAddItem.getStyleClass().add( "primary" );
 
         this.headerPageIcon.getChildren().addAll(
-                this.ripplerClose,
-                this.ripplerListaCompleta,
-                this.ripplerListaAtivos,
-                this.ripplerListaRemovidos,
-                this.ripplerAddItem
+            this.ripplerClose,
+            this.ripplerListaCompleta,
+            this.ripplerListaAtivos,
+            this.ripplerListaRemovidos,
+            this.ripplerAddItem
         );
 
         this.columnCategoriaCodigo.setCellValueFactory( param -> param.getValue().getValue().categoriaCodigo );
+        this.columnCategoriaCodigo.getStyleClass().add( CLASS_COLUMN_CENTER );
+
         this.columnCategoriaNome.setCellValueFactory( param -> param.getValue().getValue().categoriaNome );
+        this.columnCategoriaNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnCategoriaSuper.setCellValueFactory( param -> param.getValue().getValue().categoriaSuper );
+        this.columnCategoriaSuper.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnCategoriaDataregisto.setCellValueFactory( param -> param.getValue().getValue().categoriaDataregisto );
+        this.columnCategoriaDataregisto.getStyleClass().add( CLASS_COLUMN_CENTER );
+        this.columnCategoriaDataregisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
+
+
+        this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
+        this.columnUnidadeCodigo.getStyleClass().add( CLASS_COLUMN_CENTER );
+
+        this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
+        this.columnUnidadeNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+
+        this.columnUnidadeDataRegegisto.setCellValueFactory( param -> param.getValue().getValue().unidadeDataregisto );
+        this.columnUnidadeDataRegegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
+        this.columnUnidadeDataRegegisto.getStyleClass().add( CLASS_COLUMN_CENTER );
+
+
+        this.columnActionAtives.setCellValueFactory(param -> param.getValue().getValue().iconsObject );
+        this.columnActionAtives.setCellFactory( cellIconsView() );
+        this.useAsIconsColumn( this.columnActionAtives, 2 );
 
         this.iconsActionsFactory = ( uc ) -> {
             Node edite =  newIconViewPrimary( MaterialDesignIcon.BORDER_COLOR );
@@ -128,19 +158,6 @@ public class DrawerObjectItem extends TableClontroller<DrawerObjectItem.UnidadeC
             delete.setOnMouseClicked( mouseEvent ->  this.onEditDelete() );
             return newIconCellContainer( edite, delete );
         };
-
-
-
-        this.columnActionAtives.setCellValueFactory(param -> param.getValue().getValue().iconsObject );
-
-        this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
-        this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
-        this.columnUnidadeDataRegegisto.setCellValueFactory( param -> param.getValue().getValue().unidadeDataregisto );
-        this.columnCategoriaDataregisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
-        this.columnUnidadeDataRegegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT));
-        this.columnActionAtives.setCellFactory( cellIconsView() );
-        this.useAsIconsColumn( this.columnActionAtives, 2 );
-
 
         JFXDepthManager.pop( this.root );
         this.push( new LinkedList<>(), this.tableUnidadeCategoria );

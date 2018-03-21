@@ -48,7 +48,11 @@ public abstract class VendaController extends TableClontroller< VendaController.
         this.structure();
         defineEvents();
         push( new LinkedList<>(), this.getTableVenda()  );
-        this.loadData( null, true );
+    }
+
+    @Override
+    public void onAfterOpen() {
+        this.loadVendaData();
     }
 
     @Override
@@ -75,7 +79,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
             this.getDrawerVendaDetails().close();
     }
 
-    void loadData( String text, boolean full ) {
+    void loadVendaData() {
         Thread thread = new Thread(() -> {
             Venda.VendaBuilder vendaBuilder = new Venda.VendaBuilder();
             Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
@@ -83,8 +87,11 @@ public abstract class VendaController extends TableClontroller< VendaController.
             Unidade.UnidadeBuilder unidadeBuilder = new Unidade.UnidadeBuilder();
 
             PostgresSQL sql = PostgresSQLSingleton.getInstance();
-            this.vendaOriginalList.clear();
-            this.getTableVenda().getRoot().getChildren().clear();
+            Platform.runLater(() -> {
+                this.vendaOriginalList.clear();
+                this.getTableVenda().getRoot().getChildren().clear();
+                this.getTableVenda().refresh();
+            });
 
             sql.query( this.getFunctionLoadVendaName() )
                     .withJsonb( (String) null)
@@ -153,7 +160,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
         if( this.modalNovaVenda == null){
             this.modalNovaVenda = ModalNovaVenda.load( this.getTipoVenda(), this.getFunctionLoadClienteNew(), (StackPane) this.rootPage);
             this.modalNovaVenda.setOnModalResult(operationResult -> {
-                this.loadData( null, true );
+                this.loadVendaData();
             });
         }
     }
@@ -194,7 +201,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
                                     this.modalDestroyVenda.closeModal();
                                     String auxOld = oldTextFilter;
                                     this.oldTextFilter = null;
-                                    this.loadData( auxOld, true );
+                                    this.loadVendaData();
                                 } else {
                                     snackbak.show( result.getMessage(), SnackbarBuilder.MessageLevel.ERROR );
                                 }
@@ -212,7 +219,7 @@ public abstract class VendaController extends TableClontroller< VendaController.
     public void onSearch(KeyEvent event, String textFilter) {
         boolean full = event != null && event.getCode() == KeyCode.ENTER;
         if( full ) {
-            this.loadData( textFilter, true );
+            this.loadVendaData();
         } else if( this.oldTextFilter != null && textFilter == null ) {
         } else if( textFilter != null & oldTextFilter != null && ! textFilter.equals( oldTextFilter ) ){
             List< VendaViewModel > search = new LinkedList<>( );

@@ -94,20 +94,21 @@ public class TabPageVendaVenda extends VendaController {
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
 
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
-        columnVendaDividaCliente.setStyle("-fx-alignment: CENTER_LEFT;");
+        columnVendaDividaCliente.getStyleClass().add( CLASS_COLUMN_LEFT );
 
         columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
-        columnVendaDividaProduto.setStyle("-fx-alignment: CENTER_LEFT;");
+        columnVendaDividaProduto.getStyleClass().add( CLASS_COLUMN_LEFT );
 
 
         columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
-        columnVendaDividaQuantidade.setStyle("-fx-alignment: CENTER_RIGHT;");
+        columnVendaDividaQuantidade.getStyleClass().add( CLASS_COLUMN_NUMBER );
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
-        columnVendaDividaData.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT));
+        columnVendaDividaData.setCellFactory( cellDateFormat( DD_MM_YYYY_FORMAT ) );
+
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
-        columnVendaDividaMontantePagar.setStyle("-fx-alignment: CENTER_RIGHT;");
+        columnVendaDividaMontantePagar.getStyleClass().add( CLASS_COLUMN_MONEY );
 
         this.columnVendaVendaRegisto.setCellValueFactory( param -> param.getValue().getValue().vendaDataRegisto );
         this.columnVendaVendaRegisto.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT));
@@ -147,8 +148,4 @@ public class TabPageVendaVenda extends VendaController {
         this.columnVendaVendaRegisto.setMinWidth( 110 );
         this.columnVendaVendaRegisto.setMaxWidth( 110 );
     }
-
-
-
-
 }

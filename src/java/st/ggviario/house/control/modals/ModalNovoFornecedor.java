@@ -43,12 +43,10 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
     @FXML private JFXTextField textFieldFornecedorNome;
     @FXML private JFXButton buttomRegistarFornecedor;
 
-    private JFXRippler rippler;
-
     private List< Distrito > distritos = new LinkedList<>();
     private Distrito voidDistrito;
 
-    public static ModalNovoFornecedor load(StackPane stackPane ){
+    public static ModalNovoFornecedor load( StackPane stackPane ){
         ControllerLoader< AnchorPane, ModalNovoFornecedor > loader = new ControllerLoader<>("/fxml/modal/modal_novo_fornecedor.fxml");
         ModalNovoFornecedor modal = loader.getController();
         modal.createDialogModal( stackPane );
@@ -59,18 +57,9 @@ public class ModalNovoFornecedor extends AbstractModal<Fornecedor >{
         return modal;
     }
 
-    void structure( ){
-        this.rippler = new JFXRippler( this.iconAnchorCloseArea);
-        this.anchorHeader.getChildren().add( this.rippler );
-        AnchorPane.setTopAnchor( this.rippler, 0x0.0p0 );
-        AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
-    }
+
 
     void defineEvents() {
-        this.rippler.setOnMouseClicked(mouseEvent -> {
-            this.clear();
-            this.closeModal();
-        });
         this.buttomRegistarFornecedor.setOnAction( actionEvent -> this.onRegisterFornecedor() );
         this.comboxFornecedorDistrito.getSelectionModel().selectedItemProperty().addListener((observableValue, oldDistrito, newDistrito) -> {
             if( newDistrito != null && newDistrito.equals( this.voidDistrito ) ){

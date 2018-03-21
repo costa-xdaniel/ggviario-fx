@@ -93,11 +93,20 @@ public class DrawerVenda implements Initializable {
         JFXRippler ripplerListPay = new JFXRippler( panelIconListPayment );
         JFXRippler ripplerListDelete = new JFXRippler( this.panelIconDelete  );
 
-        ripplerClose.setStyle("-jfx-rippler-fill: md-red-500");
-        this.ripplerAdd.setStyle("-jfx-rippler-fill: md-primary-color");
-        ripplerPayNow.setStyle("-jfx-rippler-fill: md-primary-color");
-        ripplerListPay.setStyle("-jfx-rippler-fill: md-primary-color");
-        ripplerListDelete.setStyle("-jfx-rippler-fill: md-primary-color");
+        ripplerClose.getStyleClass().add( "rippler" );
+        ripplerClose.getStyleClass().add( "close" );
+
+        this.ripplerAdd.getStyleClass().add( "rippler" );
+        this.ripplerAdd.getStyleClass().add( "primary" );
+
+        ripplerPayNow.getStyleClass().add( "rippler" );
+        ripplerPayNow.getStyleClass().add( "primary" );
+
+        ripplerListPay.getStyleClass().add( "rippler" );
+        ripplerListPay.getStyleClass().add( "primary" );
+
+        ripplerListDelete.getStyleClass().add( "rippler" );
+        ripplerListDelete.getStyleClass().add( "primary" );
 
         this.headerPageIcon.getChildren().add( ripplerClose );
         this.showIcon( panelIconAdd, ripplerAdd );

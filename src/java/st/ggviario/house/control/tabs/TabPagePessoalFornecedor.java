@@ -3,6 +3,7 @@ package st.ggviario.house.control.tabs;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,6 +23,7 @@ import st.ggviario.house.control.TableClontroller;
 import st.ggviario.house.model.Fornecedor;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
+import st.jigahd.support.sql.postgresql.PostgresSQLResultSet;
 
 import java.net.URL;
 import java.util.Date;
@@ -37,7 +39,7 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
     @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
 
-    private List< FornecedorViewModel > listForenecedor = new LinkedList<>();
+    private List<TreeItem<FornecedorViewModel>> listForenecedor = new LinkedList<TreeItem<FornecedorViewModel>>();
 
     private StackPane rootPage;
     private ModalNovoFornecedor modalNovoFornecedor;
@@ -56,8 +58,11 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.structure();
         this.defineEvents();
-        this.loadData();
-        this.pushAll();
+    }
+
+    @Override
+    public void onAfterOpen() {
+        this.loadFornecedorData();
     }
 
     @Override
@@ -89,15 +94,16 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
             this.columnFornecedorComprasPendentes,
             this.columnFornecedorRegisto
         );
+        this.push( new LinkedList<>(), this.tableViewFornecedor );
 
-        this.columnFornecedorNIF.getStyleClass().add("nif");
+        this.columnFornecedorNIF.getStyleClass().add( CLASS_COLUMN_NIF );
         this.columnFornecedorRegisto.setCellFactory( cellDateFormat(DD_MM_YYYY_FORMAT) );
-        this.columnFornecedorNome.getStyleClass().add( "table-column-left" );
-        this.columnFornecedorTelemovel.getStyleClass().add( "table-column-left"  );
-        this.columnFornecedorTelefone.getStyleClass().add( "table-column-left" );
-        this.columnFornecedorCompras.getStyleClass().add( "table-column-money"  );
-        this.columnFornecedorComprasPagas.getStyleClass().add( "table-column-money"  );
-        this.columnFornecedorComprasPendentes.getStyleClass().add( "table-column-money"  );
+        this.columnFornecedorNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+        this.columnFornecedorTelemovel.getStyleClass().add( CLASS_COLUMN_LEFT  );
+        this.columnFornecedorTelefone.getStyleClass().add( CLASS_COLUMN_LEFT );
+        this.columnFornecedorCompras.getStyleClass().add( CLASS_COLUMN_MONEY  );
+        this.columnFornecedorComprasPagas.getStyleClass().add( CLASS_COLUMN_MONEY  );
+        this.columnFornecedorComprasPendentes.getStyleClass().add( CLASS_COLUMN_MONEY );
 
     }
 
@@ -115,53 +121,60 @@ public class TabPagePessoalFornecedor extends TableClontroller< TabPagePessoalFo
         if( this.modalNovoFornecedor == null ){
             this.modalNovoFornecedor = ModalNovoFornecedor.load((StackPane) this.rootPage );
             this.modalNovoFornecedor.setOnModalResult(modalResult -> {
-                this.loadData();
-                this.pushAll();
+                this.loadFornecedorData();
             });
         }
     }
 
-    private void loadData( ){
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        Fornecedor.FornecedorBuilder builder = new Fornecedor.FornecedorBuilder();
-        this.listForenecedor.clear();
-        sql.query( "funct_load_fornecedor" )
-            .withJsonb(  ( String ) null )
-            .callFunctionTable()
-                .onResultQuery(row -> this.listForenecedor.add( new FornecedorViewModel( builder.load( row ).build() ) ) );
-    }
+    private void loadFornecedorData( ){
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Fornecedor.FornecedorBuilder builder = new Fornecedor.FornecedorBuilder();
+            Platform.runLater(() -> {
+                this.listForenecedor.clear();
+                this.tableViewFornecedor.getRoot().getChildren().clear();
+                this.tableViewFornecedor.refresh();
+            });
+            sql.query( "funct_load_fornecedor" )
+                    .withJsonb(  ( String ) null )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            TreeItem<FornecedorViewModel> fornecedorRow = new TreeItem<>(new FornecedorViewModel(builder.load(row).build()));
+                            this.tableViewFornecedor.getRoot().getChildren().add( fornecedorRow );
+                            this.listForenecedor.add( fornecedorRow );
+                        });
+                    });
 
-    private void pushAll(){
-        ObservableList< FornecedorViewModel > observableListVenda = FXCollections.observableList( this.listForenecedor );
-        final TreeItem< FornecedorViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
-        this.tableViewFornecedor.setRoot( root );
-        this.tableViewFornecedor.setShowRoot( false );
-    }
+        });
 
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
+    }
 
     @Override
     public void onSearch(KeyEvent event, String textFilter) {
-        if( event == null && textFilter == null ) return;
-
-        if( event  != null && event.getCode() == KeyCode.ENTER ){
-            this.loadData();
-        }
-
-        if( textFilter == null ){
-            this.pushAll();
-        } else if( !textFilter.equals( this.oldTextSearch ) || (  event != null && event.getCode() == KeyCode.ENTER ) ) {
-            List< FornecedorViewModel > searchResult = new LinkedList<>();
-            for( FornecedorViewModel model : this.listForenecedor ){
-                if( model.fornecedor.getFornecedorNome().toLowerCase().contains( textFilter ) ) searchResult.add( model );
-            }
-            ObservableList< FornecedorViewModel > observableListVenda = FXCollections.observableList( searchResult );
-            final TreeItem< FornecedorViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
-            this.tableViewFornecedor.setRoot( root );
-            this.tableViewFornecedor.setShowRoot( false );
-            this.tableViewFornecedor.refresh();
-        }
-
-        this.oldTextSearch = textFilter;
+//        if( event == null && textFilter == null ) return;
+//
+//        if( event  != null && event.getCode() == KeyCode.ENTER ){
+//            this.loadFornecedorData();
+//        }
+//
+//        if( textFilter == null ){
+//            return;
+//        } else if( !textFilter.equals( this.oldTextSearch ) || (  event != null && event.getCode() == KeyCode.ENTER ) ) {
+//            List<TreeItem<FornecedorViewModel>> searchResult = new LinkedList<>();
+//            for( TreeItem<FornecedorViewModel> model : this.listForenecedor ){
+//                if( model.getValue().fornecedor.getFornecedorNome().toLowerCase().contains( textFilter ) ) searchResult.add( model );
+//            }
+//            ObservableList<TreeItem<FornecedorViewModel>> observableListVenda = FXCollections.observableList( searchResult );
+//            final TreeItem< FornecedorViewModel > root = new RecursiveTreeItem<>( observableListVenda, RecursiveTreeObject::getChildren );
+//            this.tableViewFornecedor.setRoot( root );
+//            this.tableViewFornecedor.setShowRoot( false );
+//            this.tableViewFornecedor.refresh();
+//        }
+//
+//        this.oldTextSearch = textFilter;
     }
 
     class FornecedorViewModel extends  RecursiveTreeObject<FornecedorViewModel> {

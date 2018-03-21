@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.layout.StackPane?>
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-background-color: md-divider-color;" styleClass="drawer-details-page" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="st.ggviario.house.control.drawers.DrawerProducaoProduto">
    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" style="-fx-background-color: md-primary-text-color;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
@@ -18,14 +19,14 @@
             <children>
                <HBox fx:id="headerPageIcon">
                   <children>
-                     <AnchorPane fx:id="panelIconClose" styleClass="details-header-icon-area">
+                     <StackPane fx:id="panelIconClose" styleClass="details-header-icon-area">
                         <children>
                            <MaterialDesignIconView glyphName="CLOSE" size="24" styleClass="icon-close" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                         <padding>
                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                         </padding>
-                     </AnchorPane>
+                     </StackPane>
                   </children>
                </HBox>
                <Label fx:id="labelHeaderTitle" layoutX="161.0" layoutY="20.0" styleClass="details-header-title" text="PRODUTOS" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />

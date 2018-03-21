@@ -6,7 +6,9 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -17,9 +19,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.SnackbarBuilder;
 import st.ggviario.house.control.TableClontroller;
+import st.ggviario.house.control.component.ChoseControl;
 import st.ggviario.house.control.drawers.DrawerObjectItem;
 import st.ggviario.house.control.drawers.DrawerProduto;
 import st.ggviario.house.control.modals.*;
@@ -33,10 +38,16 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProduto.ProdutoModelView > implements TabPage, Initializable{
 
+    private static final String ITEM_UNIDADE = "unidade";
+    private static final String ITEM_CATEGORIA = "categoria";
+
     @FXML private AnchorPane root;
+    @FXML private HBox topArea;
     @FXML private JFXTreeTableView< ProdutoModelView > treeTableViewUnidade;
     @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
@@ -72,6 +83,7 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
 
     private StackPane rootPage;
     private List< ProdutoModelView > originalProductList = new LinkedList<>();
+    private ChoseControl itemChoseControl = new ChoseControl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,7 +92,6 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
         this.push( new LinkedList<>(), this.treeTableViewUnidade );
         this.drawerObjectItems.loadUnidade();
         this.drawerObjectItems.loadCategoria();
-        this.loadDatProduto();
     }
 
     @Override
@@ -88,8 +99,14 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
         this.rootPage = rootPage;
     }
 
+    @Override
+    public void onAfterOpen() {
+        this.loadDatProduto();
+    }
+
     private void structure(){
         JFXDepthManager.setDepth( this.fabArea, 4 );
+        JFXDepthManager.pop( this.treeTableViewUnidade );
         this.loadDrawerObjectType();
         this.columnCodigo.setCellValueFactory( param -> param.getValue().getValue().codigo );
         this.columnNome.setCellValueFactory( param -> param.getValue().getValue().nome );
@@ -137,16 +154,37 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
             }
         });
 
-        this.columnNome.getStyleClass().add( "table-column-left" );
-        this.columnStock.getStyleClass().add( "table-column-number" );
-        this.columnPreco.getStyleClass().add( "table-column-money" );
-        this.columnVendas.getStyleClass().add( "table-column-money" );
-        this.columnVendaVendas.getStyleClass().add( "table-column-money" );
-        this.columnVendaDividas.getStyleClass().add( "table-column-money" );
-        this.columnVendaPagas.getStyleClass().add( "table-column-money" );
-        this.columnVendaPendentes.getStyleClass().add( "table-column-money" );
-        this.columnCompras.getStyleClass().add( "table-column-money" );
-        JFXDepthManager.pop( this.treeTableViewUnidade );
+        this.columnNome.getStyleClass().add( CLASS_COLUMN_LEFT);
+        this.columnStock.getStyleClass().add( CLASS_COLUMN_NUMBER );
+        this.columnPreco.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnVendas.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnVendaVendas.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnVendaDividas.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnVendaPagas.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnVendaPendentes.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnCompras.getStyleClass().add( CLASS_COLUMN_MONEY );
+
+        this.itemChoseControl
+                .setIcon( new MaterialDesignIconView(MaterialDesignIcon.VIEW_LIST) )
+                .newItem()
+                .setText( "CATEGIORIA" )
+                .setKey( ITEM_CATEGORIA )
+                .setOnChose( item -> {
+                    this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.CATEGORIA );
+                })
+                .append()
+                .newItem()
+                .setText( "UNIDADE" )
+                .setKey( ITEM_UNIDADE )
+                .setOnChose( item ->{
+                    this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.UNIDADE );
+                })
+                .append();
+
+        Pane pane = itemChoseControl.getRoot();
+        this.topArea.getChildren().add( pane );
+        this.jfxDrawerItems.close();
+        this.jfxDrawerProdutoDetails.close();
         this.root.getChildren().remove( this.jfxDrawerItems );
         this.root.getChildren().remove( this.jfxDrawerProdutoDetails);
 
@@ -157,8 +195,6 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
         this.fabButton.setOnMouseClicked( fabArea.getOnMouseClicked() );
         this.fabIcon.setOnMouseClicked( fabArea.getOnMouseClicked() );
         this.treeTableViewUnidade.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> onOpenDrawerProduto( newValue == null? null : newValue.getValue() ));
-        this.buttomCategoria.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.CATEGORIA ));
-        this.buttomUnidade.setOnAction(actionEvent -> this.onOpenDrawerObjectType( DrawerObjectItem.ObjectType.UNIDADE ));
         this.jfxDrawerItems.setOnDrawerClosed(jfxDrawerEvent -> this.root.getChildren().remove( this.jfxDrawerItems ));
         this.jfxDrawerProdutoDetails.setOnDrawerClosed(jfxDrawerEvent -> this.root.getChildren().remove( this.jfxDrawerProdutoDetails));
         this.jfxDrawerItems.heightProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -182,7 +218,7 @@ public class TabPageProducaoProduto extends TableClontroller<TabPageProducaoProd
             sql.query( "ggviario.funct_load_produto" )
                     .withJsonb((String) null )
                     .callFunctionTable()
-                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row ->{
                         Platform.runLater(() -> {
                             produtoBuilder.load( row );
                             if( row.get("preco") != null ){

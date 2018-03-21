@@ -3,7 +3,6 @@ package st.ggviario.house.control.tabs;
 import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
@@ -26,7 +25,6 @@ import st.ggviario.house.control.component.ChoseControl;
 import st.ggviario.house.control.drawers.DrawerProducaoProduto;
 import st.ggviario.house.control.drawers.DrawerProducaoSetor;
 import st.ggviario.house.control.modals.ModalNovaProducao;
-import st.ggviario.house.control.modals.ModalNovoSetor;
 import st.ggviario.house.model.Categoria;
 import st.ggviario.house.model.Producao;
 import st.ggviario.house.model.Produto;
@@ -49,7 +47,6 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     @FXML private JFXTreeTableView< ProducaoModelView > treeTableProducao;
     @FXML  private JFXButton fabButton;
     @FXML  private StackPane fabArea;
-    @FXML  private JFXListView< Setor > listViewSetor;
 
     private final String ITEM_PRODUTO = "produto";
     private final String ITEM_SETOR = "setor";
@@ -67,21 +64,19 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     private TreeTableColumn< ProducaoModelView, Number > columnProducaoMontantePrevisto = new TreeTableColumn<>("PREVISTO");
     private TreeTableColumn< ProducaoModelView, Number > columnProducaoLancamentos  = new TreeTableColumn<>("LANCH.");
 
-    private List< ProducaoModelView > originalModelViewList;
-    private List< Setor> setorProducaoList;
+    private List<TreeItem<ProducaoModelView>> originalModelViewList;
     private List< Setor> sectorAtivosList;
     private List< Produto > produtoList;
     private DrawerProducaoSetor drawerProducaoSetor;
     private DrawerProducaoProduto drawerProducaoProduto;
-
-    private ModalNovoSetor modalNovoSetor;
     private ModalNovaProducao modalNovaProducao;
     private StackPane rootPage;
 
     private ChoseControl itemChoseControl = new ChoseControl();
     private ChoseControl dateFormatChoseControl = new ChoseControl();
-    private String localFormat;
     private String dataBaseKey;
+    private Producao produto;
+    private Setor setor;
 
 
     @Override
@@ -89,7 +84,11 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         this.init();
         this.structure();
         this.defineEvents();
-        this.loadData();
+    }
+
+    @Override
+    public void onAfterOpen() {
+        this.loadProdutoData();
     }
 
     @Override
@@ -99,8 +98,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
 
     private void init(){
         this.sectorAtivosList = new LinkedList<>();
-        this.setorProducaoList = new LinkedList<>();
-        this.originalModelViewList = new LinkedList<>();
+        this.originalModelViewList = new LinkedList<TreeItem<ProducaoModelView>>();
         this.produtoList = new LinkedList<>();
     }
 
@@ -108,13 +106,29 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         JFXDepthManager.setDepth( this.fabArea, 4 );
         JFXDepthManager.pop( this.itemsDrawer );
         this.columnPoducaoData.setCellValueFactory( param -> param.getValue().getValue().producaoData );
+
+
         this.columnProducaoProduto.setCellValueFactory( param -> param.getValue().getValue().producaoProduto );
+        this.columnProducaoProduto.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnProducaoSetor.setCellValueFactory( param -> param.getValue().getValue().producaoSector );
+        this.columnProducaoSetor.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnProducaoQuantidadeTotal.setCellValueFactory(param -> param.getValue().getValue().producaoQuantidadeTotal);
+        this.columnProducaoQuantidadeTotal.getStyleClass().add( CLASS_COLUMN_NUMBER );
+
         this.columnProducaoQuantidadeComerciavel.setCellValueFactory(param -> param.getValue().getValue().producaoQuantidadeComerciavel);
+        this.columnProducaoQuantidadeComerciavel.getStyleClass().add( CLASS_COLUMN_NUMBER );
+
         this.columnProducaoQuantidadeDefeituosa.setCellValueFactory(param -> param.getValue().getValue().producaoQuantidadeDefeituosa);
+        this.columnProducaoQuantidadeDefeituosa.getStyleClass().add( CLASS_COLUMN_NUMBER );
+
         this.columnProducaoMontantePrevisto.setCellValueFactory(param -> param.getValue().getValue().producaoMontantePrevisto);
+        this.columnProducaoMontantePrevisto.getStyleClass().add( CLASS_COLUMN_MONEY );
+
         this.columnProducaoLancamentos.setCellValueFactory( param -> param.getValue().getValue().producaoLancamentos);
+        this.columnProducaoLancamentos.getStyleClass().add( CLASS_COLUMN_NUMBER );
+
         this.push( new LinkedList<>(), this.treeTableProducao );
 
         this.itemChoseControl
@@ -176,12 +190,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         });
     }
 
-    private void loadData(){
-        this.loadDataProduto();
-    }
-
     private void onChoseFormat(String localFormat, String dataBaseKey ){
-        this.localFormat = localFormat;
         this.dataBaseKey = dataBaseKey;
         this.columnPoducaoData.setCellFactory( cellDateFormat( new SimpleDateFormat( localFormat, Locale.forLanguageTag("pt") ) ));
         if( this.itemChoseControl.getChosenItem() != null && this.itemChoseControl.getChosenItem().getOnChose() != null ){
@@ -223,6 +232,8 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
     private void loadDrawerProducaoSetor(){
         if( this.drawerProducaoSetor == null ){
             this.drawerProducaoSetor = DrawerProducaoSetor.newInstance( this.itemsDrawer, this.rootPage);
+            this.drawerProducaoSetor.setOnSelectSetor(setor -> {
+            });
 
         }
     }
@@ -241,9 +252,9 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
             Produto.ProdutoBuilder produtoBuilder = new Produto.ProdutoBuilder();
             Categoria.CategoriaBuilder categoriaBuilder = new Categoria.CategoriaBuilder();
 
-            this.originalModelViewList.clear();
             Platform.runLater(() -> {
                 this.treeTableProducao.getRoot().getChildren().clear();
+                this.originalModelViewList.clear();
                 this.treeTableProducao.getColumns().setAll(
                         this.columnPoducaoData,
                         this.columnProducaoProduto,
@@ -269,9 +280,9 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
                             categoriaBuilder.load( row.asMapJsonn( "categoria" ) );
                             produtoBuilder.setCategoria( categoriaBuilder.build() );
                             producaoBuilder.setProduto( produtoBuilder.build() );
-                            ProducaoModelView producao = new ProducaoModelView( producaoBuilder.build() );
-                            this.treeTableProducao.getRoot().getChildren().add( new TreeItem<>( producao ) );
-                            this.originalModelViewList.add( producao  );
+                            TreeItem<ProducaoModelView> item = new TreeItem<>(new ProducaoModelView(producaoBuilder.build()));
+                            this.treeTableProducao.getRoot().getChildren().add( item );
+                            this.originalModelViewList.add( item  );
                         });
                     })
             ;
@@ -319,8 +330,8 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
                             }
                             setorBuilder.setSetorSuper( setor_super.build() );
                             producaoBuilder.setSetor( setorBuilder.build() );
-                            ProducaoModelView producao = new ProducaoModelView( producaoBuilder.build() );
-                            this.treeTableProducao.getRoot().getChildren().add( new TreeItem<>( producao ) );
+                            TreeItem<ProducaoModelView> producao = new TreeItem<>( new ProducaoModelView( producaoBuilder.build() ) );
+                            this.treeTableProducao.getRoot().getChildren().add( producao);
                             this.originalModelViewList.add( producao  );
                         });
                     })
@@ -330,7 +341,7 @@ public class TabPageProducaoProducao extends TableClontroller< TabPageProducaoPr
         thread.start();
     }
 
-    private void loadDataProduto(){
+    private void loadProdutoData(){
         Thread thread = new Thread(() -> {
             this.produtoList.clear();
             Produto.ProdutoBuilder builder = new Produto.ProdutoBuilder();

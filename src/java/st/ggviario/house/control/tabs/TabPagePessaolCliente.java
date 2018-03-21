@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.effects.JFXDepthManager;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,7 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.StackPane;
 import st.ggviario.house.control.PercentDimension;
 import st.ggviario.house.control.modals.ModalNovoCliente;
@@ -52,7 +53,7 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
 
 
     private ModalNovoCliente newClienteModalContentController;
-    private List< ClienteViewModel > listCliente;
+    private List<TreeItem<ClienteViewModel>> listCliente;
     private StackPane rootPagePane;
 
     @Override
@@ -61,16 +62,19 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
     }
 
     @Override
+    public void onAfterOpen() {
+        this.loadDataCliente();
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.init();
         this.structure();
         this.difineEvents();
-        this.loadData();
-        this.pushAll();
     }
 
     private void init(){
-        this.listCliente = new LinkedList<>();
+        this.listCliente = new LinkedList<TreeItem<ClienteViewModel>>();
     }
 
     private void structure() {
@@ -97,18 +101,18 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
                 this.columnClienteMontantePendente,
                 this.columnClienteRegisto
         );
+        this.push( new LinkedList<>(), this.tableClientes );
 
-        this.columnClienteNome.getStyleClass().add( "table-column-left" );
-        this.columnClienteContacto.getStyleClass().add( "table-column-left" );
-        this.columnClienteLocal.getStyleClass().add( "table-column-left" );
-        this.columnClienteMontanteCompra.getStyleClass().add( "table-column-money" );
-        this.columnClienteMontanteDivida.getStyleClass().add( "table-column-money" );
-        this.columnClienteMontanteTotal.getStyleClass().add( "table-column-money" );
-        this.columnClienteMontantePago.getStyleClass().add( "table-column-money" );
-        this.columnClienteMontantePendente.getStyleClass().add( "table-column-money" );
+        this.columnClienteNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+        this.columnClienteContacto.getStyleClass().add( CLASS_COLUMN_LEFT );
+        this.columnClienteLocal.getStyleClass().add( CLASS_COLUMN_LEFT );
+        this.columnClienteMontanteCompra.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnClienteMontanteDivida.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnClienteMontanteTotal.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnClienteMontantePago.getStyleClass().add( CLASS_COLUMN_MONEY );
+        this.columnClienteMontantePendente.getStyleClass().add( CLASS_COLUMN_MONEY );
 
-
-        this.columnClienteRegisto.setCellFactory( this.cellDateFormat(DD_MM_YYYY_FORMAT) );
+        this.columnClienteRegisto.setCellFactory( this.cellDateFormat( DD_MM_YYYY_FORMAT ) );
 
         PercentDimension.widthChangePercent( this.tableClientes, 9., (percent, percentValue) -> this.columnMinWidth( columnClienteRegisto, percentValue ) );
         PercentDimension.widthChangePercent( this.tableClientes, 8., (percent, percentValue) -> this.columnMinWidth( columnClienteCodigo, percentValue ) );
@@ -129,27 +133,31 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
         this.fabIcon.setOnMouseClicked( event ->fabButton.fireEvent( event ) );
     }
 
-    private void loadData(){
-        this.loadDataCliente();
-    }
-
-    private void pushAll(){
-        this.push( this.listCliente, this.tableClientes);
-    }
-
     private void loadDataCliente() {
-        PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
-        Cliente.ClienteBuilder builder = new Cliente.ClienteBuilder();
-        Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
-        this.listCliente.clear();
-        postgresSQL.query( "ggviario.funct_load_cliente" )
-            .withOther( null )
-            .callFunctionTable()
-                .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
-                    builder.load( row );
-                    builder.distrito( distritoBuilder.load( row ).build() );
-                    this.listCliente.add( new ClienteViewModel( builder.build() ) );
-                });
+        Thread thread = new Thread(() -> {
+            PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
+            Cliente.ClienteBuilder builder = new Cliente.ClienteBuilder();
+            Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
+            Platform.runLater(() -> {
+                this.listCliente.clear();
+                this.tableClientes.getRoot().getChildren().clear();
+                this.tableClientes.refresh();
+            });
+            postgresSQL.query( "ggviario.funct_load_cliente" )
+                    .withOther( null )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            builder.load( row );
+                            builder.distrito( distritoBuilder.load( row ).build() );
+                            TreeItem<ClienteViewModel> cli = new TreeItem<>(new ClienteViewModel(builder.build()));
+                            this.listCliente.add( cli );
+                            this.tableClientes.getRoot().getChildren().add( cli );
+                        });
+                    });
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
 
@@ -163,7 +171,6 @@ public class TabPagePessaolCliente extends TableClontroller<TabPagePessaolClient
             this.modalNovoCliente = ModalNovoCliente.load( this.rootPagePane );
             this.modalNovoCliente.setOnModalResult(operationResult -> {
                 this.loadDataCliente();
-                this.pushAll();
             });
         }
     }

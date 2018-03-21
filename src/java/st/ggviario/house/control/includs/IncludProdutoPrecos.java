@@ -72,9 +72,13 @@ public class IncludProdutoPrecos extends TableClontroller<IncludProdutoPrecos.Pr
     private void structure(){
         JFXDepthManager.setDepth( this.fabArea, 4 );
         this.columnUnidadeNome.setCellValueFactory( param -> param.getValue().getValue().unidadeNome );
+        this.columnUnidadeNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnUnidadeCodigo.setCellValueFactory( param -> param.getValue().getValue().unidadeCodigo );
         this.columnPrecoQuantidade.setCellValueFactory( param -> param.getValue().getValue().quantidadeProduto );
+        this.columnPrecoQuantidade.getStyleClass().add( CLASS_COLUMN_NUMBER );
         this.columnPrecoCustoUnidade.setCellValueFactory( param -> param.getValue().getValue().custoUnidade );
+        this.columnPrecoCustoUnidade.getStyleClass().add( CLASS_COLUMN_MONEY );
 
         this.iconsActionsFactoryFatory = ( preco ) -> {
             Node delete = this.newIconViewDestroy( MaterialDesignIcon.DELETE );

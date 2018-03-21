@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
 public class TabPageVendaDivida extends VendaController {
 
 
+
+
     @FXML private AnchorPane localRootPage;
     @FXML private JFXTreeTableView<VendaViewModel> treeTableViewVendaDivida;
     @FXML private StackPane fabArea;
@@ -64,26 +66,26 @@ public class TabPageVendaDivida extends VendaController {
         JFXDepthManager.setDepth( this.fabArea, 4 );
         columnVendaDividaFaturaNumero.setCellValueFactory(param -> param.getValue().getValue().vendaFaturaNumero );
         columnVendaDividaCliente.setCellValueFactory( param -> param.getValue().getValue().vendaCliente );
-        columnVendaDividaCliente.getStyleClass().add( "table-column-left" );
+        columnVendaDividaCliente.getStyleClass().add( CLASS_COLUMN_LEFT );
 
         columnVendaDividaProduto.setCellValueFactory( param -> param.getValue().getValue().vendaProduto );
-        columnVendaDividaProduto.getStyleClass().add( "table-column-left" );
+        columnVendaDividaProduto.getStyleClass().add( CLASS_COLUMN_LEFT );
 
         columnVendaDividaQuantidade.setCellValueFactory( param -> param.getValue().getValue().vendaQuantidade );
-        columnVendaDividaQuantidade.getStyleClass().add( "table-column-number" );
+        columnVendaDividaQuantidade.getStyleClass().add( CLASS_COLUMN_NUMBER );
 
         columnVendaDividaData.setCellValueFactory( param -> param.getValue().getValue().vendaData );
 
         columnVendaDividaDataFinalizar.setCellValueFactory( param -> param.getValue().getValue().vendaDataFinalizar );
 
         columnVendaDividaMontantePagar.setCellValueFactory( param -> param.getValue().getValue().vendaMontantePagar );
-        columnVendaDividaMontantePagar.getStyleClass().add( "table-column-money" );
+        columnVendaDividaMontantePagar.getStyleClass().add( CLASS_COLUMN_MONEY );
 
         columnVendaDividaMontanteAmortizado.setCellValueFactory(param -> param.getValue().getValue().vendaMontanteAmortizado );
-        columnVendaDividaMontanteAmortizado.getStyleClass().add( "table-column-money" );
+        columnVendaDividaMontanteAmortizado.getStyleClass().add( CLASS_COLUMN_MONEY );
 
         columnVendaDividaEstado.setCellValueFactory( param -> param.getValue().getValue().vendaEstado );
-        columnVendaDividaEstado.getStyleClass().add( "table-clumn-money" );
+        columnVendaDividaEstado.getStyleClass().add( CLASS_COLUMN_MONEY );
 
         this.treeTableViewVendaDivida.getColumns().setAll(
                 columnVendaDividaFaturaNumero,

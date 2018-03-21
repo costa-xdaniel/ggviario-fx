@@ -10,6 +10,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -52,9 +54,10 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
     @FXML private StackPane fabArea;
     @FXML private JFXButton fabButton;
     @FXML private JFXTreeTableView< SetorModelView > tableSetores;
-    @FXML private AnchorPane panelIconSetorOn;
-    @FXML private AnchorPane panelIconSetorOff;
+    @FXML private StackPane panelIconSetorOn;
+    @FXML private StackPane panelIconSetorOff;
     private ShowMode showMode = ShowMode.ACTIVE;
+    private OnSelectSetor onSelectSetor;
 
     private JFXRippler ripplerSetorOn;
     private JFXRippler ripplerSetorOff;
@@ -98,11 +101,20 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
 
         this.columnSetorCodigo.setCellValueFactory( param -> param.getValue().getValue().setorCodigo );
         this.columnSetorNome.setCellValueFactory( param -> param.getValue().getValue().setorNome );
+        this.columnSetorNome.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnSetorSuper.setCellValueFactory( param -> param.getValue().getValue().setorSuper );
+        this.columnSetorSuper.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnSetorNivel.setCellValueFactory( param -> param.getValue().getValue().setorNivel );
+        this.columnSetorNivel.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnSetorEstado.setCellValueFactory( param -> param.getValue().getValue().setorEstado );
+        this.columnSetorEstado.getStyleClass().add( CLASS_COLUMN_LEFT );
+
         this.columnSetorIcons.setCellValueFactory( param -> param.getValue().getValue().icons );
         this.columnSetorIcons.setCellFactory( this.cellIconsView() );
+
         this.useAsIconsColumn( this.columnSetorIcons, 1 );
         this.iconsFatory = setor ->{
             if( setor.getSetorId().equals( new UUID(0, 1) ) ) return null;
@@ -139,7 +151,11 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         this.fabButton.setOnAction( event -> onOpenModalNovoSetor() );
         this.ripplerSetorOn.setOnMouseClicked(event -> this.pushSetorByMode( ShowMode.ACTIVE ));
         this.ripplerSetorOff.setOnMouseClicked(event -> this.pushSetorByMode( ShowMode.CLOSED ));
-    }
+        this.tableSetores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if( newValue == null || newValue.getValue() == null  || newValue.getValue().setor == null ) return;
+            if( this.onSelectSetor != null ) this.onSelectSetor.onSelectSetor( newValue.getValue().setor );
+        });
+     }
 
 
     private void onOpenModalNovoSetor( ) {
@@ -232,6 +248,11 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
         }
     }
 
+    public DrawerProducaoSetor setOnSelectSetor(OnSelectSetor onSelectSetor) {
+        this.onSelectSetor = onSelectSetor;
+        return this;
+    }
+
     private enum ShowMode{
         ACTIVE,
         CLOSED
@@ -255,5 +276,9 @@ public class DrawerProducaoSetor extends DrawerProducao<DrawerProducaoSetor.Seto
             this.setorNivel = new SimpleObjectProperty<>( setor.getSetorNivel() );
             this.icons = new SimpleObjectProperty<>( new IconsActionsObject< Setor >( setor, fatory ) );
         }
+    }
+
+    public interface OnSelectSetor{
+        void onSelectSetor( Setor setor );
     }
 }
