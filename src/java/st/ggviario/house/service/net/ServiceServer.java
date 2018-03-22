@@ -1,4 +1,4 @@
-package st.ggviario.house.service;
+package st.ggviario.house.service.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;

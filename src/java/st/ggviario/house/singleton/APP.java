@@ -1,14 +1,16 @@
 package st.ggviario.house.singleton;
 
-import st.ggviario.house.service.ClientServiceClient;
-import st.ggviario.house.service.Service;
-import st.ggviario.house.service.ServiceServer;
+import st.ggviario.house.service.net.ClientServiceClient;
+import st.ggviario.house.service.net.Service;
+import st.ggviario.house.service.net.ServiceServer;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class APP implements Service {
 
     private static APP instance;
+    private ClientServiceClient localClient;
     private ServiceServer server;
 
     private APP(){
@@ -17,17 +19,15 @@ public class APP implements Service {
             if( this.server.isSuccess() ){
                 Thread thread = new Thread( server );
                 thread.start();
+                this.localClient = getClientServiceClient();
             } else {
-                Socket socket = new Socket("127.0.0.1", SERVICE_PORT);
-                ClientServiceClient cli = new ClientServiceClient( socket );
-                Thread thread = new Thread( cli );
-                thread.start();
-                cli.addOnNextLine( line -> {
+                this.localClient = getClientServiceClient();
+                this.localClient.addOnNextLine(line -> {
                     if( line.equals( REQUIRE_FOCUS ) ){
                         System.exit( -1 );
                     }
                 });
-                cli.writeUTF( REQUIRE_FOCUS );
+                this.localClient.writeUTF( REQUIRE_FOCUS );
 
             }
         }catch ( Exception ex ){
@@ -35,9 +35,21 @@ public class APP implements Service {
         }
     }
 
+    private ClientServiceClient getClientServiceClient() throws IOException {
+        Socket socket = new Socket("127.0.0.1", SERVICE_PORT);
+        ClientServiceClient cli = new ClientServiceClient( socket );
+        Thread thread = new Thread( cli );
+        thread.start();
+        return cli;
+    }
+
 
     public ServiceServer getServer() {
         return server;
+    }
+
+    public ClientServiceClient getLocalClient() {
+        return localClient;
     }
 
     public static APP getInstance(){

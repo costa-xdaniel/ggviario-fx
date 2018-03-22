@@ -4,12 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonWriter;
 import org.postgresql.util.PGobject;
 import st.jigahd.support.sql.lib.SQLResource;
-
-import java.io.IOException;
-import java.io.StringWriter;
 
 public class SQLParameter {
     private String name;
