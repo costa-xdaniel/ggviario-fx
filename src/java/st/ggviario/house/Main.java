@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import st.ggviario.house.control.HomeController;
 import st.ggviario.house.service.net.SimpleIntent;
 import st.ggviario.house.singleton.APP;
@@ -20,13 +21,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         Thread.currentThread().setPriority( Thread.MAX_PRIORITY );
+        APP app = APP.getInstance();
+        app.getServer().addOnNextClient(clientService -> clientService.addOnNextLine(text -> {
+            if(SimpleIntent.REQUIRE_FOCUS.equal( text ) ) {
+                Platform.runLater(() -> {
+                    primaryStage.requestFocus();
+                    clientService.writeUTF( SimpleIntent.REQUIRE_FOCUS );
+                });
+            }
+        }));
+
         //From preview layout
         AuthSingleton.login( null, null );
+        primaryStage.initStyle( StageStyle.UNDECORATED );
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource("/fxml/page/page_home.fxml") );
+        loader.setLocation( getClass().getResource("/fxml/app.fxml") );
         Parent parent  = loader.load();
         HomeController homeController = loader.getController();
         Scene scene = new Scene( parent );
@@ -49,14 +60,5 @@ public class Main extends Application {
         });
         primaryStage.show();
 
-        APP app = APP.getInstance();
-        app.getServer().addOnNextClient(clientService -> clientService.addOnNextLine(text -> {
-            if(SimpleIntent.REQUIRE_FOCUS.equal( text ) ) {
-                Platform.runLater(() -> {
-                    primaryStage.requestFocus();
-                    clientService.writeUTF( SimpleIntent.REQUIRE_FOCUS );
-                });
-            }
-        }));
     }
 }

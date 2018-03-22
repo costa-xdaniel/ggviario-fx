@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import st.ggviario.house.control.drawers.DrawerMenus;
 import st.ggviario.house.control.pages.Page;
@@ -23,46 +24,59 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
-    @FXML
-    private AnchorPane root;
+    @FXML private VBox root;
+    @FXML private HBox decoratorArea;
+    @FXML StackPane closePanel;
+    @FXML private StackPane rootPage;
+    @FXML private AnchorPane iconAreaMenu;
+    @FXML private AnchorPane drawerArea;
+    @FXML private HBox vboxMenuArea;
+    @FXML  private JFXTextField textFieldSearch;
+    @FXML private JFXDrawer drawer;
 
-    @FXML
-    private StackPane rootPage;
-
-    @FXML
-    private AnchorPane iconAreaMenu;
-
-    @FXML
-    private AnchorPane drawerArea;
-
-    @FXML
-    private HBox vboxMenuArea;
-
-    @FXML
-    private JFXTextField textFieldSearch;
-
-    @FXML
-    private JFXDrawer drawer;
     private Node currentDocumentoPage;
     private Page currentPage;
     private Stage primaryStage;
     private Scene scene;
 
     private JFXRippler rippler;
+    private JFXRippler ripplerCloseWidows;
+    private AnchorPane draweView;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.structureCloseWindows();
+        this.defineEvents();
+
         ControllerLoader< AnchorPane, DrawerMenus> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
         DrawerMenus controller = loader.getController();
         controller.setOnClickMenuIcon( this::closeDrawer );
         controller.setHomeController( this );
-        AnchorPane view = loader.getNodeView();
-        this.drawer.setSidePane( view );
-        StackPane.setAlignment( view, Pos.TOP_LEFT );
+        this.draweView = loader.getNodeView();
+        this.drawer.setSidePane(draweView);
+        StackPane.setAlignment(draweView, Pos.TOP_LEFT );
 
+        this.rippler = new JFXRippler( this.iconAreaMenu);
+        this.rippler.setOnMouseClicked(event -> openDrawer(  ) );
+        this.vboxMenuArea.getChildren().add( 0, this.rippler );
+
+        this.root.getChildren().remove( this.drawer );
+        this.openDrawer();
+    }
+
+    private void structureCloseWindows(){
+        this.ripplerCloseWidows = new JFXRippler( this.closePanel );
+        this.decoratorArea.getChildren().add( this.ripplerCloseWidows);
+        AnchorPane.setTopAnchor( this.ripplerCloseWidows, 0.0 );
+        AnchorPane.setRightAnchor( this.ripplerCloseWidows, 0.0 );
+        this.ripplerCloseWidows.getStyleClass().add( "rippler" );
+        this.ripplerCloseWidows.getStyleClass().add( "close" );
+    }
+
+    private void defineEvents( ){
         this.root.heightProperty().addListener((observable, oldValue, newValue) -> {
-            view.setPrefHeight( newValue.doubleValue() );
+            draweView.setPrefHeight( newValue.doubleValue() );
         });
 
         this.textFieldSearch.setOnKeyReleased(event -> {
@@ -74,13 +88,9 @@ public class HomeController implements Initializable {
                 this.root.getChildren().remove( this.drawer );
             }
         });
-
-        this.rippler = new JFXRippler( this.iconAreaMenu);
-        this.rippler.setOnMouseClicked(event -> openDrawer(  ) );
-        this.vboxMenuArea.getChildren().add( 0, this.rippler );
-
-        this.root.getChildren().remove( this.drawer );
-        this.openDrawer();
+        this.ripplerCloseWidows.setOnMouseClicked(event -> {
+            System.exit( 0 );
+        });
     }
 
     private void openDrawer() {

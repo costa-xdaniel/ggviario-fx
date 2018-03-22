@@ -308,7 +308,14 @@
     -glyph-name: CLOSE;
     -glyph-size: 20px;
     -fx-fill: md-red-500;
+}
 
+.window-title{
+    -fx-background-color: md-primary-dark-color;
+}
+
+.window-title .icon-close{
+    -glyph-size: 15px;
 }
 
 
