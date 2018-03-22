@@ -3,6 +3,8 @@ package st.ggviario.house.singleton;
 import st.ggviario.house.service.net.ClientServiceClient;
 import st.ggviario.house.service.net.Service;
 import st.ggviario.house.service.net.ServiceServer;
+import st.ggviario.house.service.net.SimpleIntent;
+import st.jigahd.support.sql.lib.SQLResource;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -22,12 +24,12 @@ public class APP implements Service {
                 this.localClient = getClientServiceClient();
             } else {
                 this.localClient = getClientServiceClient();
-                this.localClient.addOnNextLine(line -> {
-                    if( line.equals( REQUIRE_FOCUS ) ){
+                this.localClient.addOnNextLine(text -> {
+                    if(SQLResource.existIn(SimpleIntent.find( text ), SimpleIntent.REQUIRE_FOCUS ) ){
                         System.exit( -1 );
                     }
                 });
-                this.localClient.writeUTF( REQUIRE_FOCUS );
+                this.localClient.writeUTF(  SimpleIntent.REQUIRE_FOCUS );
 
             }
         }catch ( Exception ex ){

@@ -11,9 +11,10 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import st.ggviario.house.control.HomeController;
-import st.ggviario.house.service.net.Service;
+import st.ggviario.house.service.net.SimpleIntent;
 import st.ggviario.house.singleton.APP;
 import st.ggviario.house.singleton.AuthSingleton;
+import st.jigahd.support.sql.lib.SQLResource;
 
 
 public class Main extends Application {
@@ -53,10 +54,10 @@ public class Main extends Application {
         app.getServer().addOnNextClient(clientService -> {
             clientService.addOnNextLine(line -> {
                 System.out.println("line = " + line);
-                if( line.equals( Service.REQUIRE_FOCUS ) ) {
+                if(SQLResource.existIn(SimpleIntent.find( line ), SimpleIntent.REQUIRE_FOCUS ) ) {
                     Platform.runLater(() -> {
                         primaryStage.requestFocus();
-                        clientService.writeUTF( Service.REQUIRE_FOCUS );
+                        clientService.writeUTF( SimpleIntent.REQUIRE_FOCUS );
                     });
                 }
             });

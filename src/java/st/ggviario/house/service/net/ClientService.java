@@ -43,10 +43,14 @@ public abstract class ClientService implements Runnable{
         return out;
     }
 
-    public void writeUTF(String s) {
+    public void writeUTF( SimpleIntent simpleIntent ) {
+        this.writeUTF( simpleIntent.name() );
+    }
+
+    public void writeUTF(String text) {
         try {
             synchronized( this ){
-                out.writeUTF(s);
+                out.writeUTF(text);
                 out.flush();
             }
         } catch (IOException e) {
@@ -59,6 +63,6 @@ public abstract class ClientService implements Runnable{
     }
 
     public interface OnNextLine{
-        void accept( String line );
+        void accept( String text );
     }
 }
