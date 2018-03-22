@@ -2,19 +2,18 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.2
--- Dumped by pg_dump version 10.2
+-- Dumped from database version 10.3
+-- Dumped by pg_dump version 10.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
-
-SET search_path = ggviario, pg_catalog;
 
 ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_unidade;
 ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS fk_venda_to_tipovenda;
@@ -68,8 +67,6 @@ ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS fk_cliente
 ALTER TABLE IF EXISTS ONLY ggviario.categoria DROP CONSTRAINT IF EXISTS fk_categoria_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY ggviario.categoria DROP CONSTRAINT IF EXISTS fk_categoria_to_colaborador;
 ALTER TABLE IF EXISTS ONLY ggviario.audit DROP CONSTRAINT IF EXISTS fk_audit_to_colaborador;
-SET search_path = colaborador, pg_catalog;
-
 ALTER TABLE IF EXISTS ONLY colaborador.previlegio DROP CONSTRAINT IF EXISTS fk_previlegio_to_perfim;
 ALTER TABLE IF EXISTS ONLY colaborador.previlegio DROP CONSTRAINT IF EXISTS fk_previlegio_to_menu;
 ALTER TABLE IF EXISTS ONLY colaborador.previlegio DROP CONSTRAINT IF EXISTS fk_previlegio_to_colaborador_atualizacao;
@@ -86,8 +83,6 @@ ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_acces
 ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_accesso_to_colaborador_propetario;
 ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_accesso_to_colaborador_atualizacao;
 ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS fk_accesso_to_colaborador;
-SET search_path = ggviario, pg_catalog;
-
 DROP TRIGGER IF EXISTS tg_venda_intert_update_produto_stock ON ggviario.venda;
 DROP TRIGGER IF EXISTS tg_setor_after_updade_disable_disable_children ON ggviario.setor;
 DROP TRIGGER IF EXISTS tg_setor_after_insert_protect_parent ON ggviario.setor;
@@ -196,8 +191,6 @@ DROP INDEX IF EXISTS ggviario.idx_audit_colaborador_id;
 DROP INDEX IF EXISTS ggviario.despesa_despesa_codigo_uindex;
 DROP INDEX IF EXISTS ggviario.cliente_cliente_codigo_uindex;
 DROP INDEX IF EXISTS ggviario.categoria_categorai_codigo_uindex;
-SET search_path = colaborador, pg_catalog;
-
 DROP INDEX IF EXISTS colaborador.idx_sexo_id;
 DROP INDEX IF EXISTS colaborador.idx_previlegio_perfil_id;
 DROP INDEX IF EXISTS colaborador.idx_previlegio_menu_id;
@@ -219,8 +212,6 @@ DROP INDEX IF EXISTS colaborador.idx_agenda_colaborador_id;
 DROP INDEX IF EXISTS colaborador.idx_acesso_menu_id;
 DROP INDEX IF EXISTS colaborador.idx_acesso_estado;
 DROP INDEX IF EXISTS colaborador.idx_acesso_colaborador_propetario;
-SET search_path = ggviario, pg_catalog;
-
 ALTER TABLE IF EXISTS ONLY ggviario.venda DROP CONSTRAINT IF EXISTS uq_venda_faturanumero;
 ALTER TABLE IF EXISTS ONLY ggviario.unidade DROP CONSTRAINT IF EXISTS uq_unidade_nome;
 ALTER TABLE IF EXISTS ONLY ggviario.tipomovimento DROP CONSTRAINT IF EXISTS uq_tmovimento_desc;
@@ -261,8 +252,6 @@ ALTER TABLE IF EXISTS ONLY ggviario.cliente DROP CONSTRAINT IF EXISTS pk_cliente
 ALTER TABLE IF EXISTS ONLY ggviario.categoria DROP CONSTRAINT IF EXISTS pk_categoria_id;
 ALTER TABLE IF EXISTS ONLY ggviario.audit DROP CONSTRAINT IF EXISTS pk_audith_id;
 ALTER TABLE IF EXISTS ggviario.movimento DROP CONSTRAINT IF EXISTS ck_movimato_source_is_valid;
-SET search_path = colaborador, pg_catalog;
-
 ALTER TABLE IF EXISTS ONLY colaborador.sexo DROP CONSTRAINT IF EXISTS uq_sexo_desc;
 ALTER TABLE IF EXISTS ONLY colaborador.menu DROP CONSTRAINT IF EXISTS uq_menu_codigo;
 ALTER TABLE IF EXISTS ONLY colaborador.colaborador DROP CONSTRAINT IF EXISTS uq_colaborador_nif;
@@ -274,12 +263,6 @@ ALTER TABLE IF EXISTS ONLY colaborador.menu DROP CONSTRAINT IF EXISTS pk_menu_id
 ALTER TABLE IF EXISTS ONLY colaborador.colaborador DROP CONSTRAINT IF EXISTS pk_colaborador_id;
 ALTER TABLE IF EXISTS ONLY colaborador.autenticacao DROP CONSTRAINT IF EXISTS pk_autenticacao_id;
 ALTER TABLE IF EXISTS ONLY colaborador.acesso DROP CONSTRAINT IF EXISTS pk_acesso_id;
-SET search_path = ggviario, pg_catalog;
-
-SET search_path = colaborador, pg_catalog;
-
-SET search_path = ggviario, pg_catalog;
-
 DROP TABLE IF EXISTS ggviario.tipomovimento;
 DROP TABLE IF EXISTS ggviario.tipodocumento;
 DROP TABLE IF EXISTS ggviario.tipoconta;
@@ -288,20 +271,14 @@ DROP TABLE IF EXISTS ggviario.producao;
 DROP TABLE IF EXISTS ggviario.localproducao;
 DROP TABLE IF EXISTS ggviario.distrito;
 DROP TABLE IF EXISTS ggviario.codigo;
-SET search_path = colaborador, pg_catalog;
-
 DROP TABLE IF EXISTS colaborador.sexo;
 DROP TABLE IF EXISTS colaborador.previlegio;
 DROP TABLE IF EXISTS colaborador.perfil;
 DROP TABLE IF EXISTS colaborador.menu;
 DROP TABLE IF EXISTS colaborador.autenticacao;
 DROP TABLE IF EXISTS colaborador.acesso;
-SET search_path = pg_catalog;
-
 DROP CAST IF EXISTS (numeric AS uuid);
 DROP CAST IF EXISTS (integer AS uuid);
-SET search_path = lib, pg_catalog;
-
 DROP OPERATOR IF EXISTS lib.||| (anyelement, anyelement);
 DROP OPERATOR IF EXISTS lib.=== (anyelement, anyelement);
 DROP OPERATOR IF EXISTS lib.->| (jsonb, text);
@@ -322,18 +299,16 @@ DROP AGGREGATE IF EXISTS lib.agg_sum_nonnull(anyelement);
 DROP AGGREGATE IF EXISTS lib.agg_jsonb_collect(jsonb);
 DROP AGGREGATE IF EXISTS lib.agg_extreme(anyelement, boolean);
 DROP AGGREGATE IF EXISTS lib.agg_collect(collect_next anyelement, collect_accepetnull boolean);
-SET search_path = rule, pg_catalog;
-
 DROP FUNCTION IF EXISTS rule.venda_insert(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tvenda_id smallint, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date);
 DROP FUNCTION IF EXISTS rule.venda_fatura_generatenext(_tipocompra ggviario.tipovenda);
-DROP FUNCTION IF EXISTS rule.venda_estado_desc(_venda ggviario.venda, _const constant);
-DROP FUNCTION IF EXISTS rule.setor_estado_desc(_setor ggviario.setor, _const constant);
+DROP FUNCTION IF EXISTS rule.venda_estado_desc(_venda ggviario.venda, _const rule.constant);
+DROP FUNCTION IF EXISTS rule.setor_estado_desc(_setor ggviario.setor, _const rule.constant);
 DROP FUNCTION IF EXISTS rule.select_setor_cascade_witch_raiz(arg_setor_id uuid, part_lenght integer);
 DROP FUNCTION IF EXISTS rule.select_setor_cascade(arg_setor_id uuid);
-DROP FUNCTION IF EXISTS rule.produto_estado_desc(_produto ggviario.produto, _const constant);
-DROP FUNCTION IF EXISTS rule.produto_estado(_produto ggviario.produto, _const constant);
+DROP FUNCTION IF EXISTS rule.produto_estado_desc(_produto ggviario.produto, _const rule.constant);
+DROP FUNCTION IF EXISTS rule.produto_estado(_produto ggviario.produto, _const rule.constant);
 DROP FUNCTION IF EXISTS rule.movimento_insert(arg_colaborador_id uuid, arg_conta_id uuid, arg_tmovimento_id smallint, arg_movimento_documento character varying, arg_movimento_data date, arg_movimento_montante numeric, arg_movimento_libele character varying, arg_venda_id uuid, arg_despesa_id uuid, arg_movimento_id uuid, arg_movimento_devolucao boolean, arg_movimento_transferencianumero integer);
-DROP FUNCTION IF EXISTS rule.movimento_estado_desc(_movimento ggviario.movimento, _const constant);
+DROP FUNCTION IF EXISTS rule.movimento_estado_desc(_movimento ggviario.movimento, _const rule.constant);
 DROP FUNCTION IF EXISTS rule.movimento_check_source(_movimento ggviario.movimento);
 DROP FUNCTION IF EXISTS rule.functg_venda_intert_update_produto_stock();
 DROP FUNCTION IF EXISTS rule.functg_setor_after_updade_disable_disable_children();
@@ -344,26 +319,16 @@ DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_movimento_devo
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_despesa();
 DROP FUNCTION IF EXISTS rule.functg_movimento_after_insert_update_conta();
 DROP FUNCTION IF EXISTS rule.functg_despesa_after_insert_update_stock();
-DROP FUNCTION IF EXISTS rule.fornecedor_estado_desc(_fornecedor ggviario.fornecedor, _const constant);
-SET search_path = ggviario, pg_catalog;
-
+DROP FUNCTION IF EXISTS rule.fornecedor_estado_desc(_fornecedor ggviario.fornecedor, _const rule.constant);
 DROP TABLE IF EXISTS ggviario.fornecedor;
-SET search_path = rule, pg_catalog;
-
-DROP FUNCTION IF EXISTS rule.despesa_estado_desc(_despesa ggviario.despesa, _const constant);
+DROP FUNCTION IF EXISTS rule.despesa_estado_desc(_despesa ggviario.despesa, _const rule.constant);
 DROP FUNCTION IF EXISTS rule.codigo_next(character, smallint);
 DROP FUNCTION IF EXISTS rule.codigo_generate(arg_codigo_letra character, arg_codigo_digitos smallint);
 DROP FUNCTION IF EXISTS rule.codigo(arg_codigo_letra character, arg_codigo_ano smallint, arg_codigo_digitos smallint);
-DROP FUNCTION IF EXISTS rule.cliente_estado_desc(_cliente ggviario.cliente, _const constant);
-SET search_path = ggviario, pg_catalog;
-
+DROP FUNCTION IF EXISTS rule.cliente_estado_desc(_cliente ggviario.cliente, _const rule.constant);
 DROP TABLE IF EXISTS ggviario.cliente;
-SET search_path = rule, pg_catalog;
-
-DROP FUNCTION IF EXISTS rule.categoria_estado_desc(_categoria ggviario.categoria, _const constant);
+DROP FUNCTION IF EXISTS rule.categoria_estado_desc(_categoria ggviario.categoria, _const rule.constant);
 DROP FUNCTION IF EXISTS rule.audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying);
-SET search_path = lib, pg_catalog;
-
 DROP FUNCTION IF EXISTS lib.split_name(name character varying);
 DROP FUNCTION IF EXISTS lib.result_true(message text);
 DROP FUNCTION IF EXISTS lib.result_true(content jsonb);
@@ -428,8 +393,6 @@ DROP FUNCTION IF EXISTS lib.agg_jsonb_collect_collector(acumulatecollect jsonb, 
 DROP FUNCTION IF EXISTS lib.agg_extreme_collector(acumulatecollect anyelement, nextcollect anyelement, first boolean);
 DROP FUNCTION IF EXISTS lib.agg_collect_collector(collect_list anyarray, collect_next anyelement, collect_accepetnull boolean);
 DROP FUNCTION IF EXISTS lib.age(timestamp without time zone);
-SET search_path = ggviario, pg_catalog;
-
 DROP FUNCTION IF EXISTS ggviario.get_venda(arg_venda_id uuid);
 DROP FUNCTION IF EXISTS ggviario.get_unidade(arg_unidade_id uuid);
 DROP TABLE IF EXISTS ggviario.unidade;
@@ -503,23 +466,13 @@ DROP FUNCTION IF EXISTS ggviario.funct_change_preco_close(arg_colaborador_id uui
 DROP FUNCTION IF EXISTS ggviario.funct_change_locaoproducao_disable(arg_colaborador_id uuid, arg_localproducao_id uuid);
 DROP FUNCTION IF EXISTS ggviario.funct_change_categoria_structure();
 DROP TABLE IF EXISTS ggviario.categoria;
-SET search_path = lib, pg_catalog;
-
 DROP FUNCTION IF EXISTS lib.is_normalized(text);
-SET search_path = ggviario, pg_catalog;
-
 DROP FUNCTION IF EXISTS ggviario.funct_change_categoria(arg_colaborador_id uuid, arg_categoria_id uuid, arg_categoria_nome character varying);
-DROP FUNCTION IF EXISTS ggviario.compra_estado_desc(_compra venda, _const rule.constant);
+DROP FUNCTION IF EXISTS ggviario.compra_estado_desc(_compra ggviario.venda, _const rule.constant);
 DROP TABLE IF EXISTS ggviario.venda;
-SET search_path = rule, pg_catalog;
-
 DROP FUNCTION IF EXISTS rule.constant_init();
-SET search_path = ggviario, pg_catalog;
-
 DROP FUNCTION IF EXISTS ggviario.audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying);
 DROP TABLE IF EXISTS ggviario.audit;
-SET search_path = colaborador, pg_catalog;
-
 DROP FUNCTION IF EXISTS colaborador.value_max_submenu();
 DROP FUNCTION IF EXISTS colaborador.menu_load_structure(filter jsonb);
 DROP FUNCTION IF EXISTS colaborador.menu_create_set_up();
@@ -543,22 +496,14 @@ DROP FUNCTION IF EXISTS colaborador.funct_change_colaborador_accesso_disable(arg
 DROP FUNCTION IF EXISTS colaborador.funct_change_colaborador(arg_colaborador_id uuid, arg_colaborador_editar uuid, arg_colaborador_newdatas jsonb);
 DROP FUNCTION IF EXISTS colaborador.encrypt(word text);
 DROP FUNCTION IF EXISTS colaborador.colaborador_token_generate();
-DROP FUNCTION IF EXISTS colaborador.colaborador_token_encrypt(_colaborador colaborador);
-DROP FUNCTION IF EXISTS colaborador.colaborador_key(_colaborador colaborador);
+DROP FUNCTION IF EXISTS colaborador.colaborador_token_encrypt(_colaborador colaborador.colaborador);
+DROP FUNCTION IF EXISTS colaborador.colaborador_key(_colaborador colaborador.colaborador);
 DROP TABLE IF EXISTS colaborador.colaborador;
-SET search_path = lib, pg_catalog;
-
 DROP FUNCTION IF EXISTS lib.to_uuid(anyelement);
 DROP FUNCTION IF EXISTS lib.normalize(text text);
-SET search_path = colaborador, pg_catalog;
-
 DROP FUNCTION IF EXISTS colaborador.colaborador_estado_desc(arg_colaborador_estado smallint);
 DROP FUNCTION IF EXISTS colaborador.colaborador_accesso_desc(arg_colaborador_acesso smallint);
-SET search_path = rule, pg_catalog;
-
 DROP TYPE IF EXISTS rule.constant;
-SET search_path = lib, pg_catalog;
-
 DROP TYPE IF EXISTS lib.result;
 DROP TYPE IF EXISTS lib.person;
 DROP EXTENSION IF EXISTS "uuid-ossp";
@@ -638,13 +583,11 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
-SET search_path = lib, pg_catalog;
-
 --
 -- Name: person; Type: TYPE; Schema: lib; Owner: -
 --
 
-CREATE TYPE person AS (
+CREATE TYPE lib.person AS (
 	firstname character varying,
 	mediumname character varying,
 	lastname character varying
@@ -655,19 +598,17 @@ CREATE TYPE person AS (
 -- Name: result; Type: TYPE; Schema: lib; Owner: -
 --
 
-CREATE TYPE result AS (
+CREATE TYPE lib.result AS (
 	result boolean,
 	message jsonb
 );
 
 
-SET search_path = rule, pg_catalog;
-
 --
 -- Name: constant; Type: TYPE; Schema: rule; Owner: -
 --
 
-CREATE TYPE constant AS (
+CREATE TYPE rule.constant AS (
 	preco_estado_ativo smallint,
 	preco_estado_fechado smallint,
 	setor_estado_ativo smallint,
@@ -721,13 +662,11 @@ CREATE TYPE constant AS (
 );
 
 
-SET search_path = colaborador, pg_catalog;
-
 --
 -- Name: colaborador_accesso_desc(smallint); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION colaborador_accesso_desc(arg_colaborador_acesso smallint) RETURNS character varying
+CREATE FUNCTION colaborador.colaborador_accesso_desc(arg_colaborador_acesso smallint) RETURNS character varying
     LANGUAGE sql
     AS $$
     select
@@ -743,7 +682,7 @@ CREATE FUNCTION colaborador_accesso_desc(arg_colaborador_acesso smallint) RETURN
 -- Name: colaborador_estado_desc(smallint); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION colaborador_estado_desc(arg_colaborador_estado smallint) RETURNS character varying
+CREATE FUNCTION colaborador.colaborador_estado_desc(arg_colaborador_estado smallint) RETURNS character varying
     LANGUAGE sql
     AS $$
     select
@@ -754,13 +693,11 @@ CREATE FUNCTION colaborador_estado_desc(arg_colaborador_estado smallint) RETURNS
   $$;
 
 
-SET search_path = lib, pg_catalog;
-
 --
 -- Name: normalize(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION normalize(text text) RETURNS text
+CREATE FUNCTION lib.normalize(text text) RETURNS text
     LANGUAGE plpgsql
     AS $$
 declare
@@ -785,12 +722,10 @@ $$;
 -- Name: to_uuid(anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION to_uuid(anyelement) RETURNS uuid
+CREATE FUNCTION lib.to_uuid(anyelement) RETURNS uuid
     LANGUAGE sql IMMUTABLE
     AS $_$select cast(lpad(to_hex( $1::int8 ), 32, '0') as uuid )$_$;
 
-
-SET search_path = colaborador, pg_catalog;
 
 SET default_tablespace = '';
 
@@ -800,7 +735,7 @@ SET default_with_oids = false;
 -- Name: colaborador; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE colaborador (
+CREATE TABLE colaborador.colaborador (
     colaborador_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     colaborador_colaborador_id uuid NOT NULL,
     colaborador_colaborador_atualizacao uuid,
@@ -830,133 +765,133 @@ CREATE TABLE colaborador (
 -- Name: TABLE colaborador; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON TABLE colaborador IS 'Entidade para armazenar os colaboradores';
+COMMENT ON TABLE colaborador.colaborador IS 'Entidade para armazenar os colaboradores';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_id IS 'Identificacao do colaborador';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_id IS 'Identificacao do colaborador';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_colaborador_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_colaborador_id IS 'Identificacao do colaborador master';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_colaborador_id IS 'Identificacao do colaborador master';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_colaborador_atualizacao; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_colaborador_atualizacao IS 'Identificação do ultimo colaborador que modificou o registo';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_colaborador_atualizacao IS 'Identificação do ultimo colaborador que modificou o registo';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_sexo_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_sexo_id IS 'Coresponde ao sexo do colaborador | sexo={ 1 - MASCULINO, 0 - FIMININO }';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_sexo_id IS 'Coresponde ao sexo do colaborador | sexo={ 1 - MASCULINO, 0 - FIMININO }';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_mail; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_mail IS 'O email do colaborado, usado como chave para autenticação';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_mail IS 'O email do colaborado, usado como chave para autenticação';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_senha; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_senha IS 'A senha do colaborador usado na outenticacao';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_senha IS 'A senha do colaborador usado na outenticacao';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_nome; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_nome IS 'Corresponde ao nome do colaborador';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_nome IS 'Corresponde ao nome do colaborador';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_apelido; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_apelido IS 'Corresponde ao apelido do colaborador';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_apelido IS 'Corresponde ao apelido do colaborador';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_nif; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_nif IS 'Corresponde ao NIF do colaborador (NUMERO DE IDENTIFICAÇÃO FISCAL)';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_nif IS 'Corresponde ao NIF do colaborador (NUMERO DE IDENTIFICAÇÃO FISCAL)';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_datanascimento; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_datanascimento IS 'A data em que o colaborador nasceu';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_datanascimento IS 'A data em que o colaborador nasceu';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_estado; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_estado IS 'O estado do colaborador | estado={1-Ativo, 0-Demitido}';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_estado IS 'O estado do colaborador | estado={1-Ativo, 0-Demitido}';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_accesso; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_accesso IS 'O accesso do colaborador | acesso={ 2 - Pre Ativo, 1 - Ativo, 0 - Desativo }';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_accesso IS 'O accesso do colaborador | acesso={ 2 - Pre Ativo, 1 - Ativo, 0 - Desativo }';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_dataregisto; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_dataregisto IS 'A data em que o colaborador foi cadastrado no sistema';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_dataregisto IS 'A data em que o colaborador foi cadastrado no sistema';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_token; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_token IS 'O token de ativação';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_token IS 'O token de ativação';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_sistema; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_sistema IS '1 - O colaborador é o superusuario | 0 - O colaborador nao e o super usuario';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_sistema IS '1 - O colaborador é o superusuario | 0 - O colaborador nao e o super usuario';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_dataatualizacao; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_dataatualizacao IS 'A data da ultima atualização do registro';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_dataatualizacao IS 'A data da ultima atualização do registro';
 
 
 --
 -- Name: COLUMN colaborador.colaborador_dataultimaatualizacasenha; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN colaborador.colaborador_dataultimaatualizacasenha IS 'A ultima data em que a senha foi modificada';
+COMMENT ON COLUMN colaborador.colaborador.colaborador_dataultimaatualizacasenha IS 'A ultima data em que a senha foi modificada';
 
 
 --
--- Name: colaborador_key(colaborador); Type: FUNCTION; Schema: colaborador; Owner: -
+-- Name: colaborador_key(colaborador.colaborador); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION colaborador_key(_colaborador colaborador) RETURNS character varying
+CREATE FUNCTION colaborador.colaborador_key(_colaborador colaborador.colaborador) RETURNS character varying
     LANGUAGE sql
     AS $$
 select _colaborador.colaborador_nif
@@ -964,10 +899,10 @@ $$;
 
 
 --
--- Name: colaborador_token_encrypt(colaborador); Type: FUNCTION; Schema: colaborador; Owner: -
+-- Name: colaborador_token_encrypt(colaborador.colaborador); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION colaborador_token_encrypt(_colaborador colaborador) RETURNS character varying
+CREATE FUNCTION colaborador.colaborador_token_encrypt(_colaborador colaborador.colaborador) RETURNS character varying
     LANGUAGE sql
     AS $$
 select
@@ -982,7 +917,7 @@ $$;
 -- Name: colaborador_token_generate(); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION colaborador_token_generate() RETURNS character varying
+CREATE FUNCTION colaborador.colaborador_token_generate() RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare 
@@ -1009,7 +944,7 @@ $$;
 -- Name: encrypt(text); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION encrypt(word text) RETURNS character varying
+CREATE FUNCTION colaborador.encrypt(word text) RETURNS character varying
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -1037,7 +972,7 @@ $_$;
 -- Name: funct_change_colaborador(uuid, uuid, jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador(arg_colaborador_id uuid, arg_colaborador_editar uuid, arg_colaborador_newdatas jsonb) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador(arg_colaborador_id uuid, arg_colaborador_editar uuid, arg_colaborador_newdatas jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1103,7 +1038,7 @@ $$;
 -- Name: funct_change_colaborador_accesso_disable(uuid, uuid); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador_accesso_disable(arg_colaborador_id uuid, arg_colaborador_disable uuid) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador_accesso_disable(arg_colaborador_id uuid, arg_colaborador_disable uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1126,7 +1061,7 @@ $$;
 -- Name: funct_change_colaborador_accesso_reativar(uuid, uuid); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador_accesso_reativar(arg_colaborador_id uuid, arg_colaborador_reative uuid) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador_accesso_reativar(arg_colaborador_id uuid, arg_colaborador_reative uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1173,7 +1108,7 @@ $$;
 -- Name: funct_change_colaborador_senha(uuid, character varying, character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador_senha(arg_colaborador_id uuid, arg_colaborador_senhacurrent character varying, arg_colaborador_senhanew character varying) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador_senha(arg_colaborador_id uuid, arg_colaborador_senhacurrent character varying, arg_colaborador_senhanew character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1207,7 +1142,7 @@ $$;
 -- Name: funct_change_colaborador_token_ativate(uuid, character varying, character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador_token_ativate(arg_colaborador_id uuid, arg_colaborador_token character varying, colaborador_newsenha character varying) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador_token_ativate(arg_colaborador_id uuid, arg_colaborador_token character varying, colaborador_newsenha character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1252,7 +1187,7 @@ $$;
 -- Name: funct_change_colaborador_token_restore(character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_change_colaborador_token_restore(arg_colaborador_mail character varying) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_change_colaborador_token_restore(arg_colaborador_mail character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1318,7 +1253,7 @@ $$;
 -- Name: funct_colaborador_authenticate(character varying, character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_colaborador_authenticate(arg_colaborador_key character varying, arg_colaborador_senha character varying) RETURNS TABLE(autenticacao_id uuid, colaborador_id uuid, colaborador_mail character varying, colaborador_nome character varying, colaborador_apelido character varying, colaborador_nif character varying, colaborador_datanascimento date, sexo_id smallint, sexo_desc character varying, colaborador_estado smallint, colaborador_estadodesc character varying, colaborador_accesso smallint, colaborador_accessodesc character varying)
+CREATE FUNCTION colaborador.funct_colaborador_authenticate(arg_colaborador_key character varying, arg_colaborador_senha character varying) RETURNS TABLE(autenticacao_id uuid, colaborador_id uuid, colaborador_mail character varying, colaborador_nome character varying, colaborador_apelido character varying, colaborador_nif character varying, colaborador_datanascimento date, sexo_id smallint, sexo_desc character varying, colaborador_estado smallint, colaborador_estadodesc character varying, colaborador_accesso smallint, colaborador_accessodesc character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1376,7 +1311,7 @@ $$;
 -- Name: funct_colaborador_authenticate_logout(uuid); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_colaborador_authenticate_logout(arg_autenticacao_id uuid) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_colaborador_authenticate_logout(arg_autenticacao_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1406,7 +1341,7 @@ $$;
 -- Name: funct_find_colaborador_by_token(character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_find_colaborador_by_token(arg_colaborador_token_encrypted character varying) RETURNS TABLE(colaborador_id uuid, colaborador_nome character varying, colaborador_apelido character varying, colaborador_mail character varying, colaborador_nif character varying, sexo_id smallint, sexo_desc character varying)
+CREATE FUNCTION colaborador.funct_find_colaborador_by_token(arg_colaborador_token_encrypted character varying) RETURNS TABLE(colaborador_id uuid, colaborador_nome character varying, colaborador_apelido character varying, colaborador_mail character varying, colaborador_nif character varying, sexo_id smallint, sexo_desc character varying)
     LANGUAGE sql
     AS $$
 select
@@ -1427,7 +1362,7 @@ $$;
 -- Name: funct_load_colaborador(jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_load_colaborador(filter jsonb) RETURNS TABLE(colaborador_id smallint, colaborador_nome character varying, colaborador_apelido character varying, colaborador_mail character varying, colaborador_estado smallint, colaborador_estadodesc character varying, colaborador_acesso smallint, colaborador_acessodesc character varying, sexo_id smallint, sexo_desc character varying, colaborador_datanascimento date, colaborador_nif character varying)
+CREATE FUNCTION colaborador.funct_load_colaborador(filter jsonb) RETURNS TABLE(colaborador_id smallint, colaborador_nome character varying, colaborador_apelido character varying, colaborador_mail character varying, colaborador_estado smallint, colaborador_estadodesc character varying, colaborador_acesso smallint, colaborador_acessodesc character varying, sexo_id smallint, sexo_desc character varying, colaborador_datanascimento date, colaborador_nif character varying)
     LANGUAGE sql
     AS $$
 select co.colaborador_id,
@@ -1456,7 +1391,7 @@ $$;
 -- Name: funct_load_colaborador_by_nif(jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_load_colaborador_by_nif(filter jsonb) RETURNS TABLE(colaborador_id uuid, colaborador_mail character varying, colaborador_nome character varying, colaborador_apelido character varying, colaborador_estado smallint, colaborador_accesso smallint)
+CREATE FUNCTION colaborador.funct_load_colaborador_by_nif(filter jsonb) RETURNS TABLE(colaborador_id uuid, colaborador_mail character varying, colaborador_nome character varying, colaborador_apelido character varying, colaborador_estado smallint, colaborador_accesso smallint)
     LANGUAGE sql
     AS $$
 select co.colaborador_id,
@@ -1474,7 +1409,7 @@ $$;
 -- Name: funct_load_colaborador_token(uuid); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_load_colaborador_token(arg_colaborador_id uuid) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_load_colaborador_token(arg_colaborador_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1499,7 +1434,7 @@ $$;
 -- Name: funct_load_menu_by_colaborador(jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_load_menu_by_colaborador(filter jsonb) RETURNS TABLE(menu_id uuid, menu_codigo character varying, menu_nome character varying, menu_raiz character varying, menu_nivel smallint, menu_link character varying, menu_icon character varying, menu_estado smallint, menu_children smallint, menu_directchildern smallint, menu_maxnode smallint, menu_position smallint, menu_menu_id uuid, menu_menu_codigo character varying, menu_menu_nome character varying, menu_menu_raiz character varying, menu_menu_nivel smallint, menu_menu_link character varying, menu_menu_icon character varying)
+CREATE FUNCTION colaborador.funct_load_menu_by_colaborador(filter jsonb) RETURNS TABLE(menu_id uuid, menu_codigo character varying, menu_nome character varying, menu_raiz character varying, menu_nivel smallint, menu_link character varying, menu_icon character varying, menu_estado smallint, menu_children smallint, menu_directchildern smallint, menu_maxnode smallint, menu_position smallint, menu_menu_id uuid, menu_menu_codigo character varying, menu_menu_nome character varying, menu_menu_raiz character varying, menu_menu_nivel smallint, menu_menu_link character varying, menu_menu_icon character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1522,7 +1457,7 @@ $$;
 -- Name: funct_reg_acesso(uuid, uuid, jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_reg_acesso(arg_colaborador_id uuid, arg_colaborador_propetario uuid, arg_menus jsonb) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_reg_acesso(arg_colaborador_id uuid, arg_colaborador_propetario uuid, arg_menus jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1591,7 +1526,7 @@ $$;
 -- Name: funct_reg_colaborador(uuid, character varying, character varying, date, character varying, character varying, smallint, jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION funct_reg_colaborador(arg_colaborador_colaborador_id uuid, arg_colaborador_nome character varying, arg_colaborador_apelido character varying, arg_colaborador_datanascimento date, arg_colaborador_nif character varying, arg_colaborador_mail character varying, arg_sexo_id smallint, arg_option jsonb DEFAULT NULL::jsonb) RETURNS lib.result
+CREATE FUNCTION colaborador.funct_reg_colaborador(arg_colaborador_colaborador_id uuid, arg_colaborador_nome character varying, arg_colaborador_apelido character varying, arg_colaborador_datanascimento date, arg_colaborador_nif character varying, arg_colaborador_mail character varying, arg_sexo_id smallint, arg_option jsonb DEFAULT NULL::jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1699,7 +1634,7 @@ $$;
 -- Name: get_colaborador(uuid); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION get_colaborador(arg_colaborador_id uuid) RETURNS colaborador
+CREATE FUNCTION colaborador.get_colaborador(arg_colaborador_id uuid) RETURNS colaborador.colaborador
     LANGUAGE sql
     AS $$
 select *
@@ -1713,7 +1648,7 @@ $$;
 -- Name: menu_count_of_colaborador(uuid, uuid, smallint); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION menu_count_of_colaborador(arg_menu_id uuid, arg_colaborador_id uuid, arg_acesso_estado smallint) RETURNS bigint
+CREATE FUNCTION colaborador.menu_count_of_colaborador(arg_menu_id uuid, arg_colaborador_id uuid, arg_acesso_estado smallint) RETURNS bigint
     LANGUAGE plpgsql
     AS $$
 begin 
@@ -1733,7 +1668,7 @@ $$;
 -- Name: menu_create(character varying, character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION menu_create(arg_menu_codigo character varying, arg_menu_nome character varying, arg_menu_menu_codigo character varying DEFAULT NULL::character varying, arg_menu_link character varying DEFAULT NULL::character varying, arg_menu_icon character varying DEFAULT NULL::character varying) RETURNS lib.result
+CREATE FUNCTION colaborador.menu_create(arg_menu_codigo character varying, arg_menu_nome character varying, arg_menu_menu_codigo character varying DEFAULT NULL::character varying, arg_menu_link character varying DEFAULT NULL::character varying, arg_menu_icon character varying DEFAULT NULL::character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -1821,7 +1756,7 @@ $$;
 -- Name: menu_create_set_up(); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION menu_create_set_up() RETURNS void
+CREATE FUNCTION colaborador.menu_create_set_up() RETURNS void
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1863,7 +1798,7 @@ $$;
 -- Name: menu_load_structure(jsonb); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION menu_load_structure(filter jsonb DEFAULT NULL::jsonb) RETURNS TABLE(menu_id uuid, menu_codigo character varying, menu_nome character varying, menu_raiz character varying, menu_nivel smallint, menu_link character varying, menu_icon character varying, menu_estado smallint, menu_children smallint, menu_directchildern smallint, menu_maxnode smallint, menu_position smallint, menu_menu_id uuid, menu_menu_codigo character varying, menu_menu_nome character varying, menu_menu_raiz character varying, menu_menu_nivel smallint, menu_menu_link character varying, menu_menu_icon character varying)
+CREATE FUNCTION colaborador.menu_load_structure(filter jsonb DEFAULT NULL::jsonb) RETURNS TABLE(menu_id uuid, menu_codigo character varying, menu_nome character varying, menu_raiz character varying, menu_nivel smallint, menu_link character varying, menu_icon character varying, menu_estado smallint, menu_children smallint, menu_directchildern smallint, menu_maxnode smallint, menu_position smallint, menu_menu_id uuid, menu_menu_codigo character varying, menu_menu_nome character varying, menu_menu_raiz character varying, menu_menu_nivel smallint, menu_menu_link character varying, menu_menu_icon character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -1945,20 +1880,18 @@ $$;
 -- Name: value_max_submenu(); Type: FUNCTION; Schema: colaborador; Owner: -
 --
 
-CREATE FUNCTION value_max_submenu() RETURNS integer
+CREATE FUNCTION colaborador.value_max_submenu() RETURNS integer
     LANGUAGE sql
     AS $$
 select 99;
 $$;
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: audit; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE audit (
+CREATE TABLE ggviario.audit (
     audit_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     audit_colaborador_id uuid,
     audit_key character varying(64) NOT NULL,
@@ -1973,7 +1906,7 @@ CREATE TABLE audit (
 -- Name: audit_insert(uuid, character varying, character varying, jsonb, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying) RETURNS audit
+CREATE FUNCTION ggviario.audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying) RETURNS ggviario.audit
     LANGUAGE sql
     AS $$
 insert into ggviario.audit(
@@ -1992,13 +1925,11 @@ insert into ggviario.audit(
 $$;
 
 
-SET search_path = rule, pg_catalog;
-
 --
 -- Name: constant_init(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION constant_init() RETURNS constant
+CREATE FUNCTION rule.constant_init() RETURNS rule.constant
     LANGUAGE plpgsql IMMUTABLE
     AS $$
 declare
@@ -2088,13 +2019,11 @@ end;
 $$;
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: venda; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE venda (
+CREATE TABLE ggviario.venda (
     venda_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     venda_produto_id uuid NOT NULL,
     venda_unidade_id uuid NOT NULL,
@@ -2125,14 +2054,14 @@ CREATE TABLE venda (
 -- Name: COLUMN venda.venda_observacao; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN venda.venda_observacao IS 'Observação da venda';
+COMMENT ON COLUMN ggviario.venda.venda_observacao IS 'Observação da venda';
 
 
 --
--- Name: compra_estado_desc(venda, rule.constant); Type: FUNCTION; Schema: ggviario; Owner: -
+-- Name: compra_estado_desc(ggviario.venda, rule.constant); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION compra_estado_desc(_compra venda, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
+CREATE FUNCTION ggviario.compra_estado_desc(_compra ggviario.venda, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2153,7 +2082,7 @@ $$;
 -- Name: funct_change_categoria(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_categoria(arg_colaborador_id uuid, arg_categoria_id uuid, arg_categoria_nome character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_categoria(arg_colaborador_id uuid, arg_categoria_id uuid, arg_categoria_nome character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2178,13 +2107,11 @@ end;
 $$;
 
 
-SET search_path = lib, pg_catalog;
-
 --
 -- Name: is_normalized(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_normalized(text) RETURNS boolean
+CREATE FUNCTION lib.is_normalized(text) RETURNS boolean
     LANGUAGE sql
     AS $_$
 select
@@ -2193,13 +2120,11 @@ select
 $_$;
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: categoria; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE categoria (
+CREATE TABLE ggviario.categoria (
     categoria_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     categoria_colaborador_id uuid NOT NULL,
     categoria_colaborador_atualizacao uuid,
@@ -2219,7 +2144,7 @@ CREATE TABLE categoria (
 -- Name: funct_change_categoria_structure(); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_categoria_structure() RETURNS SETOF categoria
+CREATE FUNCTION ggviario.funct_change_categoria_structure() RETURNS SETOF ggviario.categoria
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2257,7 +2182,7 @@ $$;
 -- Name: funct_change_locaoproducao_disable(uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_locaoproducao_disable(arg_colaborador_id uuid, arg_localproducao_id uuid) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_locaoproducao_disable(arg_colaborador_id uuid, arg_localproducao_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
   declare 
@@ -2293,7 +2218,7 @@ $$;
 -- Name: funct_change_preco_close(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_preco_close(arg_colaborador_id uuid, arg_preco_id uuid, arg_conformacao_mensage character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_preco_close(arg_colaborador_id uuid, arg_preco_id uuid, arg_conformacao_mensage character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2340,7 +2265,7 @@ $$;
 -- Name: funct_change_produto_data(uuid, uuid, uuid, character varying, boolean, boolean, boolean, boolean, numeric); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_produto_data(arg_colaborador_id uuid, arg_produto_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_produto_data(arg_colaborador_id uuid, arg_produto_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2385,7 +2310,7 @@ $$;
 -- Name: funct_change_produto_estado(uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_produto_estado(arg_colaborador_id uuid, arg_produto_id uuid) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_produto_estado(arg_colaborador_id uuid, arg_produto_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2424,7 +2349,7 @@ $$;
 -- Name: funct_change_produto_setoptions(uuid, uuid, boolean, boolean, boolean, boolean, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_produto_setoptions(arg_colaborador_id uuid, arg_produto_id uuid, arg_produto_servicovenda boolean, arg_produto_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockdinamico boolean, options jsonb) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_produto_setoptions(arg_colaborador_id uuid, arg_produto_id uuid, arg_produto_servicovenda boolean, arg_produto_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockdinamico boolean, options jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2457,7 +2382,7 @@ $$;
 -- Name: setor; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE setor (
+CREATE TABLE ggviario.setor (
     setor_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     setor_setor_id uuid,
     setor_colaborador_id uuid NOT NULL,
@@ -2478,14 +2403,14 @@ CREATE TABLE setor (
 -- Name: COLUMN setor.setor_setor_id; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN setor.setor_setor_id IS 'Identificacao do setor parente';
+COMMENT ON COLUMN ggviario.setor.setor_setor_id IS 'Identificacao do setor parente';
 
 
 --
 -- Name: COLUMN setor.setor_estado; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN setor.setor_estado IS '<h2>Estado dos setoree<\h2>
+COMMENT ON COLUMN ggviario.setor.setor_estado IS '<h2>Estado dos setoree<\h2>
 <ul>
   <li> 2 - Protegido<\li>
   <li> 1 - Atvivo<\li>
@@ -2497,7 +2422,7 @@ COMMENT ON COLUMN setor.setor_estado IS '<h2>Estado dos setoree<\h2>
 -- Name: funct_change_sector_structure(); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_sector_structure() RETURNS SETOF setor
+CREATE FUNCTION ggviario.funct_change_sector_structure() RETURNS SETOF ggviario.setor
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2535,7 +2460,7 @@ $$;
 -- Name: funct_change_setor(uuid, uuid, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_setor(arg_colaborador_id uuid, arg_setor_id uuid, arg_setor_data jsonb) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_setor(arg_colaborador_id uuid, arg_setor_id uuid, arg_setor_data jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2575,7 +2500,7 @@ $$;
 -- Name: funct_change_setor_estado_mode(uuid, uuid, boolean); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_setor_estado_mode(arg_colaborador_id uuid, arg_setor_id uuid, arg_estado_modo boolean) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_setor_estado_mode(arg_colaborador_id uuid, arg_setor_id uuid, arg_estado_modo boolean) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2625,7 +2550,7 @@ $$;
 -- Name: funct_change_unidade(uuid, uuid, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_unidade(arg_colaborador_id uuid, arg_unidade_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_unidade(arg_colaborador_id uuid, arg_unidade_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2656,7 +2581,7 @@ $$;
 -- Name: funct_change_venda_anular(uuid, uuid, text); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_change_venda_anular(arg_colaborador_id uuid, arg_venda_id uuid, arg_textoconfirmacao text) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_change_venda_anular(arg_colaborador_id uuid, arg_venda_id uuid, arg_textoconfirmacao text) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2710,7 +2635,7 @@ $$;
 -- Name: funct_load_categoria(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_categoria(filter jsonb) RETURNS TABLE(categoria_id uuid, categoria_codigo character varying, categoria_nome character varying, categoria_nivel smallint, categoria_dataregisto timestamp without time zone, categoria_dataatualizacao timestamp without time zone, categoria_estado smallint, categoria_estadodesc character varying, categoria_super jsonb, categoria_colaborador jsonb, categoria_colaboradoratualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_categoria(filter jsonb) RETURNS TABLE(categoria_id uuid, categoria_codigo character varying, categoria_nome character varying, categoria_nivel smallint, categoria_dataregisto timestamp without time zone, categoria_dataatualizacao timestamp without time zone, categoria_estado smallint, categoria_estadodesc character varying, categoria_super jsonb, categoria_colaborador jsonb, categoria_colaboradoratualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2733,9 +2658,9 @@ begin
     to_jsonb( col ) - 'colaborador_senha',
     to_jsonb( colup ) - 'colaborador_senha'
   from ggviario.categoria cat
-    inner join ggviario.colaborador.colaborador col on cat.categoria_colaborador_id = col.colaborador_id
+    inner join colaborador.colaborador col on cat.categoria_colaborador_id = col.colaborador_id
     left join ggviario.categoria super on cat.categoria_categoria_id = super.categoria_id
-    left join ggviario.colaborador.colaborador colup on cat.categoria_colaborador_atualizacao = colup.colaborador_id
+    left join colaborador.colaborador colup on cat.categoria_colaborador_atualizacao = colup.colaborador_id
 
   order by cat.categoria_posisao;
 end;
@@ -2746,7 +2671,7 @@ $$;
 -- Name: funct_load_categoria_simple(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_categoria_simple(filter jsonb) RETURNS TABLE(categoria_id uuid, categoria_nome character varying, categoria_estado smallint)
+CREATE FUNCTION ggviario.funct_load_categoria_simple(filter jsonb) RETURNS TABLE(categoria_id uuid, categoria_nome character varying, categoria_estado smallint)
     LANGUAGE plpgsql
     AS $$
 declare 
@@ -2768,7 +2693,7 @@ $$;
 -- Name: funct_load_cliente(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_cliente(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_codigo character varying, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_dataregisto timestamp without time zone, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, distrito_id smallint, distrito_nome character varying, tdocumento_id smallint, tdocumento_desc character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
+CREATE FUNCTION ggviario.funct_load_cliente(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_codigo character varying, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_dataregisto timestamp without time zone, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, distrito_id smallint, distrito_nome character varying, tdocumento_id smallint, tdocumento_desc character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2826,7 +2751,7 @@ $$;
 -- Name: funct_load_cliente_venda_divida(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_cliente_venda_divida(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, cliente_montantetatal numeric, cliente_montantependente numeric)
+CREATE FUNCTION ggviario.funct_load_cliente_venda_divida(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, cliente_montantetatal numeric, cliente_montantependente numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2874,7 +2799,7 @@ $$;
 -- Name: funct_load_cliente_venda_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_cliente_venda_venda(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, cliente_montantetatal numeric, cliente_montantependente numeric)
+CREATE FUNCTION ggviario.funct_load_cliente_venda_venda(filter jsonb) RETURNS TABLE(cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_datanascimento date, cliente_documentonumero character varying, cliente_mail character varying, cliente_morada character varying, cliente_telefone character varying, cliente_telemovel character varying, cliente_localtrabalho character varying, cliente_estado smallint, cliente_estadodesc character varying, sexo_id smallint, sexo_desc character varying, cliente_montantetatal numeric, cliente_montantependente numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2920,7 +2845,7 @@ $$;
 -- Name: funct_load_despesa(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_despesa(filter jsonb) RETURNS TABLE(despesa_id uuid, despesa_codigo character varying, despesa_data date, despesa_numerofatura character varying, despesa_quatidade numeric, despesa_quantidadeproduto numeric, despesa_montanteunitario numeric, despesa_montantetotal numeric, despesa_montanteamortizado numeric, despesa_dataultimamovimento date, despesa_datafim timestamp without time zone, despesa_dataregisto timestamp without time zone, despesa_dataatualizacao timestamp without time zone, despesa_estado smallint, despesa_estadodesc character varying, fornecedor_id uuid, fornecedor_nome character varying, fornecedor_local character varying, fornecedor_telemovel character varying, fornecedor_telefone character varying, fornecedor_montantetotal numeric, fornecedor_montantepago numeric, fornecedor_montantependente numeric, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, colaborador jsonb, colaborador_atualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_despesa(filter jsonb) RETURNS TABLE(despesa_id uuid, despesa_codigo character varying, despesa_data date, despesa_numerofatura character varying, despesa_quatidade numeric, despesa_quantidadeproduto numeric, despesa_montanteunitario numeric, despesa_montantetotal numeric, despesa_montanteamortizado numeric, despesa_dataultimamovimento date, despesa_datafim timestamp without time zone, despesa_dataregisto timestamp without time zone, despesa_dataatualizacao timestamp without time zone, despesa_estado smallint, despesa_estadodesc character varying, fornecedor_id uuid, fornecedor_nome character varying, fornecedor_local character varying, fornecedor_telemovel character varying, fornecedor_telefone character varying, fornecedor_montantetotal numeric, fornecedor_montantepago numeric, fornecedor_montantependente numeric, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, colaborador jsonb, colaborador_atualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -2963,7 +2888,7 @@ begin
         inner join ggviario.produto pr on de.despesa_produto_id = pr.produto_id
         inner join ggviario.unidade un on de.despesa_unidade_id = un.unidade_id
         inner join ggviario.fornecedor fo on de.despesa_fornecedor_id = fo.fornecedor_id
-        inner join ggviario.colaborador.colaborador col on de.despesa_colaborador_id = col.colaborador_id
+        inner join colaborador.colaborador col on de.despesa_colaborador_id = col.colaborador_id
         left join colaborador.colaborador up on de.despesa_colaborador_atualizacao = up.colaborador_id
         left join ggviario.despesa alloffornecedor on fo.fornecedor_id = alloffornecedor.despesa_fornecedor_id
       group by de.despesa_id,
@@ -2994,7 +2919,7 @@ $$;
 -- Name: funct_load_distrito(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_distrito(filter jsonb) RETURNS TABLE(distrito_id smallint, distrito_nome character varying)
+CREATE FUNCTION ggviario.funct_load_distrito(filter jsonb) RETURNS TABLE(distrito_id smallint, distrito_nome character varying)
     LANGUAGE sql
     AS $$ select distrito_id, distrito_nome from ggviario.distrito;$$;
 
@@ -3003,7 +2928,7 @@ CREATE FUNCTION funct_load_distrito(filter jsonb) RETURNS TABLE(distrito_id smal
 -- Name: funct_load_fornecedor(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_fornecedor(filter jsonb) RETURNS TABLE(fornecedor_id uuid, fornecedor_nome character varying, fornecedor_nif character varying, fornecedor_telefone character varying, fornecedor_telemovel character varying, fornecedor_mail character varying, fornecedor_local character varying, fornecedor_dataregisto timestamp without time zone, fornecedor_estado smallint, fornecedor_estadodesc character varying, fornecedor_compras numeric, fornecedor_compraspagas numeric, fornecedor_compraspendentes numeric, distrito_id smallint, distrito_nome character varying, colaborador_id uuid, colaborador_nome character varying, colaborador_apelido character varying)
+CREATE FUNCTION ggviario.funct_load_fornecedor(filter jsonb) RETURNS TABLE(fornecedor_id uuid, fornecedor_nome character varying, fornecedor_nif character varying, fornecedor_telefone character varying, fornecedor_telemovel character varying, fornecedor_mail character varying, fornecedor_local character varying, fornecedor_dataregisto timestamp without time zone, fornecedor_estado smallint, fornecedor_estadodesc character varying, fornecedor_compras numeric, fornecedor_compraspagas numeric, fornecedor_compraspendentes numeric, distrito_id smallint, distrito_nome character varying, colaborador_id uuid, colaborador_nome character varying, colaborador_apelido character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3047,7 +2972,7 @@ $$;
 -- Name: funct_load_localproducao(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_localproducao(arg_produto_id uuid) RETURNS TABLE(localproducao_id uuid, localproducao_estado smallint, localproducao_dataregisto timestamp without time zone, localproducao_dataatualizacao timestamp without time zone, setor_id uuid, localproducao_quantidade numeric, setor jsonb, setor_super jsonb, colaborador jsonb, colaborador_atualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_localproducao(arg_produto_id uuid) RETURNS TABLE(localproducao_id uuid, localproducao_estado smallint, localproducao_dataregisto timestamp without time zone, localproducao_dataatualizacao timestamp without time zone, setor_id uuid, localproducao_quantidade numeric, setor jsonb, setor_super jsonb, colaborador jsonb, colaborador_atualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3071,8 +2996,8 @@ begin
     to_jsonb( coluop )
   from ggviario.localproducao loc
     inner join rule.select_setor_cascade( loc.localproducao_setor_id ) se on true
-    inner join ggviario.colaborador.colaborador col on loc.localproducao_colaborador_id = col.colaborador_id
-    left join ggviario.colaborador.colaborador coluop on loc.localproducao_colaborador_atualizacao = coluop.colaborador_id
+    inner join colaborador.colaborador col on loc.localproducao_colaborador_id = col.colaborador_id
+    left join colaborador.colaborador coluop on loc.localproducao_colaborador_atualizacao = coluop.colaborador_id
     left join ggviario.setor sesudo on se.setor_setor_id = sesudo.setor_id
     left join ggviario.producao porc on se.setor_id = porc.producao_setor_id
   where loc.localproducao_produto_id = arg_produto_id
@@ -3096,7 +3021,7 @@ $$;
 -- Name: funct_load_movimento_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_movimento_venda(filter jsonb) RETURNS TABLE(movimento_id uuid, movimento_codigo character varying, movimento_data date, movimento_documento character varying, movimento_montante numeric, movimento_dataregisto timestamp without time zone, movimento_libele character varying, movimento_estado smallint, movimento_estadodesc character varying)
+CREATE FUNCTION ggviario.funct_load_movimento_venda(filter jsonb) RETURNS TABLE(movimento_id uuid, movimento_codigo character varying, movimento_data date, movimento_documento character varying, movimento_montante numeric, movimento_dataregisto timestamp without time zone, movimento_libele character varying, movimento_estado smallint, movimento_estadodesc character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3125,7 +3050,7 @@ $$;
 -- Name: funct_load_movimento_venda(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_movimento_venda(arg_venda_id uuid) RETURNS TABLE(movimento_id uuid, movimento_codigo character varying, movimento_data date, movimento_documento character varying, movimento_montante numeric, movimento_dataregisto timestamp without time zone, movimento_libele character varying, movimento_estado smallint, movimento_estadodesc character varying)
+CREATE FUNCTION ggviario.funct_load_movimento_venda(arg_venda_id uuid) RETURNS TABLE(movimento_id uuid, movimento_codigo character varying, movimento_data date, movimento_documento character varying, movimento_montante numeric, movimento_dataregisto timestamp without time zone, movimento_libele character varying, movimento_estado smallint, movimento_estadodesc character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3153,7 +3078,7 @@ $$;
 -- Name: funct_load_producao(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_producao(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidade numeric, producao_lancamento bigint, produto_id uuid, produto_nome character varying, produto_codigo character varying, setor_id uuid, setor_nome character varying, setor_codigo character varying)
+CREATE FUNCTION ggviario.funct_load_producao(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidade numeric, producao_lancamento bigint, produto_id uuid, produto_nome character varying, produto_codigo character varying, setor_id uuid, setor_nome character varying, setor_codigo character varying)
     LANGUAGE sql
     AS $$
 select
@@ -3179,7 +3104,7 @@ $$;
 -- Name: funct_load_producao_data(uuid, uuid, date); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_producao_data(arg_produto_id uuid, arg_setor_id uuid, arg_producao_data date) RETURNS TABLE(producao_dia numeric, producao_setor numeric)
+CREATE FUNCTION ggviario.funct_load_producao_data(arg_produto_id uuid, arg_setor_id uuid, arg_producao_data date) RETURNS TABLE(producao_dia numeric, producao_setor numeric)
     LANGUAGE sql
     AS $$
 select 
@@ -3194,7 +3119,7 @@ $$;
 -- Name: funct_load_producao_vista_produto(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_producao_vista_produto(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, produto jsonb, categoria jsonb)
+CREATE FUNCTION ggviario.funct_load_producao_vista_produto(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, produto jsonb, categoria jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3233,7 +3158,7 @@ $$;
 -- Name: funct_load_producao_vista_setor(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_producao_vista_setor(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, setor jsonb, setor_super jsonb)
+CREATE FUNCTION ggviario.funct_load_producao_vista_setor(filter jsonb) RETURNS TABLE(producao_data date, producao_quantidadetotal numeric, producao_quantidadecomerciavel numeric, producao_quantidadedefeituosa numeric, producao_montanteprevisto numeric, producao_lancamentos bigint, setor jsonb, setor_super jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3271,7 +3196,7 @@ $$;
 -- Name: funct_load_produto(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_dataregisto timestamp without time zone, produto_dataatualizacao timestamp without time zone, produto_estado smallint, produto_estadodesc character varying, produto_montantevendas numeric, produto_montantevendadividas numeric, produto_montantevendavendas numeric, produto_montantevendapagas numeric, produto_montantevendapendentes numeric, produto_montantecompras numeric, produto_montantecomprapagos numeric, produto_montantecomprapendentes numeric, categoria jsonb, preco jsonb, unidade jsonb, colaborador jsonb, colaboradoratualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_produto(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_dataregisto timestamp without time zone, produto_dataatualizacao timestamp without time zone, produto_estado smallint, produto_estadodesc character varying, produto_montantevendas numeric, produto_montantevendadividas numeric, produto_montantevendavendas numeric, produto_montantevendapagas numeric, produto_montantevendapendentes numeric, produto_montantecompras numeric, produto_montantecomprapagos numeric, produto_montantecomprapendentes numeric, categoria jsonb, preco jsonb, unidade jsonb, colaborador jsonb, colaboradoratualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3350,7 +3275,7 @@ $$;
 -- Name: funct_load_produto_despesa(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_despesa(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_estado smallint, produto_estadodesc character varying, produto_dataregisto timestamp without time zone, produto_unidades jsonb)
+CREATE FUNCTION ggviario.funct_load_produto_despesa(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric, produto_servicovenda boolean, produto_servicocompra boolean, produto_servicoproducao boolean, produto_servicostockdinamico boolean, produto_estado smallint, produto_estadodesc character varying, produto_dataregisto timestamp without time zone, produto_unidades jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3391,7 +3316,7 @@ $$;
 -- Name: funct_load_produto_producao(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_producao(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric)
+CREATE FUNCTION ggviario.funct_load_produto_producao(filter jsonb) RETURNS TABLE(produto_id uuid, produto_codigo character varying, produto_nome character varying, produto_stock numeric, produto_stockminimo numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3415,7 +3340,7 @@ $$;
 -- Name: funct_load_produto_unidades(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_unidades(arg_produto_id uuid) RETURNS TABLE(preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying)
+CREATE FUNCTION ggviario.funct_load_produto_unidades(arg_produto_id uuid) RETURNS TABLE(preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying)
     LANGUAGE plpgsql
     AS $$
 declare 
@@ -3445,7 +3370,7 @@ $$;
 -- Name: funct_load_produto_venda(date); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_produto_venda(arg_data date) RETURNS TABLE(produto_id uuid, produto_nome character varying, produto_codigo character varying, produto_stock numeric, produto_precos jsonb, categoria_id uuid, categoria_nome character varying)
+CREATE FUNCTION ggviario.funct_load_produto_venda(arg_data date) RETURNS TABLE(produto_id uuid, produto_nome character varying, produto_codigo character varying, produto_stock numeric, produto_precos jsonb, categoria_id uuid, categoria_nome character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3486,7 +3411,7 @@ $$;
 -- Name: funct_load_setor(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_setor(filter jsonb) RETURNS TABLE(setor_id uuid, setor_codigo character varying, setor_nome character varying, setor_nivel smallint, setor_totalsubsetores smallint, setor_posicao smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_estado smallint, setor_estadodesc character varying, setor_super jsonb, setor_colaborador jsonb, setor_colaboradoratualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_setor(filter jsonb) RETURNS TABLE(setor_id uuid, setor_codigo character varying, setor_nome character varying, setor_nivel smallint, setor_totalsubsetores smallint, setor_posicao smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_estado smallint, setor_estadodesc character varying, setor_super jsonb, setor_colaborador jsonb, setor_colaboradoratualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3509,9 +3434,9 @@ declare
           to_jsonb( co ),
           to_jsonb( coup )
         from ggviario.setor se
-          inner join ggviario.colaborador.colaborador co on se.setor_colaborador_id = co.colaborador_id
+          inner join colaborador.colaborador co on se.setor_colaborador_id = co.colaborador_id
           left join ggviario.setor super on se.setor_setor_id = super.setor_id
-          left join ggviario.colaborador.colaborador coup on se.setor_colaborador_atualizacao = coup.colaborador_id
+          left join colaborador.colaborador coup on se.setor_colaborador_atualizacao = coup.colaborador_id
         where se.setor_estado in ( _const.setor_estado_ativo, _const.setor_estado_protegido )
       order by se.setor_posicao asc;
   end;
@@ -3522,7 +3447,7 @@ $$;
 -- Name: funct_load_setor_all(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_setor_all(filter jsonb) RETURNS TABLE(setor_id uuid, setor_codigo character varying, setor_nome character varying, setor_nivel smallint, setor_totalsubsetores smallint, setor_posicao smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_estado smallint, setor_estadodesc character varying, setor_super jsonb, setor_colaborador jsonb, setor_colaboradoratualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_setor_all(filter jsonb) RETURNS TABLE(setor_id uuid, setor_codigo character varying, setor_nome character varying, setor_nivel smallint, setor_totalsubsetores smallint, setor_posicao smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_estado smallint, setor_estadodesc character varying, setor_super jsonb, setor_colaborador jsonb, setor_colaboradoratualizacao jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3545,9 +3470,9 @@ declare
           to_jsonb( co ),
           to_jsonb( coup )
         from ggviario.setor se
-          inner join ggviario.colaborador.colaborador co on se.setor_colaborador_id = co.colaborador_id
+          inner join colaborador.colaborador co on se.setor_colaborador_id = co.colaborador_id
           left join ggviario.setor super on se.setor_setor_id = super.setor_id
-          left join ggviario.colaborador.colaborador coup on se.setor_colaborador_atualizacao = coup.colaborador_id
+          left join colaborador.colaborador coup on se.setor_colaborador_atualizacao = coup.colaborador_id
       order by se.setor_posicao asc;
   end;
 $$;
@@ -3557,7 +3482,7 @@ $$;
 -- Name: funct_load_setor_by_localproducao_to_producao(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_setor_by_localproducao_to_producao(arg_produto_id uuid) RETURNS TABLE(setor_id uuid, setor_nome character varying, setor_codigo character varying, setor_estado smallint, setor_nivel smallint, setor_dataregisto timestamp without time zone, setor_super jsonb)
+CREATE FUNCTION ggviario.funct_load_setor_by_localproducao_to_producao(arg_produto_id uuid) RETURNS TABLE(setor_id uuid, setor_nome character varying, setor_codigo character varying, setor_estado smallint, setor_nivel smallint, setor_dataregisto timestamp without time zone, setor_super jsonb)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3588,7 +3513,7 @@ $$;
 -- Name: funct_load_tipodocumento(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_tipodocumento(filter jsonb) RETURNS TABLE(tdocumento_id smallint, tdocumento_desc character varying)
+CREATE FUNCTION ggviario.funct_load_tipodocumento(filter jsonb) RETURNS TABLE(tdocumento_id smallint, tdocumento_desc character varying)
     LANGUAGE sql
     AS $$
   select tdoc.tdocumento_id, tdoc.tdocumento_desc from ggviario.tipodocumento tdoc;
@@ -3599,7 +3524,7 @@ $$;
 -- Name: funct_load_unidade(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_unidade(filter jsonb) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, unidade_dataregisto timestamp without time zone, unidade_dataatualizacao timestamp without time zone, unidade_estado smallint, colaborador jsonb, colaborador_atualizacao jsonb)
+CREATE FUNCTION ggviario.funct_load_unidade(filter jsonb) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, unidade_dataregisto timestamp without time zone, unidade_dataatualizacao timestamp without time zone, unidade_estado smallint, colaborador jsonb, colaborador_atualizacao jsonb)
     LANGUAGE sql
     AS $$
   select un.unidade_id,
@@ -3620,7 +3545,7 @@ $$;
 -- Name: funct_load_unidade_simple_by_produto(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_unidade_simple_by_produto(arg_produto_id uuid) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, preco_estado smallint)
+CREATE FUNCTION ggviario.funct_load_unidade_simple_by_produto(arg_produto_id uuid) RETURNS TABLE(unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, preco_id uuid, preco_custounidade numeric, preco_quantidadeproduto numeric, preco_base boolean, preco_estado smallint)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3650,7 +3575,7 @@ $$;
 -- Name: funct_load_venda_divida(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_venda_divida(filter jsonb) RETURNS TABLE(venda_id uuid, venda_faturanumero character varying, venda_quantidade numeric, venda_quantidadeproduto numeric, venda_montanteunitario numeric, venda_montantebruto numeric, venda_montantedesconto numeric, venda_montantepagar numeric, venda_montanteamortizado numeric, venda_data date, venda_datafinalizar date, venda_datafim timestamp without time zone, venda_dataultimamovimentacao date, venda_dataregisto timestamp without time zone, venda_estado smallint, venda_estadodesc character varying, tvenda_id smallint, tvenda_desc character varying, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
+CREATE FUNCTION ggviario.funct_load_venda_divida(filter jsonb) RETURNS TABLE(venda_id uuid, venda_faturanumero character varying, venda_quantidade numeric, venda_quantidadeproduto numeric, venda_montanteunitario numeric, venda_montantebruto numeric, venda_montantedesconto numeric, venda_montantepagar numeric, venda_montanteamortizado numeric, venda_data date, venda_datafinalizar date, venda_datafim timestamp without time zone, venda_dataultimamovimentacao date, venda_dataregisto timestamp without time zone, venda_estado smallint, venda_estadodesc character varying, tvenda_id smallint, tvenda_desc character varying, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3716,7 +3641,7 @@ $$;
 -- Name: funct_load_venda_venda(jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_load_venda_venda(filter jsonb) RETURNS TABLE(venda_id uuid, venda_faturanumero character varying, venda_quantidade numeric, venda_quantidadeproduto numeric, venda_montanteunitario numeric, venda_montantebruto numeric, venda_montantedesconto numeric, venda_montantepagar numeric, venda_montanteamortizado numeric, venda_data date, venda_datafinalizar date, venda_datafim timestamp without time zone, venda_dataultimamovimentacao date, venda_dataregisto timestamp without time zone, venda_estado smallint, venda_estadodesc character varying, tvenda_id smallint, tvenda_desc character varying, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
+CREATE FUNCTION ggviario.funct_load_venda_venda(filter jsonb) RETURNS TABLE(venda_id uuid, venda_faturanumero character varying, venda_quantidade numeric, venda_quantidadeproduto numeric, venda_montanteunitario numeric, venda_montantebruto numeric, venda_montantedesconto numeric, venda_montantepagar numeric, venda_montanteamortizado numeric, venda_data date, venda_datafinalizar date, venda_datafim timestamp without time zone, venda_dataultimamovimentacao date, venda_dataregisto timestamp without time zone, venda_estado smallint, venda_estadodesc character varying, tvenda_id smallint, tvenda_desc character varying, produto_id uuid, produto_nome character varying, produto_codigo character varying, unidade_id uuid, unidade_nome character varying, unidade_codigo character varying, cliente_id uuid, cliente_nome character varying, cliente_apelido character varying, cliente_montentecompras numeric, cliente_montentedividas numeric, cliente_montantetatal numeric, cliente_montanteamortizado numeric, cliente_montantependente numeric)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3780,7 +3705,7 @@ $$;
 -- Name: funct_reg_categoria(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_categoria(arg_colaborador_id uuid, arg_categoria_super uuid, arg_categoria_nome character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_categoria(arg_colaborador_id uuid, arg_categoria_super uuid, arg_categoria_nome character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3827,7 +3752,7 @@ $$;
 -- Name: funct_reg_cliente(uuid, smallint, smallint, smallint, character varying, character varying, character varying, date, character varying, character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_datanascimento date, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying, arg_cliente_localtrabalho character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_cliente(arg_colaborador_id uuid, arg_sexo_id smallint, arg_distrito_id smallint, arg_tdocumenti_id smallint, arg_cliente_documentonumero character varying, arg_cliente_nome character varying, arg_cliente_apelido character varying, arg_cliente_datanascimento date, arg_cliente_telemovel character varying, arg_cliente_telefone character varying, arg_cliente_mail character varying, arg_cliente_morada character varying, arg_cliente_localtrabalho character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -3922,7 +3847,7 @@ $$;
 -- Name: funct_reg_despesa(uuid, uuid, uuid, uuid, numeric, numeric, numeric, date, character varying, boolean, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_despesa(arg_colaborador_id uuid, arg_fornecedor_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_despesa_quantidade numeric, arg_despesa_custounitario numeric, arg_despesa_custototal numeric, arg_despesa_data date, arg_despesa_numerofatura character varying, arg_despesa_paga boolean, arg_conta_id uuid) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_despesa(arg_colaborador_id uuid, arg_fornecedor_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_despesa_quantidade numeric, arg_despesa_custounitario numeric, arg_despesa_custototal numeric, arg_despesa_data date, arg_despesa_numerofatura character varying, arg_despesa_paga boolean, arg_conta_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4012,7 +3937,7 @@ $$;
 -- Name: funct_reg_equivalencia(uuid, uuid, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_equivalencia(arg_colaborador_id uuid, arg_produto_id uuid, arg_equivalencias jsonb) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_equivalencia(arg_colaborador_id uuid, arg_produto_id uuid, arg_equivalencias jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -4092,7 +4017,7 @@ $_$;
 -- Name: funct_reg_fornecedor(uuid, character varying, character varying, character varying, character varying, character varying, character varying, smallint); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_fornecedor(arg_colaborador_id uuid, arg_fornecedor_nome character varying, arg_fornecedor_nif character varying, arg_fornecedor_telefone character varying, arg_fornecedor_telemovel character varying, arg_fornecedor_mail character varying, arg_fornecedor_local character varying, arg_distrito_id smallint) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_fornecedor(arg_colaborador_id uuid, arg_fornecedor_nome character varying, arg_fornecedor_nif character varying, arg_fornecedor_telefone character varying, arg_fornecedor_telemovel character varying, arg_fornecedor_mail character varying, arg_fornecedor_local character varying, arg_distrito_id smallint) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 
@@ -4157,7 +4082,7 @@ $$;
 -- Name: funct_reg_localproducao(uuid, uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_localproducao(arg_colaborador_id uuid, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_localproducao(arg_colaborador_id uuid, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4217,7 +4142,7 @@ $$;
 -- Name: funct_reg_movimento_amortizacao_despesa(uuid, uuid, uuid, numeric, date, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_movimento_amortizacao_despesa(arg_colaborador_id uuid, arg_despesa_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_movimento_amortizacao_despesa(arg_colaborador_id uuid, arg_despesa_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4275,7 +4200,7 @@ $$;
 -- Name: funct_reg_movimento_amortizacao_venda(uuid, uuid, uuid, numeric, date, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_movimento_amortizacao_venda(arg_colaborador_id uuid, arg_venda_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_movimento_amortizacao_venda(arg_colaborador_id uuid, arg_venda_id uuid, arg_conta_id uuid, arg_movimento_montante numeric, arg_movimento_data date, arg_movimento_documento character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4341,7 +4266,7 @@ $$;
 -- Name: funct_reg_preco(uuid, uuid, uuid, numeric, numeric, boolean); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_preco_custounidade numeric, arg_preco_quantiadeproduto numeric, arg_preco_base boolean) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_preco(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_preco_custounidade numeric, arg_preco_quantiadeproduto numeric, arg_preco_base boolean) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4402,7 +4327,7 @@ $$;
 -- Name: funct_reg_producao(uuid, date, numeric, numeric, numeric, uuid, uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidadetotal numeric, arg_producao_quantidadecomerciavel numeric, arg_producao_quantidadedefeituosa numeric, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_producao(arg_colaborador_id uuid, arg_producao_data date, arg_producao_quantidadetotal numeric, arg_producao_quantidadecomerciavel numeric, arg_producao_quantidadedefeituosa numeric, arg_produto_id uuid, arg_setor_id uuid) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4474,7 +4399,7 @@ $$;
 -- Name: funct_reg_produto(uuid, uuid, character varying, boolean, boolean, boolean, boolean, numeric, jsonb); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric, options jsonb) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_produto(arg_colaborador_id uuid, arg_categoria_id uuid, arg_produto_nome character varying, arg_produto_servicovenda boolean, arg_produdo_servicocompra boolean, arg_produto_servicoproducao boolean, arg_produto_servicostockminimo boolean, arg_produto_stockminimo numeric, options jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4527,7 +4452,7 @@ $$;
 -- Name: funct_reg_setor(uuid, uuid, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_setor(arg_colaborador_id uuid, arg_setor_setor_id uuid, arg_setor_nome character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4585,7 +4510,7 @@ $$;
 -- Name: funct_reg_unidade(uuid, character varying, character varying); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_unidade(arg_colaborador_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_unidade(arg_colaborador_id uuid, arg_unidade_nome character varying, arg_unidade_codigo character varying) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4622,7 +4547,7 @@ $$;
 -- Name: funct_reg_venda_divida(uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_venda_divida(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_venda_divida(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4658,7 +4583,7 @@ $$;
 -- Name: funct_reg_venda_venda(uuid, uuid, uuid, uuid, uuid, numeric, numeric, numeric, numeric, numeric, date); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION funct_reg_venda_venda(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_conta_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date) RETURNS lib.result
+CREATE FUNCTION ggviario.funct_reg_venda_venda(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_conta_id uuid, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -4712,7 +4637,7 @@ $$;
 -- Name: get_categoria(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_categoria(arg_categoria_id uuid) RETURNS categoria
+CREATE FUNCTION ggviario.get_categoria(arg_categoria_id uuid) RETURNS ggviario.categoria
     LANGUAGE sql
     AS $$ select * from ggviario.categoria where categoria_id = arg_categoria_id; $$;
 
@@ -4721,7 +4646,7 @@ CREATE FUNCTION get_categoria(arg_categoria_id uuid) RETURNS categoria
 -- Name: conta; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE conta (
+CREATE TABLE ggviario.conta (
     conta_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     conta_conta_id uuid,
     conta_tconta_id smallint NOT NULL,
@@ -4744,21 +4669,21 @@ CREATE TABLE conta (
 -- Name: COLUMN conta.conta_saldo; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN conta.conta_saldo IS 'O saldo disponivel na conta';
+COMMENT ON COLUMN ggviario.conta.conta_saldo IS 'O saldo disponivel na conta';
 
 
 --
 -- Name: COLUMN conta.conta_dataultimamovimentacao; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN conta.conta_dataultimamovimentacao IS 'A data em que a conta teve a ultima movimentacao';
+COMMENT ON COLUMN ggviario.conta.conta_dataultimamovimentacao IS 'A data em que a conta teve a ultima movimentacao';
 
 
 --
 -- Name: get_conta(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_conta(arg_conta_id uuid) RETURNS conta
+CREATE FUNCTION ggviario.get_conta(arg_conta_id uuid) RETURNS ggviario.conta
     LANGUAGE sql
     AS $$
   select *
@@ -4771,7 +4696,7 @@ $$;
 -- Name: despesa; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE despesa (
+CREATE TABLE ggviario.despesa (
     despesa_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     despesa_fornecedor_id uuid NOT NULL,
     despesa_produto_id uuid NOT NULL,
@@ -4798,14 +4723,14 @@ CREATE TABLE despesa (
 -- Name: COLUMN despesa.despesa_numerofatura; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN despesa.despesa_numerofatura IS 'O numero de fatura recebido do fornecedor';
+COMMENT ON COLUMN ggviario.despesa.despesa_numerofatura IS 'O numero de fatura recebido do fornecedor';
 
 
 --
 -- Name: get_despesa(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_despesa(arg_despesa_id uuid) RETURNS despesa
+CREATE FUNCTION ggviario.get_despesa(arg_despesa_id uuid) RETURNS ggviario.despesa
     LANGUAGE sql
     AS $$
     select *
@@ -4818,7 +4743,7 @@ CREATE FUNCTION get_despesa(arg_despesa_id uuid) RETURNS despesa
 -- Name: movimento; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE movimento (
+CREATE TABLE ggviario.movimento (
     movimento_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     movimento_conta_id uuid,
     movimento_tmovimento_id smallint NOT NULL,
@@ -4846,7 +4771,7 @@ CREATE TABLE movimento (
 -- Name: get_movimento(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_movimento(arg_movimento_id uuid) RETURNS movimento
+CREATE FUNCTION ggviario.get_movimento(arg_movimento_id uuid) RETURNS ggviario.movimento
     LANGUAGE sql
     AS $$
   select *
@@ -4859,7 +4784,7 @@ CREATE FUNCTION get_movimento(arg_movimento_id uuid) RETURNS movimento
 -- Name: preco; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE preco (
+CREATE TABLE ggviario.preco (
     preco_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     preco_produto_id uuid NOT NULL,
     preco_unidade_id uuid NOT NULL,
@@ -4878,7 +4803,7 @@ CREATE TABLE preco (
 -- Name: get_preco(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_preco(arg_preco_id uuid) RETURNS preco
+CREATE FUNCTION ggviario.get_preco(arg_preco_id uuid) RETURNS ggviario.preco
     LANGUAGE sql
     AS $$
 select *
@@ -4891,7 +4816,7 @@ $$;
 -- Name: produto; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE produto (
+CREATE TABLE ggviario.produto (
     produto_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     produto_categoria_id uuid NOT NULL,
     produto_colaborador_id uuid NOT NULL,
@@ -4915,7 +4840,7 @@ CREATE TABLE produto (
 -- Name: get_produto(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_produto(arg_produto_id uuid) RETURNS produto
+CREATE FUNCTION ggviario.get_produto(arg_produto_id uuid) RETURNS ggviario.produto
     LANGUAGE sql
     AS $$
 select *
@@ -4927,7 +4852,7 @@ $$;
 -- Name: get_setor(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_setor(arg_setor_id uuid) RETURNS setor
+CREATE FUNCTION ggviario.get_setor(arg_setor_id uuid) RETURNS ggviario.setor
     LANGUAGE sql
     AS $$
     select *
@@ -4940,7 +4865,7 @@ CREATE FUNCTION get_setor(arg_setor_id uuid) RETURNS setor
 -- Name: tipovenda; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE tipovenda (
+CREATE TABLE ggviario.tipovenda (
     tvenda_id smallint NOT NULL,
     tvenda_desc character varying(32) NOT NULL,
     tvenda_letra character(1) NOT NULL,
@@ -4953,7 +4878,7 @@ CREATE TABLE tipovenda (
 -- Name: get_tipovenda(smallint); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_tipovenda(arg_tvenda_id smallint) RETURNS tipovenda
+CREATE FUNCTION ggviario.get_tipovenda(arg_tvenda_id smallint) RETURNS ggviario.tipovenda
     LANGUAGE sql
     AS $$
   select * from ggviario.tipovenda where tvenda_id = arg_tvenda_id;
@@ -4964,7 +4889,7 @@ $$;
 -- Name: unidade; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE unidade (
+CREATE TABLE ggviario.unidade (
     unidade_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     unidade_colaborador_id uuid NOT NULL,
     unidade_colaborador_atualizacao uuid,
@@ -4982,7 +4907,7 @@ CREATE TABLE unidade (
 -- Name: get_unidade(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_unidade(arg_unidade_id uuid) RETURNS unidade
+CREATE FUNCTION ggviario.get_unidade(arg_unidade_id uuid) RETURNS ggviario.unidade
     LANGUAGE sql
     AS $$
 select *
@@ -4995,20 +4920,18 @@ $$;
 -- Name: get_venda(uuid); Type: FUNCTION; Schema: ggviario; Owner: -
 --
 
-CREATE FUNCTION get_venda(arg_venda_id uuid) RETURNS venda
+CREATE FUNCTION ggviario.get_venda(arg_venda_id uuid) RETURNS ggviario.venda
     LANGUAGE sql
     AS $$
 select * from ggviario.venda where venda_id = arg_venda_id;
 $$;
 
 
-SET search_path = lib, pg_catalog;
-
 --
 -- Name: age(timestamp without time zone); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION age(timestamp without time zone) RETURNS integer
+CREATE FUNCTION lib.age(timestamp without time zone) RETURNS integer
     LANGUAGE sql
     AS $_$ select cast(to_char(age( $1 ), 'yyyy') as integer); $_$;
 
@@ -5017,7 +4940,7 @@ CREATE FUNCTION age(timestamp without time zone) RETURNS integer
 -- Name: agg_collect_collector(anyarray, anyelement, boolean); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_collect_collector(collect_list anyarray, collect_next anyelement, collect_accepetnull boolean DEFAULT false) RETURNS anyarray
+CREATE FUNCTION lib.agg_collect_collector(collect_list anyarray, collect_next anyelement, collect_accepetnull boolean DEFAULT false) RETURNS anyarray
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5037,7 +4960,7 @@ $$;
 -- Name: agg_extreme_collector(anyelement, anyelement, boolean); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_extreme_collector(acumulatecollect anyelement, nextcollect anyelement, first boolean) RETURNS anyelement
+CREATE FUNCTION lib.agg_extreme_collector(acumulatecollect anyelement, nextcollect anyelement, first boolean) RETURNS anyelement
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5062,7 +4985,7 @@ $$;
 -- Name: agg_jsonb_collect_collector(jsonb, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_jsonb_collect_collector(acumulatecollect jsonb, nextcollect jsonb) RETURNS jsonb
+CREATE FUNCTION lib.agg_jsonb_collect_collector(acumulatecollect jsonb, nextcollect jsonb) RETURNS jsonb
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5084,7 +5007,7 @@ $$;
 -- Name: agg_jsonb_collect_finalize(jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_jsonb_collect_finalize(acumulate jsonb) RETURNS jsonb
+CREATE FUNCTION lib.agg_jsonb_collect_finalize(acumulate jsonb) RETURNS jsonb
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5102,7 +5025,7 @@ $$;
 -- Name: agg_sum_nonnull_collector(anyelement, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_sum_nonnull_collector(acumulate anyelement, nextval anyelement) RETURNS anyelement
+CREATE FUNCTION lib.agg_sum_nonnull_collector(acumulate anyelement, nextval anyelement) RETURNS anyelement
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5126,7 +5049,7 @@ $$;
 -- Name: agg_sum_nonnull_finalizer(anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION agg_sum_nonnull_finalizer(acumulate anyelement) RETURNS anyelement
+CREATE FUNCTION lib.agg_sum_nonnull_finalizer(acumulate anyelement) RETURNS anyelement
     LANGUAGE sql
     AS $$
 select
@@ -5138,7 +5061,7 @@ $$;
 -- Name: array_build(anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_build(VARIADIC argumests anyarray) RETURNS anyarray
+CREATE FUNCTION lib.array_build(VARIADIC argumests anyarray) RETURNS anyarray
     LANGUAGE sql
     AS $$
 select argumests;
@@ -5149,7 +5072,7 @@ $$;
 -- Name: array_build_nomnull(anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_build_nomnull(VARIADIC anyarray) RETURNS anyarray
+CREATE FUNCTION lib.array_build_nomnull(VARIADIC anyarray) RETURNS anyarray
     LANGUAGE sql
     AS $_$
 select array_remove( $1, null );
@@ -5160,7 +5083,7 @@ $_$;
 -- Name: array_equals_ignore_position(anyarray, anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_equals_ignore_position(arg_left anyarray, arg_right anyarray) RETURNS boolean
+CREATE FUNCTION lib.array_equals_ignore_position(arg_left anyarray, arg_right anyarray) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5179,7 +5102,7 @@ $$;
 -- Name: array_length(anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_length(anyarray) RETURNS integer
+CREATE FUNCTION lib.array_length(anyarray) RETURNS integer
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -5197,7 +5120,7 @@ $_$;
 -- Name: array_max_element(anyarray, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_max_element(arr anyarray, element anyelement DEFAULT NULL::unknown) RETURNS anyelement
+CREATE FUNCTION lib.array_max_element(arr anyarray, element anyelement DEFAULT NULL::unknown) RETURNS anyelement
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5219,7 +5142,7 @@ $$;
 -- Name: array_min_element(anyarray, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_min_element(arr anyarray, element anyelement DEFAULT NULL::unknown) RETURNS anyelement
+CREATE FUNCTION lib.array_min_element(arr anyarray, element anyelement DEFAULT NULL::unknown) RETURNS anyelement
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5241,7 +5164,7 @@ $$;
 -- Name: array_remove_at(anyarray, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_remove_at(arr anyarray, arr_start_index integer) RETURNS anyarray
+CREATE FUNCTION lib.array_remove_at(arr anyarray, arr_start_index integer) RETURNS anyarray
     LANGUAGE sql
     AS $$
 select lib.array_remove_range( arr, arr_start_index, 1 );
@@ -5252,7 +5175,7 @@ $$;
 -- Name: array_remove_range(anyarray, integer, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION array_remove_range(arr anyarray, arr_start_index integer, arr_count_elements integer) RETURNS anyarray
+CREATE FUNCTION lib.array_remove_range(arr anyarray, arr_start_index integer, arr_count_elements integer) RETURNS anyarray
     LANGUAGE sql
     AS $$
 select arr[:arr_start_index -1 ] || arr[ (arr_start_index + arr_count_elements):];
@@ -5263,7 +5186,7 @@ $$;
 -- Name: coincidences(anyarray, anyarray, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION coincidences(arguments_left anyarray, arguments_right anyarray, option jsonb DEFAULT NULL::jsonb) RETURNS numeric
+CREATE FUNCTION lib.coincidences(arguments_left anyarray, arguments_right anyarray, option jsonb DEFAULT NULL::jsonb) RETURNS numeric
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5300,7 +5223,7 @@ $$;
 -- Name: coincidences_likes(text[], text[], jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION coincidences_likes(arguments_left text[], arguments_right text[], option jsonb DEFAULT NULL::jsonb) RETURNS numeric
+CREATE FUNCTION lib.coincidences_likes(arguments_left text[], arguments_right text[], option jsonb DEFAULT NULL::jsonb) RETURNS numeric
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5338,7 +5261,7 @@ $$;
 -- Name: concat(anyelement, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION concat(anyelement, anyelement) RETURNS text
+CREATE FUNCTION lib.concat(anyelement, anyelement) RETURNS text
     LANGUAGE sql
     AS $_$ select coalesce( $1, '' )||coalesce( $2, '' )$_$;
 
@@ -5347,7 +5270,7 @@ CREATE FUNCTION concat(anyelement, anyelement) RETURNS text
 -- Name: dblink_connect(character varying, character varying, character varying, character varying, character varying, numeric, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dblink_connect(connectionname character varying, username character varying, passwordtext character varying, databasename character varying, hostname character varying DEFAULT '::0'::character varying, port numeric DEFAULT 5432, options jsonb DEFAULT NULL::jsonb) RETURNS boolean
+CREATE FUNCTION lib.dblink_connect(connectionname character varying, username character varying, passwordtext character varying, databasename character varying, hostname character varying DEFAULT '::0'::character varying, port numeric DEFAULT 5432, options jsonb DEFAULT NULL::jsonb) RETURNS boolean
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -5378,7 +5301,7 @@ $_$;
 -- Name: dblink_disconnect(character varying, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dblink_disconnect(connectionname character varying, option jsonb DEFAULT NULL::jsonb) RETURNS boolean
+CREATE FUNCTION lib.dblink_disconnect(connectionname character varying, option jsonb DEFAULT NULL::jsonb) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5400,7 +5323,7 @@ $$;
 -- Name: define_session_values(character varying, character varying, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION define_session_values(variablegroup character varying, variablename character varying, variablevalue jsonb) RETURNS void
+CREATE FUNCTION lib.define_session_values(variablegroup character varying, variablename character varying, variablevalue jsonb) RETURNS void
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5414,7 +5337,7 @@ $$;
 -- Name: dset_random_next(anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dset_random_next(anyelement) RETURNS anyelement
+CREATE FUNCTION lib.dset_random_next(anyelement) RETURNS anyelement
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -5430,7 +5353,7 @@ $_$;
 -- Name: dset_random_next(anyelement, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dset_random_next(arg_min anyelement, arg_max anyelement) RETURNS anyelement
+CREATE FUNCTION lib.dset_random_next(arg_min anyelement, arg_max anyelement) RETURNS anyelement
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5450,7 +5373,7 @@ $$;
 -- Name: dset_random_nextelement(anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dset_random_nextelement(anyarray) RETURNS anyelement
+CREATE FUNCTION lib.dset_random_nextelement(anyarray) RETURNS anyelement
     LANGUAGE sql
     AS $_$
 select $1[ lib.dset_random_next( array_length( $1, 1) )]
@@ -5461,7 +5384,7 @@ $_$;
 -- Name: dset_random_nexttext(numeric); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION dset_random_nexttext(text_lenght numeric) RETURNS text
+CREATE FUNCTION lib.dset_random_nexttext(text_lenght numeric) RETURNS text
     LANGUAGE sql
     AS $$
 select
@@ -5479,7 +5402,7 @@ $$;
 -- Name: element_different(anyelement, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION element_different(anyelement, anyelement) RETURNS boolean
+CREATE FUNCTION lib.element_different(anyelement, anyelement) RETURNS boolean
     LANGUAGE sql
     AS $_$select not lib.element_equals( $1, $2 )$_$;
 
@@ -5488,7 +5411,7 @@ CREATE FUNCTION element_different(anyelement, anyelement) RETURNS boolean
 -- Name: element_equals(anyelement, anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION element_equals(anyelement, anyelement) RETURNS boolean
+CREATE FUNCTION lib.element_equals(anyelement, anyelement) RETURNS boolean
     LANGUAGE sql
     AS $_$
 select case
@@ -5503,7 +5426,7 @@ $_$;
 -- Name: field_bit(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_bit(data jsonb, index integer) RETURNS bit
+CREATE FUNCTION lib.field_bit(data jsonb, index integer) RETURNS bit
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::bit
@@ -5514,7 +5437,7 @@ $_$;
 -- Name: field_bit(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_bit(data jsonb, field text) RETURNS bit
+CREATE FUNCTION lib.field_bit(data jsonb, field text) RETURNS bit
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::bit
@@ -5525,7 +5448,7 @@ $_$;
 -- Name: field_boolean(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_boolean(data jsonb, index integer) RETURNS boolean
+CREATE FUNCTION lib.field_boolean(data jsonb, index integer) RETURNS boolean
     LANGUAGE plpgsql IMMUTABLE
     AS $_$
 begin
@@ -5541,7 +5464,7 @@ $_$;
 -- Name: field_boolean(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_boolean(data jsonb, filed text) RETURNS boolean
+CREATE FUNCTION lib.field_boolean(data jsonb, filed text) RETURNS boolean
     LANGUAGE plpgsql IMMUTABLE
     AS $_$
 begin
@@ -5557,7 +5480,7 @@ $_$;
 -- Name: field_date(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_date(data jsonb, index integer) RETURNS date
+CREATE FUNCTION lib.field_date(data jsonb, index integer) RETURNS date
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::date
@@ -5568,7 +5491,7 @@ $_$;
 -- Name: field_date(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_date(data jsonb, field text) RETURNS date
+CREATE FUNCTION lib.field_date(data jsonb, field text) RETURNS date
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::date
@@ -5579,7 +5502,7 @@ $_$;
 -- Name: field_numeric(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_numeric(data jsonb, index integer) RETURNS numeric
+CREATE FUNCTION lib.field_numeric(data jsonb, index integer) RETURNS numeric
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::numeric
@@ -5590,7 +5513,7 @@ $_$;
 -- Name: field_numeric(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_numeric(data jsonb, filed text) RETURNS numeric
+CREATE FUNCTION lib.field_numeric(data jsonb, filed text) RETURNS numeric
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::numeric
@@ -5601,7 +5524,7 @@ $_$;
 -- Name: field_timestamp(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_timestamp(data jsonb, index integer) RETURNS timestamp without time zone
+CREATE FUNCTION lib.field_timestamp(data jsonb, index integer) RETURNS timestamp without time zone
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::timestamp
@@ -5612,7 +5535,7 @@ $_$;
 -- Name: field_timestamp(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_timestamp(data jsonb, field text) RETURNS timestamp without time zone
+CREATE FUNCTION lib.field_timestamp(data jsonb, field text) RETURNS timestamp without time zone
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::timestamp
@@ -5623,7 +5546,7 @@ $_$;
 -- Name: field_timestamp(jsonb, character varying); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_timestamp(data jsonb, filed character varying) RETURNS character varying
+CREATE FUNCTION lib.field_timestamp(data jsonb, filed character varying) RETURNS character varying
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::character varying
@@ -5634,7 +5557,7 @@ $_$;
 -- Name: field_varchar(jsonb, integer); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_varchar(data jsonb, index integer) RETURNS character varying
+CREATE FUNCTION lib.field_varchar(data jsonb, index integer) RETURNS character varying
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::character varying
@@ -5645,7 +5568,7 @@ $_$;
 -- Name: field_varchar(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION field_varchar(data jsonb, filed text) RETURNS character varying
+CREATE FUNCTION lib.field_varchar(data jsonb, filed text) RETURNS character varying
     LANGUAGE sql IMMUTABLE
     AS $_$
 select ( data->>$2 )::character varying
@@ -5656,7 +5579,7 @@ $_$;
 -- Name: get_session_value(character varying, character varying); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION get_session_value(variablegroup character varying, variablename character varying) RETURNS text
+CREATE FUNCTION lib.get_session_value(variablegroup character varying, variablename character varying) RETURNS text
     LANGUAGE sql
     AS $$
 select current_setting( variablegroup||'.'||variablename );
@@ -5667,7 +5590,7 @@ $$;
 -- Name: html_table(jsonb, text[], jsonb, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION html_table(table_body_datasource jsonb, extra_columns text[], columns_map jsonb, styles jsonb DEFAULT NULL::jsonb) RETURNS xml
+CREATE FUNCTION lib.html_table(table_body_datasource jsonb, extra_columns text[], columns_map jsonb, styles jsonb DEFAULT NULL::jsonb) RETURNS xml
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -5762,7 +5685,7 @@ $_$;
 -- Name: html_table_column(jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION html_table_column(columns_map jsonb, column_name text) RETURNS text
+CREATE FUNCTION lib.html_table_column(columns_map jsonb, column_name text) RETURNS text
     LANGUAGE plpgsql IMMUTABLE
     AS $$
 begin
@@ -5778,7 +5701,7 @@ $$;
 -- Name: html_table_value(jsonb, jsonb, text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION html_table_value(row_source jsonb, columns_map jsonb, column_name text) RETURNS text
+CREATE FUNCTION lib.html_table_value(row_source jsonb, columns_map jsonb, column_name text) RETURNS text
     LANGUAGE plpgsql IMMUTABLE
     AS $$
 begin
@@ -5794,7 +5717,7 @@ $$;
 -- Name: increment(double precision); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION increment(INOUT argment double precision) RETURNS double precision
+CREATE FUNCTION lib.increment(INOUT argment double precision) RETURNS double precision
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -5807,7 +5730,7 @@ $$;
 -- Name: increment(numeric); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION increment(numeric) RETURNS numeric
+CREATE FUNCTION lib.increment(numeric) RETURNS numeric
     LANGUAGE sql
     AS $_$
 SELECT  $1 + 1;
@@ -5818,7 +5741,7 @@ $_$;
 -- Name: initials(character varying); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION initials(name character varying) RETURNS character varying
+CREATE FUNCTION lib.initials(name character varying) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5841,7 +5764,7 @@ $$;
 -- Name: is_bigint(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_bigint(argment text) RETURNS boolean
+CREATE FUNCTION lib.is_bigint(argment text) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5859,7 +5782,7 @@ $$;
 -- Name: is_integer(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_integer(argment text) RETURNS boolean
+CREATE FUNCTION lib.is_integer(argment text) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5877,7 +5800,7 @@ $$;
 -- Name: is_numeric(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_numeric(argment text) RETURNS boolean
+CREATE FUNCTION lib.is_numeric(argment text) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5895,7 +5818,7 @@ $$;
 -- Name: is_numeric_sequence(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_numeric_sequence(argment text) RETURNS boolean
+CREATE FUNCTION lib.is_numeric_sequence(argment text) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
 declare
@@ -5919,7 +5842,7 @@ $$;
 -- Name: is_valid_nif(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION is_valid_nif(arg_nif text) RETURNS boolean
+CREATE FUNCTION lib.is_valid_nif(arg_nif text) RETURNS boolean
     LANGUAGE sql
     AS $$
 select arg_nif is not null
@@ -5933,7 +5856,7 @@ $$;
 -- Name: jsonb_object_length(jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION jsonb_object_length(object jsonb) RETURNS integer
+CREATE FUNCTION lib.jsonb_object_length(object jsonb) RETURNS integer
     LANGUAGE plpgsql
     AS $$
 
@@ -5953,7 +5876,7 @@ $$;
 -- Name: jsonb_to_array(jsonb, anyarray); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION jsonb_to_array(argument jsonb, INOUT anyarray DEFAULT '{}'::text[]) RETURNS anyarray
+CREATE FUNCTION lib.jsonb_to_array(argument jsonb, INOUT anyarray DEFAULT '{}'::text[]) RETURNS anyarray
     LANGUAGE plpgsql
     AS $_$
 declare
@@ -5984,7 +5907,7 @@ $_$;
 -- Name: money(anyelement); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION money(moneyvalue anyelement) RETURNS character varying
+CREATE FUNCTION lib.money(moneyvalue anyelement) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6011,7 +5934,7 @@ $$;
 -- Name: normalize_match(text, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION normalize_match(argument text, option jsonb DEFAULT NULL::jsonb) RETURNS text
+CREATE FUNCTION lib.normalize_match(argument text, option jsonb DEFAULT NULL::jsonb) RETURNS text
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6059,7 +5982,7 @@ $$;
 -- Name: random_text(numeric); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION random_text(text_lenght numeric) RETURNS text
+CREATE FUNCTION lib.random_text(text_lenght numeric) RETURNS text
     LANGUAGE sql
     AS $$
 select
@@ -6077,7 +6000,7 @@ $$;
 -- Name: result(boolean, jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result(result boolean, content jsonb) RETURNS result
+CREATE FUNCTION lib.result(result boolean, content jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -6094,7 +6017,7 @@ $$;
 -- Name: result_false(jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result_false(content jsonb) RETURNS result
+CREATE FUNCTION lib.result_false(content jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -6111,7 +6034,7 @@ $$;
 -- Name: result_false(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result_false(message text) RETURNS result
+CREATE FUNCTION lib.result_false(message text) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -6127,7 +6050,7 @@ $$;
 -- Name: result_true(); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result_true() RETURNS result
+CREATE FUNCTION lib.result_true() RETURNS lib.result
     LANGUAGE sql
     AS $$
 select lib.result_true( 'true'  );
@@ -6138,7 +6061,7 @@ $$;
 -- Name: result_true(jsonb); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result_true(content jsonb) RETURNS result
+CREATE FUNCTION lib.result_true(content jsonb) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -6154,7 +6077,7 @@ $$;
 -- Name: result_true(text); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION result_true(message text) RETURNS result
+CREATE FUNCTION lib.result_true(message text) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -6169,7 +6092,7 @@ $$;
 -- Name: split_name(character varying); Type: FUNCTION; Schema: lib; Owner: -
 --
 
-CREATE FUNCTION split_name(name character varying) RETURNS person
+CREATE FUNCTION lib.split_name(name character varying) RETURNS lib.person
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -6194,13 +6117,11 @@ END;
 $$;
 
 
-SET search_path = rule, pg_catalog;
-
 --
 -- Name: audit_insert(uuid, character varying, character varying, jsonb, character varying); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying) RETURNS ggviario.audit
+CREATE FUNCTION rule.audit_insert(arg_colaborador_id uuid, arg_audit_key character varying, arg_audit_title character varying, arg_audit_object jsonb, arg_audit_message character varying) RETURNS ggviario.audit
     LANGUAGE sql
     AS $$
 insert into ggviario.audit(
@@ -6220,10 +6141,10 @@ $$;
 
 
 --
--- Name: categoria_estado_desc(ggviario.categoria, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: categoria_estado_desc(ggviario.categoria, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION categoria_estado_desc(_categoria ggviario.categoria, _const constant) RETURNS character varying
+CREATE FUNCTION rule.categoria_estado_desc(_categoria ggviario.categoria, _const rule.constant) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
   begin
@@ -6235,13 +6156,11 @@ CREATE FUNCTION categoria_estado_desc(_categoria ggviario.categoria, _const cons
 $$;
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: cliente; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE cliente (
+CREATE TABLE ggviario.cliente (
     cliente_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     cliente_sexo_id smallint,
     cliente_distrito_id smallint,
@@ -6275,23 +6194,21 @@ CREATE TABLE cliente (
 -- Name: COLUMN cliente.cliente_datanascimento; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN cliente.cliente_datanascimento IS 'A data em que o cliente nasceu';
+COMMENT ON COLUMN ggviario.cliente.cliente_datanascimento IS 'A data em que o cliente nasceu';
 
 
 --
 -- Name: COLUMN cliente.cliente_localtrabalho; Type: COMMENT; Schema: ggviario; Owner: -
 --
 
-COMMENT ON COLUMN cliente.cliente_localtrabalho IS 'O local em que o cliente trabalha';
+COMMENT ON COLUMN ggviario.cliente.cliente_localtrabalho IS 'O local em que o cliente trabalha';
 
-
-SET search_path = rule, pg_catalog;
 
 --
--- Name: cliente_estado_desc(ggviario.cliente, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: cliente_estado_desc(ggviario.cliente, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION cliente_estado_desc(_cliente ggviario.cliente, _const constant DEFAULT constant_init()) RETURNS character varying
+CREATE FUNCTION rule.cliente_estado_desc(_cliente ggviario.cliente, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 begin
@@ -6308,7 +6225,7 @@ $$;
 -- Name: codigo(character, smallint, smallint); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION codigo(arg_codigo_letra character, arg_codigo_ano smallint, arg_codigo_digitos smallint) RETURNS TABLE(codigo_letra character, codigo_digito smallint, codigo_ano smallint, codigo_numero integer, codigo_codigo character varying)
+CREATE FUNCTION rule.codigo(arg_codigo_letra character, arg_codigo_ano smallint, arg_codigo_digitos smallint) RETURNS TABLE(codigo_letra character, codigo_digito smallint, codigo_ano smallint, codigo_numero integer, codigo_codigo character varying)
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6371,7 +6288,7 @@ $$;
 -- Name: codigo_generate(character, smallint); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION codigo_generate(arg_codigo_letra character, arg_codigo_digitos smallint) RETURNS TABLE(codigo_letra character, codigo_digito smallint, codigo_ano smallint, codigo_numero integer, codigo_codigo character varying)
+CREATE FUNCTION rule.codigo_generate(arg_codigo_letra character, arg_codigo_digitos smallint) RETURNS TABLE(codigo_letra character, codigo_digito smallint, codigo_ano smallint, codigo_numero integer, codigo_codigo character varying)
     LANGUAGE sql
     AS $$
 ;
@@ -6388,16 +6305,16 @@ $$;
 -- Name: codigo_next(character, smallint); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION codigo_next(character, smallint) RETURNS character varying
+CREATE FUNCTION rule.codigo_next(character, smallint) RETURNS character varying
     LANGUAGE sql
     AS $_$select codigo_codigo from rule.codigo_generate( $1, $2 )$_$;
 
 
 --
--- Name: despesa_estado_desc(ggviario.despesa, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: despesa_estado_desc(ggviario.despesa, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION despesa_estado_desc(_despesa ggviario.despesa, _const constant) RETURNS character varying
+CREATE FUNCTION rule.despesa_estado_desc(_despesa ggviario.despesa, _const rule.constant) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
   begin
@@ -6411,13 +6328,11 @@ CREATE FUNCTION despesa_estado_desc(_despesa ggviario.despesa, _const constant) 
 $$;
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: fornecedor; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE fornecedor (
+CREATE TABLE ggviario.fornecedor (
     fornecedor_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     fornecedor_distrito_id smallint,
     fornecedor_colaborador_id uuid NOT NULL,
@@ -6442,13 +6357,11 @@ CREATE TABLE fornecedor (
 );
 
 
-SET search_path = rule, pg_catalog;
-
 --
--- Name: fornecedor_estado_desc(ggviario.fornecedor, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: fornecedor_estado_desc(ggviario.fornecedor, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION fornecedor_estado_desc(_fornecedor ggviario.fornecedor, _const constant) RETURNS character varying
+CREATE FUNCTION rule.fornecedor_estado_desc(_fornecedor ggviario.fornecedor, _const rule.constant) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
   begin 
@@ -6462,7 +6375,7 @@ $$;
 -- Name: functg_despesa_after_insert_update_stock(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_despesa_after_insert_update_stock() RETURNS trigger
+CREATE FUNCTION rule.functg_despesa_after_insert_update_stock() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6492,7 +6405,7 @@ $$;
 -- Name: functg_movimento_after_insert_update_conta(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_movimento_after_insert_update_conta() RETURNS trigger
+CREATE FUNCTION rule.functg_movimento_after_insert_update_conta() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6538,7 +6451,7 @@ $$;
 -- Name: functg_movimento_after_insert_update_despesa(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_movimento_after_insert_update_despesa() RETURNS trigger
+CREATE FUNCTION rule.functg_movimento_after_insert_update_despesa() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6584,7 +6497,7 @@ $$;
 -- Name: functg_movimento_after_insert_update_movimento_devolucao(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_movimento_after_insert_update_movimento_devolucao() RETURNS trigger
+CREATE FUNCTION rule.functg_movimento_after_insert_update_movimento_devolucao() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6630,7 +6543,7 @@ $$;
 -- Name: functg_movimento_after_insert_update_venda(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_movimento_after_insert_update_venda() RETURNS trigger
+CREATE FUNCTION rule.functg_movimento_after_insert_update_venda() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6677,7 +6590,7 @@ $$;
 -- Name: functg_producao_after_insert_movement_produto(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_producao_after_insert_movement_produto() RETURNS trigger
+CREATE FUNCTION rule.functg_producao_after_insert_movement_produto() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6706,7 +6619,7 @@ $$;
 -- Name: functg_setor_after_insert_protect_parent(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_setor_after_insert_protect_parent() RETURNS trigger
+CREATE FUNCTION rule.functg_setor_after_insert_protect_parent() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare 
@@ -6738,7 +6651,7 @@ $$;
 -- Name: functg_setor_after_updade_disable_disable_children(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_setor_after_updade_disable_disable_children() RETURNS trigger
+CREATE FUNCTION rule.functg_setor_after_updade_disable_disable_children() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6767,7 +6680,7 @@ $$;
 -- Name: functg_venda_intert_update_produto_stock(); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION functg_venda_intert_update_produto_stock() RETURNS trigger
+CREATE FUNCTION rule.functg_venda_intert_update_produto_stock() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6793,7 +6706,7 @@ $$;
 -- Name: movimento_check_source(ggviario.movimento); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION movimento_check_source(_movimento ggviario.movimento) RETURNS boolean
+CREATE FUNCTION rule.movimento_check_source(_movimento ggviario.movimento) RETURNS boolean
     LANGUAGE plpgsql IMMUTABLE
     AS $$
 begin
@@ -6803,10 +6716,10 @@ $$;
 
 
 --
--- Name: movimento_estado_desc(ggviario.movimento, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: movimento_estado_desc(ggviario.movimento, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION movimento_estado_desc(_movimento ggviario.movimento, _const constant DEFAULT constant_init()) RETURNS character varying
+CREATE FUNCTION rule.movimento_estado_desc(_movimento ggviario.movimento, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6822,7 +6735,7 @@ $$;
 -- Name: movimento_insert(uuid, uuid, smallint, character varying, date, numeric, character varying, uuid, uuid, uuid, boolean, integer); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION movimento_insert(arg_colaborador_id uuid, arg_conta_id uuid, arg_tmovimento_id smallint, arg_movimento_documento character varying, arg_movimento_data date, arg_movimento_montante numeric, arg_movimento_libele character varying, arg_venda_id uuid DEFAULT NULL::uuid, arg_despesa_id uuid DEFAULT NULL::uuid, arg_movimento_id uuid DEFAULT NULL::uuid, arg_movimento_devolucao boolean DEFAULT false, arg_movimento_transferencianumero integer DEFAULT NULL::integer) RETURNS ggviario.movimento
+CREATE FUNCTION rule.movimento_insert(arg_colaborador_id uuid, arg_conta_id uuid, arg_tmovimento_id smallint, arg_movimento_documento character varying, arg_movimento_data date, arg_movimento_montante numeric, arg_movimento_libele character varying, arg_venda_id uuid DEFAULT NULL::uuid, arg_despesa_id uuid DEFAULT NULL::uuid, arg_movimento_id uuid DEFAULT NULL::uuid, arg_movimento_devolucao boolean DEFAULT false, arg_movimento_transferencianumero integer DEFAULT NULL::integer) RETURNS ggviario.movimento
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6873,10 +6786,10 @@ $$;
 
 
 --
--- Name: produto_estado(ggviario.produto, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: produto_estado(ggviario.produto, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION produto_estado(_produto ggviario.produto, _const constant) RETURNS smallint
+CREATE FUNCTION rule.produto_estado(_produto ggviario.produto, _const rule.constant) RETURNS smallint
     LANGUAGE sql
     AS $$
 select case
@@ -6894,10 +6807,10 @@ $$;
 
 
 --
--- Name: produto_estado_desc(ggviario.produto, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: produto_estado_desc(ggviario.produto, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION produto_estado_desc(_produto ggviario.produto, _const constant) RETURNS character varying
+CREATE FUNCTION rule.produto_estado_desc(_produto ggviario.produto, _const rule.constant) RETURNS character varying
     LANGUAGE sql
     AS $$
   select case 
@@ -6911,7 +6824,7 @@ $$;
 -- Name: select_setor_cascade(uuid); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION select_setor_cascade(arg_setor_id uuid) RETURNS SETOF ggviario.setor
+CREATE FUNCTION rule.select_setor_cascade(arg_setor_id uuid) RETURNS SETOF ggviario.setor
     LANGUAGE sql
     AS $$
     with recursive rel_tree as (
@@ -6933,7 +6846,7 @@ $$;
 -- Name: select_setor_cascade_witch_raiz(uuid, integer); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION select_setor_cascade_witch_raiz(arg_setor_id uuid, part_lenght integer DEFAULT 3) RETURNS TABLE(setor_id uuid, setor_setor_id uuid, setor_colaborador_id uuid, setor_colaborador_atualizacao uuid, setor_codigo character varying, setor_nome character varying, setor_posicao smallint, setor_nivel smallint, setor_totalsubsetores smallint, setor_estado smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_raiz character varying)
+CREATE FUNCTION rule.select_setor_cascade_witch_raiz(arg_setor_id uuid, part_lenght integer DEFAULT 3) RETURNS TABLE(setor_id uuid, setor_setor_id uuid, setor_colaborador_id uuid, setor_colaborador_atualizacao uuid, setor_codigo character varying, setor_nome character varying, setor_posicao smallint, setor_nivel smallint, setor_totalsubsetores smallint, setor_estado smallint, setor_dataregisto timestamp without time zone, setor_dataatualizacao timestamp without time zone, setor_raiz character varying)
     LANGUAGE sql
     AS $$
 with recursive rel_tree as (
@@ -6952,10 +6865,10 @@ $$;
 
 
 --
--- Name: setor_estado_desc(ggviario.setor, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: setor_estado_desc(ggviario.setor, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION setor_estado_desc(_setor ggviario.setor, _const constant) RETURNS character varying
+CREATE FUNCTION rule.setor_estado_desc(_setor ggviario.setor, _const rule.constant) RETURNS character varying
     LANGUAGE sql
     AS $$
     select case
@@ -6967,10 +6880,10 @@ CREATE FUNCTION setor_estado_desc(_setor ggviario.setor, _const constant) RETURN
 
 
 --
--- Name: venda_estado_desc(ggviario.venda, constant); Type: FUNCTION; Schema: rule; Owner: -
+-- Name: venda_estado_desc(ggviario.venda, rule.constant); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION venda_estado_desc(_venda ggviario.venda, _const constant DEFAULT constant_init()) RETURNS character varying
+CREATE FUNCTION rule.venda_estado_desc(_venda ggviario.venda, _const rule.constant DEFAULT rule.constant_init()) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -6990,7 +6903,7 @@ $$;
 -- Name: venda_fatura_generatenext(ggviario.tipovenda); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION venda_fatura_generatenext(_tipocompra ggviario.tipovenda) RETURNS character varying
+CREATE FUNCTION rule.venda_fatura_generatenext(_tipocompra ggviario.tipovenda) RETURNS character varying
     LANGUAGE plpgsql
     AS $$
 declare
@@ -7004,7 +6917,7 @@ $$;
 -- Name: venda_insert(uuid, uuid, uuid, uuid, smallint, numeric, numeric, numeric, numeric, numeric, date, date); Type: FUNCTION; Schema: rule; Owner: -
 --
 
-CREATE FUNCTION venda_insert(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tvenda_id smallint, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
+CREATE FUNCTION rule.venda_insert(arg_colaborador_id uuid, arg_produto_id uuid, arg_unidade_id uuid, arg_cliente_id uuid, arg_tvenda_id smallint, arg_venda_quantidade numeric, arg_venda_montanteunitario numeric, arg_venda_montantebruto numeric, arg_venda_montantedesconto numeric, arg_venda_montantepagar numeric, arg_venda_data date, arg_venda_datafinalizar date) RETURNS lib.result
     LANGUAGE plpgsql
     AS $$
 declare
@@ -7094,14 +7007,12 @@ end;
 $$;
 
 
-SET search_path = lib, pg_catalog;
-
 --
 -- Name: agg_collect(anyelement, boolean); Type: AGGREGATE; Schema: lib; Owner: -
 --
 
-CREATE AGGREGATE agg_collect(collect_next anyelement, collect_accepetnull boolean) (
-    SFUNC = agg_collect_collector,
+CREATE AGGREGATE lib.agg_collect(collect_next anyelement, collect_accepetnull boolean) (
+    SFUNC = lib.agg_collect_collector,
     STYPE = anyarray
 );
 
@@ -7110,8 +7021,8 @@ CREATE AGGREGATE agg_collect(collect_next anyelement, collect_accepetnull boolea
 -- Name: agg_extreme(anyelement, boolean); Type: AGGREGATE; Schema: lib; Owner: -
 --
 
-CREATE AGGREGATE agg_extreme(anyelement, boolean) (
-    SFUNC = agg_extreme_collector,
+CREATE AGGREGATE lib.agg_extreme(anyelement, boolean) (
+    SFUNC = lib.agg_extreme_collector,
     STYPE = anyelement
 );
 
@@ -7120,10 +7031,10 @@ CREATE AGGREGATE agg_extreme(anyelement, boolean) (
 -- Name: agg_jsonb_collect(jsonb); Type: AGGREGATE; Schema: lib; Owner: -
 --
 
-CREATE AGGREGATE agg_jsonb_collect(jsonb) (
-    SFUNC = agg_jsonb_collect_collector,
+CREATE AGGREGATE lib.agg_jsonb_collect(jsonb) (
+    SFUNC = lib.agg_jsonb_collect_collector,
     STYPE = jsonb,
-    FINALFUNC = agg_jsonb_collect_finalize
+    FINALFUNC = lib.agg_jsonb_collect_finalize
 );
 
 
@@ -7131,10 +7042,10 @@ CREATE AGGREGATE agg_jsonb_collect(jsonb) (
 -- Name: agg_sum_nonnull(anyelement); Type: AGGREGATE; Schema: lib; Owner: -
 --
 
-CREATE AGGREGATE agg_sum_nonnull(anyelement) (
-    SFUNC = agg_sum_nonnull_collector,
+CREATE AGGREGATE lib.agg_sum_nonnull(anyelement) (
+    SFUNC = lib.agg_sum_nonnull_collector,
     STYPE = anyelement,
-    FINALFUNC = agg_sum_nonnull_finalizer
+    FINALFUNC = lib.agg_sum_nonnull_finalizer
 );
 
 
@@ -7142,8 +7053,8 @@ CREATE AGGREGATE agg_sum_nonnull(anyelement) (
 -- Name: !; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ! (
-    PROCEDURE = result,
+CREATE OPERATOR lib.! (
+    PROCEDURE = lib.result,
     LEFTARG = boolean,
     RIGHTARG = jsonb
 );
@@ -7153,8 +7064,8 @@ CREATE OPERATOR ! (
 -- Name: !===; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR !=== (
-    PROCEDURE = element_different,
+CREATE OPERATOR lib.!=== (
+    PROCEDURE = lib.element_different,
     LEFTARG = anyelement,
     RIGHTARG = anyelement
 );
@@ -7164,8 +7075,8 @@ CREATE OPERATOR !=== (
 -- Name: ->#; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR -># (
-    PROCEDURE = field_numeric,
+CREATE OPERATOR lib.-># (
+    PROCEDURE = lib.field_numeric,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7175,8 +7086,8 @@ CREATE OPERATOR -># (
 -- Name: ->#; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR -># (
-    PROCEDURE = field_numeric,
+CREATE OPERATOR lib.-># (
+    PROCEDURE = lib.field_numeric,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7186,8 +7097,8 @@ CREATE OPERATOR -># (
 -- Name: ->%; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->% (
-    PROCEDURE = field_date,
+CREATE OPERATOR lib.->% (
+    PROCEDURE = lib.field_date,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7197,8 +7108,8 @@ CREATE OPERATOR ->% (
 -- Name: ->%; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->% (
-    PROCEDURE = field_date,
+CREATE OPERATOR lib.->% (
+    PROCEDURE = lib.field_date,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7208,8 +7119,8 @@ CREATE OPERATOR ->% (
 -- Name: ->%%; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->%% (
-    PROCEDURE = field_timestamp,
+CREATE OPERATOR lib.->%% (
+    PROCEDURE = lib.field_timestamp,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7219,8 +7130,8 @@ CREATE OPERATOR ->%% (
 -- Name: ->%%; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->%% (
-    PROCEDURE = field_timestamp,
+CREATE OPERATOR lib.->%% (
+    PROCEDURE = lib.field_timestamp,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7230,8 +7141,8 @@ CREATE OPERATOR ->%% (
 -- Name: ->>>; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->>> (
-    PROCEDURE = field_varchar,
+CREATE OPERATOR lib.->>> (
+    PROCEDURE = lib.field_varchar,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7241,8 +7152,8 @@ CREATE OPERATOR ->>> (
 -- Name: ->>>; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->>> (
-    PROCEDURE = field_varchar,
+CREATE OPERATOR lib.->>> (
+    PROCEDURE = lib.field_varchar,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7252,8 +7163,8 @@ CREATE OPERATOR ->>> (
 -- Name: ->?; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->? (
-    PROCEDURE = field_boolean,
+CREATE OPERATOR lib.->? (
+    PROCEDURE = lib.field_boolean,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7263,8 +7174,8 @@ CREATE OPERATOR ->? (
 -- Name: ->?; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->? (
-    PROCEDURE = field_boolean,
+CREATE OPERATOR lib.->? (
+    PROCEDURE = lib.field_boolean,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7274,8 +7185,8 @@ CREATE OPERATOR ->? (
 -- Name: ->|; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->| (
-    PROCEDURE = field_bit,
+CREATE OPERATOR lib.->| (
+    PROCEDURE = lib.field_bit,
     LEFTARG = jsonb,
     RIGHTARG = integer
 );
@@ -7285,8 +7196,8 @@ CREATE OPERATOR ->| (
 -- Name: ->|; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ->| (
-    PROCEDURE = field_bit,
+CREATE OPERATOR lib.->| (
+    PROCEDURE = lib.field_bit,
     LEFTARG = jsonb,
     RIGHTARG = text
 );
@@ -7296,8 +7207,8 @@ CREATE OPERATOR ->| (
 -- Name: ===; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR === (
-    PROCEDURE = element_equals,
+CREATE OPERATOR lib.=== (
+    PROCEDURE = lib.element_equals,
     LEFTARG = anyelement,
     RIGHTARG = anyelement
 );
@@ -7307,36 +7218,32 @@ CREATE OPERATOR === (
 -- Name: |||; Type: OPERATOR; Schema: lib; Owner: -
 --
 
-CREATE OPERATOR ||| (
-    PROCEDURE = concat,
+CREATE OPERATOR lib.||| (
+    PROCEDURE = lib.concat,
     LEFTARG = anyelement,
     RIGHTARG = anyelement
 );
 
 
-SET search_path = pg_catalog;
-
 --
--- Name: CAST (integer AS uuid); Type: CAST; Schema: pg_catalog; Owner: -
+-- Name: CAST (integer AS uuid); Type: CAST; Schema: -; Owner: -
 --
 
 CREATE CAST (integer AS uuid) WITH FUNCTION lib.to_uuid(anyelement);
 
 
 --
--- Name: CAST (numeric AS uuid); Type: CAST; Schema: pg_catalog; Owner: -
+-- Name: CAST (numeric AS uuid); Type: CAST; Schema: -; Owner: -
 --
 
 CREATE CAST (numeric AS uuid) WITH FUNCTION lib.to_uuid(anyelement);
 
 
-SET search_path = colaborador, pg_catalog;
-
 --
 -- Name: acesso; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE acesso (
+CREATE TABLE colaborador.acesso (
     acesso_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     acesso_menu_id uuid NOT NULL,
     acesso_colaborador_propetario uuid NOT NULL,
@@ -7353,63 +7260,63 @@ CREATE TABLE acesso (
 -- Name: TABLE acesso; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON TABLE acesso IS 'Essa entidade serve para armazenar os acessos dos colaboradores a um dado menu';
+COMMENT ON TABLE colaborador.acesso IS 'Essa entidade serve para armazenar os acessos dos colaboradores a um dado menu';
 
 
 --
 -- Name: COLUMN acesso.acesso_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_id IS 'Identificador do acesso do colaborador';
+COMMENT ON COLUMN colaborador.acesso.acesso_id IS 'Identificador do acesso do colaborador';
 
 
 --
 -- Name: COLUMN acesso.acesso_menu_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_menu_id IS 'Identificacão do menu a qual o acesso remete';
+COMMENT ON COLUMN colaborador.acesso.acesso_menu_id IS 'Identificacão do menu a qual o acesso remete';
 
 
 --
 -- Name: COLUMN acesso.acesso_colaborador_propetario; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_colaborador_propetario IS 'Indenticação do colaborador a quel é o propetario do refererido acesso';
+COMMENT ON COLUMN colaborador.acesso.acesso_colaborador_propetario IS 'Indenticação do colaborador a quel é o propetario do refererido acesso';
 
 
 --
 -- Name: COLUMN acesso.acesso_colaborador_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_colaborador_id IS 'Identificação do colaborador a qual cadastrou o acesso';
+COMMENT ON COLUMN colaborador.acesso.acesso_colaborador_id IS 'Identificação do colaborador a qual cadastrou o acesso';
 
 
 --
 -- Name: COLUMN acesso.acesso_estado; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_estado IS 'O atual estado do acesso | estado = { 1 - Acesso pemitido, 0 - Acesso revigado }';
+COMMENT ON COLUMN colaborador.acesso.acesso_estado IS 'O atual estado do acesso | estado = { 1 - Acesso pemitido, 0 - Acesso revigado }';
 
 
 --
 -- Name: COLUMN acesso.acesso_dataregisto; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_dataregisto IS 'A data em que o acesso ao menu foi ao colaborador propetario dado';
+COMMENT ON COLUMN colaborador.acesso.acesso_dataregisto IS 'A data em que o acesso ao menu foi ao colaborador propetario dado';
 
 
 --
 -- Name: COLUMN acesso.acesso_dataatualizacao; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN acesso.acesso_dataatualizacao IS 'A data em que o menu foi revogado do colaborador!';
+COMMENT ON COLUMN colaborador.acesso.acesso_dataatualizacao IS 'A data em que o menu foi revogado do colaborador!';
 
 
 --
 -- Name: autenticacao; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE autenticacao (
+CREATE TABLE colaborador.autenticacao (
     autenticacao_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     autenticacao_colaborador_id uuid NOT NULL,
     autenticacao_selects integer DEFAULT 0 NOT NULL,
@@ -7426,49 +7333,49 @@ CREATE TABLE autenticacao (
 -- Name: TABLE autenticacao; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON TABLE autenticacao IS 'Essa entidade serve para armazenar as autenticacoes que um colaborador vai passadno';
+COMMENT ON TABLE colaborador.autenticacao IS 'Essa entidade serve para armazenar as autenticacoes que um colaborador vai passadno';
 
 
 --
 -- Name: COLUMN autenticacao.autenticacao_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN autenticacao.autenticacao_id IS 'Identificador da autenticacao';
+COMMENT ON COLUMN colaborador.autenticacao.autenticacao_id IS 'Identificador da autenticacao';
 
 
 --
 -- Name: COLUMN autenticacao.autenticacao_colaborador_id; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN autenticacao.autenticacao_colaborador_id IS 'Identificacao do colaborador que autenticou';
+COMMENT ON COLUMN colaborador.autenticacao.autenticacao_colaborador_id IS 'Identificacao do colaborador que autenticou';
 
 
 --
 -- Name: COLUMN autenticacao.autenticacao_estado; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN autenticacao.autenticacao_estado IS 'O estado de autenticação | estado { 1 - Ativo | 0 - Desativo | 3 - Tentativa de login col um utilizador existente}';
+COMMENT ON COLUMN colaborador.autenticacao.autenticacao_estado IS 'O estado de autenticação | estado { 1 - Ativo | 0 - Desativo | 3 - Tentativa de login col um utilizador existente}';
 
 
 --
 -- Name: COLUMN autenticacao.autenticacao_dataregisto; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN autenticacao.autenticacao_dataregisto IS 'A data em que o colaborador entrou no sistema';
+COMMENT ON COLUMN colaborador.autenticacao.autenticacao_dataregisto IS 'A data em que o colaborador entrou no sistema';
 
 
 --
 -- Name: COLUMN autenticacao.autenticacao_dataatualizacao; Type: COMMENT; Schema: colaborador; Owner: -
 --
 
-COMMENT ON COLUMN autenticacao.autenticacao_dataatualizacao IS 'A data em que o colaborador saiu do sistema';
+COMMENT ON COLUMN colaborador.autenticacao.autenticacao_dataatualizacao IS 'A data em que o colaborador saiu do sistema';
 
 
 --
 -- Name: menu; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE menu (
+CREATE TABLE colaborador.menu (
     menu_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     menu_menu_id uuid,
     menu_codigo character varying(128) NOT NULL,
@@ -7489,7 +7396,7 @@ CREATE TABLE menu (
 -- Name: perfil; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE perfil (
+CREATE TABLE colaborador.perfil (
     perfil_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     perfil_perfil_id uuid,
     perfil_colaborador_id uuid NOT NULL,
@@ -7508,7 +7415,7 @@ CREATE TABLE perfil (
 -- Name: previlegio; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE previlegio (
+CREATE TABLE colaborador.previlegio (
     previlegio_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     previlegio_perfil_id uuid NOT NULL,
     previlegio_menu_id uuid NOT NULL,
@@ -7525,20 +7432,18 @@ CREATE TABLE previlegio (
 -- Name: sexo; Type: TABLE; Schema: colaborador; Owner: -
 --
 
-CREATE TABLE sexo (
+CREATE TABLE colaborador.sexo (
     sexo_id smallint NOT NULL,
     sexo_desc character varying(10) NOT NULL,
     CONSTRAINT ck_sexo_desc_is_nomalized CHECK (lib.is_normalized((sexo_desc)::text))
 );
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Name: codigo; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE codigo (
+CREATE TABLE ggviario.codigo (
     codigo_letra character(1) NOT NULL,
     codigo_digitos smallint NOT NULL,
     codigo_ano smallint DEFAULT (substr((date_part('year'::text, CURRENT_DATE))::text, 1, 2))::smallint NOT NULL,
@@ -7550,7 +7455,7 @@ CREATE TABLE codigo (
 -- Name: distrito; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE distrito (
+CREATE TABLE ggviario.distrito (
     distrito_id smallint NOT NULL,
     distrito_nome character varying(32)
 );
@@ -7560,7 +7465,7 @@ CREATE TABLE distrito (
 -- Name: localproducao; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE localproducao (
+CREATE TABLE ggviario.localproducao (
     localproducao_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     localproducao_produto_id uuid NOT NULL,
     localproducao_setor_id uuid NOT NULL,
@@ -7576,7 +7481,7 @@ CREATE TABLE localproducao (
 -- Name: producao; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE producao (
+CREATE TABLE ggviario.producao (
     producao_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     producao_produto_id uuid NOT NULL,
     producao_setor_id uuid NOT NULL,
@@ -7598,7 +7503,7 @@ CREATE TABLE producao (
 -- Name: sexo; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE sexo (
+CREATE TABLE ggviario.sexo (
     sexo_id smallint NOT NULL,
     sexo_desc character varying(10) NOT NULL
 );
@@ -7608,7 +7513,7 @@ CREATE TABLE sexo (
 -- Name: tipoconta; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE tipoconta (
+CREATE TABLE ggviario.tipoconta (
     tconta_id smallint NOT NULL,
     tconta_desc character varying(32) NOT NULL
 );
@@ -7618,7 +7523,7 @@ CREATE TABLE tipoconta (
 -- Name: tipodocumento; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE tipodocumento (
+CREATE TABLE ggviario.tipodocumento (
     tdocumento_id smallint NOT NULL,
     tdocumento_desc character varying(32) NOT NULL
 );
@@ -7628,19 +7533,17 @@ CREATE TABLE tipodocumento (
 -- Name: tipomovimento; Type: TABLE; Schema: ggviario; Owner: -
 --
 
-CREATE TABLE tipomovimento (
+CREATE TABLE ggviario.tipomovimento (
     tmovimento_id smallint NOT NULL,
     tmovimento_desc character varying(32) NOT NULL
 );
 
 
-SET search_path = colaborador, pg_catalog;
-
 --
 -- Data for Name: acesso; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY acesso (acesso_id, acesso_menu_id, acesso_colaborador_propetario, acesso_colaborador_id, acesso_colaborador_atualizacao, accesso_type, acesso_estado, acesso_dataregisto, acesso_dataatualizacao) FROM stdin;
+COPY colaborador.acesso (acesso_id, acesso_menu_id, acesso_colaborador_propetario, acesso_colaborador_id, acesso_colaborador_atualizacao, accesso_type, acesso_estado, acesso_dataregisto, acesso_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7648,7 +7551,7 @@ COPY acesso (acesso_id, acesso_menu_id, acesso_colaborador_propetario, acesso_co
 -- Data for Name: autenticacao; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY autenticacao (autenticacao_id, autenticacao_colaborador_id, autenticacao_selects, autenticacao_inserts, autenticacao_updates, autenticacao_deletes, autenticacao_estado, autenticacao_dataregisto, autenticacao_dataatualizacao) FROM stdin;
+COPY colaborador.autenticacao (autenticacao_id, autenticacao_colaborador_id, autenticacao_selects, autenticacao_inserts, autenticacao_updates, autenticacao_deletes, autenticacao_estado, autenticacao_dataregisto, autenticacao_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7656,7 +7559,7 @@ COPY autenticacao (autenticacao_id, autenticacao_colaborador_id, autenticacao_se
 -- Data for Name: colaborador; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY colaborador (colaborador_id, colaborador_colaborador_id, colaborador_colaborador_atualizacao, colaborador_sexo_id, colaborador_mail, colaborador_senha, colaborador_nome, colaborador_apelido, colaborador_nif, colaborador_datanascimento, colaborador_estado, colaborador_accesso, colaborador_dataregisto, colaborador_token, colaborador_sistema, colaborador_dataatualizacao, colaborador_dataultimaatualizacasenha) FROM stdin;
+COPY colaborador.colaborador (colaborador_id, colaborador_colaborador_id, colaborador_colaborador_atualizacao, colaborador_sexo_id, colaborador_mail, colaborador_senha, colaborador_nome, colaborador_apelido, colaborador_nif, colaborador_datanascimento, colaborador_estado, colaborador_accesso, colaborador_dataregisto, colaborador_token, colaborador_sistema, colaborador_dataatualizacao, colaborador_dataultimaatualizacasenha) FROM stdin;
 d455fafa-a1e7-43b9-a4ee-b0d0ca97660d	00000000-0000-0000-0000-000000000001	\N	1	costa.xdaniel@gmail.com	4586e377a9e59fec53fd0f4a073da501	Daniel	Costa	109000001	1994-12-01	1	2	2018-02-11 10:14:03.690435	JJENDQJLZUBPFOXK	f	\N	2018-02-11 10:14:03.690435
 00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	\N	transpax.system@jigahd.com	fa1fa6c024302268077f8063f7146540	Transpax	System data	#########	\N	1	2	2018-01-30 13:35:10.43203	\N	t	\N	2018-01-30 13:35:10.43203
 \.
@@ -7666,7 +7569,7 @@ d455fafa-a1e7-43b9-a4ee-b0d0ca97660d	00000000-0000-0000-0000-000000000001	\N	1	c
 -- Data for Name: menu; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY menu (menu_id, menu_menu_id, menu_codigo, menu_raiz, menu_nivel, menu_icon, menu_nome, menu_link, menu_estado, menu_children, menu_maxnode, menu_directchildern, menu_position) FROM stdin;
+COPY colaborador.menu (menu_id, menu_menu_id, menu_codigo, menu_raiz, menu_nivel, menu_icon, menu_nome, menu_link, menu_estado, menu_children, menu_maxnode, menu_directchildern, menu_position) FROM stdin;
 \.
 
 
@@ -7674,7 +7577,7 @@ COPY menu (menu_id, menu_menu_id, menu_codigo, menu_raiz, menu_nivel, menu_icon,
 -- Data for Name: perfil; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY perfil (perfil_id, perfil_perfil_id, perfil_colaborador_id, perfil_colaborador_atualizacao, perfil_nome, perfil_codigo, perfil_estado, perfil_dataregisto, perfil_dataatualizacao) FROM stdin;
+COPY colaborador.perfil (perfil_id, perfil_perfil_id, perfil_colaborador_id, perfil_colaborador_atualizacao, perfil_nome, perfil_codigo, perfil_estado, perfil_dataregisto, perfil_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7682,7 +7585,7 @@ COPY perfil (perfil_id, perfil_perfil_id, perfil_colaborador_id, perfil_colabora
 -- Data for Name: previlegio; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY previlegio (previlegio_id, previlegio_perfil_id, previlegio_menu_id, previlegio_colaborador_id, previlegio_colaborador_atualizacao, previlegio_tipo, previlegio_estado, previlegio_dataregisto, previlegio_dataatualizacao) FROM stdin;
+COPY colaborador.previlegio (previlegio_id, previlegio_perfil_id, previlegio_menu_id, previlegio_colaborador_id, previlegio_colaborador_atualizacao, previlegio_tipo, previlegio_estado, previlegio_dataregisto, previlegio_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7690,19 +7593,17 @@ COPY previlegio (previlegio_id, previlegio_perfil_id, previlegio_menu_id, previl
 -- Data for Name: sexo; Type: TABLE DATA; Schema: colaborador; Owner: -
 --
 
-COPY sexo (sexo_id, sexo_desc) FROM stdin;
+COPY colaborador.sexo (sexo_id, sexo_desc) FROM stdin;
 1	Masculino
 2	Feminino
 \.
 
 
-SET search_path = ggviario, pg_catalog;
-
 --
 -- Data for Name: audit; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY audit (audit_id, audit_colaborador_id, audit_key, audit_title, audit_message, audit_object, audit_dataregisto) FROM stdin;
+COPY ggviario.audit (audit_id, audit_colaborador_id, audit_key, audit_title, audit_message, audit_object, audit_dataregisto) FROM stdin;
 \.
 
 
@@ -7710,7 +7611,7 @@ COPY audit (audit_id, audit_colaborador_id, audit_key, audit_title, audit_messag
 -- Data for Name: categoria; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_atualizacao, categoria_categoria_id, categoria_codigo, categoria_nome, categoria_posisao, categoria_nivel, categoria_estado, categoria_dataregisto, categoria_dataatualizacao) FROM stdin;
+COPY ggviario.categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_atualizacao, categoria_categoria_id, categoria_codigo, categoria_nome, categoria_posisao, categoria_nivel, categoria_estado, categoria_dataregisto, categoria_dataatualizacao) FROM stdin;
 5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	A02/18	Aviario	1	1	1	2018-03-04 19:08:12.562172	\N
 00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	\N	A01/18	Padrão	0	0	1	2018-02-09 18:46:15.84334	\N
 \.
@@ -7720,8 +7621,10 @@ COPY categoria (categoria_id, categoria_colaborador_id, categoria_colaborador_at
 -- Data for Name: cliente; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY cliente (cliente_id, cliente_sexo_id, cliente_distrito_id, cliente_tdocumento_id, cliente_colaborador_id, cliente_colaborador_atualizacao, cliente_codigo, cliente_documentonumero, cliente_nome, cliente_apelido, cliente_datanascimento, cliente_telefone, cliente_telemovel, cliente_mail, cliente_morada, cliente_localtrabalho, cliente_estado, cliente_dataregisto, cliente_dataatualizacao) FROM stdin;
+COPY ggviario.cliente (cliente_id, cliente_sexo_id, cliente_distrito_id, cliente_tdocumento_id, cliente_colaborador_id, cliente_colaborador_atualizacao, cliente_codigo, cliente_documentonumero, cliente_nome, cliente_apelido, cliente_datanascimento, cliente_telefone, cliente_telemovel, cliente_mail, cliente_morada, cliente_localtrabalho, cliente_estado, cliente_dataregisto, cliente_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	C0001/18	\N	Anonimo	\N	\N	\N	\N	\N	\N	\N	1	2018-02-28 22:12:01.703349	\N
+69564f90-f967-4325-a75f-673791f62dd2	\N	\N	\N	00000000-0000-0000-0000-000000000001	\N	C0002/18	\N	Lesineide	\N	\N	\N	\N	\N	\N	\N	1	2018-03-21 14:13:19.129667	\N
+313c3ef3-4ca4-497b-9e64-49d853092579	2	1	1	00000000-0000-0000-0000-000000000001	\N	C0003/18	72222	Ana	Maria	2018-03-05	\N	\N	\N	khjkjhk	\N	1	2018-03-22 15:20:24.920065	\N
 \.
 
 
@@ -7729,11 +7632,11 @@ COPY cliente (cliente_id, cliente_sexo_id, cliente_distrito_id, cliente_tdocumen
 -- Data for Name: codigo; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY codigo (codigo_letra, codigo_digitos, codigo_ano, codigo_numero) FROM stdin;
+COPY ggviario.codigo (codigo_letra, codigo_digitos, codigo_ano, codigo_numero) FROM stdin;
 P	2	18	2
 A	2	18	2
-C	4	18	1
-S	2	18	1
+S	2	18	10
+C	4	18	3
 \.
 
 
@@ -7741,7 +7644,7 @@ S	2	18	1
 -- Data for Name: conta; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY conta (conta_id, conta_conta_id, conta_tconta_id, conta_colaborador_id, conta_colaborador_atualizacao, conta_numero, conta_numerobancario, conta_nome, conta_credito, conta_debito, conta_saldo, conta_dataultimamovimentacao, conta_estado, conta_dataregisto, conta_dataatualizacao) FROM stdin;
+COPY ggviario.conta (conta_id, conta_conta_id, conta_tconta_id, conta_colaborador_id, conta_colaborador_atualizacao, conta_numero, conta_numerobancario, conta_nome, conta_credito, conta_debito, conta_saldo, conta_dataultimamovimentacao, conta_estado, conta_dataregisto, conta_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	\N	1	00000000-0000-0000-0000-000000000001	\N	1	1	GGVIARIO	0	0	0	\N	1	2018-02-11 18:24:18.266768	\N
 \.
 
@@ -7750,7 +7653,7 @@ COPY conta (conta_id, conta_conta_id, conta_tconta_id, conta_colaborador_id, con
 -- Data for Name: despesa; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY despesa (despesa_id, despesa_fornecedor_id, despesa_produto_id, despesa_unidade_id, despesa_colaborador_id, despesa_colaborador_atualizacao, despesa_codigo, despesa_data, despesa_numerofatura, despesa_quatidade, despesa_quantidadeproduto, despesa_montanteunitario, despesa_montantetotal, despesa_montanteamortizado, despesa_dataultimamovimento, despesa_datafim, despesa_estado, despesa_dataregisto, despesa_dataatualizacao) FROM stdin;
+COPY ggviario.despesa (despesa_id, despesa_fornecedor_id, despesa_produto_id, despesa_unidade_id, despesa_colaborador_id, despesa_colaborador_atualizacao, despesa_codigo, despesa_data, despesa_numerofatura, despesa_quatidade, despesa_quantidadeproduto, despesa_montanteunitario, despesa_montantetotal, despesa_montanteamortizado, despesa_dataultimamovimento, despesa_datafim, despesa_estado, despesa_dataregisto, despesa_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7758,7 +7661,7 @@ COPY despesa (despesa_id, despesa_fornecedor_id, despesa_produto_id, despesa_uni
 -- Data for Name: distrito; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY distrito (distrito_id, distrito_nome) FROM stdin;
+COPY ggviario.distrito (distrito_id, distrito_nome) FROM stdin;
 1	Água Grande
 2	Cantagalo
 3	Caué
@@ -7773,7 +7676,7 @@ COPY distrito (distrito_id, distrito_nome) FROM stdin;
 -- Data for Name: fornecedor; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY fornecedor (fornecedor_id, fornecedor_distrito_id, fornecedor_colaborador_id, fornecedor_colaborador_atualizacao, fornecedor_codigo, fornecedor_nome, fornecedor_nif, fornecedor_telefone, fornecedor_telemovel, fornecedor_mail, fornecedor_local, fornecedor_estado, fornecedor_dataregisto, fornecedor_dataatualizacao) FROM stdin;
+COPY ggviario.fornecedor (fornecedor_id, fornecedor_distrito_id, fornecedor_colaborador_id, fornecedor_colaborador_atualizacao, fornecedor_codigo, fornecedor_nome, fornecedor_nif, fornecedor_telefone, fornecedor_telemovel, fornecedor_mail, fornecedor_local, fornecedor_estado, fornecedor_dataregisto, fornecedor_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	\N	\N	Ambulante	\N	\N	\N	\N	\N	1	2018-02-11 12:44:15.148861	\N
 \.
 
@@ -7782,7 +7685,9 @@ COPY fornecedor (fornecedor_id, fornecedor_distrito_id, fornecedor_colaborador_i
 -- Data for Name: localproducao; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY localproducao (localproducao_id, localproducao_produto_id, localproducao_setor_id, localproducao_colaborador_id, localproducao_colaborador_atualizacao, localproducao_estado, localproducao_dataregisto, localproducao_dataatualizacao) FROM stdin;
+COPY ggviario.localproducao (localproducao_id, localproducao_produto_id, localproducao_setor_id, localproducao_colaborador_id, localproducao_colaborador_atualizacao, localproducao_estado, localproducao_dataregisto, localproducao_dataatualizacao) FROM stdin;
+b70688c2-9373-49dd-b55d-32bc1db68dd9	00000000-0000-0000-0000-000000000002	14a6ce8d-b9d6-4675-becd-60dcbb1f35cb	00000000-0000-0000-0000-000000000001	\N	1	2018-03-21 14:04:20.912359	\N
+891ca99a-9a8d-4e5e-9ea6-4b95b132bb38	00000000-0000-0000-0000-000000000001	0fbc236e-8ac6-4e14-a1bd-e555a10e4f52	00000000-0000-0000-0000-000000000001	\N	1	2018-03-21 14:09:53.502588	\N
 \.
 
 
@@ -7790,7 +7695,7 @@ COPY localproducao (localproducao_id, localproducao_produto_id, localproducao_se
 -- Data for Name: movimento; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY movimento (movimento_id, movimento_conta_id, movimento_tmovimento_id, movimento_colaborador_id, movimento_colaborador_atualizacao, movimento_movimento_id, movimento_venda_id, movimento_despeda_id, movimento_codigo, movimento_data, movimento_documento, movimento_montante, movimento_libele, movimento_transferencianumero, movimento_devolucao, movimento_devolucaoultimadada, movimento_devolucamontantedevolvido, movimento_estado, movimento_dataregisto, movimento_dataatualizacao) FROM stdin;
+COPY ggviario.movimento (movimento_id, movimento_conta_id, movimento_tmovimento_id, movimento_colaborador_id, movimento_colaborador_atualizacao, movimento_movimento_id, movimento_venda_id, movimento_despeda_id, movimento_codigo, movimento_data, movimento_documento, movimento_montante, movimento_libele, movimento_transferencianumero, movimento_devolucao, movimento_devolucaoultimadada, movimento_devolucamontantedevolvido, movimento_estado, movimento_dataregisto, movimento_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7798,7 +7703,10 @@ COPY movimento (movimento_id, movimento_conta_id, movimento_tmovimento_id, movim
 -- Data for Name: preco; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, preco_colaborador_atualizacao, preco_custounidade, preco_quantidadeproduto, preco_base, preco_estado, preco_dataregisto, preco_dataatualizacao) FROM stdin;
+COPY ggviario.preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, preco_colaborador_atualizacao, preco_custounidade, preco_quantidadeproduto, preco_base, preco_estado, preco_dataregisto, preco_dataatualizacao) FROM stdin;
+e8fd650d-ac42-4218-8b24-9579575976e2	00000000-0000-0000-0000-000000000001	8c4c991c-4a24-419e-8c24-ad995e92a57c	00000000-0000-0000-0000-000000000001	\N	5.0	1.0	t	1	2018-03-21 14:18:02.834377	\N
+c65a8956-a291-4e5f-86de-399ad64254a3	00000000-0000-0000-0000-000000000001	1ee5d326-d122-46c0-aaf9-b54940b629cd	00000000-0000-0000-0000-000000000001	\N	130.0	30.0	f	1	2018-03-21 14:19:05.689613	\N
+3b4313bd-3055-4967-a7b4-c9d08cf2a41b	00000000-0000-0000-0000-000000000001	f5ad39ec-2f29-4d61-a70b-b1f102bc71d3	00000000-0000-0000-0000-000000000001	\N	65.0	15.0	f	1	2018-03-21 14:19:30.896518	\N
 \.
 
 
@@ -7806,7 +7714,7 @@ COPY preco (preco_id, preco_produto_id, preco_unidade_id, preco_colaborador_id, 
 -- Data for Name: producao; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY producao (producao_id, producao_produto_id, producao_setor_id, producao_colaborador_id, producao_colaborador_atualizacao, producao_codigo, producao_data, producao_quantidadetotal, producao_quantidadecomerciavel, producao_quantidadedefeituosa, producao_montanteprevisto, producao_estado, producao_dataregisto, producao_dataatualizacao) FROM stdin;
+COPY ggviario.producao (producao_id, producao_produto_id, producao_setor_id, producao_colaborador_id, producao_colaborador_atualizacao, producao_codigo, producao_data, producao_quantidadetotal, producao_quantidadecomerciavel, producao_quantidadedefeituosa, producao_montanteprevisto, producao_estado, producao_dataregisto, producao_dataatualizacao) FROM stdin;
 \.
 
 
@@ -7814,7 +7722,7 @@ COPY producao (producao_id, producao_produto_id, producao_setor_id, producao_col
 -- Data for Name: produto; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_colaborador_atualizacao, produto_codigo, produto_nome, produto_stock, produto_stockminimo, produto_servicovenda, produto_servicocompra, produto_servicoproducao, produto_servicostockdinamico, produto_estado, produto_dataregisto, produto_dataatualizacao) FROM stdin;
+COPY ggviario.produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_colaborador_atualizacao, produto_codigo, produto_nome, produto_stock, produto_stockminimo, produto_servicovenda, produto_servicocompra, produto_servicoproducao, produto_servicostockdinamico, produto_estado, produto_dataregisto, produto_dataatualizacao) FROM stdin;
 00000000-0000-0000-0000-000000000001	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P01/18	Ovos	0	12.0	t	t	t	t	1	2018-02-09 18:48:34.984037	2018-03-20 13:36:01.623268
 00000000-0000-0000-0000-000000000002	5b64a898-7b6c-4085-94cc-8686f1c648b1	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	P02/18	Goiaba	0	12.0	t	t	t	t	1	2018-02-09 18:48:34.984037	2018-03-20 13:36:01.623268
 \.
@@ -7824,8 +7732,17 @@ COPY produto (produto_id, produto_categoria_id, produto_colaborador_id, produto_
 -- Data for Name: setor; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY setor (setor_id, setor_setor_id, setor_colaborador_id, setor_colaborador_atualizacao, setor_codigo, setor_nome, setor_posicao, setor_nivel, setor_totalsubsetores, setor_estado, setor_dataregisto, setor_dataatualizacao) FROM stdin;
-00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	\N	S01/18	PADRÃO	0	0	12	2	2018-02-11 11:41:46.814429	2018-03-19 21:08:53.448556
+COPY ggviario.setor (setor_id, setor_setor_id, setor_colaborador_id, setor_colaborador_atualizacao, setor_codigo, setor_nome, setor_posicao, setor_nivel, setor_totalsubsetores, setor_estado, setor_dataregisto, setor_dataatualizacao) FROM stdin;
+00000000-0000-0000-0000-000000000001	\N	00000000-0000-0000-0000-000000000001	\N	S01/18	PADRÃO	0	0	14	2	2018-02-11 11:41:46.814429	2018-03-21 14:02:13.424349
+0fbc236e-8ac6-4e14-a1bd-e555a10e4f52	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	S06/18	AVIARIO	1	1	3	2	2018-03-21 14:02:13.424349	2018-03-21 14:03:08.436129
+670916b4-960d-46aa-a634-67b48779bec1	0fbc236e-8ac6-4e14-a1bd-e555a10e4f52	00000000-0000-0000-0000-000000000001	\N	S09/18	NOVA	2	2	0	1	2018-03-21 14:03:08.436129	\N
+48461498-018d-4a1f-b930-519f5094e235	0fbc236e-8ac6-4e14-a1bd-e555a10e4f52	00000000-0000-0000-0000-000000000001	\N	S07/18	VELHA	3	2	0	1	2018-03-21 14:02:32.177849	\N
+17ee7c2c-c240-494f-80c2-fe4ea4bb8b76	0fbc236e-8ac6-4e14-a1bd-e555a10e4f52	00000000-0000-0000-0000-000000000001	\N	S08/18	VELHA DE NOVA	4	2	0	1	2018-03-21 14:02:55.071683	\N
+bb641c4f-5f4c-4396-86bc-ec52d4f65982	00000000-0000-0000-0000-000000000001	00000000-0000-0000-0000-000000000001	\N	S02/18	Buraco	5	1	2	2	2018-03-21 13:58:30.404519	2018-03-21 14:01:48.402471
+14a6ce8d-b9d6-4675-becd-60dcbb1f35cb	bb641c4f-5f4c-4396-86bc-ec52d4f65982	00000000-0000-0000-0000-000000000001	\N	S03/18	Campo	6	2	2	2	2018-03-21 13:59:00.900675	2018-03-21 14:06:55.725693
+4f706789-c828-4db6-b822-c063cfb47179	14a6ce8d-b9d6-4675-becd-60dcbb1f35cb	00000000-0000-0000-0000-000000000001	\N	S04/18	Buraco de buraco	7	3	0	1	2018-03-21 14:00:50.589399	\N
+74584c43-7bc7-4d97-8c43-4e60626c645f	14a6ce8d-b9d6-4675-becd-60dcbb1f35cb	00000000-0000-0000-0000-000000000001	\N	S10/18	Campo plano	8	3	0	1	2018-03-21 14:06:55.725693	\N
+4c4651e0-a6f3-4b9c-aaee-f2777e4fe572	bb641c4f-5f4c-4396-86bc-ec52d4f65982	00000000-0000-0000-0000-000000000001	\N	S05/18	Percipicio	9	2	0	1	2018-03-21 14:01:48.402471	\N
 \.
 
 
@@ -7833,7 +7750,7 @@ COPY setor (setor_id, setor_setor_id, setor_colaborador_id, setor_colaborador_at
 -- Data for Name: sexo; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY sexo (sexo_id, sexo_desc) FROM stdin;
+COPY ggviario.sexo (sexo_id, sexo_desc) FROM stdin;
 1	Masculino
 2	Feminino
 \.
@@ -7843,7 +7760,7 @@ COPY sexo (sexo_id, sexo_desc) FROM stdin;
 -- Data for Name: tipoconta; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY tipoconta (tconta_id, tconta_desc) FROM stdin;
+COPY ggviario.tipoconta (tconta_id, tconta_desc) FROM stdin;
 1	Caixa
 2	Caixa diaria
 3	Conta contabil
@@ -7855,7 +7772,7 @@ COPY tipoconta (tconta_id, tconta_desc) FROM stdin;
 -- Data for Name: tipodocumento; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY tipodocumento (tdocumento_id, tdocumento_desc) FROM stdin;
+COPY ggviario.tipodocumento (tdocumento_id, tdocumento_desc) FROM stdin;
 1	B.I
 2	PASS
 3	CARTÃO RESIDENCIA
@@ -7866,7 +7783,7 @@ COPY tipodocumento (tdocumento_id, tdocumento_desc) FROM stdin;
 -- Data for Name: tipomovimento; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY tipomovimento (tmovimento_id, tmovimento_desc) FROM stdin;
+COPY ggviario.tipomovimento (tmovimento_id, tmovimento_desc) FROM stdin;
 1	CREDITO
 2	DEBITO
 \.
@@ -7876,7 +7793,7 @@ COPY tipomovimento (tmovimento_id, tmovimento_desc) FROM stdin;
 -- Data for Name: tipovenda; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY tipovenda (tvenda_id, tvenda_desc, tvenda_letra, tvenda_ditigos) FROM stdin;
+COPY ggviario.tipovenda (tvenda_id, tvenda_desc, tvenda_letra, tvenda_ditigos) FROM stdin;
 2	Divida	D	5
 1	Venda	V	5
 \.
@@ -7886,7 +7803,10 @@ COPY tipovenda (tvenda_id, tvenda_desc, tvenda_letra, tvenda_ditigos) FROM stdin
 -- Data for Name: unidade; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizacao, unidade_nome, unidade_codigo, unidade_estado, unidade_dataregisto, unidade_dataatualizacao) FROM stdin;
+COPY ggviario.unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizacao, unidade_nome, unidade_codigo, unidade_estado, unidade_dataregisto, unidade_dataatualizacao) FROM stdin;
+8c4c991c-4a24-419e-8c24-ad995e92a57c	00000000-0000-0000-0000-000000000001	\N	Unidade	Qt	1	2018-03-21 14:16:22.407942	\N
+1ee5d326-d122-46c0-aaf9-b54940b629cd	00000000-0000-0000-0000-000000000001	\N	Cartão	CT	1	2018-03-21 14:16:41.121493	\N
+f5ad39ec-2f29-4d61-a70b-b1f102bc71d3	00000000-0000-0000-0000-000000000001	\N	Meio Cartão	MCT	1	2018-03-21 14:17:17.734521	\N
 \.
 
 
@@ -7894,17 +7814,15 @@ COPY unidade (unidade_id, unidade_colaborador_id, unidade_colaborador_atualizaca
 -- Data for Name: venda; Type: TABLE DATA; Schema: ggviario; Owner: -
 --
 
-COPY venda (venda_id, venda_produto_id, venda_unidade_id, venda_cliente_id, venda_tvenda_id, venda_colaborador_id, venda_colaborador_atualizacao, venda_faturanumero, venda_quantidade, venda_quantidadeproduto, venda_montanteunitario, venda_montantebruto, venda_montantedesconto, venda_montantepagar, venda_montanteamortizado, venda_data, venda_datafinalizar, venda_datafim, venda_dataultimamovimentacao, venda_observacao, venda_estado, venda_dataregisto, venda_dataatualizacao) FROM stdin;
+COPY ggviario.venda (venda_id, venda_produto_id, venda_unidade_id, venda_cliente_id, venda_tvenda_id, venda_colaborador_id, venda_colaborador_atualizacao, venda_faturanumero, venda_quantidade, venda_quantidadeproduto, venda_montanteunitario, venda_montantebruto, venda_montantedesconto, venda_montantepagar, venda_montanteamortizado, venda_data, venda_datafinalizar, venda_datafim, venda_dataultimamovimentacao, venda_observacao, venda_estado, venda_dataregisto, venda_dataatualizacao) FROM stdin;
 \.
 
-
-SET search_path = colaborador, pg_catalog;
 
 --
 -- Name: acesso pk_acesso_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY acesso
+ALTER TABLE ONLY colaborador.acesso
     ADD CONSTRAINT pk_acesso_id PRIMARY KEY (acesso_id);
 
 
@@ -7912,7 +7830,7 @@ ALTER TABLE ONLY acesso
 -- Name: autenticacao pk_autenticacao_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY autenticacao
+ALTER TABLE ONLY colaborador.autenticacao
     ADD CONSTRAINT pk_autenticacao_id PRIMARY KEY (autenticacao_id);
 
 
@@ -7920,7 +7838,7 @@ ALTER TABLE ONLY autenticacao
 -- Name: colaborador pk_colaborador_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
+ALTER TABLE ONLY colaborador.colaborador
     ADD CONSTRAINT pk_colaborador_id PRIMARY KEY (colaborador_id);
 
 
@@ -7928,7 +7846,7 @@ ALTER TABLE ONLY colaborador
 -- Name: menu pk_menu_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY menu
+ALTER TABLE ONLY colaborador.menu
     ADD CONSTRAINT pk_menu_id PRIMARY KEY (menu_id);
 
 
@@ -7936,7 +7854,7 @@ ALTER TABLE ONLY menu
 -- Name: perfil pk_perfil_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY perfil
+ALTER TABLE ONLY colaborador.perfil
     ADD CONSTRAINT pk_perfil_id PRIMARY KEY (perfil_id);
 
 
@@ -7944,7 +7862,7 @@ ALTER TABLE ONLY perfil
 -- Name: previlegio pk_previlegio_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY previlegio
+ALTER TABLE ONLY colaborador.previlegio
     ADD CONSTRAINT pk_previlegio_id PRIMARY KEY (previlegio_id);
 
 
@@ -7952,7 +7870,7 @@ ALTER TABLE ONLY previlegio
 -- Name: sexo pk_sexo_id; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY sexo
+ALTER TABLE ONLY colaborador.sexo
     ADD CONSTRAINT pk_sexo_id PRIMARY KEY (sexo_id);
 
 
@@ -7960,7 +7878,7 @@ ALTER TABLE ONLY sexo
 -- Name: colaborador uq_colaborador_mail; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
+ALTER TABLE ONLY colaborador.colaborador
     ADD CONSTRAINT uq_colaborador_mail UNIQUE (colaborador_mail);
 
 
@@ -7968,7 +7886,7 @@ ALTER TABLE ONLY colaborador
 -- Name: colaborador uq_colaborador_nif; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
+ALTER TABLE ONLY colaborador.colaborador
     ADD CONSTRAINT uq_colaborador_nif UNIQUE (colaborador_nif);
 
 
@@ -7976,7 +7894,7 @@ ALTER TABLE ONLY colaborador
 -- Name: menu uq_menu_codigo; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY menu
+ALTER TABLE ONLY colaborador.menu
     ADD CONSTRAINT uq_menu_codigo UNIQUE (menu_codigo);
 
 
@@ -7984,17 +7902,15 @@ ALTER TABLE ONLY menu
 -- Name: sexo uq_sexo_desc; Type: CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY sexo
+ALTER TABLE ONLY colaborador.sexo
     ADD CONSTRAINT uq_sexo_desc UNIQUE (sexo_desc);
 
-
-SET search_path = ggviario, pg_catalog;
 
 --
 -- Name: movimento ck_movimato_source_is_valid; Type: CHECK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE movimento
+ALTER TABLE ggviario.movimento
     ADD CONSTRAINT ck_movimato_source_is_valid CHECK (rule.movimento_check_source(movimento.*));
 
 
@@ -8002,7 +7918,7 @@ ALTER TABLE movimento
 -- Name: audit pk_audith_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY audit
+ALTER TABLE ONLY ggviario.audit
     ADD CONSTRAINT pk_audith_id PRIMARY KEY (audit_id);
 
 
@@ -8010,7 +7926,7 @@ ALTER TABLE ONLY audit
 -- Name: categoria pk_categoria_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY categoria
+ALTER TABLE ONLY ggviario.categoria
     ADD CONSTRAINT pk_categoria_id PRIMARY KEY (categoria_id);
 
 
@@ -8018,7 +7934,7 @@ ALTER TABLE ONLY categoria
 -- Name: cliente pk_cliente_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
+ALTER TABLE ONLY ggviario.cliente
     ADD CONSTRAINT pk_cliente_id PRIMARY KEY (cliente_id);
 
 
@@ -8026,7 +7942,7 @@ ALTER TABLE ONLY cliente
 -- Name: codigo pk_codigo_unico; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY codigo
+ALTER TABLE ONLY ggviario.codigo
     ADD CONSTRAINT pk_codigo_unico PRIMARY KEY (codigo_letra, codigo_ano, codigo_digitos);
 
 
@@ -8034,7 +7950,7 @@ ALTER TABLE ONLY codigo
 -- Name: conta pk_conta_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY conta
+ALTER TABLE ONLY ggviario.conta
     ADD CONSTRAINT pk_conta_id PRIMARY KEY (conta_id);
 
 
@@ -8042,7 +7958,7 @@ ALTER TABLE ONLY conta
 -- Name: despesa pk_despesa_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
+ALTER TABLE ONLY ggviario.despesa
     ADD CONSTRAINT pk_despesa_id PRIMARY KEY (despesa_id);
 
 
@@ -8050,7 +7966,7 @@ ALTER TABLE ONLY despesa
 -- Name: distrito pk_distrito_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY distrito
+ALTER TABLE ONLY ggviario.distrito
     ADD CONSTRAINT pk_distrito_id PRIMARY KEY (distrito_id);
 
 
@@ -8058,7 +7974,7 @@ ALTER TABLE ONLY distrito
 -- Name: fornecedor pk_fornecedor_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT pk_fornecedor_id PRIMARY KEY (fornecedor_id);
 
 
@@ -8066,7 +7982,7 @@ ALTER TABLE ONLY fornecedor
 -- Name: localproducao pk_localproducao_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY localproducao
+ALTER TABLE ONLY ggviario.localproducao
     ADD CONSTRAINT pk_localproducao_id PRIMARY KEY (localproducao_id);
 
 
@@ -8074,7 +7990,7 @@ ALTER TABLE ONLY localproducao
 -- Name: movimento pk_movimento_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
+ALTER TABLE ONLY ggviario.movimento
     ADD CONSTRAINT pk_movimento_id PRIMARY KEY (movimento_id);
 
 
@@ -8082,7 +7998,7 @@ ALTER TABLE ONLY movimento
 -- Name: preco pk_preco_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY preco
+ALTER TABLE ONLY ggviario.preco
     ADD CONSTRAINT pk_preco_id PRIMARY KEY (preco_id);
 
 
@@ -8090,7 +8006,7 @@ ALTER TABLE ONLY preco
 -- Name: producao pk_produca_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY producao
+ALTER TABLE ONLY ggviario.producao
     ADD CONSTRAINT pk_produca_id PRIMARY KEY (producao_id);
 
 
@@ -8098,7 +8014,7 @@ ALTER TABLE ONLY producao
 -- Name: produto pk_produto_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
+ALTER TABLE ONLY ggviario.produto
     ADD CONSTRAINT pk_produto_id PRIMARY KEY (produto_id);
 
 
@@ -8106,7 +8022,7 @@ ALTER TABLE ONLY produto
 -- Name: setor pk_setor_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY setor
+ALTER TABLE ONLY ggviario.setor
     ADD CONSTRAINT pk_setor_id PRIMARY KEY (setor_id);
 
 
@@ -8114,7 +8030,7 @@ ALTER TABLE ONLY setor
 -- Name: sexo pk_sexo_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY sexo
+ALTER TABLE ONLY ggviario.sexo
     ADD CONSTRAINT pk_sexo_id PRIMARY KEY (sexo_id);
 
 
@@ -8122,7 +8038,7 @@ ALTER TABLE ONLY sexo
 -- Name: tipoconta pk_tconta_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipoconta
+ALTER TABLE ONLY ggviario.tipoconta
     ADD CONSTRAINT pk_tconta_id PRIMARY KEY (tconta_id);
 
 
@@ -8130,7 +8046,7 @@ ALTER TABLE ONLY tipoconta
 -- Name: tipodocumento pk_tdocumento_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipodocumento
+ALTER TABLE ONLY ggviario.tipodocumento
     ADD CONSTRAINT pk_tdocumento_id PRIMARY KEY (tdocumento_id);
 
 
@@ -8138,7 +8054,7 @@ ALTER TABLE ONLY tipodocumento
 -- Name: tipomovimento pk_tmovimento_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipomovimento
+ALTER TABLE ONLY ggviario.tipomovimento
     ADD CONSTRAINT pk_tmovimento_id PRIMARY KEY (tmovimento_id);
 
 
@@ -8146,7 +8062,7 @@ ALTER TABLE ONLY tipomovimento
 -- Name: tipovenda pk_tvenda_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipovenda
+ALTER TABLE ONLY ggviario.tipovenda
     ADD CONSTRAINT pk_tvenda_id PRIMARY KEY (tvenda_id);
 
 
@@ -8154,7 +8070,7 @@ ALTER TABLE ONLY tipovenda
 -- Name: unidade pk_unidade_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY unidade
+ALTER TABLE ONLY ggviario.unidade
     ADD CONSTRAINT pk_unidade_id PRIMARY KEY (unidade_id);
 
 
@@ -8162,7 +8078,7 @@ ALTER TABLE ONLY unidade
 -- Name: venda pk_venda_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
+ALTER TABLE ONLY ggviario.venda
     ADD CONSTRAINT pk_venda_id PRIMARY KEY (venda_id);
 
 
@@ -8170,7 +8086,7 @@ ALTER TABLE ONLY venda
 -- Name: tipodocumento qu_tdocumento_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipodocumento
+ALTER TABLE ONLY ggviario.tipodocumento
     ADD CONSTRAINT qu_tdocumento_desc UNIQUE (tdocumento_desc);
 
 
@@ -8178,7 +8094,7 @@ ALTER TABLE ONLY tipodocumento
 -- Name: categoria uq_categoria_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY categoria
+ALTER TABLE ONLY ggviario.categoria
     ADD CONSTRAINT uq_categoria_nome UNIQUE (categoria_nome);
 
 
@@ -8186,7 +8102,7 @@ ALTER TABLE ONLY categoria
 -- Name: cliente uq_cliente_documento; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
+ALTER TABLE ONLY ggviario.cliente
     ADD CONSTRAINT uq_cliente_documento UNIQUE (cliente_tdocumento_id, cliente_documentonumero);
 
 
@@ -8194,7 +8110,7 @@ ALTER TABLE ONLY cliente
 -- Name: cliente uq_cliente_mails; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
+ALTER TABLE ONLY ggviario.cliente
     ADD CONSTRAINT uq_cliente_mails UNIQUE (cliente_mail);
 
 
@@ -8202,7 +8118,7 @@ ALTER TABLE ONLY cliente
 -- Name: unidade uq_codigo_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY unidade
+ALTER TABLE ONLY ggviario.unidade
     ADD CONSTRAINT uq_codigo_nome UNIQUE (unidade_codigo);
 
 
@@ -8210,7 +8126,7 @@ ALTER TABLE ONLY unidade
 -- Name: distrito uq_distrito_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY distrito
+ALTER TABLE ONLY ggviario.distrito
     ADD CONSTRAINT uq_distrito_nome UNIQUE (distrito_nome);
 
 
@@ -8218,7 +8134,7 @@ ALTER TABLE ONLY distrito
 -- Name: fornecedor uq_fornecedor_mail; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT uq_fornecedor_mail UNIQUE (fornecedor_mail);
 
 
@@ -8226,7 +8142,7 @@ ALTER TABLE ONLY fornecedor
 -- Name: fornecedor uq_fornecedor_nif; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT uq_fornecedor_nif UNIQUE (fornecedor_nif);
 
 
@@ -8234,7 +8150,7 @@ ALTER TABLE ONLY fornecedor
 -- Name: fornecedor uq_fornecedor_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT uq_fornecedor_nome UNIQUE (fornecedor_nome);
 
 
@@ -8242,7 +8158,7 @@ ALTER TABLE ONLY fornecedor
 -- Name: produto uq_produto_codigo; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
+ALTER TABLE ONLY ggviario.produto
     ADD CONSTRAINT uq_produto_codigo UNIQUE (produto_codigo);
 
 
@@ -8250,7 +8166,7 @@ ALTER TABLE ONLY produto
 -- Name: produto uq_produto_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
+ALTER TABLE ONLY ggviario.produto
     ADD CONSTRAINT uq_produto_nome UNIQUE (produto_nome);
 
 
@@ -8258,7 +8174,7 @@ ALTER TABLE ONLY produto
 -- Name: setor uq_setor_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY setor
+ALTER TABLE ONLY ggviario.setor
     ADD CONSTRAINT uq_setor_nome UNIQUE (setor_nome);
 
 
@@ -8266,7 +8182,7 @@ ALTER TABLE ONLY setor
 -- Name: sexo uq_sexo_id; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY sexo
+ALTER TABLE ONLY ggviario.sexo
     ADD CONSTRAINT uq_sexo_id UNIQUE (sexo_desc);
 
 
@@ -8274,7 +8190,7 @@ ALTER TABLE ONLY sexo
 -- Name: tipovenda uq_tcompra_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipovenda
+ALTER TABLE ONLY ggviario.tipovenda
     ADD CONSTRAINT uq_tcompra_desc UNIQUE (tvenda_desc);
 
 
@@ -8282,7 +8198,7 @@ ALTER TABLE ONLY tipovenda
 -- Name: tipoconta uq_tconta_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipoconta
+ALTER TABLE ONLY ggviario.tipoconta
     ADD CONSTRAINT uq_tconta_desc UNIQUE (tconta_desc);
 
 
@@ -8290,7 +8206,7 @@ ALTER TABLE ONLY tipoconta
 -- Name: tipomovimento uq_tmovimento_desc; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY tipomovimento
+ALTER TABLE ONLY ggviario.tipomovimento
     ADD CONSTRAINT uq_tmovimento_desc UNIQUE (tmovimento_desc);
 
 
@@ -8298,7 +8214,7 @@ ALTER TABLE ONLY tipomovimento
 -- Name: unidade uq_unidade_nome; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY unidade
+ALTER TABLE ONLY ggviario.unidade
     ADD CONSTRAINT uq_unidade_nome UNIQUE (unidade_nome);
 
 
@@ -8306,1054 +8222,1046 @@ ALTER TABLE ONLY unidade
 -- Name: venda uq_venda_faturanumero; Type: CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
+ALTER TABLE ONLY ggviario.venda
     ADD CONSTRAINT uq_venda_faturanumero UNIQUE (venda_faturanumero);
 
-
-SET search_path = colaborador, pg_catalog;
 
 --
 -- Name: idx_acesso_colaborador_propetario; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_acesso_colaborador_propetario ON acesso USING btree (acesso_colaborador_propetario);
+CREATE INDEX idx_acesso_colaborador_propetario ON colaborador.acesso USING btree (acesso_colaborador_propetario);
 
 
 --
 -- Name: idx_acesso_estado; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_acesso_estado ON acesso USING btree (acesso_estado);
+CREATE INDEX idx_acesso_estado ON colaborador.acesso USING btree (acesso_estado);
 
 
 --
 -- Name: idx_acesso_menu_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_acesso_menu_id ON acesso USING btree (acesso_menu_id);
+CREATE INDEX idx_acesso_menu_id ON colaborador.acesso USING btree (acesso_menu_id);
 
 
 --
 -- Name: idx_agenda_colaborador_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_agenda_colaborador_id ON colaborador USING btree (colaborador_id);
+CREATE INDEX idx_agenda_colaborador_id ON colaborador.colaborador USING btree (colaborador_id);
 
 
 --
 -- Name: idx_autenticacao_colaborador_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_autenticacao_colaborador_id ON colaborador USING btree (colaborador_id);
+CREATE INDEX idx_autenticacao_colaborador_id ON colaborador.colaborador USING btree (colaborador_id);
 
 
 --
 -- Name: idx_colaborador_accesso; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_accesso ON colaborador USING btree (colaborador_accesso);
+CREATE INDEX idx_colaborador_accesso ON colaborador.colaborador USING btree (colaborador_accesso);
 
 
 --
 -- Name: idx_colaborador_accesstoken; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_accesstoken ON colaborador USING btree (colaborador_mail, colaborador_senha);
+CREATE INDEX idx_colaborador_accesstoken ON colaborador.colaborador USING btree (colaborador_mail, colaborador_senha);
 
 
 --
 -- Name: idx_colaborador_colaborador_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_colaborador_id ON colaborador USING btree (colaborador_colaborador_id);
+CREATE INDEX idx_colaborador_colaborador_id ON colaborador.colaborador USING btree (colaborador_colaborador_id);
 
 
 --
 -- Name: idx_colaborador_estado; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_estado ON colaborador USING btree (colaborador_estado);
+CREATE INDEX idx_colaborador_estado ON colaborador.colaborador USING btree (colaborador_estado);
 
 
 --
 -- Name: idx_colaborador_nome_order; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_nome_order ON colaborador USING btree (colaborador_nome, colaborador_apelido);
+CREATE INDEX idx_colaborador_nome_order ON colaborador.colaborador USING btree (colaborador_nome, colaborador_apelido);
 
 
 --
 -- Name: idx_colaborador_sexo_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_sexo_id ON colaborador USING btree (colaborador_sexo_id);
+CREATE INDEX idx_colaborador_sexo_id ON colaborador.colaborador USING btree (colaborador_sexo_id);
 
 
 --
 -- Name: idx_colaborador_sistema; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_sistema ON colaborador USING btree (colaborador_sistema);
+CREATE INDEX idx_colaborador_sistema ON colaborador.colaborador USING btree (colaborador_sistema);
 
 
 --
 -- Name: idx_colaborador_token; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_colaborador_token ON colaborador USING btree (colaborador_token);
+CREATE INDEX idx_colaborador_token ON colaborador.colaborador USING btree (colaborador_token);
 
 
 --
 -- Name: idx_perfil_colaborador_atualizacao; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_perfil_colaborador_atualizacao ON perfil USING btree (perfil_colaborador_atualizacao);
+CREATE INDEX idx_perfil_colaborador_atualizacao ON colaborador.perfil USING btree (perfil_colaborador_atualizacao);
 
 
 --
 -- Name: idx_perfil_colaborador_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_perfil_colaborador_id ON perfil USING btree (perfil_colaborador_id);
+CREATE INDEX idx_perfil_colaborador_id ON colaborador.perfil USING btree (perfil_colaborador_id);
 
 
 --
 -- Name: idx_perfil_perfil_perfil_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_perfil_perfil_perfil_id ON perfil USING btree (perfil_perfil_id);
+CREATE INDEX idx_perfil_perfil_perfil_id ON colaborador.perfil USING btree (perfil_perfil_id);
 
 
 --
 -- Name: idx_previlegio_colaboirador_atualizacao; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_previlegio_colaboirador_atualizacao ON previlegio USING btree (previlegio_colaborador_atualizacao);
+CREATE INDEX idx_previlegio_colaboirador_atualizacao ON colaborador.previlegio USING btree (previlegio_colaborador_atualizacao);
 
 
 --
 -- Name: idx_previlegio_colaboirador_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_previlegio_colaboirador_id ON previlegio USING btree (previlegio_colaborador_id);
+CREATE INDEX idx_previlegio_colaboirador_id ON colaborador.previlegio USING btree (previlegio_colaborador_id);
 
 
 --
 -- Name: idx_previlegio_menu_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_previlegio_menu_id ON previlegio USING btree (previlegio_menu_id);
+CREATE INDEX idx_previlegio_menu_id ON colaborador.previlegio USING btree (previlegio_menu_id);
 
 
 --
 -- Name: idx_previlegio_perfil_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE INDEX idx_previlegio_perfil_id ON previlegio USING btree (previlegio_perfil_id);
+CREATE INDEX idx_previlegio_perfil_id ON colaborador.previlegio USING btree (previlegio_perfil_id);
 
 
 --
 -- Name: idx_sexo_id; Type: INDEX; Schema: colaborador; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_sexo_id ON sexo USING btree (sexo_id);
+CREATE UNIQUE INDEX idx_sexo_id ON colaborador.sexo USING btree (sexo_id);
 
-
-SET search_path = ggviario, pg_catalog;
 
 --
 -- Name: categoria_categorai_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE UNIQUE INDEX categoria_categorai_codigo_uindex ON categoria USING btree (categoria_codigo);
+CREATE UNIQUE INDEX categoria_categorai_codigo_uindex ON ggviario.categoria USING btree (categoria_codigo);
 
 
 --
 -- Name: cliente_cliente_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE UNIQUE INDEX cliente_cliente_codigo_uindex ON cliente USING btree (cliente_codigo);
+CREATE UNIQUE INDEX cliente_cliente_codigo_uindex ON ggviario.cliente USING btree (cliente_codigo);
 
 
 --
 -- Name: despesa_despesa_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE UNIQUE INDEX despesa_despesa_codigo_uindex ON despesa USING btree (despesa_codigo);
+CREATE UNIQUE INDEX despesa_despesa_codigo_uindex ON ggviario.despesa USING btree (despesa_codigo);
 
 
 --
 -- Name: idx_audit_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_audit_colaborador_id ON audit USING btree (audit_colaborador_id);
+CREATE INDEX idx_audit_colaborador_id ON ggviario.audit USING btree (audit_colaborador_id);
 
 
 --
 -- Name: idx_audit_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_audit_dataregisto ON audit USING btree (audit_dataregisto);
+CREATE INDEX idx_audit_dataregisto ON ggviario.audit USING btree (audit_dataregisto);
 
 
 --
 -- Name: idx_audit_key; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_audit_key ON audit USING btree (audit_key);
+CREATE INDEX idx_audit_key ON ggviario.audit USING btree (audit_key);
 
 
 --
 -- Name: idx_audit_title; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_audit_title ON audit USING btree (audit_title);
+CREATE INDEX idx_audit_title ON ggviario.audit USING btree (audit_title);
 
 
 --
 -- Name: idx_categoria_categoraia_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_categoraia_id ON categoria USING btree (categoria_categoria_id);
+CREATE INDEX idx_categoria_categoraia_id ON ggviario.categoria USING btree (categoria_categoria_id);
 
 
 --
 -- Name: idx_categoria_colaborador_atualizacao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_colaborador_atualizacao ON categoria USING btree (categoria_colaborador_atualizacao);
+CREATE INDEX idx_categoria_colaborador_atualizacao ON ggviario.categoria USING btree (categoria_colaborador_atualizacao);
 
 
 --
 -- Name: idx_categoria_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_colaborador_id ON categoria USING btree (categoria_colaborador_id);
+CREATE INDEX idx_categoria_colaborador_id ON ggviario.categoria USING btree (categoria_colaborador_id);
 
 
 --
 -- Name: idx_categoria_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_dataregisto ON categoria USING btree (categoria_dataregisto);
+CREATE INDEX idx_categoria_dataregisto ON ggviario.categoria USING btree (categoria_dataregisto);
 
 
 --
 -- Name: idx_categoria_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_estado ON categoria USING btree (categoria_estado);
+CREATE INDEX idx_categoria_estado ON ggviario.categoria USING btree (categoria_estado);
 
 
 --
 -- Name: idx_categoria_nivel; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_nivel ON categoria USING btree (categoria_nivel);
+CREATE INDEX idx_categoria_nivel ON ggviario.categoria USING btree (categoria_nivel);
 
 
 --
 -- Name: idx_categoria_posicao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_categoria_posicao ON categoria USING btree (categoria_posisao);
+CREATE INDEX idx_categoria_posicao ON ggviario.categoria USING btree (categoria_posisao);
 
 
 --
 -- Name: idx_cliente_apelido; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_apelido ON cliente USING btree (cliente_apelido);
+CREATE INDEX idx_cliente_apelido ON ggviario.cliente USING btree (cliente_apelido);
 
 
 --
 -- Name: idx_cliente_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_colaborador_id ON cliente USING btree (cliente_colaborador_id);
+CREATE INDEX idx_cliente_colaborador_id ON ggviario.cliente USING btree (cliente_colaborador_id);
 
 
 --
 -- Name: idx_cliente_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_dataregisto ON cliente USING btree (cliente_dataregisto);
+CREATE INDEX idx_cliente_dataregisto ON ggviario.cliente USING btree (cliente_dataregisto);
 
 
 --
 -- Name: idx_cliente_distrito_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_distrito_id ON cliente USING btree (cliente_distrito_id);
+CREATE INDEX idx_cliente_distrito_id ON ggviario.cliente USING btree (cliente_distrito_id);
 
 
 --
 -- Name: idx_cliente_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_estado ON cliente USING btree (cliente_estado);
+CREATE INDEX idx_cliente_estado ON ggviario.cliente USING btree (cliente_estado);
 
 
 --
 -- Name: idx_cliente_nome; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_nome ON cliente USING btree (cliente_nome);
+CREATE INDEX idx_cliente_nome ON ggviario.cliente USING btree (cliente_nome);
 
 
 --
 -- Name: idx_cliente_sexo_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_cliente_sexo_id ON cliente USING btree (cliente_sexo_id);
+CREATE INDEX idx_cliente_sexo_id ON ggviario.cliente USING btree (cliente_sexo_id);
 
 
 --
 -- Name: idx_conta_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_colaborador_id ON conta USING btree (conta_colaborador_id);
+CREATE INDEX idx_conta_colaborador_id ON ggviario.conta USING btree (conta_colaborador_id);
 
 
 --
 -- Name: idx_conta_conta_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_conta_id ON conta USING btree (conta_conta_id);
+CREATE INDEX idx_conta_conta_id ON ggviario.conta USING btree (conta_conta_id);
 
 
 --
 -- Name: idx_conta_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_dataregisto ON conta USING btree (conta_dataregisto);
+CREATE INDEX idx_conta_dataregisto ON ggviario.conta USING btree (conta_dataregisto);
 
 
 --
 -- Name: idx_conta_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_estado ON conta USING btree (conta_estado);
+CREATE INDEX idx_conta_estado ON ggviario.conta USING btree (conta_estado);
 
 
 --
 -- Name: idx_conta_nome; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_nome ON conta USING btree (conta_nome);
+CREATE INDEX idx_conta_nome ON ggviario.conta USING btree (conta_nome);
 
 
 --
 -- Name: idx_conta_numero; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_numero ON conta USING btree (conta_numero);
+CREATE INDEX idx_conta_numero ON ggviario.conta USING btree (conta_numero);
 
 
 --
 -- Name: idx_conta_tconta_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_conta_tconta_id ON conta USING btree (conta_tconta_id);
+CREATE INDEX idx_conta_tconta_id ON ggviario.conta USING btree (conta_tconta_id);
 
 
 --
 -- Name: idx_despesa_codigo; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_codigo ON despesa USING btree (despesa_codigo);
+CREATE INDEX idx_despesa_codigo ON ggviario.despesa USING btree (despesa_codigo);
 
 
 --
 -- Name: idx_despesa_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_colaborador_id ON despesa USING btree (despesa_colaborador_id);
+CREATE INDEX idx_despesa_colaborador_id ON ggviario.despesa USING btree (despesa_colaborador_id);
 
 
 --
 -- Name: idx_despesa_data; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_data ON despesa USING btree (despesa_data DESC);
+CREATE INDEX idx_despesa_data ON ggviario.despesa USING btree (despesa_data DESC);
 
 
 --
 -- Name: idx_despesa_datafim; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_datafim ON despesa USING btree (despesa_datafim DESC);
+CREATE INDEX idx_despesa_datafim ON ggviario.despesa USING btree (despesa_datafim DESC);
 
 
 --
 -- Name: idx_despesa_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_dataregisto ON despesa USING btree (despesa_dataregisto DESC);
+CREATE INDEX idx_despesa_dataregisto ON ggviario.despesa USING btree (despesa_dataregisto DESC);
 
 
 --
 -- Name: idx_despesa_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_estado ON despesa USING btree (despesa_estado);
+CREATE INDEX idx_despesa_estado ON ggviario.despesa USING btree (despesa_estado);
 
 
 --
 -- Name: idx_despesa_fornecedor_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_fornecedor_id ON despesa USING btree (despesa_fornecedor_id);
+CREATE INDEX idx_despesa_fornecedor_id ON ggviario.despesa USING btree (despesa_fornecedor_id);
 
 
 --
 -- Name: idx_despesa_numerofatura; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_numerofatura ON despesa USING btree (despesa_numerofatura);
+CREATE INDEX idx_despesa_numerofatura ON ggviario.despesa USING btree (despesa_numerofatura);
 
 
 --
 -- Name: idx_despesa_produto_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_produto_id ON despesa USING btree (despesa_produto_id);
+CREATE INDEX idx_despesa_produto_id ON ggviario.despesa USING btree (despesa_produto_id);
 
 
 --
 -- Name: idx_despesa_unidade_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_despesa_unidade_id ON despesa USING btree (despesa_unidade_id);
+CREATE INDEX idx_despesa_unidade_id ON ggviario.despesa USING btree (despesa_unidade_id);
 
 
 --
 -- Name: idx_fornecedor_codigo; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_fornecedor_codigo ON fornecedor USING btree (fornecedor_codigo);
+CREATE INDEX idx_fornecedor_codigo ON ggviario.fornecedor USING btree (fornecedor_codigo);
 
 
 --
 -- Name: idx_fornecedor_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_fornecedor_colaborador_id ON fornecedor USING btree (fornecedor_colaborador_id);
+CREATE INDEX idx_fornecedor_colaborador_id ON ggviario.fornecedor USING btree (fornecedor_colaborador_id);
 
 
 --
 -- Name: idx_fornecedor_distrito_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_fornecedor_distrito_id ON fornecedor USING btree (fornecedor_distrito_id);
+CREATE INDEX idx_fornecedor_distrito_id ON ggviario.fornecedor USING btree (fornecedor_distrito_id);
 
 
 --
 -- Name: idx_fornecedor_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_fornecedor_estado ON fornecedor USING btree (fornecedor_estado);
+CREATE INDEX idx_fornecedor_estado ON ggviario.fornecedor USING btree (fornecedor_estado);
 
 
 --
 -- Name: idx_fornecedor_nome; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_fornecedor_nome ON fornecedor USING btree (fornecedor_nome);
+CREATE INDEX idx_fornecedor_nome ON ggviario.fornecedor USING btree (fornecedor_nome);
 
 
 --
 -- Name: idx_localproducao_colaborador_atualizacao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_colaborador_atualizacao ON localproducao USING btree (localproducao_colaborador_atualizacao);
+CREATE INDEX idx_localproducao_colaborador_atualizacao ON ggviario.localproducao USING btree (localproducao_colaborador_atualizacao);
 
 
 --
 -- Name: idx_localproducao_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_colaborador_id ON localproducao USING btree (localproducao_colaborador_id);
+CREATE INDEX idx_localproducao_colaborador_id ON ggviario.localproducao USING btree (localproducao_colaborador_id);
 
 
 --
 -- Name: idx_localproducao_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_dataregisto ON localproducao USING btree (localproducao_dataregisto);
+CREATE INDEX idx_localproducao_dataregisto ON ggviario.localproducao USING btree (localproducao_dataregisto);
 
 
 --
 -- Name: idx_localproducao_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_estado ON localproducao USING btree (localproducao_estado);
+CREATE INDEX idx_localproducao_estado ON ggviario.localproducao USING btree (localproducao_estado);
 
 
 --
 -- Name: idx_localproducao_produto_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_produto_id ON localproducao USING btree (localproducao_produto_id);
+CREATE INDEX idx_localproducao_produto_id ON ggviario.localproducao USING btree (localproducao_produto_id);
 
 
 --
 -- Name: idx_localproducao_setor_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_localproducao_setor_id ON localproducao USING btree (localproducao_setor_id);
+CREATE INDEX idx_localproducao_setor_id ON ggviario.localproducao USING btree (localproducao_setor_id);
 
 
 --
 -- Name: idx_movimento_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_colaborador_id ON movimento USING btree (movimento_colaborador_id);
+CREATE INDEX idx_movimento_colaborador_id ON ggviario.movimento USING btree (movimento_colaborador_id);
 
 
 --
 -- Name: idx_movimento_conta_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_conta_id ON movimento USING btree (movimento_conta_id);
+CREATE INDEX idx_movimento_conta_id ON ggviario.movimento USING btree (movimento_conta_id);
 
 
 --
 -- Name: idx_movimento_data; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_data ON movimento USING btree (movimento_data DESC);
+CREATE INDEX idx_movimento_data ON ggviario.movimento USING btree (movimento_data DESC);
 
 
 --
 -- Name: idx_movimento_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_dataregisto ON movimento USING btree (movimento_dataregisto);
+CREATE INDEX idx_movimento_dataregisto ON ggviario.movimento USING btree (movimento_dataregisto);
 
 
 --
 -- Name: idx_movimento_devolucao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_devolucao ON movimento USING btree (movimento_devolucao);
+CREATE INDEX idx_movimento_devolucao ON ggviario.movimento USING btree (movimento_devolucao);
 
 
 --
 -- Name: idx_movimento_devolucaomontantedevolvido; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_devolucaomontantedevolvido ON movimento USING btree (movimento_devolucamontantedevolvido);
+CREATE INDEX idx_movimento_devolucaomontantedevolvido ON ggviario.movimento USING btree (movimento_devolucamontantedevolvido);
 
 
 --
 -- Name: idx_movimento_devolucaoultimadata; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_devolucaoultimadata ON movimento USING btree (movimento_devolucaoultimadada DESC);
+CREATE INDEX idx_movimento_devolucaoultimadata ON ggviario.movimento USING btree (movimento_devolucaoultimadada DESC);
 
 
 --
 -- Name: idx_movimento_documento; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_documento ON movimento USING btree (movimento_documento);
+CREATE INDEX idx_movimento_documento ON ggviario.movimento USING btree (movimento_documento);
 
 
 --
 -- Name: idx_movimento_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_estado ON movimento USING btree (movimento_estado);
+CREATE INDEX idx_movimento_estado ON ggviario.movimento USING btree (movimento_estado);
 
 
 --
 -- Name: idx_movimento_movimento_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_movimento_id ON movimento USING btree (movimento_movimento_id);
+CREATE INDEX idx_movimento_movimento_id ON ggviario.movimento USING btree (movimento_movimento_id);
 
 
 --
 -- Name: idx_movimento_tmovimento_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_tmovimento_id ON movimento USING btree (movimento_tmovimento_id);
+CREATE INDEX idx_movimento_tmovimento_id ON ggviario.movimento USING btree (movimento_tmovimento_id);
 
 
 --
 -- Name: idx_movimento_venda_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_movimento_venda_id ON movimento USING btree (movimento_venda_id);
+CREATE INDEX idx_movimento_venda_id ON ggviario.movimento USING btree (movimento_venda_id);
 
 
 --
 -- Name: idx_preco_base; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_base ON preco USING btree (preco_base);
+CREATE INDEX idx_preco_base ON ggviario.preco USING btree (preco_base);
 
 
 --
 -- Name: idx_preco_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_colaborador_id ON preco USING btree (preco_colaborador_id);
+CREATE INDEX idx_preco_colaborador_id ON ggviario.preco USING btree (preco_colaborador_id);
 
 
 --
 -- Name: idx_preco_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_dataregisto ON preco USING btree (preco_dataregisto DESC);
+CREATE INDEX idx_preco_dataregisto ON ggviario.preco USING btree (preco_dataregisto DESC);
 
 
 --
 -- Name: idx_preco_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_estado ON preco USING btree (preco_estado);
+CREATE INDEX idx_preco_estado ON ggviario.preco USING btree (preco_estado);
 
 
 --
 -- Name: idx_preco_produto_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_produto_id ON preco USING btree (preco_produto_id);
+CREATE INDEX idx_preco_produto_id ON ggviario.preco USING btree (preco_produto_id);
 
 
 --
 -- Name: idx_preco_unidade_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_preco_unidade_id ON preco USING btree (preco_unidade_id);
+CREATE INDEX idx_preco_unidade_id ON ggviario.preco USING btree (preco_unidade_id);
 
 
 --
 -- Name: idx_producao_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_colaborador_id ON producao USING btree (producao_colaborador_id);
+CREATE INDEX idx_producao_colaborador_id ON ggviario.producao USING btree (producao_colaborador_id);
 
 
 --
 -- Name: idx_producao_data; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_data ON producao USING btree (producao_data DESC);
+CREATE INDEX idx_producao_data ON ggviario.producao USING btree (producao_data DESC);
 
 
 --
 -- Name: idx_producao_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_dataregisto ON producao USING btree (producao_dataregisto DESC);
+CREATE INDEX idx_producao_dataregisto ON ggviario.producao USING btree (producao_dataregisto DESC);
 
 
 --
 -- Name: idx_producao_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_estado ON producao USING btree (producao_estado);
+CREATE INDEX idx_producao_estado ON ggviario.producao USING btree (producao_estado);
 
 
 --
 -- Name: idx_producao_produto_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_produto_id ON producao USING btree (producao_produto_id);
+CREATE INDEX idx_producao_produto_id ON ggviario.producao USING btree (producao_produto_id);
 
 
 --
 -- Name: idx_producao_setor_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_producao_setor_id ON producao USING btree (producao_setor_id);
+CREATE INDEX idx_producao_setor_id ON ggviario.producao USING btree (producao_setor_id);
 
 
 --
 -- Name: idx_produto_categoria; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_categoria ON produto USING btree (produto_categoria_id);
+CREATE INDEX idx_produto_categoria ON ggviario.produto USING btree (produto_categoria_id);
 
 
 --
 -- Name: idx_produto_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_dataregisto ON produto USING btree (produto_dataregisto DESC);
+CREATE INDEX idx_produto_dataregisto ON ggviario.produto USING btree (produto_dataregisto DESC);
 
 
 --
 -- Name: idx_produto_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_estado ON produto USING btree (produto_estado);
+CREATE INDEX idx_produto_estado ON ggviario.produto USING btree (produto_estado);
 
 
 --
 -- Name: idx_produto_servicocompra; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_servicocompra ON produto USING btree (produto_servicocompra);
+CREATE INDEX idx_produto_servicocompra ON ggviario.produto USING btree (produto_servicocompra);
 
 
 --
 -- Name: idx_produto_servicostockdinamico; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_servicostockdinamico ON produto USING btree (produto_servicostockdinamico);
+CREATE INDEX idx_produto_servicostockdinamico ON ggviario.produto USING btree (produto_servicostockdinamico);
 
 
 --
 -- Name: idx_produto_servicovenda; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_servicovenda ON produto USING btree (produto_servicovenda);
+CREATE INDEX idx_produto_servicovenda ON ggviario.produto USING btree (produto_servicovenda);
 
 
 --
 -- Name: idx_produto_servioproducao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_produto_servioproducao ON produto USING btree (produto_servicoproducao);
+CREATE INDEX idx_produto_servioproducao ON ggviario.produto USING btree (produto_servicoproducao);
 
 
 --
 -- Name: idx_setor_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_setor_colaborador_id ON setor USING btree (setor_colaborador_id);
+CREATE INDEX idx_setor_colaborador_id ON ggviario.setor USING btree (setor_colaborador_id);
 
 
 --
 -- Name: idx_setor_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_setor_dataregisto ON setor USING btree (setor_dataregisto DESC);
+CREATE INDEX idx_setor_dataregisto ON ggviario.setor USING btree (setor_dataregisto DESC);
 
 
 --
 -- Name: idx_setor_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_setor_estado ON setor USING btree (setor_estado);
+CREATE INDEX idx_setor_estado ON ggviario.setor USING btree (setor_estado);
 
 
 --
 -- Name: idx_setor_posicao; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_setor_posicao ON setor USING btree (setor_posicao);
+CREATE INDEX idx_setor_posicao ON ggviario.setor USING btree (setor_posicao);
 
 
 --
 -- Name: idx_setor_setor_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_setor_setor_id ON setor USING btree (setor_setor_id);
+CREATE INDEX idx_setor_setor_id ON ggviario.setor USING btree (setor_setor_id);
 
 
 --
 -- Name: idx_unidade_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_unidade_colaborador_id ON unidade USING btree (unidade_colaborador_id);
+CREATE INDEX idx_unidade_colaborador_id ON ggviario.unidade USING btree (unidade_colaborador_id);
 
 
 --
 -- Name: idx_unidade_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_unidade_dataregisto ON unidade USING btree (unidade_dataregisto);
+CREATE INDEX idx_unidade_dataregisto ON ggviario.unidade USING btree (unidade_dataregisto);
 
 
 --
 -- Name: idx_unidade_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_unidade_estado ON unidade USING btree (unidade_estado);
+CREATE INDEX idx_unidade_estado ON ggviario.unidade USING btree (unidade_estado);
 
 
 --
 -- Name: idx_venda_cliente_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_cliente_id ON venda USING btree (venda_cliente_id);
+CREATE INDEX idx_venda_cliente_id ON ggviario.venda USING btree (venda_cliente_id);
 
 
 --
 -- Name: idx_venda_colaborador_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_colaborador_id ON venda USING btree (venda_colaborador_id);
+CREATE INDEX idx_venda_colaborador_id ON ggviario.venda USING btree (venda_colaborador_id);
 
 
 --
 -- Name: idx_venda_data; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_data ON venda USING btree (venda_data DESC);
+CREATE INDEX idx_venda_data ON ggviario.venda USING btree (venda_data DESC);
 
 
 --
 -- Name: idx_venda_datafim; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_datafim ON venda USING btree (venda_datafim DESC);
+CREATE INDEX idx_venda_datafim ON ggviario.venda USING btree (venda_datafim DESC);
 
 
 --
 -- Name: idx_venda_datafinalizar; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_datafinalizar ON venda USING btree (venda_datafinalizar DESC);
+CREATE INDEX idx_venda_datafinalizar ON ggviario.venda USING btree (venda_datafinalizar DESC);
 
 
 --
 -- Name: idx_venda_dataregisto; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_dataregisto ON venda USING btree (venda_dataregisto DESC);
+CREATE INDEX idx_venda_dataregisto ON ggviario.venda USING btree (venda_dataregisto DESC);
 
 
 --
 -- Name: idx_venda_estado; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_estado ON venda USING btree (venda_estado DESC);
+CREATE INDEX idx_venda_estado ON ggviario.venda USING btree (venda_estado DESC);
 
 
 --
 -- Name: idx_venda_produto_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_produto_id ON venda USING btree (venda_produto_id);
+CREATE INDEX idx_venda_produto_id ON ggviario.venda USING btree (venda_produto_id);
 
 
 --
 -- Name: idx_venda_unidade_id; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE INDEX idx_venda_unidade_id ON venda USING btree (venda_unidade_id);
+CREATE INDEX idx_venda_unidade_id ON ggviario.venda USING btree (venda_unidade_id);
 
 
 --
 -- Name: producao_producao_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE UNIQUE INDEX producao_producao_codigo_uindex ON producao USING btree (producao_codigo);
+CREATE UNIQUE INDEX producao_producao_codigo_uindex ON ggviario.producao USING btree (producao_codigo);
 
 
 --
 -- Name: setor_setor_codigo_uindex; Type: INDEX; Schema: ggviario; Owner: -
 --
 
-CREATE UNIQUE INDEX setor_setor_codigo_uindex ON setor USING btree (setor_codigo);
+CREATE UNIQUE INDEX setor_setor_codigo_uindex ON ggviario.setor USING btree (setor_codigo);
 
 
 --
 -- Name: despesa tg_despesa_after_insert_update_stock; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_despesa_after_insert_update_stock AFTER INSERT ON despesa FOR EACH ROW EXECUTE PROCEDURE rule.functg_despesa_after_insert_update_stock();
+CREATE TRIGGER tg_despesa_after_insert_update_stock AFTER INSERT ON ggviario.despesa FOR EACH ROW EXECUTE PROCEDURE rule.functg_despesa_after_insert_update_stock();
 
 
 --
 -- Name: movimento tg_movimento_after_insert_update_conta; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_movimento_after_insert_update_conta AFTER INSERT ON movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_conta();
+CREATE TRIGGER tg_movimento_after_insert_update_conta AFTER INSERT ON ggviario.movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_conta();
 
 
 --
 -- Name: movimento tg_movimento_after_insert_update_despesa; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_movimento_after_insert_update_despesa AFTER INSERT ON movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_despesa();
+CREATE TRIGGER tg_movimento_after_insert_update_despesa AFTER INSERT ON ggviario.movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_despesa();
 
 
 --
 -- Name: movimento tg_movimento_after_insert_update_itemcompra; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_movimento_after_insert_update_itemcompra AFTER INSERT ON movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_venda();
+CREATE TRIGGER tg_movimento_after_insert_update_itemcompra AFTER INSERT ON ggviario.movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_venda();
 
 
 --
 -- Name: movimento tg_movimento_after_insert_update_movimento_devolucao; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_movimento_after_insert_update_movimento_devolucao AFTER INSERT ON movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_movimento_devolucao();
+CREATE TRIGGER tg_movimento_after_insert_update_movimento_devolucao AFTER INSERT ON ggviario.movimento FOR EACH ROW EXECUTE PROCEDURE rule.functg_movimento_after_insert_update_movimento_devolucao();
 
 
 --
 -- Name: producao tg_producao_after_insert_movement_sector_and_product; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_producao_after_insert_movement_sector_and_product AFTER INSERT ON producao FOR EACH ROW EXECUTE PROCEDURE rule.functg_producao_after_insert_movement_produto();
+CREATE TRIGGER tg_producao_after_insert_movement_sector_and_product AFTER INSERT ON ggviario.producao FOR EACH ROW EXECUTE PROCEDURE rule.functg_producao_after_insert_movement_produto();
 
 
 --
 -- Name: setor tg_setor_after_insert_protect_parent; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_setor_after_insert_protect_parent AFTER INSERT ON setor FOR EACH ROW EXECUTE PROCEDURE rule.functg_setor_after_insert_protect_parent();
+CREATE TRIGGER tg_setor_after_insert_protect_parent AFTER INSERT ON ggviario.setor FOR EACH ROW EXECUTE PROCEDURE rule.functg_setor_after_insert_protect_parent();
 
 
 --
 -- Name: setor tg_setor_after_updade_disable_disable_children; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_setor_after_updade_disable_disable_children AFTER UPDATE ON setor FOR EACH ROW EXECUTE PROCEDURE rule.functg_setor_after_updade_disable_disable_children();
+CREATE TRIGGER tg_setor_after_updade_disable_disable_children AFTER UPDATE ON ggviario.setor FOR EACH ROW EXECUTE PROCEDURE rule.functg_setor_after_updade_disable_disable_children();
 
 
 --
 -- Name: venda tg_venda_intert_update_produto_stock; Type: TRIGGER; Schema: ggviario; Owner: -
 --
 
-CREATE TRIGGER tg_venda_intert_update_produto_stock AFTER INSERT ON venda FOR EACH ROW EXECUTE PROCEDURE rule.functg_venda_intert_update_produto_stock();
+CREATE TRIGGER tg_venda_intert_update_produto_stock AFTER INSERT ON ggviario.venda FOR EACH ROW EXECUTE PROCEDURE rule.functg_venda_intert_update_produto_stock();
 
-
-SET search_path = colaborador, pg_catalog;
 
 --
 -- Name: acesso fk_accesso_to_colaborador; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY acesso
-    ADD CONSTRAINT fk_accesso_to_colaborador FOREIGN KEY (acesso_colaborador_id) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.acesso
+    ADD CONSTRAINT fk_accesso_to_colaborador FOREIGN KEY (acesso_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: acesso fk_accesso_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY acesso
-    ADD CONSTRAINT fk_accesso_to_colaborador_atualizacao FOREIGN KEY (acesso_colaborador_atualizacao) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.acesso
+    ADD CONSTRAINT fk_accesso_to_colaborador_atualizacao FOREIGN KEY (acesso_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: acesso fk_accesso_to_colaborador_propetario; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY acesso
-    ADD CONSTRAINT fk_accesso_to_colaborador_propetario FOREIGN KEY (acesso_colaborador_propetario) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.acesso
+    ADD CONSTRAINT fk_accesso_to_colaborador_propetario FOREIGN KEY (acesso_colaborador_propetario) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: acesso fk_accesso_to_menu; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY acesso
-    ADD CONSTRAINT fk_accesso_to_menu FOREIGN KEY (acesso_menu_id) REFERENCES menu(menu_id);
+ALTER TABLE ONLY colaborador.acesso
+    ADD CONSTRAINT fk_accesso_to_menu FOREIGN KEY (acesso_menu_id) REFERENCES colaborador.menu(menu_id);
 
 
 --
 -- Name: autenticacao fk_autenticacao_to_colaborador; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY autenticacao
-    ADD CONSTRAINT fk_autenticacao_to_colaborador FOREIGN KEY (autenticacao_colaborador_id) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.autenticacao
+    ADD CONSTRAINT fk_autenticacao_to_colaborador FOREIGN KEY (autenticacao_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: colaborador fk_colaborador_to_colaborador; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
-    ADD CONSTRAINT fk_colaborador_to_colaborador FOREIGN KEY (colaborador_colaborador_id) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.colaborador
+    ADD CONSTRAINT fk_colaborador_to_colaborador FOREIGN KEY (colaborador_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: colaborador fk_colaborador_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
-    ADD CONSTRAINT fk_colaborador_to_colaborador_atualizacao FOREIGN KEY (colaborador_colaborador_atualizacao) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.colaborador
+    ADD CONSTRAINT fk_colaborador_to_colaborador_atualizacao FOREIGN KEY (colaborador_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: colaborador fk_colaborador_to_sexo; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY colaborador
-    ADD CONSTRAINT fk_colaborador_to_sexo FOREIGN KEY (colaborador_sexo_id) REFERENCES sexo(sexo_id);
+ALTER TABLE ONLY colaborador.colaborador
+    ADD CONSTRAINT fk_colaborador_to_sexo FOREIGN KEY (colaborador_sexo_id) REFERENCES colaborador.sexo(sexo_id);
 
 
 --
 -- Name: menu fk_menu_to_menu; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY menu
-    ADD CONSTRAINT fk_menu_to_menu FOREIGN KEY (menu_menu_id) REFERENCES menu(menu_id);
+ALTER TABLE ONLY colaborador.menu
+    ADD CONSTRAINT fk_menu_to_menu FOREIGN KEY (menu_menu_id) REFERENCES colaborador.menu(menu_id);
 
 
 --
 -- Name: perfil fk_perfil_to_colaborador; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY perfil
-    ADD CONSTRAINT fk_perfil_to_colaborador FOREIGN KEY (perfil_colaborador_id) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.perfil
+    ADD CONSTRAINT fk_perfil_to_colaborador FOREIGN KEY (perfil_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: perfil fk_perfil_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY perfil
-    ADD CONSTRAINT fk_perfil_to_colaborador_atualizacao FOREIGN KEY (perfil_colaborador_atualizacao) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.perfil
+    ADD CONSTRAINT fk_perfil_to_colaborador_atualizacao FOREIGN KEY (perfil_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: perfil fk_perfil_to_perfil; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY perfil
-    ADD CONSTRAINT fk_perfil_to_perfil FOREIGN KEY (perfil_perfil_id) REFERENCES perfil(perfil_id);
+ALTER TABLE ONLY colaborador.perfil
+    ADD CONSTRAINT fk_perfil_to_perfil FOREIGN KEY (perfil_perfil_id) REFERENCES colaborador.perfil(perfil_id);
 
 
 --
 -- Name: previlegio fk_previlegio_to_colaborador; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY previlegio
-    ADD CONSTRAINT fk_previlegio_to_colaborador FOREIGN KEY (previlegio_colaborador_id) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.previlegio
+    ADD CONSTRAINT fk_previlegio_to_colaborador FOREIGN KEY (previlegio_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: previlegio fk_previlegio_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY previlegio
-    ADD CONSTRAINT fk_previlegio_to_colaborador_atualizacao FOREIGN KEY (previlegio_colaborador_atualizacao) REFERENCES colaborador(colaborador_id);
+ALTER TABLE ONLY colaborador.previlegio
+    ADD CONSTRAINT fk_previlegio_to_colaborador_atualizacao FOREIGN KEY (previlegio_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
 --
 -- Name: previlegio fk_previlegio_to_menu; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY previlegio
-    ADD CONSTRAINT fk_previlegio_to_menu FOREIGN KEY (previlegio_menu_id) REFERENCES menu(menu_id);
+ALTER TABLE ONLY colaborador.previlegio
+    ADD CONSTRAINT fk_previlegio_to_menu FOREIGN KEY (previlegio_menu_id) REFERENCES colaborador.menu(menu_id);
 
 
 --
 -- Name: previlegio fk_previlegio_to_perfim; Type: FK CONSTRAINT; Schema: colaborador; Owner: -
 --
 
-ALTER TABLE ONLY previlegio
-    ADD CONSTRAINT fk_previlegio_to_perfim FOREIGN KEY (previlegio_perfil_id) REFERENCES perfil(perfil_id);
+ALTER TABLE ONLY colaborador.previlegio
+    ADD CONSTRAINT fk_previlegio_to_perfim FOREIGN KEY (previlegio_perfil_id) REFERENCES colaborador.perfil(perfil_id);
 
-
-SET search_path = ggviario, pg_catalog;
 
 --
 -- Name: audit fk_audit_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY audit
+ALTER TABLE ONLY ggviario.audit
     ADD CONSTRAINT fk_audit_to_colaborador FOREIGN KEY (audit_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9361,7 +9269,7 @@ ALTER TABLE ONLY audit
 -- Name: categoria fk_categoria_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY categoria
+ALTER TABLE ONLY ggviario.categoria
     ADD CONSTRAINT fk_categoria_to_colaborador FOREIGN KEY (categoria_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9369,7 +9277,7 @@ ALTER TABLE ONLY categoria
 -- Name: categoria fk_categoria_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY categoria
+ALTER TABLE ONLY ggviario.categoria
     ADD CONSTRAINT fk_categoria_to_colaborador_atualizacao FOREIGN KEY (categoria_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9377,7 +9285,7 @@ ALTER TABLE ONLY categoria
 -- Name: cliente fk_cliente_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
+ALTER TABLE ONLY ggviario.cliente
     ADD CONSTRAINT fk_cliente_to_colaborador FOREIGN KEY (cliente_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9385,7 +9293,7 @@ ALTER TABLE ONLY cliente
 -- Name: cliente fk_cliente_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
+ALTER TABLE ONLY ggviario.cliente
     ADD CONSTRAINT fk_cliente_to_colaborador_atualizacao FOREIGN KEY (cliente_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9393,31 +9301,31 @@ ALTER TABLE ONLY cliente
 -- Name: cliente fk_cliente_to_distrito; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
-    ADD CONSTRAINT fk_cliente_to_distrito FOREIGN KEY (cliente_distrito_id) REFERENCES distrito(distrito_id);
+ALTER TABLE ONLY ggviario.cliente
+    ADD CONSTRAINT fk_cliente_to_distrito FOREIGN KEY (cliente_distrito_id) REFERENCES ggviario.distrito(distrito_id);
 
 
 --
 -- Name: cliente fk_cliente_to_sexo; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
-    ADD CONSTRAINT fk_cliente_to_sexo FOREIGN KEY (cliente_sexo_id) REFERENCES sexo(sexo_id);
+ALTER TABLE ONLY ggviario.cliente
+    ADD CONSTRAINT fk_cliente_to_sexo FOREIGN KEY (cliente_sexo_id) REFERENCES ggviario.sexo(sexo_id);
 
 
 --
 -- Name: cliente fk_cliente_to_tipodocumento; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY cliente
-    ADD CONSTRAINT fk_cliente_to_tipodocumento FOREIGN KEY (cliente_tdocumento_id) REFERENCES tipodocumento(tdocumento_id);
+ALTER TABLE ONLY ggviario.cliente
+    ADD CONSTRAINT fk_cliente_to_tipodocumento FOREIGN KEY (cliente_tdocumento_id) REFERENCES ggviario.tipodocumento(tdocumento_id);
 
 
 --
 -- Name: conta fk_conta_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY conta
+ALTER TABLE ONLY ggviario.conta
     ADD CONSTRAINT fk_conta_to_colaborador FOREIGN KEY (conta_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9425,7 +9333,7 @@ ALTER TABLE ONLY conta
 -- Name: conta fk_conta_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY conta
+ALTER TABLE ONLY ggviario.conta
     ADD CONSTRAINT fk_conta_to_colaborador_atualizacao FOREIGN KEY (conta_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9433,23 +9341,23 @@ ALTER TABLE ONLY conta
 -- Name: conta fk_conta_to_contao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY conta
-    ADD CONSTRAINT fk_conta_to_contao FOREIGN KEY (conta_conta_id) REFERENCES conta(conta_id);
+ALTER TABLE ONLY ggviario.conta
+    ADD CONSTRAINT fk_conta_to_contao FOREIGN KEY (conta_conta_id) REFERENCES ggviario.conta(conta_id);
 
 
 --
 -- Name: conta fk_conta_to_tipoconta; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY conta
-    ADD CONSTRAINT fk_conta_to_tipoconta FOREIGN KEY (conta_tconta_id) REFERENCES tipoconta(tconta_id);
+ALTER TABLE ONLY ggviario.conta
+    ADD CONSTRAINT fk_conta_to_tipoconta FOREIGN KEY (conta_tconta_id) REFERENCES ggviario.tipoconta(tconta_id);
 
 
 --
 -- Name: despesa fk_despesa_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
+ALTER TABLE ONLY ggviario.despesa
     ADD CONSTRAINT fk_despesa_to_colaborador FOREIGN KEY (despesa_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9457,7 +9365,7 @@ ALTER TABLE ONLY despesa
 -- Name: despesa fk_despesa_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
+ALTER TABLE ONLY ggviario.despesa
     ADD CONSTRAINT fk_despesa_to_colaborador_atualizacao FOREIGN KEY (despesa_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9465,31 +9373,31 @@ ALTER TABLE ONLY despesa
 -- Name: despesa fk_despesa_to_fornecedor; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
-    ADD CONSTRAINT fk_despesa_to_fornecedor FOREIGN KEY (despesa_fornecedor_id) REFERENCES fornecedor(fornecedor_id);
+ALTER TABLE ONLY ggviario.despesa
+    ADD CONSTRAINT fk_despesa_to_fornecedor FOREIGN KEY (despesa_fornecedor_id) REFERENCES ggviario.fornecedor(fornecedor_id);
 
 
 --
 -- Name: despesa fk_despesa_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
-    ADD CONSTRAINT fk_despesa_to_produto FOREIGN KEY (despesa_produto_id) REFERENCES produto(produto_id);
+ALTER TABLE ONLY ggviario.despesa
+    ADD CONSTRAINT fk_despesa_to_produto FOREIGN KEY (despesa_produto_id) REFERENCES ggviario.produto(produto_id);
 
 
 --
 -- Name: despesa fk_despesa_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY despesa
-    ADD CONSTRAINT fk_despesa_to_unidade FOREIGN KEY (despesa_unidade_id) REFERENCES unidade(unidade_id);
+ALTER TABLE ONLY ggviario.despesa
+    ADD CONSTRAINT fk_despesa_to_unidade FOREIGN KEY (despesa_unidade_id) REFERENCES ggviario.unidade(unidade_id);
 
 
 --
 -- Name: fornecedor fk_fornecedor_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT fk_fornecedor_to_colaborador FOREIGN KEY (fornecedor_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9497,7 +9405,7 @@ ALTER TABLE ONLY fornecedor
 -- Name: fornecedor fk_fornecedor_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
+ALTER TABLE ONLY ggviario.fornecedor
     ADD CONSTRAINT fk_fornecedor_to_colaborador_atualizacao FOREIGN KEY (fornecedor_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9505,15 +9413,15 @@ ALTER TABLE ONLY fornecedor
 -- Name: fornecedor fk_fornecedor_to_distrito; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY fornecedor
-    ADD CONSTRAINT fk_fornecedor_to_distrito FOREIGN KEY (fornecedor_distrito_id) REFERENCES distrito(distrito_id);
+ALTER TABLE ONLY ggviario.fornecedor
+    ADD CONSTRAINT fk_fornecedor_to_distrito FOREIGN KEY (fornecedor_distrito_id) REFERENCES ggviario.distrito(distrito_id);
 
 
 --
 -- Name: localproducao fk_localproducao_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY localproducao
+ALTER TABLE ONLY ggviario.localproducao
     ADD CONSTRAINT fk_localproducao_to_colaborador FOREIGN KEY (localproducao_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9521,7 +9429,7 @@ ALTER TABLE ONLY localproducao
 -- Name: localproducao fk_localproducao_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY localproducao
+ALTER TABLE ONLY ggviario.localproducao
     ADD CONSTRAINT fk_localproducao_to_colaborador_atualizacao FOREIGN KEY (localproducao_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9529,23 +9437,23 @@ ALTER TABLE ONLY localproducao
 -- Name: localproducao fk_localproducao_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY localproducao
-    ADD CONSTRAINT fk_localproducao_to_produto FOREIGN KEY (localproducao_produto_id) REFERENCES produto(produto_id);
+ALTER TABLE ONLY ggviario.localproducao
+    ADD CONSTRAINT fk_localproducao_to_produto FOREIGN KEY (localproducao_produto_id) REFERENCES ggviario.produto(produto_id);
 
 
 --
 -- Name: localproducao fk_localproducao_to_setor; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY localproducao
-    ADD CONSTRAINT fk_localproducao_to_setor FOREIGN KEY (localproducao_setor_id) REFERENCES setor(setor_id);
+ALTER TABLE ONLY ggviario.localproducao
+    ADD CONSTRAINT fk_localproducao_to_setor FOREIGN KEY (localproducao_setor_id) REFERENCES ggviario.setor(setor_id);
 
 
 --
 -- Name: movimento fk_movimento_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
+ALTER TABLE ONLY ggviario.movimento
     ADD CONSTRAINT fk_movimento_to_colaborador FOREIGN KEY (movimento_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9553,7 +9461,7 @@ ALTER TABLE ONLY movimento
 -- Name: movimento fk_movimento_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
+ALTER TABLE ONLY ggviario.movimento
     ADD CONSTRAINT fk_movimento_to_colaborador_atualizacao FOREIGN KEY (movimento_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9561,39 +9469,39 @@ ALTER TABLE ONLY movimento
 -- Name: movimento fk_movimento_to_conta; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
-    ADD CONSTRAINT fk_movimento_to_conta FOREIGN KEY (movimento_conta_id) REFERENCES conta(conta_id);
+ALTER TABLE ONLY ggviario.movimento
+    ADD CONSTRAINT fk_movimento_to_conta FOREIGN KEY (movimento_conta_id) REFERENCES ggviario.conta(conta_id);
 
 
 --
 -- Name: movimento fk_movimento_to_despesa; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
-    ADD CONSTRAINT fk_movimento_to_despesa FOREIGN KEY (movimento_despeda_id) REFERENCES despesa(despesa_id);
+ALTER TABLE ONLY ggviario.movimento
+    ADD CONSTRAINT fk_movimento_to_despesa FOREIGN KEY (movimento_despeda_id) REFERENCES ggviario.despesa(despesa_id);
 
 
 --
 -- Name: movimento fk_movimento_to_movimento_itemdevolucao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
-    ADD CONSTRAINT fk_movimento_to_movimento_itemdevolucao FOREIGN KEY (movimento_movimento_id) REFERENCES movimento(movimento_id);
+ALTER TABLE ONLY ggviario.movimento
+    ADD CONSTRAINT fk_movimento_to_movimento_itemdevolucao FOREIGN KEY (movimento_movimento_id) REFERENCES ggviario.movimento(movimento_id);
 
 
 --
 -- Name: movimento fk_movimento_to_tipomovimento; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY movimento
-    ADD CONSTRAINT fk_movimento_to_tipomovimento FOREIGN KEY (movimento_tmovimento_id) REFERENCES tipomovimento(tmovimento_id);
+ALTER TABLE ONLY ggviario.movimento
+    ADD CONSTRAINT fk_movimento_to_tipomovimento FOREIGN KEY (movimento_tmovimento_id) REFERENCES ggviario.tipomovimento(tmovimento_id);
 
 
 --
 -- Name: preco fk_preco_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY preco
+ALTER TABLE ONLY ggviario.preco
     ADD CONSTRAINT fk_preco_to_colaborador FOREIGN KEY (preco_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9601,7 +9509,7 @@ ALTER TABLE ONLY preco
 -- Name: preco fk_preco_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY preco
+ALTER TABLE ONLY ggviario.preco
     ADD CONSTRAINT fk_preco_to_colaborador_atualizacao FOREIGN KEY (preco_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9609,23 +9517,23 @@ ALTER TABLE ONLY preco
 -- Name: preco fk_preco_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY preco
-    ADD CONSTRAINT fk_preco_to_produto FOREIGN KEY (preco_produto_id) REFERENCES produto(produto_id);
+ALTER TABLE ONLY ggviario.preco
+    ADD CONSTRAINT fk_preco_to_produto FOREIGN KEY (preco_produto_id) REFERENCES ggviario.produto(produto_id);
 
 
 --
 -- Name: preco fk_preco_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY preco
-    ADD CONSTRAINT fk_preco_to_unidade FOREIGN KEY (preco_unidade_id) REFERENCES unidade(unidade_id);
+ALTER TABLE ONLY ggviario.preco
+    ADD CONSTRAINT fk_preco_to_unidade FOREIGN KEY (preco_unidade_id) REFERENCES ggviario.unidade(unidade_id);
 
 
 --
 -- Name: producao fk_producao_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY producao
+ALTER TABLE ONLY ggviario.producao
     ADD CONSTRAINT fk_producao_to_colaborador FOREIGN KEY (producao_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9633,7 +9541,7 @@ ALTER TABLE ONLY producao
 -- Name: producao fk_producao_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY producao
+ALTER TABLE ONLY ggviario.producao
     ADD CONSTRAINT fk_producao_to_colaborador_atualizacao FOREIGN KEY (producao_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9641,31 +9549,31 @@ ALTER TABLE ONLY producao
 -- Name: producao fk_producao_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY producao
-    ADD CONSTRAINT fk_producao_to_produto FOREIGN KEY (producao_produto_id) REFERENCES produto(produto_id);
+ALTER TABLE ONLY ggviario.producao
+    ADD CONSTRAINT fk_producao_to_produto FOREIGN KEY (producao_produto_id) REFERENCES ggviario.produto(produto_id);
 
 
 --
 -- Name: producao fk_producao_to_setor; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY producao
-    ADD CONSTRAINT fk_producao_to_setor FOREIGN KEY (producao_setor_id) REFERENCES setor(setor_id);
+ALTER TABLE ONLY ggviario.producao
+    ADD CONSTRAINT fk_producao_to_setor FOREIGN KEY (producao_setor_id) REFERENCES ggviario.setor(setor_id);
 
 
 --
 -- Name: produto fk_produto_to_categoria; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
-    ADD CONSTRAINT fk_produto_to_categoria FOREIGN KEY (produto_categoria_id) REFERENCES categoria(categoria_id);
+ALTER TABLE ONLY ggviario.produto
+    ADD CONSTRAINT fk_produto_to_categoria FOREIGN KEY (produto_categoria_id) REFERENCES ggviario.categoria(categoria_id);
 
 
 --
 -- Name: produto fk_produto_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
+ALTER TABLE ONLY ggviario.produto
     ADD CONSTRAINT fk_produto_to_colaborador FOREIGN KEY (produto_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9673,7 +9581,7 @@ ALTER TABLE ONLY produto
 -- Name: produto fk_produto_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY produto
+ALTER TABLE ONLY ggviario.produto
     ADD CONSTRAINT fk_produto_to_colaborador_atualizacao FOREIGN KEY (produto_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9681,7 +9589,7 @@ ALTER TABLE ONLY produto
 -- Name: setor fk_setor_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY setor
+ALTER TABLE ONLY ggviario.setor
     ADD CONSTRAINT fk_setor_to_colaborador FOREIGN KEY (setor_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9689,7 +9597,7 @@ ALTER TABLE ONLY setor
 -- Name: setor fk_setor_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY setor
+ALTER TABLE ONLY ggviario.setor
     ADD CONSTRAINT fk_setor_to_colaborador_atualizacao FOREIGN KEY (setor_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9697,15 +9605,15 @@ ALTER TABLE ONLY setor
 -- Name: setor fk_setor_to_setor; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY setor
-    ADD CONSTRAINT fk_setor_to_setor FOREIGN KEY (setor_setor_id) REFERENCES setor(setor_id);
+ALTER TABLE ONLY ggviario.setor
+    ADD CONSTRAINT fk_setor_to_setor FOREIGN KEY (setor_setor_id) REFERENCES ggviario.setor(setor_id);
 
 
 --
 -- Name: unidade fk_unidade_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY unidade
+ALTER TABLE ONLY ggviario.unidade
     ADD CONSTRAINT fk_unidade_to_colaborador FOREIGN KEY (unidade_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9713,7 +9621,7 @@ ALTER TABLE ONLY unidade
 -- Name: unidade fk_unidade_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY unidade
+ALTER TABLE ONLY ggviario.unidade
     ADD CONSTRAINT fk_unidade_to_colaborador_atualizacao FOREIGN KEY (unidade_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9721,15 +9629,15 @@ ALTER TABLE ONLY unidade
 -- Name: venda fk_venda_to_cliente; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
-    ADD CONSTRAINT fk_venda_to_cliente FOREIGN KEY (venda_cliente_id) REFERENCES cliente(cliente_id);
+ALTER TABLE ONLY ggviario.venda
+    ADD CONSTRAINT fk_venda_to_cliente FOREIGN KEY (venda_cliente_id) REFERENCES ggviario.cliente(cliente_id);
 
 
 --
 -- Name: venda fk_venda_to_colaborador; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
+ALTER TABLE ONLY ggviario.venda
     ADD CONSTRAINT fk_venda_to_colaborador FOREIGN KEY (venda_colaborador_id) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9737,7 +9645,7 @@ ALTER TABLE ONLY venda
 -- Name: venda fk_venda_to_colaborador_atualizacao; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
+ALTER TABLE ONLY ggviario.venda
     ADD CONSTRAINT fk_venda_to_colaborador_atualizacao FOREIGN KEY (venda_colaborador_atualizacao) REFERENCES colaborador.colaborador(colaborador_id);
 
 
@@ -9745,24 +9653,24 @@ ALTER TABLE ONLY venda
 -- Name: venda fk_venda_to_produto; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
-    ADD CONSTRAINT fk_venda_to_produto FOREIGN KEY (venda_produto_id) REFERENCES produto(produto_id);
+ALTER TABLE ONLY ggviario.venda
+    ADD CONSTRAINT fk_venda_to_produto FOREIGN KEY (venda_produto_id) REFERENCES ggviario.produto(produto_id);
 
 
 --
 -- Name: venda fk_venda_to_tipovenda; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
-    ADD CONSTRAINT fk_venda_to_tipovenda FOREIGN KEY (venda_tvenda_id) REFERENCES tipovenda(tvenda_id);
+ALTER TABLE ONLY ggviario.venda
+    ADD CONSTRAINT fk_venda_to_tipovenda FOREIGN KEY (venda_tvenda_id) REFERENCES ggviario.tipovenda(tvenda_id);
 
 
 --
 -- Name: venda fk_venda_to_unidade; Type: FK CONSTRAINT; Schema: ggviario; Owner: -
 --
 
-ALTER TABLE ONLY venda
-    ADD CONSTRAINT fk_venda_to_unidade FOREIGN KEY (venda_unidade_id) REFERENCES unidade(unidade_id);
+ALTER TABLE ONLY ggviario.venda
+    ADD CONSTRAINT fk_venda_to_unidade FOREIGN KEY (venda_unidade_id) REFERENCES ggviario.unidade(unidade_id);
 
 
 --

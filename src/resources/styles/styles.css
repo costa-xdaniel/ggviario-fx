@@ -1,4 +1,10 @@
 /*           top      right    bottom   left*/
+
+.decorator-background {
+    -fx-fill: md-red-500;
+    -fx-arc-width:25;
+    -fx-arc-height:25;
+}
 .jfx-toolbar {
     -fx-min-height:40;
     -fx-background-color: md-primary-color;

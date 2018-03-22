@@ -10,7 +10,6 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import st.ggviario.house.control.HomeController;
 import st.ggviario.house.service.net.SimpleIntent;
 import st.ggviario.house.singleton.APP;
@@ -34,7 +33,7 @@ public class Main extends Application {
 
         //From preview layout
         AuthSingleton.login( null, null );
-        primaryStage.initStyle( StageStyle.UNDECORATED );
+        primaryStage.setMaximized( true );
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation( getClass().getResource("/fxml/app.fxml") );

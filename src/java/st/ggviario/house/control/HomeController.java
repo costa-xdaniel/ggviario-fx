@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import st.ggviario.house.control.drawers.DrawerMenus;
 import st.ggviario.house.control.pages.Page;
@@ -24,7 +23,7 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
-    @FXML private VBox root;
+    @FXML private AnchorPane root;
     @FXML private HBox decoratorArea;
     @FXML StackPane closePanel;
     @FXML private StackPane rootPage;
@@ -46,7 +45,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.structureCloseWindows();
+//        this.structureCloseWindows();
         this.defineEvents();
 
         ControllerLoader< AnchorPane, DrawerMenus> loader = new ControllerLoader<>("/fxml/drawer/drawer.fxml");
@@ -88,9 +87,9 @@ public class HomeController implements Initializable {
                 this.root.getChildren().remove( this.drawer );
             }
         });
-        this.ripplerCloseWidows.setOnMouseClicked(event -> {
-            System.exit( 0 );
-        });
+//        this.ripplerCloseWidows.setOnMouseClicked(event -> {
+//            System.exit( 0 );
+//        });
     }
 
     private void openDrawer() {
