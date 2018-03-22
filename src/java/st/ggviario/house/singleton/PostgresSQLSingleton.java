@@ -18,7 +18,6 @@ public class PostgresSQLSingleton {
 
         Gson gson = new Gson();
         if( !file.exists() ){
-            System.out.println("dir.mkdirs() = " + dir.mkdirs());
             try (FileWriter writer = new FileWriter( file )) {
                 gson.toJson( new Configuration("host", 5432, "user", "database", "password" ), writer);
             } catch (IOException e) {

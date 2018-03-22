@@ -76,8 +76,8 @@ public class DrawerMenus implements Page,  Initializable {
 
     private void loadDataMenus() {
         this.menuList.add( new DrawerHeader() );
+        this.menuList.add( new MenuItem("Operações", getClass().getResource("/fxml/page/page_vendadespesa.fxml") ) );
         this.menuList.add( new MenuItem("Produto", getClass().getResource("/fxml/page/page_producao.fxml") ) );
-        this.menuList.add( new MenuItem("Venda de despesa", getClass().getResource("/fxml/page/page_vendadespesa.fxml") ) );
         this.menuList.add( new MenuItem("Pessoal", getClass().getResource("/fxml/page/page_pessoal.fxml") ) );
     }
 

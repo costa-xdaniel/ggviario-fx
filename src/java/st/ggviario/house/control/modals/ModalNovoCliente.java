@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,71 +40,30 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
     }
 
 
-    @FXML
-    private AnchorPane root;
+    @FXML private AnchorPane root;
+    @FXML private AnchorPane anchorHeader;
+    @FXML private AnchorPane iconAnchorCloseArea;
+    @FXML private Label modalTitle;
+    @FXML private JFXTextField textFieldClienteNome;
+    @FXML private JFXTextField textFieldClienteApalido;
+    @FXML private JFXComboBox<Sexo> comboClientSexo;
+    @FXML private DatePicker dataPickerClienteDataNascimento;
+    @FXML private JFXComboBox<Distrito> comboxClienteDistrito;
+    @FXML private JFXTextField textFieldClienteMorada;
+    @FXML private JFXTextField textFieldClientTelephone;
+    @FXML private JFXTextField textFieldClientMail;
+    @FXML private JFXComboBox<TipoDocumento> comboxClientTipoDocumento;
+    @FXML private JFXTextField textFieldClientDocumentoNumero;
+    @FXML private JFXButton buttonClientRegister;
 
-    @FXML
-    private AnchorPane anchorHeader;
-
-    @FXML
-    private AnchorPane iconAnchorCloseArea;
-
-    @FXML
-    private Label modalTitle;
-
-    @FXML
-    private JFXTextField textFieldClienteNome;
-
-    @FXML
-    private JFXTextField textFieldClienteApalido;
-
-    @FXML
-    private JFXComboBox<Sexo> comboClientSexo;
-
-    @FXML
-    private DatePicker dataPickerClienteDataNascimento;
-
-    @FXML
-    private JFXComboBox<Distrito> comboxClienteDistrito;
-
-    @FXML
-    private JFXTextField textFieldClienteMorada;
-
-    @FXML
-    private JFXTextField textFieldClientTelephone;
-
-    @FXML
-    private JFXTextField textFieldClientMail;
-
-    @FXML
-    private JFXComboBox<TipoDocumento> comboxClientTipoDocumento;
-
-    @FXML
-    private JFXTextField textFieldClientDocumentoNumero;
-
-    @FXML
-    private JFXButton buttonClientRegister;
-
-    private JFXRippler rippler;
-
-    private List<Sexo> listSexo;
-    private List<Distrito> listDistrito;
-    private List<TipoDocumento> listTipoDocumento;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize( location, resources );
         this.buttonClientRegister.setOnAction( actionEvent -> this.register());
-        this.rippler = new JFXRippler( this.iconAnchorCloseArea);
-        this.anchorHeader.getChildren().add( this.rippler );
-
-        AnchorPane.setRightAnchor( this.rippler, 0x0.0p0 );
-        AnchorPane.setTopAnchor( this.rippler, 0x0.0p0 );
-        this.rippler.setStyle( "-jfx-rippler-fill: md-red-500" );
-        this.rippler.setOnMouseClicked(mouseEvent -> {
-            this.clear();
-            this.closeModal();
-        });
-        this.loadForm();
+        this.loadSexoData();
+        this.loadTipoDocumentoData();
+        this.loadDistritoData();
     }
 
     @Override
@@ -126,40 +86,55 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         return this.anchorHeader;
     }
 
-    private void loadForm() {
-        this.listSexo = Sexo.LIST;
-        this.listDistrito = new LinkedList<>();
-        this.listTipoDocumento = new LinkedList<>();
-        reloadForm();
+
+    private void loadSexoData() {
+        Thread thread = new Thread(() -> {
+            Platform.runLater(() -> {
+                this.comboClientSexo.getItems().clear();
+                for( Sexo sexo: Sexo.LIST ){
+                    this.comboClientSexo.getItems().add( sexo );
+                }
+            });
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
-    private void reloadForm() {
-        this.loadFromDatabase();
-        this.comboxClienteDistrito.setItems(FXCollections.observableList( this.listDistrito ) );
-        this.comboxClientTipoDocumento.setItems( FXCollections.observableList( this.listTipoDocumento ) );
-        this.comboClientSexo.setItems( FXCollections.observableList( this.listSexo ) );
+    private void loadDistritoData( ){
+        Thread thread = new Thread(() -> {
+            PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
+            Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
+            Platform.runLater(() -> {
+                this.comboxClienteDistrito.getItems().clear();
+                this.comboxClienteDistrito.getItems().add( new Distrito() );
+            });
+            postgresSQL.query("ggviario.funct_load_distrito")
+                    .withOther( null )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater(() -> {
+                        this.comboxClienteDistrito.getItems().add( distritoBuilder.load( row ).build() );
+                    }));
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
-
-    private void loadFromDatabase() {
-        Distrito.DistritoBuilder distritoBuilder = new Distrito.DistritoBuilder();
-        TipoDocumento.TipoDocumentoBuilder tipoDocumentoBuilder = new TipoDocumento.TipoDocumentoBuilder();
-
-        this.listDistrito.clear();
-        this.listTipoDocumento.clear();
-
-        this.listDistrito.add( distritoBuilder.id(null).nome("Não definido").build() );
-        this.listTipoDocumento.add( tipoDocumentoBuilder.id(null).desc("Não definido").build() );
-
-        PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
-        postgresSQL.query("ggviario.funct_load_distrito")
-                .withOther( null )
-                .callFunctionTable()
-                .onResultQuery(row -> this.listDistrito.add( distritoBuilder.load( row ).build() ));
-
-        postgresSQL.query( "ggviario.funct_load_tipodocumento" )
-                .withOther( null )
-                .callFunctionTable()
-                .onResultQuery( row -> this.listTipoDocumento.add( tipoDocumentoBuilder.load( row ).build() ));
+    private void loadTipoDocumentoData( ){
+        Thread thread = new Thread(() -> {
+            PostgresSQL postgresSQL = PostgresSQLSingleton.getInstance();
+            TipoDocumento.TipoDocumentoBuilder tipoDocumentoBuilder = new TipoDocumento.TipoDocumentoBuilder();
+            Platform.runLater(() -> {
+                this.comboxClientTipoDocumento.getItems().clear();
+                this.comboxClientTipoDocumento.getItems().add( new TipoDocumento() );
+            });
+            postgresSQL.query("ggviario.funct_load_tipodocumento")
+                    .withOther( null )
+                    .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> Platform.runLater(() -> {
+                        this.comboxClientTipoDocumento.getItems().add( tipoDocumentoBuilder.load( row ).build() );
+                    }));
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
     private void register() {
@@ -189,7 +164,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                             Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
                             res.cliente = clienteBuilder.load(( Map<String, Object>) res.map.get("cliente" ) ).build();
                             res.success = true;
-                            res.message = "Cliente cadastrado com sucesso";
+                            res.message = "ClientServiceServer cadastrado com sucesso";
                         } else {
                             res.success = false;
                             res.message = SQLRow.stringOf( res.map.get("text") );
@@ -210,6 +185,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
         this.textFieldClientDocumentoNumero.setText( null );
         this.textFieldClienteMorada.setText( null );
         this.textFieldClientTelephone.setText( null );
+        this.textFieldClientMail.setText( null );
         this.comboClientSexo.setValue( null );
         this.comboxClienteDistrito.setValue( null );
         this.comboxClientTipoDocumento.setValue( null );
@@ -226,6 +202,7 @@ public class ModalNovoCliente extends AbstractModal< Cliente > implements Initia
                 .apelido( this.textFieldClienteApalido.getText() )
                 .tipoDocumento( this.comboxClientTipoDocumento.getValue() )
                 .documentoNumero( this.textFieldClientDocumentoNumero.getText() )
+                .mail( this.textFieldClientMail.getText() )
                 .sexo( this.comboClientSexo.getValue() )
                 .distrito( this.comboxClienteDistrito.getValue() )
                 .morada( this.textFieldClienteMorada.getText() )

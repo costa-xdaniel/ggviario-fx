@@ -3,6 +3,7 @@ package st.jigahd.support.sql.postgresql;
 import com.google.gson.JsonElement;
 import javafx.util.Pair;
 import org.postgresql.util.PGobject;
+import st.jigahd.support.sql.SQLParameter;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -16,8 +17,7 @@ import java.util.Date;
 
 public class PostgresSQLQueryBuilder {
 
-    private final String query;
-    private String processedQuery;
+
 
     public interface Setter {
         void set(CallableStatement statement, int index, Integer type, Object value) throws SQLException;
@@ -114,7 +114,9 @@ public class PostgresSQLQueryBuilder {
 
     private String[] mapReturns;
     private final PostgresSQL postgresSQL;
-    private List<Pair< Integer, Object > > parameters;
+    private List< SQLParameter > parameters;
+    private final String query;
+    private String processedQuery;
 
 
     public PostgresSQLQueryBuilder(PostgresSQL postgresSQL, String query) {
@@ -199,7 +201,7 @@ public class PostgresSQLQueryBuilder {
         return this.parameters.size();
     }
 
-    public Iterable<? extends Pair<Integer, Object>> params() {
+    public Iterable<? extends SQLParameter > params() {
         return Collections.unmodifiableCollection( this.parameters);
     }
 
@@ -243,152 +245,148 @@ public class PostgresSQLQueryBuilder {
     }
 
     public PostgresSQLQueryBuilder withBoolean(Boolean value ){
-        parameters.add( new Pair<>( Types.BOOLEAN, value ) );
+        parameters.add( new SQLParameter( "boolean", Types.BOOLEAN, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withBit(Byte value ){
-        parameters.add( new Pair<>( Types.BIT, value ) );
+        parameters.add( new SQLParameter( "bit", Types.BIT, value ) );
         return this;
     }
 
 
     public PostgresSQLQueryBuilder withSmallint(Short value ){
-        parameters.add( new Pair<>( Types.SMALLINT, value ) );
+        parameters.add( new SQLParameter( "smallint", Types.SMALLINT, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withInteger(Integer integer ){
-        parameters.add( new Pair<>(Types.INTEGER, integer ) );
+        parameters.add( new SQLParameter( "integer", Types.INTEGER, integer ) );
         return this;
     }
 
 
     public PostgresSQLQueryBuilder withBigint(Long value ){
-        parameters.add( new Pair<>( Types.BIGINT, value ) );
+        parameters.add( new SQLParameter( "bigint", Types.BIGINT, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withReal(Float value ){
-        parameters.add( new Pair<>( Types.REAL, value ) );
+        parameters.add( new SQLParameter( "real", Types.REAL, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withFloat(Float value ){
-        parameters.add( new Pair<>( Types.FLOAT, value ) );
+        parameters.add( new SQLParameter( "float", Types.FLOAT, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withDouble(Double value ){
-        parameters.add( new Pair<>( Types.DOUBLE, value ) );
+        parameters.add( new SQLParameter( "double", Types.DOUBLE, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withDecimal(BigDecimal value ){
-        parameters.add( new Pair<>( Types.DECIMAL, value ) );
+        parameters.add( new SQLParameter( "decimal", Types.DECIMAL, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withNumeric(BigDecimal value  ){
-        parameters.add( new Pair<>( Types.NUMERIC, value ) );
+        parameters.add( new SQLParameter( "numeric", Types.NUMERIC, value ) );
         return this;
     }
     public PostgresSQLQueryBuilder withNumeric(Number value  ){
-        parameters.add( new Pair<>( Types.NUMERIC, value ) );
+        parameters.add( new SQLParameter( "numeric", Types.NUMERIC, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withChar(Character value ){
-        parameters.add( new Pair<>( Types.CHAR, value ) );
+        parameters.add( new SQLParameter( "char", Types.CHAR, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withVarchar(String value ){
-        parameters.add( new Pair<>( Types.VARCHAR, value ) );
+        parameters.add( new SQLParameter( "varchar", Types.VARCHAR, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withText(String value ){
-        parameters.add( new Pair<>( Types.LONGVARCHAR, value ) );
+        parameters.add( new SQLParameter( "text", Types.LONGVARCHAR, value ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withTime(Date value ){
-        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
+        parameters.add( new SQLParameter( "time", Types.TIME, sqlTimeOf( value ) ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withTime(Calendar value ){
-        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
+        parameters.add( new SQLParameter( "time", Types.TIME, sqlTimeOf( value ) ) );
         return this;
     }
     public PostgresSQLQueryBuilder withTime(LocalTime value ){
-        parameters.add( new Pair<>( Types.TIME, sqlTimeOf( value ) ) );
+        parameters.add( new SQLParameter( "time", Types.TIME, sqlTimeOf( value ) ) );
         return this;
     }
 
 
     public PostgresSQLQueryBuilder withDate(Calendar value ){
-        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
+        parameters.add( new SQLParameter( "date", Types.DATE, sqlDateOf( value ) ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withDate(Date value ){
-        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
+        parameters.add( new SQLParameter( "date", Types.DATE, sqlDateOf( value ) ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withDate(LocalDate value ){
-        parameters.add( new Pair<>( Types.DATE, sqlDateOf( value ) ) );
+        parameters.add( new SQLParameter( "date", Types.DATE, sqlDateOf( value ) ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withTimestamp(Calendar value ){
-        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value ) ) );
+        parameters.add( new SQLParameter( "timestamp", Types.TIMESTAMP, sqlTimestampOf( value ) ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withTimestamp(Date value ){
-        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value )  ) );
+        parameters.add( new SQLParameter( "timestamp", Types.TIMESTAMP, sqlTimestampOf( value )  ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withTimestamp(LocalDateTime value ){
-        parameters.add( new Pair<>( Types.TIMESTAMP, sqlTimestampOf( value )  ) );
+        parameters.add( new SQLParameter( "timestamp", Types.TIMESTAMP, sqlTimestampOf( value )  ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withBlob(InputStream doublePrecision ){
-        parameters.add( new Pair<>( Types.BLOB, doublePrecision ) );
+        parameters.add( new SQLParameter( "bold", Types.BLOB, doublePrecision ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withNChar(Reader doublePrecision ){
-        parameters.add( new Pair<>( Types.NCHAR, doublePrecision ) );
+        parameters.add( new SQLParameter( "nchar", Types.NCHAR, doublePrecision ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withClob(Reader doublePrecision ){
-        parameters.add( new Pair<>( Types.CLOB, doublePrecision ) );
+        parameters.add( new SQLParameter( "clob", Types.CLOB, doublePrecision ) );
         return this;
     }
 
 
     public PostgresSQLQueryBuilder withNClob(Reader doublePrecision ){
-        parameters.add( new Pair<>( Types.NCLOB, doublePrecision ) );
+        parameters.add( new SQLParameter( "nclob", Types.NCLOB, doublePrecision ) );
         return this;
     }
 
 
 
 
-    public PostgresSQLQueryBuilder withOther(Object doublePrecision ){
-        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
-        return this;
-    }
 
     public PostgresSQLQueryBuilder withUUID(UUID doublePrecision ){
-        parameters.add( new Pair<>( Types.OTHER, doublePrecision ) );
+        parameters.add( new SQLParameter( "uuid", Types.OTHER, doublePrecision ) );
         return this;
     }
 
@@ -401,75 +399,81 @@ public class PostgresSQLQueryBuilder {
             PGobject jsonObject = new PGobject();
             jsonObject.setType("jsonb");
             jsonObject.setValue( jsonb );
-            parameters.add( new Pair<>( Types.OTHER, jsonObject ) );
+            parameters.add( new SQLParameter( "jsonb", Types.OTHER, jsonObject ) );
         } catch ( Exception ex  ) {
             throw new RuntimeException( ex );
         }
         return this;
     }
 
-    public PostgresSQLQueryBuilder withArray(Boolean ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+    public PostgresSQLQueryBuilder withOther(Object doublePrecision ){
+        parameters.add( new SQLParameter( "other", Types.OTHER, doublePrecision ) );
+        return this;
+    }
+
+
+    public PostgresSQLQueryBuilder withArray( Boolean ... args ){
+        parameters.add( new SQLParameter( "boolean[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Byte ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "byte[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Short ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "short[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Integer ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "integer[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Float ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "float[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Double ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "double[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Number ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "number[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Character ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "character[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(CharSequence ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "charsequence[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(String ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "string[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Date ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "date[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Calendar ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "calendar[]", Types.ARRAY, args ) );
         return this;
     }
 
     public PostgresSQLQueryBuilder withArray(Object ... args ){
-        parameters.add( new Pair<>(Types.ARRAY, args ) );
+        parameters.add( new SQLParameter( "object[]", Types.ARRAY, args ) );
         return this;
     }
 
@@ -534,5 +538,15 @@ public class PostgresSQLQueryBuilder {
     private java.sql.Timestamp sqlTimestampOf(LocalDateTime timestamp ){
         if( timestamp == null ) return null;
         return java.sql.Timestamp.valueOf( timestamp );
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder text = new StringBuilder((this.processedQuery != null) ? processedQuery : query);
+        text.append( "\n" );
+        for( SQLParameter parameter: this.parameters ){
+            text.append("    ").append( parameter.toString() ).append("\n");
+        }
+        return text.toString();
     }
 }

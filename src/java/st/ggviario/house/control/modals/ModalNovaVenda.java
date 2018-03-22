@@ -25,6 +25,7 @@ import st.ggviario.house.control.component.DatePickerRange;
 import st.ggviario.house.model.*;
 import st.ggviario.house.singleton.AuthSingleton;
 import st.ggviario.house.singleton.PostgresSQLSingleton;
+import st.jigahd.support.sql.SQLRow;
 import st.jigahd.support.sql.lib.SQLText;
 import st.jigahd.support.sql.postgresql.PostgresSQL;
 import st.jigahd.support.sql.postgresql.PostgresSQLQueryBuilder;
@@ -81,11 +82,10 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
     private String functionLoadCliente;
 
-    private List< Cliente > clienteList = new LinkedList<>();
+    private List< Cliente > originalClienteList = new LinkedList<>();
     private Map< UUID, List<Preco> > mapPrecos = new LinkedHashMap<>();
 
     private Map< TipoVenda, VendaRegister > actionRegister = new LinkedHashMap<>();
-    private List<Cliente> clienteListFiltred = new LinkedList<>();
 
     private NumberFormat moneyFormater = NumberFormat.getInstance( Locale.FRANCE );
     private Cliente clienteAnonimo;
@@ -241,29 +241,28 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
 
 
     private void newSearch(String text) {
-        this.clienteListFiltred.clear();
+        text = SQLText.normalize( text );
+        this.listViewCliente.getItems().clear();
+        this.listViewCliente.refresh();
         if( text == null ){
-            this.clienteListFiltred.addAll( this.clienteList );
+            this.listViewCliente.getItems().addAll( this.originalClienteList );
         } else {
-            for( Cliente cli : this.clienteList ){
+            for( Cliente cli : this.originalClienteList ){
                 if( cli.getClienteCompletName().toLowerCase().contains( text.toLowerCase() ) )
-                    this.clienteListFiltred.add( cli );
+                    this.listViewCliente.getItems().add( cli );
             }
         }
-        this.listViewCliente.setItems( FXCollections.observableList( this.clienteListFiltred) );
     }
 
     private boolean findClienteSelecter( Cliente cliente  ) {
         if( cliente == null ) return  false;
         this.loadProdutoDatasource( this.datePickerVendaData.getValue() );
-        this.clienteListFiltred.clear();
-        for( Cliente cli : this.clienteList ) {
+        this.listViewCliente.getItems().clear();
+        for( Cliente cli : this.originalClienteList ) {
             if (cliente.equals(cli)) {
-                this.clienteListFiltred.add(cli);
-                this.listViewCliente.setItems( FXCollections.observableList( this.clienteListFiltred ) );
+                this.listViewCliente.getItems().add(cli);
                 this.listViewCliente.getSelectionModel().select(cli);
                 return true;
-
             }
         }
         return false;
@@ -450,14 +449,29 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
     }
 
     private void loadClienteDatasource(){
-        PostgresSQL sql = PostgresSQLSingleton.getInstance();
-        this.clienteList.clear();
-        this.clienteListFiltred.clear();
+        Thread thread = new Thread(() -> {
+            PostgresSQL sql = PostgresSQLSingleton.getInstance();
+            Platform.runLater(() -> {
+                this.originalClienteList.clear();
+                this.listViewCliente.getItems().clear();
+                this.listViewCliente.refresh();
+            });
 
-        Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
-        sql.query( this.functionLoadCliente).withJsonb( (String) null ).callFunctionTable() .onResultQuery(row -> this.clienteList.add(clienteBuilder.load( row ).build()));
+            Cliente.ClienteBuilder clienteBuilder = new Cliente.ClienteBuilder();
+            sql.query( this.functionLoadCliente)
+                .withJsonb( (String) null )
+                .callFunctionTable()
+                    .onResultQuery((PostgresSQLResultSet.OnReadAllResultQuery) row -> {
+                        Platform.runLater(() -> {
+                            Cliente cli = clienteBuilder.load(row).build();
+                            this.originalClienteList.add( cli );
+                            this.listViewCliente.getItems().add( cli );
+                        });
+                    });
 
-        this.clienteListFiltred.addAll( this.clienteList );
+        });
+        thread.setPriority( Thread.MIN_PRIORITY );
+        thread.start();
     }
 
     private void loadProdutoDatasource( LocalDate date ) {
@@ -503,6 +517,7 @@ public class ModalNovaVenda extends AbstractModal< List > implements Initializab
                 });
 
         });
+        thread.setPriority( Thread.MIN_PRIORITY );
         thread.start();
     }
 

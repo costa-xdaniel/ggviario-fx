@@ -26,7 +26,7 @@ public class PostgresSQLExecutorFunction extends PostgresSQLExecutor {
     protected String mountQuery(String functionName) {
         StringBuilder builder = new StringBuilder();
         String params = createAbstractParameter( this.queryBuilder.countParameters() );
-        builder.append("select " ).append( functionName ).append("( ").append( params ).append( ") as result; ");
+        builder.append("select " ).append( functionName ).append("( ").append( params ).append( " ) as result; ");
         return builder.toString();
     }
 

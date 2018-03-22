@@ -11,10 +11,6 @@ import java.util.ResourceBundle;
 public class PageProducao extends PageTabsConttoler implements Initializable {
 
     @FXML private JFXTabPane tabPane;
-    private Tab tabProduto = new Tab("PRODUTO" );
-    private Tab tabProducao = new Tab("PRODUÇÃO" );
-    private Tab tabUnidade = new Tab("UNIDADE" );
-    private Tab tabCategoria = new Tab("CATEGORIA" );
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -30,8 +26,8 @@ public class PageProducao extends PageTabsConttoler implements Initializable {
 
 
     private void structure(){
-        this.addTab( tabProduto, "/fxml/tabs/tab_producao_produto.fxml");
-        this.addTab( tabProducao, "/fxml/tabs/tab_producao_producao.fxml");
+        this.addTab( "PRODUTO", "/fxml/tabs/tab_producao_produto.fxml");
+        this.addTab( "PRODUÇÃO", "/fxml/tabs/tab_producao_producao.fxml");
     }
 
     private void defineEvents(){

@@ -34,13 +34,27 @@ public abstract class PageTabsConttoler implements Page, Initializable {
     }
 
     private void onChangeTab( ItemTab oldTab, ItemTab newTab ){
+
+
         if( oldTab != null ){
             oldTab.tabPage.onBeforeClose();
             oldTab.tabPage.onAfterClose();
         }
         if( newTab != null ){
+            loadPage(newTab);
             newTab.tabPage.onBeforeOpen();
             newTab.tabPage.onAfterOpen();
+        }
+    }
+
+    private void loadPage(ItemTab newTab) {
+        if( newTab.tabPage == null ){
+            ControllerLoader< Node, TabPage > loader = new ControllerLoader<>( newTab.controller );
+            newTab.node = loader.getNodeView();
+            newTab.tabPage = loader.getController();
+            newTab.tab.setContent( loader.getNodeView() );
+            if( this.rootPage != null  )
+                loader.getController().onSetRootPage( this.rootPage );
         }
     }
 
@@ -64,19 +78,19 @@ public abstract class PageTabsConttoler implements Page, Initializable {
         this.loaders.forEach( item -> item.tabPage.onBeforeOpenRootPage() );
     }
 
-    void addTab(javafx.scene.control.Tab tab, String urlContent ){
-        ControllerLoader < Node, TabPage> loader = new ControllerLoader<>(urlContent);
-        tab.setContent( loader.getNodeView() );
-        if( this.rootPage != null ) loader.getController().onSetRootPage( this.rootPage );
-        this.loaders.add(new ItemTab( tab, loader.getNodeView(), loader.getController() ));
-
+    void addTab( String tabName, String urlContent ){
+        Tab tab = new Tab( tabName );
+        this.loaders.add(new ItemTab( tab, urlContent ));
         this.getTabPane().getTabs().add( tab );
     }
 
     @Override
     public void onSetRootPage(StackPane rootPage) {
         this.rootPage = rootPage;
-        this.loaders.forEach( item -> item.tabPage.onSetRootPage( rootPage ));
+        this.loaders.forEach( item -> {
+            this.loadPage( item );
+            item.tabPage.onSetRootPage( rootPage );
+        });
     }
 
     abstract JFXTabPane getTabPane();
@@ -85,11 +99,11 @@ public abstract class PageTabsConttoler implements Page, Initializable {
         private Tab tab;
         private TabPage tabPage;
         private Node node;
+        private String controller;
 
-        ItemTab(Tab tab, Node node, TabPage tabPage) {
+        ItemTab( Tab tab, String controller ) {
             this.tab = tab;
-            this.node = node;
-            this.tabPage = tabPage;
+            this.controller = controller;
         }
     }
 

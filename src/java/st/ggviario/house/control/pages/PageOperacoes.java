@@ -8,12 +8,9 @@ import javafx.scene.control.Tab;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PageVendaDespesa extends PageTabsConttoler implements Initializable {
+public class PageOperacoes extends PageTabsConttoler implements Initializable {
 
     @FXML private JFXTabPane tabPane;
-    private Tab tabDivida = new Tab("DIVIDA" );
-    private Tab tabVenda = new Tab("VENDA" );
-    private Tab tabDespesa = new Tab("DESPESA" );
 
     @Override
     public void initialize( URL url, ResourceBundle resourceBundle ) {
@@ -29,9 +26,9 @@ public class PageVendaDespesa extends PageTabsConttoler implements Initializable
 
 
     private void structure(){
-        this.addTab( tabDivida, "/fxml/tabs/tab_vendadespesa_divida.fxml" );
-        this.addTab( tabVenda, "/fxml/tabs/tab_vendadesvesa_venda.fxml" );
-        this.addTab( tabDespesa, "/fxml/tabs/tab_vendadespesa_despesa.fxml" );
+        this.addTab( "DIVIDA", "/fxml/tabs/tab_vendadespesa_divida.fxml" );
+        this.addTab( "VENDA", "/fxml/tabs/tab_vendadesvesa_venda.fxml" );
+        this.addTab( "DESPESA", "/fxml/tabs/tab_vendadespesa_despesa.fxml" );
     }
 
     private void defineEvents(){

@@ -11,7 +11,7 @@ public class PostgresSQLExecutorFunctionTable extends PostgresSQLExecutorFunctio
     protected String mountQuery( String functionName ) {
         StringBuilder builder = new StringBuilder();
         String params = createAbstractParameter( this.queryBuilder.countParameters() );
-        builder.append("select * from " ).append( functionName ).append("( ").append( params ).append( ") t");
+        builder.append("select * from " ).append( functionName ).append("( ").append( params ).append( " ) t");
         if ( this.queryBuilder.hasMapReturns() ){
             builder.append("(");
             String[] columns = this.queryBuilder.getMapReturns();
