@@ -9,11 +9,11 @@ public abstract class ClientService implements Runnable{
 
     private DataInputStream in;
     private DataOutputStream out;
-    private List< ClientServiceServer.OnNextLine > onNextLineList = new LinkedList<>();
+    private List<OnNextText> onNextTextList = new LinkedList<>();
 
     ClientService(Socket socket) {
         try {
-            this.in = new DataInputStream(new BufferedInputStream( socket.getInputStream()));
+            this.in = new DataInputStream( new BufferedInputStream( socket.getInputStream()));
             this.out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         }catch (Exception ex ){
             ex.printStackTrace();
@@ -26,7 +26,7 @@ public abstract class ClientService implements Runnable{
             while ( true ) {
                 if( in.available() <=  0) continue;
                 String line = in.readUTF ();
-                for( ClientServiceServer.OnNextLine nextLine : this.onNextLineList){
+                for( OnNextText nextLine : this.onNextTextList){
                     nextLine.accept( line );
                 }
             }
@@ -47,22 +47,20 @@ public abstract class ClientService implements Runnable{
         this.writeUTF( simpleIntent.name() );
     }
 
-    public void writeUTF(String text) {
+    public synchronized void writeUTF( String text ) {
         try {
-            synchronized( this ){
-                out.writeUTF(text);
-                out.flush();
-            }
+            out.writeUTF(text);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean addOnNextLine(OnNextLine onNextLine) {
-        return onNextLineList.add(onNextLine);
+    public boolean addOnNextLine(OnNextText onNextText) {
+        return onNextTextList.add(onNextText);
     }
 
-    public interface OnNextLine{
+    public interface OnNextText {
         void accept( String text );
     }
 }

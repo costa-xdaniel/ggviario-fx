@@ -4,7 +4,6 @@ import st.ggviario.house.service.net.ClientServiceClient;
 import st.ggviario.house.service.net.Service;
 import st.ggviario.house.service.net.ServiceServer;
 import st.ggviario.house.service.net.SimpleIntent;
-import st.jigahd.support.sql.lib.SQLResource;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -25,7 +24,7 @@ public class APP implements Service {
             } else {
                 this.localClient = getClientServiceClient();
                 this.localClient.addOnNextLine(text -> {
-                    if(SQLResource.existIn(SimpleIntent.find( text ), SimpleIntent.REQUIRE_FOCUS ) ){
+                    if( SimpleIntent.REQUIRE_FOCUS.equal( text ) ){
                         System.exit( -1 );
                     }
                 });

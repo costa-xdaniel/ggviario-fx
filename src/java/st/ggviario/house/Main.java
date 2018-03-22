@@ -14,7 +14,6 @@ import st.ggviario.house.control.HomeController;
 import st.ggviario.house.service.net.SimpleIntent;
 import st.ggviario.house.singleton.APP;
 import st.ggviario.house.singleton.AuthSingleton;
-import st.jigahd.support.sql.lib.SQLResource;
 
 
 public class Main extends Application {
@@ -51,16 +50,13 @@ public class Main extends Application {
         primaryStage.show();
 
         APP app = APP.getInstance();
-        app.getServer().addOnNextClient(clientService -> {
-            clientService.addOnNextLine(line -> {
-                System.out.println("line = " + line);
-                if(SQLResource.existIn(SimpleIntent.find( line ), SimpleIntent.REQUIRE_FOCUS ) ) {
-                    Platform.runLater(() -> {
-                        primaryStage.requestFocus();
-                        clientService.writeUTF( SimpleIntent.REQUIRE_FOCUS );
-                    });
-                }
-            });
-        });
+        app.getServer().addOnNextClient(clientService -> clientService.addOnNextLine(text -> {
+            if(SimpleIntent.REQUIRE_FOCUS.equal( text ) ) {
+                Platform.runLater(() -> {
+                    primaryStage.requestFocus();
+                    clientService.writeUTF( SimpleIntent.REQUIRE_FOCUS );
+                });
+            }
+        }));
     }
 }

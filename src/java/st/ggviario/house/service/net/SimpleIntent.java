@@ -11,4 +11,8 @@ public enum SimpleIntent {
         }
         return null;
     }
+
+    public boolean equal( String name ){
+        return this.name().equals( name );
+    }
 }
